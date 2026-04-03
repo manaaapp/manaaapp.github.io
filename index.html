@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manaã — Sua palavra diária no WhatsApp</title>
+    <meta name="description" content="Receba reflexões bíblicas personalizadas diretamente no seu WhatsApp. Para católicos e evangélicos. Comece gratuitamente.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --gold: #B8912E;
+            --gold-soft: #D4B86A;
+            --gold-bg: #F9F3E8;
+            --bg: #FDFBF8;
+            --bg-alt: #F6F2EC;
+            --text: #2D2A26;
+            --text-secondary: #5C564D;
+            --text-muted: #8C847A;
+            --white: #FFFFFF;
+            --border: rgba(0, 0, 0, 0.06);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow: 0 4px 16px rgba(0,0,0,0.05);
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.75;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .serif { font-family: 'Playfair Display', Georgia, serif; }
+
+        /* Nav */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 0.9rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(253, 251, 248, 0.95);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.88rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover { color: var(--gold); }
+
+        .nav-cta {
+            background: var(--gold);
+            color: var(--white);
+            padding: 0.55rem 1.3rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: background 0.2s;
+        }
+
+        .nav-cta:hover { background: #A07D2E; }
+
+        /* Hero */
+        .hero {
+            min-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 8rem 2rem 5rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.6rem);
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.25;
+            margin-bottom: 1.5rem;
+            max-width: 680px;
+        }
+
+        .hero p {
+            font-size: 1.08rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 0.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 0.9rem 2rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.2s;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--white);
+        }
+
+        .btn-primary:hover { background: #A07D2E; }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+        }
+
+        .btn-secondary:hover { border-color: var(--gold-soft); color: var(--gold); }
+
+        /* Quote */
+        .quote-section {
+            padding: 4.5rem 2rem;
+            background: var(--bg-alt);
+            text-align: center;
+        }
+
+        .quote-inner {
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        .quote-inner blockquote {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: clamp(1.15rem, 2.5vw, 1.45rem);
+            color: var(--text);
+            line-height: 1.7;
+            margin-bottom: 1rem;
+        }
+
+        .quote-inner cite {
+            color: var(--gold);
+            font-style: normal;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .quote-inner .about-text {
+            margin-top: 2.5rem;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.85;
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            color: var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.6rem;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            color: var(--text);
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-desc {
+            text-align: center;
+            color: var(--text-secondary);
+            max-width: 480px;
+            margin: 0 auto 3rem;
+            font-size: 1rem;
+        }
+
+        /* Steps */
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .step {
+            text-align: center;
+            padding: 2rem 1.5rem;
+        }
+
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--gold-bg);
+            color: var(--gold);
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 1rem;
+        }
+
+        .step h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+        .step p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* Features */
+        .features-section { background: var(--bg-alt); padding: 5rem 2rem; }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            max-width: 960px;
+            margin: 0 auto;
+        }
+
+        .feature {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid var(--border);
+        }
+
+        .feature h3 {
+            font-size: 1rem;
+            margin-bottom: 0.4rem;
+            color: var(--text);
+        }
+
+        .feature p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.7;
+        }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            max-width: 680px;
+            margin: 0 auto;
+        }
+
+        .plan {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 2.5rem 2rem;
+            text-align: center;
+            border: 1.5px solid var(--border);
+        }
+
+        .plan.featured { border-color: var(--gold-soft); }
+
+        .plan h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+        .plan .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+
+        .plan .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text);
+        }
+
+        .plan.featured .price { color: var(--gold); }
+
+        .plan .price span {
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--text-muted);
+        }
+
+        .plan ul {
+            list-style: none;
+            margin: 1.5rem 0;
+            text-align: left;
+        }
+
+        .plan ul li {
+            padding: 0.4rem 0;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .plan ul li::before {
+            content: '\2022';
+            color: var(--gold);
+            margin-right: 0.5rem;
+        }
+
+        /* CTA */
+        .cta-section {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .cta-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 0.8rem;
+        }
+
+        .cta-section p {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            padding: 2.5rem 2rem;
+            text-align: center;
+            background: var(--text);
+            color: rgba(255,255,255,0.4);
+            font-size: 0.82rem;
+            line-height: 1.8;
+        }
+
+        footer .brand {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold-soft);
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        /* Mobile */
+        .mobile-menu { display: none; cursor: pointer; font-size: 1.3rem; color: var(--text); }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .mobile-menu { display: block; }
+            .hero { padding: 6rem 1.5rem 3rem; min-height: auto; }
+            .section { padding: 3.5rem 1.5rem; }
+            .features-section { padding: 3.5rem 1.5rem; }
+            .quote-section { padding: 3rem 1.5rem; }
+            .hero-buttons { flex-direction: column; align-items: center; }
+            .btn { width: 100%; max-width: 320px; text-align: center; }
+        }
+
+        html { scroll-behavior: smooth; }
+
+        /* WhatsApp Mockup */
+        .wa-mockup {
+            max-width: 380px;
+            margin: 0 auto;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+        }
+
+        .wa-header {
+            background: #075E54;
+            color: white;
+            padding: 0.8rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .wa-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), var(--gold-soft));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: white;
+        }
+
+        .wa-name { font-weight: 600; font-size: 0.95rem; }
+        .wa-status { font-size: 0.72rem; opacity: 0.8; }
+        .wa-verified { font-size: 0.7rem; color: #34B7F1; margin-left: 0.3rem; }
+
+        .wa-chat {
+            background: #ECE5DD;
+            padding: 1rem;
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .wa-date {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #8696A0;
+            background: rgba(255,255,255,0.7);
+            padding: 0.2rem 0.8rem;
+            border-radius: 6px;
+            align-self: center;
+            margin-bottom: 0.3rem;
+        }
+
+        .wa-msg {
+            max-width: 85%;
+            padding: 0.6rem 0.8rem;
+            border-radius: 8px;
+            line-height: 1.5;
+            position: relative;
+            color: #111;
+        }
+
+        .wa-msg.received {
+            background: white;
+            align-self: flex-start;
+            border-top-left-radius: 0;
+        }
+
+        .wa-msg.sent {
+            background: #D9FDD3;
+            align-self: flex-end;
+            border-top-right-radius: 0;
+        }
+
+        .wa-msg .time {
+            font-size: 0.65rem;
+            color: #8696A0;
+            text-align: right;
+            margin-top: 0.2rem;
+        }
+
+        .wa-msg .wa-img {
+            width: 100%;
+            height: 180px;
+            background: linear-gradient(135deg, #2C1810 0%, #4A3228 40%, #B8912E 100%);
+            border-radius: 6px;
+            margin-bottom: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255,255,255,0.95);
+            text-align: center;
+            padding: 1rem;
+        }
+
+        .wa-img .verse {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+
+        .wa-img .ref {
+            font-size: 0.7rem;
+            opacity: 0.8;
+        }
+
+        .wa-img .brand-tag {
+            font-size: 0.6rem;
+            opacity: 0.5;
+            margin-top: auto;
+            padding-top: 0.5rem;
+        }
+
+        .wa-btn-row {
+            display: flex;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            margin: 0.3rem -0.8rem -0.6rem;
+        }
+
+        .wa-btn-row a {
+            flex: 1;
+            text-align: center;
+            padding: 0.6rem;
+            color: #34B7F1;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-weight: 500;
+        }
+
+        .wa-btn-row a + a {
+            border-left: 1px solid rgba(0,0,0,0.08);
+        }
+
+        .wa-mockup-section {
+            padding: 5rem 2rem;
+        }
+
+        .wa-mockup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .wa-mockup-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+            color: var(--text);
+        }
+
+        .wa-mockup-text p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .wa-mockup-grid { grid-template-columns: 1fr; }
+            .wa-mockup { max-width: 340px; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">Manaã</div>
+        <ul class="nav-links">
+            <li><a href="#sobre">Sobre</a></li>
+            <li><a href="#como-funciona">Como funciona</a></li>
+            <li><a href="#planos">Planos</a></li>
+        </ul>
+        <a href="#planos" class="nav-cta">Começar</a>
+        <div class="mobile-menu">&#9776;</div>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>Uma palavra para o seu dia, todos os dias</h1>
+        <p>Reflexões bíblicas personalizadas entregues no seu WhatsApp. Para católicos e evangélicos, com respeito à sua fé.</p>
+        <div class="hero-buttons">
+            <a href="#planos" class="btn btn-primary">Comece gratuitamente</a>
+            <a href="#sobre" class="btn btn-secondary">Saiba mais</a>
+        </div>
+    </section>
+
+    <section class="quote-section" id="sobre">
+        <div class="quote-inner">
+            <blockquote>Eis que vos farei chover pão dos céus, e o povo sairá e colherá cada dia a porção para cada dia.</blockquote>
+            <cite>Êxodo 16:4</cite>
+            <p class="about-text">Manaã é o alimento que Deus enviou para sustentar Seu povo. Com esse mesmo propósito, entregamos diariamente uma reflexão bíblica pensada para o seu momento de vida — direto no WhatsApp, no horário que você preferir. Se quiser conversar sobre a Palavra ou buscar orientação nas Escrituras, estamos aqui também.</p>
+        </div>
+    </section>
+
+    <section class="section" id="como-funciona">
+        <div class="section-label">Como funciona</div>
+        <h2 class="section-title">Três passos para começar</h2>
+        <p class="section-desc">Simples, rápido e sem complicação.</p>
+        <div class="steps">
+            <div class="step">
+                <div class="step-num">1</div>
+                <h3>Escolha sua tradição</h3>
+                <p>Católico ou evangélico — o conteúdo será adaptado à sua fé.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">2</div>
+                <h3>Cadastre seu WhatsApp</h3>
+                <p>Informe seu número e escolha o horário ideal para receber.</p>
+            </div>
+            <div class="step">
+                <div class="step-num">3</div>
+                <h3>Receba e converse</h3>
+                <p>Uma reflexão chega todo dia. Se quiser, converse sobre a Palavra.</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="features-section" id="recursos">
+        <div class="section-label" style="max-width:960px;margin:0 auto;">O que você recebe</div>
+        <h2 class="section-title" style="max-width:960px;margin:0 auto 0.8rem;">Mais do que uma mensagem</h2>
+        <p class="section-desc" style="max-width:960px;margin:0 auto 3rem;">Conteúdo pensado para nutrir sua fé e acompanhar você no dia a dia.</p>
+        <div class="features-grid">
+            <div class="feature">
+                <h3>Reflexão bíblica diária</h3>
+                <p>Versículos selecionados com reflexão e aplicação prática, personalizados para o seu momento.</p>
+            </div>
+            <div class="feature">
+                <h3>Imagem exclusiva</h3>
+                <p>Cada reflexão acompanha uma imagem inspiradora criada especialmente para aquele dia.</p>
+            </div>
+            <div class="feature">
+                <h3>Conversar sobre a Palavra</h3>
+                <p>Quer entender melhor uma passagem? Buscar orientação nas Escrituras? Responda a mensagem e converse.</p>
+            </div>
+            <div class="feature">
+                <h3>Conteúdo que acompanha você</h3>
+                <p>As reflexões consideram o que você compartilha nas conversas, para que cada mensagem faça sentido para a sua vida.</p>
+            </div>
+            <div class="feature">
+                <h3>Respeito à sua tradição</h3>
+                <p>Todo conteúdo é fundamentado nas Escrituras Sagradas, respeitando a tradição católica ou evangélica.</p>
+            </div>
+            <div class="feature">
+                <h3>No horário que preferir</h3>
+                <p>Você escolhe quando receber: pela manhã, ao meio-dia ou à noite. Sem notificações indesejadas.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="wa-mockup-section">
+        <div class="section-label">Veja como funciona</div>
+        <h2 class="section-title">Assim chega no seu WhatsApp</h2>
+        <p class="section-desc">Todo dia, no horário que você escolher.</p>
+
+        <div class="wa-mockup-grid">
+            <div class="wa-mockup-text">
+                <h3>Sua reflexão diária</h3>
+                <p>Cada manhã você recebe uma imagem com um versículo selecionado, acompanhada de uma reflexão pensada para o seu dia e a sua fé.</p>
+                <p>Ao tocar em "Amém", você confirma que deseja continuar recebendo. Simples assim.</p>
+            </div>
+            <div class="wa-mockup">
+                <div class="wa-header">
+                    <div class="wa-avatar">M</div>
+                    <div>
+                        <div class="wa-name">Manaã <span class="wa-verified">&#10003;</span></div>
+                        <div class="wa-status">online</div>
+                    </div>
+                </div>
+                <div class="wa-chat">
+                    <div class="wa-date">Hoje</div>
+                    <div class="wa-msg received">
+                        <div class="wa-img">
+                            <div class="verse">"O Senhor é o meu pastor; nada me faltará."</div>
+                            <div class="ref">Salmos 23:1</div>
+                            <div class="brand-tag">Manaã</div>
+                        </div>
+                        <strong>Bom dia, Maria!</strong><br><br>
+                        Hoje o Salmo 23 nos lembra que não estamos sozinhos. Em meio à correria do dia, reserve um momento para confiar: Ele cuida de você. Quando a ansiedade bater, respire e repita: nada me faltará.
+                        <div class="wa-btn-row">
+                            <a href="#">Amém</a>
+                            <a href="#">Conversar sobre a Palavra</a>
+                        </div>
+                        <div class="time">07:00</div>
+                    </div>
+                    <div class="wa-msg sent">
+                        Amém!
+                        <div class="time">07:02</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="wa-mockup-section" style="background:var(--bg-alt);">
+        <div class="wa-mockup-grid">
+            <div class="wa-mockup">
+                <div class="wa-header">
+                    <div class="wa-avatar">M</div>
+                    <div>
+                        <div class="wa-name">Manaã <span class="wa-verified">&#10003;</span></div>
+                        <div class="wa-status">digitando...</div>
+                    </div>
+                </div>
+                <div class="wa-chat">
+                    <div class="wa-date">Hoje</div>
+                    <div class="wa-msg sent">
+                        Estou passando por um momento difícil no trabalho, muita ansiedade. Tem alguma palavra pra mim?
+                        <div class="time">14:23</div>
+                    </div>
+                    <div class="wa-msg received">
+                        Entendo, Maria. A ansiedade é algo que muitos enfrentam, e a Palavra nos acolhe nesses momentos.<br><br>
+                        Em Filipenses 4:6-7 está escrito: <em>"Não andeis ansiosos de coisa alguma; em tudo, porém, sejam conhecidas, diante de Deus, as vossas petições, pela oração e pela súplica, com ações de graças."</em><br><br>
+                        Tente reservar alguns minutos agora para respirar em silêncio e entregar essa preocupação. Você não precisa carregar tudo sozinha.
+                        <div class="time">14:24</div>
+                    </div>
+                    <div class="wa-msg sent">
+                        Obrigada, precisava muito ler isso hoje.
+                        <div class="time">14:26</div>
+                    </div>
+                    <div class="wa-msg received">
+                        Estou aqui sempre que precisar. Amanhã sua reflexão vai trazer mais sobre paz e confiança em Deus. Tenha um dia abençoado.
+                        <div class="time">14:26</div>
+                    </div>
+                </div>
+            </div>
+            <div class="wa-mockup-text">
+                <h3>Converse sobre a Palavra</h3>
+                <p>Precisa de uma orientação? Quer entender melhor uma passagem? Responda a mensagem e converse — as respostas são fundamentadas nas Escrituras Sagradas.</p>
+                <p>E o melhor: a reflexão do dia seguinte leva em conta o que você compartilhou, para que cada mensagem faça cada vez mais sentido para a sua vida.</p>
+            </div>
+        </div>
+    </div>
+
+    <section class="section" id="planos">
+        <div class="section-label">Planos</div>
+        <h2 class="section-title">Comece sua jornada</h2>
+        <p class="section-desc">Experimente gratuitamente por 30 dias.</p>
+        <div class="pricing-grid">
+            <div class="plan">
+                <h3>Gratuito</h3>
+                <div class="subtitle">30 dias para experimentar</div>
+                <div class="price">R$0 <span>/mês</span></div>
+                <ul>
+                    <li>Reflexão bíblica diária</li>
+                    <li>Imagem personalizada</li>
+                    <li>Escolha de tradição e horário</li>
+                    <li>Cancele quando quiser</li>
+                </ul>
+                <a href="#" class="btn btn-secondary" style="width:100%;text-align:center;">Começar grátis</a>
+            </div>
+            <div class="plan featured">
+                <h3>Completo</h3>
+                <div class="subtitle">Reflexão + conversa + áudio</div>
+                <div class="price">R$14,90 <span>/mês</span></div>
+                <ul>
+                    <li>Tudo do plano gratuito</li>
+                    <li>Conversar sobre a Palavra</li>
+                    <li>Reflexões aprofundadas</li>
+                    <li>Conteúdo em áudio</li>
+                    <li>Mensagens que acompanham sua jornada</li>
+                </ul>
+                <a href="#" class="btn btn-primary" style="width:100%;text-align:center;">Assinar</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <h2>Comece amanhã com sua primeira reflexão</h2>
+        <p>Gratuito por 30 dias. Sem compromisso.</p>
+        <a href="#planos" class="btn btn-primary">Quero começar</a>
+    </section>
+
+    <footer>
+        <div class="brand">Manaã</div>
+        <p>FBX | CNPJ: 64.534.917/0001-59</p>
+        <p>Rua Pedro Faria, Londrina — PR</p>
+        <p style="margin-top:0.8rem;"><a href="privacidade.html" style="color:var(--gold-soft);text-decoration:none;">Política de Privacidade</a> · <a href="termos.html" style="color:var(--gold-soft);text-decoration:none;">Termos de Uso</a></p>
+        <p style="margin-top:0.5rem;">© 2026 Manaã. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>
