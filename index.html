@@ -870,8 +870,8 @@
             <div class="plan featured">
                 <h3>Anual</h3>
                 <div class="subtitle">Melhor valor — economize R$ 19,89</div>
-                <div class="price">R$159,99 <span>/ano</span></div>
-                <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">R$ 13,33/mês</p>
+                <div class="price" style="white-space:nowrap;">R$159,99<span>/ano</span></div>
+                <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">equivale a R$ 13,33/mês</p>
                 <ul>
                     <li>Tudo do plano mensal</li>
                     <li>12 meses pelo preço de ~10,7</li>
@@ -911,19 +911,22 @@
                 <div class="field">
                     <label for="sf-phone">WhatsApp</label>
                     <input id="sf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(43) 99999-9999">
+                    <span id="sf-phone-hint" style="display:none;color:#B00020;font-size:0.73rem;margin-top:0.15rem;">Celular BR: DDD + 9 + 8 dígitos</span>
                 </div>
                 <div class="field">
                     <label for="sf-email">E-mail</label>
                     <input id="sf-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com">
+                    <span id="sf-email-hint" style="display:none;color:#B00020;font-size:0.73rem;margin-top:0.15rem;">E-mail inválido</span>
                 </div>
                 <input type="hidden" id="sf-plan" name="plan_code" value="mensal">
                 <div class="field">
                     <label for="sf-cpf">CPF</label>
                     <input id="sf-cpf" name="cpf" type="text" required autocomplete="off" placeholder="000.000.000-00" maxlength="14">
+                    <span id="sf-cpf-hint" style="display:none;color:#B00020;font-size:0.73rem;margin-top:0.15rem;">CPF inválido</span>
                 </div>
                 <label id="sf-refund-wrap" style="display:none;cursor:pointer;font-size:0.78rem;line-height:1.4;color:var(--text-secondary);margin:0 0 0.3rem;gap:0.4rem;align-items:center;width:100%;">
                     <input type="checkbox" id="sf-refund-check" style="accent-color:var(--gold);flex-shrink:0;width:16px;height:16px;">
-                    <span style="flex:1;">Sem reembolso após 7 dias (<a href="termos.html" style="color:var(--gold);">termos</a>)</span>
+                    <span style="flex:1;">Li e aceito os <a href="termos.html" style="color:var(--gold);">termos do plano anual</a></span>
                 </label>
                 <button type="submit" class="modal-submit" id="sf-submit">Continuar</button>
                 <div class="modal-status" id="sf-status"></div>
@@ -1022,17 +1025,31 @@
             return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6,9) + '-' + d.slice(9);
         }
 
+        function isValidEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email || '');
+        }
+
         function updateFormValidation() {
             var phoneInput = document.getElementById('sf-phone');
             var cpfInput = document.getElementById('sf-cpf');
+            var emailInput = document.getElementById('sf-email');
             var submit = document.getElementById('sf-submit');
+
             var phoneOk = isValidBRMobile(phoneInput.value);
             var cpfOk = isValidCPF(cpfInput.value);
+            var emailOk = isValidEmail(emailInput.value);
+
             phoneInput.style.borderColor = phoneInput.value.length === 0 ? '' : (phoneOk ? '#1a7f37' : '#B00020');
             cpfInput.style.borderColor = cpfInput.value.length === 0 ? '' : (cpfOk ? '#1a7f37' : '#B00020');
+            emailInput.style.borderColor = emailInput.value.length === 0 ? '' : (emailOk ? '#1a7f37' : '#B00020');
+
+            document.getElementById('sf-phone-hint').style.display = (phoneInput.value.length > 3 && !phoneOk) ? 'block' : 'none';
+            document.getElementById('sf-cpf-hint').style.display = (cpfInput.value.length > 5 && !cpfOk) ? 'block' : 'none';
+            document.getElementById('sf-email-hint').style.display = (emailInput.value.length > 3 && !emailOk) ? 'block' : 'none';
+
             var planCode = document.getElementById('sf-plan').value;
             var refundOk = planCode !== 'anual' || document.getElementById('sf-refund-check').checked;
-            submit.disabled = !(phoneOk && cpfOk && refundOk);
+            submit.disabled = !(phoneOk && cpfOk && emailOk && refundOk);
         }
 
         document.getElementById('sf-phone').addEventListener('input', function(e) {
@@ -1046,6 +1063,8 @@
             if (formatted !== e.target.value) e.target.value = formatted;
             updateFormValidation();
         });
+
+        document.getElementById('sf-email').addEventListener('input', updateFormValidation);
 
         document.getElementById('sf-refund-check').addEventListener('change', updateFormValidation);
 
