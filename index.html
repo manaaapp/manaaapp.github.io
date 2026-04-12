@@ -841,7 +841,7 @@
         <div class="section-label">Planos</div>
         <h2 class="section-title">Comece sua jornada</h2>
         <p class="section-desc">Experimente gratuitamente por 7 dias. A cobrança só começa depois.</p>
-        <div class="pricing-grid">
+        <div class="pricing-grid" style="max-width:960px;">
             <div class="plan">
                 <h3>Gratuito</h3>
                 <div class="subtitle">7 dias grátis pra experimentar</div>
@@ -854,8 +854,8 @@
                 </ul>
                 <a href="#" onclick="openSubscribeModal('free_trial'); return false;" class="btn btn-secondary" style="width:100%;text-align:center;">Começar grátis</a>
             </div>
-            <div class="plan featured">
-                <h3>Completo</h3>
+            <div class="plan">
+                <h3>Mensal</h3>
                 <div class="subtitle">Reflexão + conversa + áudio</div>
                 <div class="price">R$14,99 <span>/mês</span></div>
                 <ul>
@@ -865,7 +865,20 @@
                     <li>Conteúdo em áudio</li>
                     <li>Mensagens que acompanham sua jornada</li>
                 </ul>
-                <a href="#" onclick="openSubscribeModal('mensal'); return false;" class="btn btn-primary" style="width:100%;text-align:center;">Assinar</a>
+                <a href="#" onclick="openSubscribeModal('mensal'); return false;" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
+            </div>
+            <div class="plan featured">
+                <h3>Anual</h3>
+                <div class="subtitle">Melhor valor — economize R$ 19,89</div>
+                <div class="price">R$159,99 <span>/ano</span></div>
+                <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">R$ 13,33/mês</p>
+                <ul>
+                    <li>Tudo do plano mensal</li>
+                    <li>12 meses pelo preço de ~10,7</li>
+                    <li>Prioridade em novos recursos</li>
+                    <li>Cancele nos primeiros 7 dias com reembolso total</li>
+                </ul>
+                <a href="#" onclick="openSubscribeModal('anual'); return false;" class="btn btn-primary" style="width:100%;text-align:center;">Assinar anual</a>
             </div>
         </div>
     </section>
@@ -904,6 +917,12 @@
                     <input id="sf-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com">
                 </div>
                 <input type="hidden" id="sf-plan" name="plan_code" value="mensal">
+                <div class="field" id="sf-refund-wrap" style="display:none;">
+                    <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;font-size:0.82rem;line-height:1.5;color:var(--text-secondary);">
+                        <input type="checkbox" id="sf-refund-check" style="margin-top:3px;accent-color:var(--gold);">
+                        <span>Li e aceito que o plano anual não tem reembolso após 7 dias da contratação, conforme o <a href="termos.html" style="color:var(--gold);">Termos de Uso</a>.</span>
+                    </label>
+                </div>
                 <button type="submit" class="modal-submit" id="sf-submit">Continuar</button>
                 <div class="modal-status" id="sf-status"></div>
                 <p class="modal-legal" id="sf-legal">Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.</p>
@@ -941,7 +960,9 @@
             const val = phoneInput.value;
             const valid = isValidBRMobile(val);
             phoneInput.style.borderColor = val.length === 0 ? '' : (valid ? '#1a7f37' : '#B00020');
-            submit.disabled = !valid;
+            var planCode = document.getElementById('sf-plan').value;
+            var refundOk = planCode !== 'anual' || document.getElementById('sf-refund-check').checked;
+            submit.disabled = !valid || !refundOk;
         }
 
         function openSubscribeModal(planCode) {
@@ -957,11 +978,22 @@
             const submit = document.getElementById('sf-submit');
             const legal = document.getElementById('sf-legal');
 
+            var refundWrap = document.getElementById('sf-refund-wrap');
+            var refundCheck = document.getElementById('sf-refund-check');
+            refundWrap.style.display = 'none';
+            refundCheck.checked = false;
+
             if (plan === 'free_trial') {
                 title.textContent = 'Começar grátis';
                 subline.textContent = '7 dias grátis, sem cobrança, sem cartão. Sua primeira mensagem chega no WhatsApp.';
                 submit.textContent = 'Abrir WhatsApp';
                 legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.';
+            } else if (plan === 'anual') {
+                title.textContent = 'Assinar Manaã — Anual';
+                subline.textContent = 'R$ 159,99/ano (R$ 13,33/mês). Cancele nos primeiros 7 dias com reembolso total.';
+                submit.textContent = 'Continuar para pagamento';
+                refundWrap.style.display = 'block';
+                legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>. O pagamento é processado de forma segura pelo Mercado Pago.';
             } else {
                 title.textContent = 'Assinar Manaã';
                 subline.textContent = 'R$ 14,99/mês. Cancele quando quiser, sem multa.';
@@ -979,6 +1011,8 @@
             if (formatted !== e.target.value) e.target.value = formatted;
             updatePhoneValidation();
         });
+
+        document.getElementById('sf-refund-check').addEventListener('change', updatePhoneValidation);
 
         function closeSubscribeModal() {
             document.getElementById('subscribe-modal').classList.remove('show');
