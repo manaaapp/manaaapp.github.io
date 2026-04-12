@@ -1008,7 +1008,14 @@
                 const data = await res.json();
                 if (data.ok && (data.redirect_url || data.init_point)) {
                     status.textContent = data.message || 'Redirecionando...';
-                    window.location.href = data.redirect_url || data.init_point;
+                    const url = data.redirect_url || data.init_point;
+                    if (data.flow === 'free_trial') {
+                        window.open(url, '_blank');
+                        status.textContent = 'WhatsApp aberto em nova aba. Envie a mensagem pra começar!';
+                        submit.disabled = false;
+                    } else {
+                        window.location.href = url;
+                    }
                 } else {
                     status.classList.add('error');
                     status.textContent = data.error || data.message || 'Não foi possível continuar. Tente novamente.';
