@@ -565,6 +565,108 @@
             .wa-mockup-grid { grid-template-columns: 1fr; }
             .wa-mockup { max-width: 340px; }
         }
+
+        /* Subscribe Modal */
+        .modal-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(45, 42, 38, 0.55);
+            backdrop-filter: blur(4px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1.5rem;
+        }
+        .modal-backdrop.show { display: flex; }
+        .modal-card {
+            background: var(--white);
+            border-radius: var(--radius);
+            max-width: 440px;
+            width: 100%;
+            padding: 2.2rem 2rem 2rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        .modal-close {
+            position: absolute;
+            top: 0.9rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.4rem;
+            cursor: pointer;
+            color: var(--text-muted);
+            line-height: 1;
+        }
+        .modal-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            margin-bottom: 0.4rem;
+            color: var(--text);
+        }
+        .modal-card .subline {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+        }
+        .modal-card .field { margin-bottom: 0.9rem; }
+        .modal-card label {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.3rem;
+            font-weight: 500;
+        }
+        .modal-card input {
+            width: 100%;
+            padding: 0.7rem 0.9rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            color: var(--text);
+            background: var(--bg);
+            transition: border-color 0.2s;
+        }
+        .modal-card input:focus {
+            outline: none;
+            border-color: var(--gold-soft);
+        }
+        .modal-submit {
+            width: 100%;
+            background: var(--gold);
+            color: var(--white);
+            padding: 0.85rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 0.6rem;
+            transition: background 0.2s;
+        }
+        .modal-submit:hover { background: #A07D2E; }
+        .modal-submit:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+        }
+        .modal-status {
+            margin-top: 0.9rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            text-align: center;
+            min-height: 1.2em;
+        }
+        .modal-status.error { color: #B00020; }
+        .modal-legal {
+            margin-top: 1.1rem;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-align: center;
+            line-height: 1.5;
+        }
+        .modal-legal a { color: var(--gold); text-decoration: none; }
     </style>
 </head>
 <body>
@@ -738,11 +840,11 @@
     <section class="section" id="planos">
         <div class="section-label">Planos</div>
         <h2 class="section-title">Comece sua jornada</h2>
-        <p class="section-desc">Experimente gratuitamente por 30 dias.</p>
+        <p class="section-desc">Experimente gratuitamente por 7 dias. A cobrança só começa depois.</p>
         <div class="pricing-grid">
             <div class="plan">
                 <h3>Gratuito</h3>
-                <div class="subtitle">30 dias para experimentar</div>
+                <div class="subtitle">7 dias grátis pra experimentar</div>
                 <div class="price">R$0 <span>/mês</span></div>
                 <ul>
                     <li>Reflexão bíblica diária</li>
@@ -750,12 +852,12 @@
                     <li>Escolha de tradição e horário</li>
                     <li>Cancele quando quiser</li>
                 </ul>
-                <a href="#" class="btn btn-secondary" style="width:100%;text-align:center;">Começar grátis</a>
+                <a href="#" onclick="openSubscribeModal('free_trial'); return false;" class="btn btn-secondary" style="width:100%;text-align:center;">Começar grátis</a>
             </div>
             <div class="plan featured">
                 <h3>Completo</h3>
                 <div class="subtitle">Reflexão + conversa + áudio</div>
-                <div class="price">R$14,90 <span>/mês</span></div>
+                <div class="price">R$14,99 <span>/mês</span></div>
                 <ul>
                     <li>Tudo do plano gratuito</li>
                     <li>Conversar sobre a Palavra</li>
@@ -763,23 +865,127 @@
                     <li>Conteúdo em áudio</li>
                     <li>Mensagens que acompanham sua jornada</li>
                 </ul>
-                <a href="#" class="btn btn-primary" style="width:100%;text-align:center;">Assinar</a>
+                <a href="#" onclick="openSubscribeModal('mensal'); return false;" class="btn btn-primary" style="width:100%;text-align:center;">Assinar</a>
             </div>
         </div>
     </section>
 
     <section class="cta-section">
         <h2>Comece amanhã com sua primeira reflexão</h2>
-        <p>Gratuito por 30 dias. Sem compromisso.</p>
+        <p>7 dias grátis. Depois R$ 14,99/mês. Cancele quando quiser.</p>
         <a href="#planos" class="btn btn-primary">Quero começar</a>
     </section>
 
     <footer>
         <div class="brand">Manaã</div>
         <p>FBX | CNPJ: 64.534.917/0001-59</p>
-        <p>Rua Pedro Faria, Londrina — PR</p>
+        <p>Londrina — PR</p>
         <p style="margin-top:0.8rem;"><a href="privacidade.html" style="color:var(--gold-soft);text-decoration:none;">Política de Privacidade</a> · <a href="termos.html" style="color:var(--gold-soft);text-decoration:none;">Termos de Uso</a></p>
         <p style="margin-top:0.5rem;">© 2026 Manaã. Todos os direitos reservados.</p>
     </footer>
+
+    <!-- Subscribe Modal -->
+    <div class="modal-backdrop" id="subscribe-modal" onclick="if(event.target===this)closeSubscribeModal()">
+        <div class="modal-card">
+            <button class="modal-close" type="button" onclick="closeSubscribeModal()" aria-label="Fechar">&times;</button>
+            <h3 id="sf-title">Assinar Manaã</h3>
+            <p class="subline" id="sf-subline">7 dias grátis sem pagamento. Depois R$ 14,99/mês. Cancele quando quiser.</p>
+            <form id="subscribe-form">
+                <div class="field">
+                    <label for="sf-name">Nome</label>
+                    <input id="sf-name" name="name" type="text" required autocomplete="name" placeholder="Seu nome">
+                </div>
+                <div class="field">
+                    <label for="sf-phone">WhatsApp</label>
+                    <input id="sf-phone" name="phone" type="tel" required autocomplete="tel" placeholder="(43) 99999-9999">
+                </div>
+                <div class="field">
+                    <label for="sf-email">E-mail</label>
+                    <input id="sf-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com">
+                </div>
+                <input type="hidden" id="sf-plan" name="plan_code" value="mensal">
+                <button type="submit" class="modal-submit" id="sf-submit">Continuar</button>
+                <div class="modal-status" id="sf-status"></div>
+                <p class="modal-legal" id="sf-legal">Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.</p>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Endpoint n8n: atualizar se a URL do Cloudflare Tunnel mudar
+        const MANAA_WEBHOOK_URL = 'https://logical-neo-lace-talked.trycloudflare.com/webhook/manaa-mp-cadastro';
+
+        function openSubscribeModal(planCode) {
+            const plan = planCode || 'mensal';
+            document.getElementById('sf-plan').value = plan;
+            document.getElementById('sf-status').textContent = '';
+            document.getElementById('sf-status').classList.remove('error');
+
+            const title = document.getElementById('sf-title');
+            const subline = document.getElementById('sf-subline');
+            const submit = document.getElementById('sf-submit');
+            const legal = document.getElementById('sf-legal');
+
+            if (plan === 'free_trial') {
+                title.textContent = 'Começar grátis';
+                subline.textContent = '7 dias grátis, sem cobrança, sem cartão. Sua primeira mensagem chega no WhatsApp.';
+                submit.textContent = 'Abrir WhatsApp';
+                legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.';
+            } else {
+                title.textContent = 'Assinar Manaã';
+                subline.textContent = '7 dias grátis. Depois R$ 14,99/mês. Cancele quando quiser.';
+                submit.textContent = 'Continuar para pagamento';
+                legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>. O pagamento é processado de forma segura pelo Mercado Pago.';
+            }
+
+            document.getElementById('subscribe-modal').classList.add('show');
+            setTimeout(() => document.getElementById('sf-name').focus(), 100);
+        }
+
+        function closeSubscribeModal() {
+            document.getElementById('subscribe-modal').classList.remove('show');
+        }
+
+        document.getElementById('subscribe-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const status = document.getElementById('sf-status');
+            const submit = document.getElementById('sf-submit');
+            status.classList.remove('error');
+            status.textContent = 'Processando...';
+            submit.disabled = true;
+
+            const payload = {
+                name: document.getElementById('sf-name').value.trim(),
+                phone: document.getElementById('sf-phone').value.trim(),
+                email: document.getElementById('sf-email').value.trim(),
+                plan_code: document.getElementById('sf-plan').value
+            };
+
+            try {
+                const res = await fetch(MANAA_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.ok && (data.redirect_url || data.init_point)) {
+                    status.textContent = data.message || 'Redirecionando...';
+                    window.location.href = data.redirect_url || data.init_point;
+                } else {
+                    status.classList.add('error');
+                    status.textContent = data.error || data.message || 'Não foi possível continuar. Tente novamente.';
+                    submit.disabled = false;
+                }
+            } catch (err) {
+                status.classList.add('error');
+                status.textContent = 'Erro de conexão. Verifique sua internet e tente de novo.';
+                submit.disabled = false;
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeSubscribeModal();
+        });
+    </script>
 </body>
 </html>
