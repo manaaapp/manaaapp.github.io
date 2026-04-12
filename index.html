@@ -305,6 +305,12 @@
             border: 1.5px solid var(--border);
         }
 
+        .plan:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            border-color: var(--gold-soft);
+        }
+        .plan { transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s; }
         .plan.featured { border-color: var(--gold-soft); }
 
         .plan h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
@@ -854,7 +860,7 @@
                 </ul>
                 <a href="#" onclick="openSubscribeModal('free_trial'); return false;" class="btn btn-secondary" style="width:100%;text-align:center;">Começar grátis</a>
             </div>
-            <div class="plan">
+            <div class="plan featured">
                 <h3>Mensal</h3>
                 <div class="subtitle">Reflexão + conversa + áudio</div>
                 <div class="price">R$14,99 <span>/mês</span></div>
@@ -867,7 +873,7 @@
                 </ul>
                 <a href="#" onclick="openSubscribeModal('mensal'); return false;" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
             </div>
-            <div class="plan featured">
+            <div class="plan">
                 <h3>Anual</h3>
                 <div class="subtitle">Melhor valor — economize R$ 19,89</div>
                 <div class="price" style="white-space:nowrap;">R$159,99<span>/ano</span></div>
@@ -884,7 +890,7 @@
     </section>
 
     <section class="cta-section">
-        <h2>Comece amanhã com sua primeira reflexão</h2>
+        <h2>Comece hoje com sua primeira reflexão</h2>
         <p>7 dias grátis. Depois R$ 14,99/mês. Cancele quando quiser.</p>
         <a href="#planos" class="btn btn-primary">Quero começar</a>
     </section>
