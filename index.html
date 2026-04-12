@@ -970,6 +970,11 @@
         function openSubscribeModal(planCode) {
             const plan = planCode || 'mensal';
             document.getElementById('sf-plan').value = plan;
+            // Move featured highlight to clicked card
+            document.querySelectorAll('.plan').forEach(function(c) { c.classList.remove('featured'); });
+            var planMap = { 'free_trial': 0, 'mensal': 1, 'anual': 2 };
+            var cards = document.querySelectorAll('.plan');
+            if (cards[planMap[plan]]) cards[planMap[plan]].classList.add('featured');
             document.getElementById('sf-status').textContent = '';
             document.getElementById('sf-status').classList.remove('error');
             document.getElementById('sf-phone').value = '';
