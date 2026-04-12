@@ -915,11 +915,42 @@
         // Endpoint n8n: atualizar se a URL do Cloudflare Tunnel mudar
         const MANAA_WEBHOOK_URL = 'https://logical-neo-lace-talked.trycloudflare.com/webhook/manaa-mp-cadastro';
 
+        // Valida celular BR: 10 ou 11 dígitos (com ou sem 55 DDI).
+        // Celular moderno precisa do 9 após o DDD.
+        function isValidBRMobile(raw) {
+            const d = (raw || '').replace(/\D/g, '');
+            const local = d.startsWith('55') && (d.length === 12 || d.length === 13) ? d.slice(2) : d;
+            if (local.length !== 11) return false;
+            const ddd = parseInt(local.slice(0, 2), 10);
+            if (ddd < 11 || ddd > 99) return false;
+            if (local[2] !== '9') return false;
+            return true;
+        }
+
+        function formatBRPhone(raw) {
+            const d = (raw || '').replace(/\D/g, '');
+            const local = d.startsWith('55') && d.length > 11 ? d.slice(2) : d;
+            if (local.length <= 2) return local;
+            if (local.length <= 7) return '(' + local.slice(0,2) + ') ' + local.slice(2);
+            return '(' + local.slice(0,2) + ') ' + local.slice(2,7) + '-' + local.slice(7,11);
+        }
+
+        function updatePhoneValidation() {
+            const phoneInput = document.getElementById('sf-phone');
+            const submit = document.getElementById('sf-submit');
+            const val = phoneInput.value;
+            const valid = isValidBRMobile(val);
+            phoneInput.style.borderColor = val.length === 0 ? '' : (valid ? '#1a7f37' : '#B00020');
+            submit.disabled = !valid;
+        }
+
         function openSubscribeModal(planCode) {
             const plan = planCode || 'mensal';
             document.getElementById('sf-plan').value = plan;
             document.getElementById('sf-status').textContent = '';
             document.getElementById('sf-status').classList.remove('error');
+            document.getElementById('sf-phone').value = '';
+            document.getElementById('sf-phone').style.borderColor = '';
 
             const title = document.getElementById('sf-title');
             const subline = document.getElementById('sf-subline');
@@ -938,9 +969,16 @@
                 legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>. O pagamento é processado de forma segura pelo Mercado Pago.';
             }
 
+            submit.disabled = true;
             document.getElementById('subscribe-modal').classList.add('show');
             setTimeout(() => document.getElementById('sf-name').focus(), 100);
         }
+
+        document.getElementById('sf-phone').addEventListener('input', function(e) {
+            const formatted = formatBRPhone(e.target.value);
+            if (formatted !== e.target.value) e.target.value = formatted;
+            updatePhoneValidation();
+        });
 
         function closeSubscribeModal() {
             document.getElementById('subscribe-modal').classList.remove('show');
