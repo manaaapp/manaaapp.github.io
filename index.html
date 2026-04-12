@@ -917,12 +917,14 @@
                     <input id="sf-email" name="email" type="email" required autocomplete="email" placeholder="seu@email.com">
                 </div>
                 <input type="hidden" id="sf-plan" name="plan_code" value="mensal">
-                <div class="field" id="sf-refund-wrap" style="display:none;">
-                    <label style="display:flex;align-items:flex-start;gap:0.5rem;cursor:pointer;font-size:0.82rem;line-height:1.5;color:var(--text-secondary);">
-                        <input type="checkbox" id="sf-refund-check" style="margin-top:3px;accent-color:var(--gold);">
-                        <span>Li e aceito que o plano anual não tem reembolso após 7 dias da contratação, conforme o <a href="termos.html" style="color:var(--gold);">Termos de Uso</a>.</span>
-                    </label>
+                <div class="field">
+                    <label for="sf-cpf">CPF</label>
+                    <input id="sf-cpf" name="cpf" type="text" required autocomplete="off" placeholder="000.000.000-00" maxlength="14">
                 </div>
+                <label id="sf-refund-wrap" style="display:none;cursor:pointer;font-size:0.78rem;line-height:1.4;color:var(--text-secondary);margin:0 0 0.3rem;gap:0.4rem;align-items:center;width:100%;">
+                    <input type="checkbox" id="sf-refund-check" style="accent-color:var(--gold);flex-shrink:0;width:16px;height:16px;">
+                    <span style="flex:1;">Sem reembolso após 7 dias (<a href="termos.html" style="color:var(--gold);">termos</a>)</span>
+                </label>
                 <button type="submit" class="modal-submit" id="sf-submit">Continuar</button>
                 <div class="modal-status" id="sf-status"></div>
                 <p class="modal-legal" id="sf-legal">Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.</p>
@@ -954,16 +956,7 @@
             return '(' + local.slice(0,2) + ') ' + local.slice(2,7) + '-' + local.slice(7,11);
         }
 
-        function updatePhoneValidation() {
-            const phoneInput = document.getElementById('sf-phone');
-            const submit = document.getElementById('sf-submit');
-            const val = phoneInput.value;
-            const valid = isValidBRMobile(val);
-            phoneInput.style.borderColor = val.length === 0 ? '' : (valid ? '#1a7f37' : '#B00020');
-            var planCode = document.getElementById('sf-plan').value;
-            var refundOk = planCode !== 'anual' || document.getElementById('sf-refund-check').checked;
-            submit.disabled = !valid || !refundOk;
-        }
+        // updatePhoneValidation replaced by updateFormValidation below
 
         function openSubscribeModal(planCode) {
             const plan = planCode || 'mensal';
@@ -982,6 +975,7 @@
             var refundCheck = document.getElementById('sf-refund-check');
             refundWrap.style.display = 'none';
             refundCheck.checked = false;
+            refundWrap.style.display = 'none';
 
             if (plan === 'free_trial') {
                 title.textContent = 'Começar grátis';
@@ -992,7 +986,7 @@
                 title.textContent = 'Assinar Manaã — Anual';
                 subline.textContent = 'R$ 159,99/ano (R$ 13,33/mês). Cancele nos primeiros 7 dias com reembolso total.';
                 submit.textContent = 'Continuar para pagamento';
-                refundWrap.style.display = 'block';
+                refundWrap.style.display = 'flex';
                 legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>. O pagamento é processado de forma segura pelo Mercado Pago.';
             } else {
                 title.textContent = 'Assinar Manaã';
@@ -1002,17 +996,58 @@
             }
 
             submit.disabled = true;
+            if (document.getElementById('sf-cpf')) document.getElementById('sf-cpf').value = '';
+            if (document.getElementById('sf-cpf')) document.getElementById('sf-cpf').style.borderColor = '';
             document.getElementById('subscribe-modal').classList.add('show');
             setTimeout(() => document.getElementById('sf-name').focus(), 100);
         }
 
+        function isValidCPF(raw) {
+            const d = (raw || '').replace(/\D/g, '');
+            if (d.length !== 11 || /^(\d)\1{10}$/.test(d)) return false;
+            for (var t = 9; t < 11; t++) {
+                var sum = 0;
+                for (var i = 0; i < t; i++) sum += parseInt(d[i]) * (t + 1 - i);
+                var r = (sum * 10) % 11; if (r === 10) r = 0;
+                if (r !== parseInt(d[t])) return false;
+            }
+            return true;
+        }
+
+        function formatCPF(raw) {
+            const d = (raw || '').replace(/\D/g, '').slice(0, 11);
+            if (d.length <= 3) return d;
+            if (d.length <= 6) return d.slice(0,3) + '.' + d.slice(3);
+            if (d.length <= 9) return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6);
+            return d.slice(0,3) + '.' + d.slice(3,6) + '.' + d.slice(6,9) + '-' + d.slice(9);
+        }
+
+        function updateFormValidation() {
+            var phoneInput = document.getElementById('sf-phone');
+            var cpfInput = document.getElementById('sf-cpf');
+            var submit = document.getElementById('sf-submit');
+            var phoneOk = isValidBRMobile(phoneInput.value);
+            var cpfOk = isValidCPF(cpfInput.value);
+            phoneInput.style.borderColor = phoneInput.value.length === 0 ? '' : (phoneOk ? '#1a7f37' : '#B00020');
+            cpfInput.style.borderColor = cpfInput.value.length === 0 ? '' : (cpfOk ? '#1a7f37' : '#B00020');
+            var planCode = document.getElementById('sf-plan').value;
+            var refundOk = planCode !== 'anual' || document.getElementById('sf-refund-check').checked;
+            submit.disabled = !(phoneOk && cpfOk && refundOk);
+        }
+
         document.getElementById('sf-phone').addEventListener('input', function(e) {
-            const formatted = formatBRPhone(e.target.value);
+            var formatted = formatBRPhone(e.target.value);
             if (formatted !== e.target.value) e.target.value = formatted;
-            updatePhoneValidation();
+            updateFormValidation();
         });
 
-        document.getElementById('sf-refund-check').addEventListener('change', updatePhoneValidation);
+        document.getElementById('sf-cpf').addEventListener('input', function(e) {
+            var formatted = formatCPF(e.target.value);
+            if (formatted !== e.target.value) e.target.value = formatted;
+            updateFormValidation();
+        });
+
+        document.getElementById('sf-refund-check').addEventListener('change', updateFormValidation);
 
         function closeSubscribeModal() {
             document.getElementById('subscribe-modal').classList.remove('show');
@@ -1025,11 +1060,14 @@
             status.classList.remove('error');
             status.textContent = 'Processando...';
             submit.disabled = true;
+            if (document.getElementById('sf-cpf')) document.getElementById('sf-cpf').value = '';
+            if (document.getElementById('sf-cpf')) document.getElementById('sf-cpf').style.borderColor = '';
 
             const payload = {
                 name: document.getElementById('sf-name').value.trim(),
                 phone: document.getElementById('sf-phone').value.trim(),
                 email: document.getElementById('sf-email').value.trim(),
+                cpf: document.getElementById('sf-cpf').value.replace(/\D/g, ''),
                 plan_code: document.getElementById('sf-plan').value
             };
 
