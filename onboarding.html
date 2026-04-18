@@ -151,19 +151,37 @@
   }
   .lgpd input[type=checkbox] { margin-top: 2px; flex-shrink: 0; }
 
-  .plan-cards {
-    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
-    margin: 18px 0;
+  .plan-carousel { display: flex; align-items: center; gap: 8px; margin: 18px 0 8px; }
+  .plan-arrow {
+    width: 36px; height: 36px; flex-shrink: 0;
+    border: 1px solid var(--border); border-radius: 50%; background: var(--paper);
+    color: var(--text); font-size: 22px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
   }
-  .plan-card {
-    border: 2px solid var(--border); border-radius: 12px;
-    padding: 16px 14px; cursor: pointer; text-align: center;
-    transition: all 0.2s;
+  .plan-arrow:hover { background: var(--gold); color: white; border-color: var(--gold); }
+  .plan-stage { flex: 1; overflow: hidden; }
+  .plan-track { display: flex; transition: transform 0.35s cubic-bezier(.4,0,.2,1); }
+  .plan-slide {
+    flex: 0 0 100%; padding: 28px 22px; text-align: center;
+    background: var(--accent-bg); border: 2px solid var(--gold);
+    border-radius: 14px; position: relative;
   }
-  .plan-card.active { border-color: var(--gold); background: var(--accent-bg); }
-  .plan-name { font-weight: 700; font-size: 15px; }
-  .plan-price { font-size: 22px; font-weight: 800; color: var(--gold); margin: 4px 0; }
-  .plan-detail { font-size: 11px; color: var(--muted); }
+  .plan-badge {
+    position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; font-weight: 800; letter-spacing: 1px;
+    padding: 4px 12px; border-radius: 20px;
+    text-transform: uppercase; white-space: nowrap;
+  }
+  .plan-badge-best { background: var(--gold); color: white; }
+  .plan-badge-free { background: #198754; color: white; }
+  .plan-badge-save { background: #dc3545; color: white; }
+  .plan-name { font-weight: 700; font-size: 18px; margin-top: 6px; }
+  .plan-price { font-size: 32px; font-weight: 900; color: var(--gold); margin: 8px 0; line-height: 1; }
+  .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 280px; margin: 0 auto; }
+  .plan-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+  .plan-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all 0.2s; }
+  .plan-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
 
   .success {
     text-align: center; padding: 40px 20px;
@@ -210,6 +228,16 @@
       <label>WhatsApp (com DDD)</label>
       <input type="tel" id="phone" placeholder="(43) 99999-9999" required>
       <div class="hint">É pra esse número que vamos enviar.</div>
+    </div>
+
+    <div class="field">
+      <label>Gênero</label>
+      <div class="chips" id="chips-genero">
+        <div class="chip" data-val="F">Mulher</div>
+        <div class="chip" data-val="M">Homem</div>
+        <div class="chip" data-val="X">Prefiro não dizer</div>
+      </div>
+      <div class="hint">Usamos só pra concordância no tom (ex: "querida" / "querido").</div>
     </div>
 
     <div class="field">
@@ -336,6 +364,12 @@
     </div>
 
     <div class="field">
+      <label>Sua ocupação (opcional)</label>
+      <input type="text" id="ocupacao" placeholder="Ex: professora, motorista, dona de casa, aposentada">
+      <div class="hint">Ajuda a gente a entender o seu dia a dia.</div>
+    </div>
+
+    <div class="field">
       <label>Por que você quer o Manaã? (opcional)</label>
       <textarea id="proposito" placeholder="Ex: Quero começar o dia com algo bom. / Tô voltando pra fé. / Procuro paz."></textarea>
     </div>
@@ -349,25 +383,44 @@
   <!-- Step 4: Plano + LGPD -->
   <div class="step" data-step="4">
     <h2 class="step-title">Quase lá</h2>
-    <p class="step-sub">Escolha seu plano e confirme.</p>
+    <p class="step-sub">Escolha seu plano. Pode trocar depois quando quiser.</p>
 
-    <div class="plan-cards">
-      <div class="plan-card active" data-plan="trial" onclick="selectPlan(this)">
-        <div class="plan-name">7 dias grátis</div>
-        <div class="plan-price">R$ 0</div>
-        <div class="plan-detail">depois R$ 14,99/mês</div>
+    <div class="plan-carousel">
+      <button class="plan-arrow plan-prev" onclick="planMove(-1)" aria-label="Anterior">‹</button>
+      <div class="plan-stage">
+        <div class="plan-track" id="plan-track">
+          <div class="plan-slide" data-plan="trial">
+            <div class="plan-badge plan-badge-free">SEM CARTÃO</div>
+            <div class="plan-name">7 dias grátis</div>
+            <div class="plan-price">R$ 0</div>
+            <div class="plan-detail">Não cobramos automaticamente. Você decide se quer assinar depois.</div>
+          </div>
+          <div class="plan-slide" data-plan="mensal">
+            <div class="plan-badge plan-badge-best">MAIS ESCOLHIDO</div>
+            <div class="plan-name">Mensal</div>
+            <div class="plan-price">R$ 14,99<span style="font-size:14px;font-weight:500;color:var(--muted)">/mês</span></div>
+            <div class="plan-detail">≈ R$ 0,50 por dia. Cancela quando quiser sem fidelidade.</div>
+          </div>
+          <div class="plan-slide" data-plan="anual">
+            <div class="plan-badge plan-badge-save">ECONOMIZE 20%</div>
+            <div class="plan-name">Anual</div>
+            <div class="plan-price">R$ 143,90<span style="font-size:14px;font-weight:500;color:var(--muted)">/ano</span></div>
+            <div class="plan-detail">≈ R$ 11,99/mês. À vista no PIX ou em até 12x no cartão.</div>
+          </div>
+        </div>
       </div>
-      <div class="plan-card" data-plan="mensal" onclick="selectPlan(this)">
-        <div class="plan-name">Mensal direto</div>
-        <div class="plan-price">R$ 14,99</div>
-        <div class="plan-detail">≈ R$ 0,50 por dia</div>
-      </div>
+      <button class="plan-arrow plan-next" onclick="planMove(1)" aria-label="Próximo">›</button>
+    </div>
+    <div class="plan-dots" id="plan-dots">
+      <span class="plan-dot" data-i="0"></span>
+      <span class="plan-dot active" data-i="1"></span>
+      <span class="plan-dot" data-i="2"></span>
     </div>
 
     <div class="lgpd">
       <label>
         <input type="checkbox" id="lgpd" required>
-        <span>Li e aceito a <a href="/privacidade" target="_blank">Política de Privacidade</a> e os <a href="/termos" target="_blank">Termos de Uso</a>. Autorizo o Manaã a me enviar mensagens no WhatsApp informado. Posso cancelar a qualquer momento mandando "PARAR".</span>
+        <span>Li e aceito a <a href="/privacidade.html" target="_blank">Política de Privacidade</a> e os <a href="/termos.html" target="_blank">Termos de Uso</a>. Autorizo o Manaã a me enviar mensagens no WhatsApp informado. Posso cancelar a qualquer momento mandando "PARAR".</span>
       </label>
     </div>
 
@@ -394,7 +447,10 @@
   const WEBHOOK_URL = "https://manaa-meta-webhook.manaa-fbx.workers.dev/onboarding"; // Cloudflare Worker → n8n
   const WEBHOOK_SECRET = "REPLACE_WITH_SECRET"; // mesmo secret no n8n
   let momentos = new Set();
-  let plano = "trial";
+  let genero = "X";
+  const planos = ["trial", "mensal", "anual"];
+  let planoIdx = 1; // mensal default
+  let plano = planos[planoIdx];
 
   function next(s) {
     if (s === 2 && !validateStep1()) return;
@@ -431,11 +487,23 @@
     };
   });
 
-  function selectPlan(el) {
-    document.querySelectorAll(".plan-card").forEach(p => p.classList.remove("active"));
-    el.classList.add("active");
-    plano = el.dataset.plan;
+  function planMove(d) {
+    planoIdx = (planoIdx + d + planos.length) % planos.length;
+    plano = planos[planoIdx];
+    document.getElementById("plan-track").style.transform = `translateX(-${planoIdx * 100}%)`;
+    document.querySelectorAll(".plan-dot").forEach((dot, i) => dot.classList.toggle("active", i === planoIdx));
   }
+  // Inicializa posição
+  setTimeout(() => planMove(0), 50);
+  document.querySelectorAll(".plan-dot").forEach((dot, i) => dot.onclick = () => { planMove(i - planoIdx); });
+
+  document.querySelectorAll("#chips-genero .chip").forEach(c => {
+    c.onclick = () => {
+      document.querySelectorAll("#chips-genero .chip").forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      genero = c.dataset.val;
+    };
+  });
 
   function normalizePhone(raw) {
     let p = raw.replace(/\D/g, "");
@@ -457,12 +525,14 @@
     const payload = {
       name: document.getElementById("name").value.trim(),
       phone_e164: normalizePhone(document.getElementById("phone").value),
+      genero: genero,
       religiao: document.getElementById("religiao").value || null,
       inspiracoes: document.getElementById("inspiracoes").value.trim() || null,
       horario_envio: document.getElementById("horario").value || "07:00",
       versao_biblica_pref: document.getElementById("versao").value || null,
       data_nascimento: document.getElementById("nasc").value || null,
       momento_vida: Array.from(momentos).join(", ") || null,
+      ocupacao: document.getElementById("ocupacao").value.trim() || null,
       proposito_espiritual: document.getElementById("proposito").value.trim() || null,
       plano: plano,
       lgpd_versao: "1.0",
