@@ -349,10 +349,10 @@
     </div>
 
     <div class="field">
-      <label>Data de nascimento</label>
+      <label>Data de nascimento <span style="color:var(--red)">*</span></label>
       <div class="date-row">
-        <select id="nasc-dia"><option value="">Dia</option></select>
-        <select id="nasc-mes">
+        <select id="nasc-dia" required><option value="">Dia</option></select>
+        <select id="nasc-mes" required>
           <option value="">Mês</option>
           <option value="01">Janeiro</option><option value="02">Fevereiro</option>
           <option value="03">Março</option><option value="04">Abril</option>
@@ -361,9 +361,9 @@
           <option value="09">Setembro</option><option value="10">Outubro</option>
           <option value="11">Novembro</option><option value="12">Dezembro</option>
         </select>
-        <select id="nasc-ano"><option value="">Ano</option></select>
+        <select id="nasc-ano" required><option value="">Ano</option></select>
       </div>
-      <div class="hint">Usamos pra ajustar o tom (sem mostrar pra ninguém).</div>
+      <div class="hint">Usamos pra ajustar o tom da conversa (idoso recebe carinho diferente de jovem). Não mostramos pra ninguém.</div>
     </div>
 
     <div class="nav">
@@ -521,7 +521,13 @@
     if (phone.length < 10) { alert("Telefone inválido."); return false; }
     return true;
   }
-  function validateStep2() { return true; }
+  function validateStep2() {
+    const d = document.getElementById('nasc-dia').value;
+    const m = document.getElementById('nasc-mes').value;
+    const a = document.getElementById('nasc-ano').value;
+    if (!d || !m || !a) { alert('Preencha sua data de nascimento (dia, mês, ano).'); return false; }
+    return true;
+  }
   function validateStep3() { return true; }
 
   document.querySelectorAll("#chips-momento .chip").forEach(c => {
