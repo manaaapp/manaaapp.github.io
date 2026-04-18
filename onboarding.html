@@ -106,6 +106,8 @@
     outline: none; border-color: var(--gold);
   }
   .field textarea { min-height: 80px; resize: vertical; }
+  .date-row { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 8px; }
+  .date-row select { width: 100%; }
 
   .chips {
     display: flex; flex-wrap: wrap; gap: 8px;
@@ -330,7 +332,19 @@
 
     <div class="field">
       <label>Data de nascimento</label>
-      <input type="date" id="nasc">
+      <div class="date-row">
+        <select id="nasc-dia"><option value="">Dia</option></select>
+        <select id="nasc-mes">
+          <option value="">Mês</option>
+          <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+          <option value="03">Março</option><option value="04">Abril</option>
+          <option value="05">Maio</option><option value="06">Junho</option>
+          <option value="07">Julho</option><option value="08">Agosto</option>
+          <option value="09">Setembro</option><option value="10">Outubro</option>
+          <option value="11">Novembro</option><option value="12">Dezembro</option>
+        </select>
+        <select id="nasc-ano"><option value="">Ano</option></select>
+      </div>
       <div class="hint">Usamos pra ajustar o tom (sem mostrar pra ninguém).</div>
     </div>
 
@@ -452,6 +466,13 @@
   let planoIdx = 1; // mensal default
   let plano = planos[planoIdx];
 
+  // Popula dia/ano
+  const dia = document.getElementById("nasc-dia");
+  for (let d = 1; d <= 31; d++) dia.add(new Option(String(d).padStart(2,"0"), String(d).padStart(2,"0")));
+  const ano = document.getElementById("nasc-ano");
+  const yNow = new Date().getFullYear();
+  for (let y = yNow - 13; y >= yNow - 100; y--) ano.add(new Option(y, y));
+
   function next(s) {
     if (s === 2 && !validateStep1()) return;
     if (s === 3 && !validateStep2()) return;
@@ -530,7 +551,7 @@
       inspiracoes: document.getElementById("inspiracoes").value.trim() || null,
       horario_envio: document.getElementById("horario").value || "07:00",
       versao_biblica_pref: document.getElementById("versao").value || null,
-      data_nascimento: document.getElementById("nasc").value || null,
+      data_nascimento: (function(){const a=document.getElementById("nasc-ano").value, m=document.getElementById("nasc-mes").value, d=document.getElementById("nasc-dia").value; return (a&&m&&d)?`${a}-${m}-${d}`:null;})(),
       momento_vida: Array.from(momentos).join(", ") || null,
       ocupacao: document.getElementById("ocupacao").value.trim() || null,
       proposito_espiritual: document.getElementById("proposito").value.trim() || null,
