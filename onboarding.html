@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Manaã — Comece sua jornada</title>
+<meta name="description" content="Devocional cristão diário no WhatsApp, personalizado pra você. Comece em 1 minuto.">
+
+<style>
+  :root {
+    --gold-deep: #8b6914;
+    --gold: #b8912e;
+    --gold-light: #d4b86a;
+    --cream: #f6f2ec;
+    --paper: #fdfbf8;
+    --text: #2d2a26;
+    --muted: #8c847a;
+    --border: #e5e0d6;
+    --accent-bg: #faf6ee;
+    --green: #198754;
+    --red: #dc3545;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+  .brand {
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .brand-logo {
+    width: 64px; height: 64px;
+    margin: 0 auto 8px;
+    background: linear-gradient(135deg, var(--gold-deep), var(--gold), var(--gold-light));
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 36px; font-family: Georgia, serif;
+  }
+  .brand-name { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
+  .brand-tag { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  .progress {
+    display: flex; gap: 6px; margin-bottom: 28px;
+  }
+  .progress-step {
+    flex: 1; height: 6px; border-radius: 3px;
+    background: var(--border); transition: background 0.3s;
+  }
+  .progress-step.active { background: var(--gold); }
+  .progress-step.done { background: var(--green); }
+
+  .step { display: none; }
+  .step.active { display: block; animation: fade 0.3s ease; }
+  @keyframes fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  .step-title {
+    font-size: 24px; font-weight: 700; margin: 0 0 6px;
+  }
+  .step-sub {
+    font-size: 14px; color: var(--muted); margin: 0 0 24px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label {
+    display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text);
+  }
+  .field .hint {
+    font-size: 12px; color: var(--muted); margin-top: 4px;
+  }
+  .field input[type=text],
+  .field input[type=tel],
+  .field input[type=date],
+  .field input[type=time],
+  .field input[type=email],
+  .field select,
+  .field textarea {
+    width: 100%; padding: 12px 14px;
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 15px; background: var(--paper); color: var(--text);
+    transition: border-color 0.2s;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--gold);
+  }
+  .field textarea { min-height: 80px; resize: vertical; }
+
+  .chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .chip {
+    padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px;
+    background: var(--paper); cursor: pointer; font-size: 13px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--gold-light); }
+  .chip.active {
+    background: var(--gold); color: white; border-color: var(--gold);
+  }
+
+  .btn {
+    display: block; width: 100%; padding: 14px;
+    background: var(--gold); color: white;
+    border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-back {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .nav { display: flex; gap: 12px; margin-top: 20px; }
+  .nav .btn { flex: 1; }
+  .nav .btn-back { flex: 0 0 100px; }
+
+  .lgpd {
+    background: var(--accent-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px; color: var(--text);
+    margin: 16px 0;
+  }
+  .lgpd label {
+    display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  }
+  .lgpd input[type=checkbox] { margin-top: 2px; flex-shrink: 0; }
+
+  .plan-cards {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin: 18px 0;
+  }
+  .plan-card {
+    border: 2px solid var(--border); border-radius: 12px;
+    padding: 16px 14px; cursor: pointer; text-align: center;
+    transition: all 0.2s;
+  }
+  .plan-card.active { border-color: var(--gold); background: var(--accent-bg); }
+  .plan-name { font-weight: 700; font-size: 15px; }
+  .plan-price { font-size: 22px; font-weight: 800; color: var(--gold); margin: 4px 0; }
+  .plan-detail { font-size: 11px; color: var(--muted); }
+
+  .success {
+    text-align: center; padding: 40px 20px;
+  }
+  .success-icon {
+    width: 72px; height: 72px; margin: 0 auto 16px;
+    background: var(--green); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 36px;
+  }
+
+  .err {
+    color: var(--red); font-size: 13px; margin-top: 6px;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="brand">
+    <div class="brand-logo">M</div>
+    <div class="brand-name">Manaã</div>
+    <div class="brand-tag">Sua palavra diária no WhatsApp</div>
+  </div>
+
+  <div class="progress">
+    <div class="progress-step active" data-step="1"></div>
+    <div class="progress-step" data-step="2"></div>
+    <div class="progress-step" data-step="3"></div>
+    <div class="progress-step" data-step="4"></div>
+  </div>
+
+  <!-- Step 1: Perfil -->
+  <div class="step active" data-step="1">
+    <h2 class="step-title">Quem é você?</h2>
+    <p class="step-sub">Pra começar, alguns dados básicos.</p>
+
+    <div class="field">
+      <label>Nome completo</label>
+      <input type="text" id="name" placeholder="Ex: Maria Silva" required>
+    </div>
+
+    <div class="field">
+      <label>WhatsApp (com DDD)</label>
+      <input type="tel" id="phone" placeholder="(43) 99999-9999" required>
+      <div class="hint">É pra esse número que vamos enviar.</div>
+    </div>
+
+    <div class="field">
+      <label>Você é de qual religião/tradição?</label>
+      <select id="religiao">
+        <option value="">Prefiro não dizer</option>
+        <option value="catolica">Católica</option>
+        <option value="evangelica">Evangélica</option>
+        <option value="batista">Batista</option>
+        <option value="adventista">Adventista</option>
+        <option value="presbiteriana">Presbiteriana</option>
+        <option value="metodista">Metodista</option>
+        <option value="luterana">Luterana</option>
+        <option value="ortodoxa">Ortodoxa</option>
+        <option value="pentecostal">Pentecostal</option>
+        <option value="cristao_sem_denominacao">Cristão sem denominação</option>
+        <option value="outra">Outra</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Quem te inspira espiritualmente? (opcional)</label>
+      <input type="text" id="inspiracoes" placeholder="Ex: Padre Marcelo, Soraya Moraes, Salmos">
+      <div class="hint">Pode citar pessoas, livros bíblicos, músicas. Vai ajudar a personalizar.</div>
+    </div>
+
+    <button class="btn" onclick="next(2)">Continuar</button>
+  </div>
+
+  <!-- Step 2: Rotina -->
+  <div class="step" data-step="2">
+    <h2 class="step-title">Sua rotina</h2>
+    <p class="step-sub">Pra escolher a melhor hora pra te alcançar.</p>
+
+    <div class="field">
+      <label>Que horas você quer receber o devocional?</label>
+      <input type="time" id="horario" value="06:30" required>
+      <div class="hint">Sugerimos pela manhã, mas você escolhe.</div>
+    </div>
+
+    <div class="field">
+      <label>Versão da Bíblia preferida</label>
+      <select id="versao">
+        <option value="">Sem preferência</option>
+        <option value="ARC">Almeida Corrigida (ARC)</option>
+        <option value="ARA">Almeida Atualizada (ARA)</option>
+        <option value="NVI">Nova Versão Internacional (NVI)</option>
+        <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH)</option>
+        <option value="ACF">Almeida Corrigida Fiel (ACF)</option>
+        <option value="biblia_de_jerusalem">Bíblia de Jerusalém</option>
+        <option value="ave_maria">Ave Maria (católica)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Data de nascimento</label>
+      <input type="date" id="nasc">
+      <div class="hint">Usamos pra ajustar o tom (sem mostrar pra ninguém).</div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(1)">Voltar</button>
+      <button class="btn" onclick="next(3)">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Step 3: Momento -->
+  <div class="step" data-step="3">
+    <h2 class="step-title">Como tá o seu momento?</h2>
+    <p class="step-sub">Marque o que mais conecta. Você pode escolher mais de um.</p>
+
+    <div class="field">
+      <label>Estou vivendo um momento de…</label>
+      <div class="chips" id="chips-momento">
+        <div class="chip" data-val="paz">Paz</div>
+        <div class="chip" data-val="duvida">Dúvida</div>
+        <div class="chip" data-val="ansiedade">Ansiedade</div>
+        <div class="chip" data-val="luto">Luto</div>
+        <div class="chip" data-val="alegria">Alegria</div>
+        <div class="chip" data-val="recomeco">Recomeço</div>
+        <div class="chip" data-val="cansaco">Cansaço</div>
+        <div class="chip" data-val="busca">Busca</div>
+        <div class="chip" data-val="gratidao">Gratidão</div>
+        <div class="chip" data-val="solidao_cuidado">Preciso de companhia</div>
+        <div class="chip" data-val="familia">Foco em família</div>
+        <div class="chip" data-val="trabalho">Trabalho intenso</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Por que você quer o Manaã? (opcional)</label>
+      <textarea id="proposito" placeholder="Ex: Quero começar o dia com algo bom. / Tô voltando pra fé. / Procuro paz."></textarea>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(2)">Voltar</button>
+      <button class="btn" onclick="next(4)">Continuar</button>
+    </div>
+  </div>
+
+  <!-- Step 4: Plano + LGPD -->
+  <div class="step" data-step="4">
+    <h2 class="step-title">Quase lá</h2>
+    <p class="step-sub">Escolha seu plano e confirme.</p>
+
+    <div class="plan-cards">
+      <div class="plan-card active" data-plan="trial" onclick="selectPlan(this)">
+        <div class="plan-name">7 dias grátis</div>
+        <div class="plan-price">R$ 0</div>
+        <div class="plan-detail">depois R$ 14,99/mês</div>
+      </div>
+      <div class="plan-card" data-plan="mensal" onclick="selectPlan(this)">
+        <div class="plan-name">Mensal direto</div>
+        <div class="plan-price">R$ 14,99</div>
+        <div class="plan-detail">≈ R$ 0,50 por dia</div>
+      </div>
+    </div>
+
+    <div class="lgpd">
+      <label>
+        <input type="checkbox" id="lgpd" required>
+        <span>Li e aceito a <a href="/privacidade" target="_blank">Política de Privacidade</a> e os <a href="/termos" target="_blank">Termos de Uso</a>. Autorizo o Manaã a me enviar mensagens no WhatsApp informado. Posso cancelar a qualquer momento mandando "PARAR".</span>
+      </label>
+    </div>
+
+    <div id="err-final" class="err" style="display:none"></div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(3)">Voltar</button>
+      <button class="btn" id="btn-submit" onclick="submitForm()">Começar minha jornada</button>
+    </div>
+  </div>
+
+  <!-- Step 5: Sucesso -->
+  <div class="step" data-step="5">
+    <div class="success">
+      <div class="success-icon">✓</div>
+      <h2 class="step-title">Pronto!</h2>
+      <p class="step-sub">Você vai receber a primeira mensagem agora no WhatsApp. Amanhã às <strong id="conf-horario">06:30</strong> começa o devocional diário.</p>
+      <p style="font-size:13px;color:var(--muted);margin-top:30px">Sem WhatsApp em alguns minutos? Confere o número: <strong id="conf-fone"></strong>. Se errou, fala com a gente em <a href="mailto:contato@manaa.app.br">contato@manaa.app.br</a>.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WEBHOOK_URL = "https://manaa-meta-webhook.manaa-fbx.workers.dev/onboarding"; // Cloudflare Worker → n8n
+  const WEBHOOK_SECRET = "REPLACE_WITH_SECRET"; // mesmo secret no n8n
+  let momentos = new Set();
+  let plano = "trial";
+
+  function next(s) {
+    if (s === 2 && !validateStep1()) return;
+    if (s === 3 && !validateStep2()) return;
+    if (s === 4 && !validateStep3()) return;
+    showStep(s);
+  }
+  function back(s) { showStep(s); }
+  function showStep(s) {
+    document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
+    document.querySelector(`.step[data-step="${s}"]`).classList.add("active");
+    document.querySelectorAll(".progress-step").forEach((el, i) => {
+      el.classList.toggle("active", i + 1 === s);
+      el.classList.toggle("done", i + 1 < s);
+    });
+    window.scrollTo({top: 0, behavior: "smooth"});
+  }
+
+  function validateStep1() {
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.replace(/\D/g, "");
+    if (!name) { alert("Coloca seu nome."); return false; }
+    if (phone.length < 10) { alert("Telefone inválido."); return false; }
+    return true;
+  }
+  function validateStep2() { return true; }
+  function validateStep3() { return true; }
+
+  document.querySelectorAll("#chips-momento .chip").forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle("active");
+      const v = c.dataset.val;
+      if (momentos.has(v)) momentos.delete(v); else momentos.add(v);
+    };
+  });
+
+  function selectPlan(el) {
+    document.querySelectorAll(".plan-card").forEach(p => p.classList.remove("active"));
+    el.classList.add("active");
+    plano = el.dataset.plan;
+  }
+
+  function normalizePhone(raw) {
+    let p = raw.replace(/\D/g, "");
+    if (!p.startsWith("55")) p = "55" + p;
+    return "+" + p;
+  }
+
+  async function submitForm() {
+    if (!document.getElementById("lgpd").checked) {
+      const err = document.getElementById("err-final");
+      err.textContent = "Aceite os termos pra continuar.";
+      err.style.display = "block";
+      return;
+    }
+    const btn = document.getElementById("btn-submit");
+    btn.disabled = true;
+    btn.textContent = "Cadastrando…";
+
+    const payload = {
+      name: document.getElementById("name").value.trim(),
+      phone_e164: normalizePhone(document.getElementById("phone").value),
+      religiao: document.getElementById("religiao").value || null,
+      inspiracoes: document.getElementById("inspiracoes").value.trim() || null,
+      horario_envio: document.getElementById("horario").value || "07:00",
+      versao_biblica_pref: document.getElementById("versao").value || null,
+      data_nascimento: document.getElementById("nasc").value || null,
+      momento_vida: Array.from(momentos).join(", ") || null,
+      proposito_espiritual: document.getElementById("proposito").value.trim() || null,
+      plano: plano,
+      lgpd_versao: "1.0",
+      lgpd_aceite_em: new Date().toISOString(),
+      lgpd_aceite_ua: navigator.userAgent
+    };
+
+    try {
+      const r = await fetch(WEBHOOK_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-Webhook-Secret": WEBHOOK_SECRET
+        },
+        body: JSON.stringify(payload)
+      });
+      if (!r.ok) throw new Error("Erro " + r.status);
+      const data = await r.json();
+
+      document.getElementById("conf-horario").textContent = payload.horario_envio;
+      document.getElementById("conf-fone").textContent = payload.phone_e164;
+      showStep(5);
+
+      // tracking opcional
+      if (window.gtag) gtag("event", "onboarding_complete", {plano: plano});
+    } catch (e) {
+      const err = document.getElementById("err-final");
+      err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app.br";
+      err.style.display = "block";
+      btn.disabled = false;
+      btn.textContent = "Começar minha jornada";
+    }
+  }
+</script>
+
+</body>
+</html>
