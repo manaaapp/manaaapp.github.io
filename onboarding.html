@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Manaã — Comece sua jornada</title>
 <meta name="description" content="Devocional cristão diário no WhatsApp, personalizado pra você. Comece em 1 minuto.">
 
@@ -105,12 +105,14 @@
   .field input[type=date],
   .field input[type=time],
   .field input[type=email],
+  .field input[type=number],
   .field select,
   .field textarea {
     width: 100%; padding: 12px 14px;
     border: 1px solid var(--border); border-radius: 10px;
-    font-size: 15px; background: var(--paper); color: var(--text);
+    font-size: 16px; background: var(--paper); color: var(--text);
     transition: border-color 0.2s;
+    -webkit-text-size-adjust: 100%;
   }
   .field input:focus, .field select:focus, .field textarea:focus {
     outline: none; border-color: var(--gold);
@@ -146,9 +148,21 @@
     background: transparent; color: var(--muted);
     border: 1px solid var(--border);
   }
-  .nav { display: flex; gap: 12px; margin-top: 20px; }
+  .nav {
+    display: flex; gap: 12px; margin-top: 20px;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(253,251,248,0) 0%, var(--paper) 20%, var(--paper) 100%);
+    padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 10;
+  }
   .nav .btn { flex: 1; }
   .nav .btn-back { flex: 0 0 100px; }
+  body { padding-bottom: env(safe-area-inset-bottom, 0px); }
 
   .lgpd {
     background: var(--accent-bg);
