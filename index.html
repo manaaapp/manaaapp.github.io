@@ -899,7 +899,7 @@
 #wa-demo-root .wd-tpl{background:#fff;border-radius:8px;border-top-left-radius:2px;align-self:flex-start;max-width:85%;overflow:hidden;flex-shrink:0;opacity:0;transform:translateY(6px);transition:opacity 0.3s ease,transform 0.3s ease;position:relative}
 #wa-demo-root .wd-tpl::before{content:'';position:absolute;left:-5px;top:0;border-right:5px solid #fff;border-top:5px solid transparent;z-index:1}
 #wa-demo-root .wd-tpl.show{opacity:1;transform:translateY(0)}
-#wa-demo-root .wd-timg{width:100%;height:200px;display:block;overflow:hidden;position:relative}
+#wa-demo-root .wd-timg{width:100%;height:240px;display:block;overflow:hidden;position:relative}
 #wa-demo-root .wd-timg img{width:100%;height:100%;object-fit:cover;object-position:center 50%;display:block}
 #wa-demo-root .wd-tovl{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.72) 0%,rgba(0,0,0,0.1) 50%,transparent 100%);display:flex;flex-direction:column;justify-content:flex-end;padding:8px 10px 6px}
 #wa-demo-root .wd-tname{color:#fff;font-size:11px;font-weight:700;text-shadow:0 1px 3px rgba(0,0,0,0.6)}
@@ -1018,10 +1018,13 @@ async function run(){
       if(!window.speechSynthesis){res();return;}
       window.speechSynthesis.cancel();
       const u=new SpeechSynthesisUtterance('Senhor, obrigado por Maria. Cuida dela hoje, dá força e saúde a ela. Que ela sinta Teu amor de perto nesse momento difícil. A-mein.');
-      u.lang='pt-BR';u.rate=0.88;u.pitch=0.6;
+      u.lang='pt-BR';u.rate=0.85;u.pitch=0.5;
       const vs=window.speechSynthesis.getVoices();
-      const mv=vs.find(v=>v.lang.startsWith('pt')&&/male|masculin|google/i.test(v.name))||vs.find(v=>v.lang.startsWith('pt'));
-      if(mv)u.voice=mv;
+      const mv=vs.find(v=>/daniel|ricardo|antonio|masculin|male/i.test(v.name))
+             ||vs.find(v=>v.lang==='pt-PT')
+             ||vs.find(v=>v.lang.startsWith('pt')&&!/maria|vitoria|francisca|ana|female/i.test(v.name))
+             ||vs.find(v=>v.lang.startsWith('pt'));
+      if(mv){u.voice=mv;u.lang=mv.lang;}
       u.onend=()=>setTimeout(res,1500);u.onerror=()=>setTimeout(res,1500);
       window.speechSynthesis.speak(u);
     };
