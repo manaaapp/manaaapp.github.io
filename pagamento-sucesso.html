@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Pagamento confirmado — Manaã</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: linear-gradient(135deg, #F6F2EC 0%, #FDFBF8 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    color: #2D2A26;
+  }
+  .card {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 32px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 16px 48px rgba(139,105,20,0.12);
+    border: 1px solid rgba(184,145,46,0.15);
+  }
+  .check-wrap {
+    width: 88px; height: 88px;
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 50px; font-weight: 700;
+    box-shadow: 0 8px 24px rgba(34,197,94,0.28);
+    animation: bounce 0.6s ease-out;
+  }
+  @keyframes bounce {
+    0% { transform: scale(0); }
+    60% { transform: scale(1.15); }
+    100% { transform: scale(1); }
+  }
+  h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 32px; font-weight: 700;
+    color: #8B6914;
+    margin-bottom: 12px;
+  }
+  .sub {
+    color: #5C564D; font-size: 16px; line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .btn {
+    background: linear-gradient(135deg, #B8912E, #A07D2E);
+    color: white; text-decoration: none;
+    padding: 14px 28px;
+    border-radius: 12px;
+    font-size: 16px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 10px;
+    box-shadow: 0 6px 18px rgba(184,145,46,0.3);
+    transition: transform 0.15s;
+  }
+  .btn:hover { transform: translateY(-2px); }
+  .hint {
+    margin-top: 20px;
+    color: #8C847A; font-size: 13px; line-height: 1.5;
+  }
+  .brand { font-family: 'Playfair Display', serif; color: #B8912E; font-size: 20px; margin-top: 32px; letter-spacing: 0.5px; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="check-wrap">✓</div>
+    <h1>Pagamento confirmado</h1>
+    <p class="sub">Pronto, sua assinatura do Manaã está ativa. Agora é só abrir o WhatsApp e enviar a primeira mensagem pra começar a conversa.</p>
+    <a id="wa-btn" href="https://wa.me/15551804368?text=Paguei%20a%20assinatura%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F" class="btn">
+      <span>Abrir WhatsApp e começar</span>
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.042 1.978c-5.54 0-10.04 4.5-10.04 10.04 0 1.769.464 3.494 1.346 5.014l-1.432 5.23 5.35-1.402c1.466.799 3.117 1.222 4.776 1.222 5.54 0 10.04-4.5 10.04-10.04 0-2.687-1.046-5.213-2.946-7.112-1.9-1.9-4.425-2.952-7.094-2.952zm0 1.84c2.178 0 4.225.848 5.768 2.39 1.543 1.544 2.392 3.591 2.392 5.77 0 4.523-3.68 8.199-8.199 8.199-1.423 0-2.82-.376-4.042-1.085l-.29-.17-2.997.786.802-2.933-.186-.3a8.126 8.126 0 0 1-1.247-4.335c0-4.523 3.68-8.199 8.199-8.199zm-3.91 4.475c-.17 0-.445.064-.676.32-.232.256-.882.862-.882 2.102 0 1.24.903 2.438 1.028 2.605.125.169 1.752 2.695 4.303 3.781.605.257 1.078.411 1.446.528.608.193 1.161.165 1.598.1.488-.073 1.501-.614 1.714-1.206.213-.592.213-1.1.149-1.206-.064-.105-.232-.169-.488-.297-.256-.128-1.501-.741-1.734-.826-.232-.085-.402-.128-.572.128-.17.256-.659.826-.808.995-.148.17-.297.19-.552.064-.256-.128-1.08-.399-2.058-1.27-.761-.677-1.274-1.513-1.423-1.769-.148-.256-.016-.394.112-.522.115-.114.256-.297.384-.445.128-.149.17-.257.256-.427.085-.17.043-.318-.021-.446-.064-.128-.573-1.376-.783-1.888-.207-.498-.418-.43-.572-.438-.148-.007-.318-.009-.488-.009z"/></svg>
+    </a>
+    <p class="hint">Se não abrir automaticamente em 3 segundos, toque no botão acima.</p>
+    <div class="brand">Manaã</div>
+  </div>
+<script>
+  (function () {
+    var p = new URLSearchParams(location.search);
+    var plan = (p.get('plan') || '').toLowerCase();
+    var msg = "Paguei%20a%20assinatura%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F";
+    if (plan === 'anual') msg = "Paguei%20o%20plano%20anual%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F";
+    if (plan === 'mensal') msg = "Paguei%20o%20plano%20mensal%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F";
+    var url = "https://wa.me/15551804368?text=" + msg;
+    document.getElementById('wa-btn').href = url;
+    setTimeout(function(){ window.location.href = url; }, 3000);
+  })();
+</script>
+</body>
+</html>

@@ -493,7 +493,7 @@
       <div class="success-icon">✓</div>
       <h2 class="step-title">Pronto!</h2>
       <p class="step-sub">Você vai receber a primeira mensagem agora no WhatsApp. Amanhã às <strong id="conf-horario">06:30</strong> começa o devocional diário.</p>
-      <p style="font-size:13px;color:var(--muted);margin-top:30px">Sem WhatsApp em alguns minutos? Confere o número: <strong id="conf-fone"></strong>. Se errou, fala com a gente em <a href="mailto:contato@manaa.app.br">contato@manaa.app.br</a>.</p>
+      <p style="font-size:13px;color:var(--muted);margin-top:30px">Sem WhatsApp em alguns minutos? Confere o número: <strong id="conf-fone"></strong>. Se errou, fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</p>
     </div>
   </div>
 </div>
@@ -632,10 +632,17 @@
 
       document.getElementById("conf-horario").textContent = payload.horario_envio;
       document.getElementById("conf-fone").textContent = payload.phone_e164;
-      showStep(5);
 
       // tracking opcional
       if (window.gtag) gtag("event", "onboarding_complete", {plano: plano});
+
+      // Para TRIAL: mostra "Pronto!" + redireciona wa.me
+      // Para PAGO: NÃO mostra "Pronto!" — vai direto coletar email+CPF e redireciona pro ASAAS
+      // (só mostra "Pronto!" DEPOIS que ASAAS confirmar pagamento via callback → pagamento-sucesso.html)
+      const isTrialPlan = (plano === "trial" || plano === "free_trial");
+      if (isTrialPlan) {
+        showStep(5);
+      }
 
       // Após cadastrar: se trial, redireciona direto pro WhatsApp.
       // Se mensal/anual, chama ASAAS pra gerar cobrança e redireciona pro gateway.
@@ -648,31 +655,31 @@
       const msg = msgsPorPlano[plano] || msgsPorPlano.trial;
       const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 
-      if (plano === "trial" || plano === "free_trial") {
-        // Redireciona direto na mesma aba (window.open era bloqueado por popup blocker)
-        window.location.href = waUrl;
+      if (isTrialPlan) {
+        // Pronto! já apareceu. Redireciona pro WhatsApp depois de 1.5s pra user ver confirmação
+        setTimeout(() => { window.location.href = waUrl; }, 1500);
       } else {
-        // Chama ASAAS pra gerar cobrança
+        // PAGO — coletar email+CPF e ir pro ASAAS (sem mostrar "Pronto")
+        // Coletar email+CPF inline se faltar
+        let email = document.getElementById("pag-email") ? document.getElementById("pag-email").value.trim() : "";
+        let cpf = document.getElementById("pag-cpf") ? document.getElementById("pag-cpf").value.replace(/\D/g, "") : "";
+        if (!email || !cpf || cpf.length !== 11) {
+          const err = document.getElementById("err-final");
+          err.innerHTML = '<div style="background:#fffbe6;border:1px solid #f0c24c;padding:14px;border-radius:10px;text-align:left"><strong>Faltam 2 dados pra cobrança:</strong><br><br><input id="pag-email" placeholder="Email pra recibo" style="width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px;box-sizing:border-box"><input id="pag-cpf" placeholder="CPF (só números, ex: 12345678909)" style="width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px;box-sizing:border-box" maxlength="14"><small style="color:#8c847a">Preencha e clique em Começar minha jornada de novo. São exigidos pelo ASAAS.</small></div>';
+          err.style.display = "block";
+          btn.disabled = false;
+          btn.textContent = "Começar minha jornada";
+          return;
+        }
+        btn.textContent = "Gerando pagamento...";
         try {
-          btn.textContent = "Gerando link de pagamento...";
-          // Coletar email+CPF inline se faltar
-          let email = document.getElementById("pag-email") ? document.getElementById("pag-email").value.trim() : "";
-          let cpf = document.getElementById("pag-cpf") ? document.getElementById("pag-cpf").value.replace(/\D/g, "") : "";
-          if (!email || !cpf || cpf.length !== 11) {
-            const err = document.getElementById("err-final");
-            err.innerHTML = 'Pra ativar o plano pago preciso de mais 2 dados:<br><br><input id="pag-email" placeholder="Email para recibo" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px"><input id="pag-cpf" placeholder="CPF (só números)" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px" maxlength="14"><small>São necessários pelo ASAAS (processador de pagamento) pra gerar a cobrança em seu nome.</small>';
-            err.style.display = "block";
-            btn.disabled = false;
-            btn.textContent = "Começar minha jornada";
-            return;
-          }
           const pagBody = {
             name: payload.name,
             phone: payload.phone_e164,
             email: email,
             cpf: cpf,
             plan_code: plano,
-            successUrl: waUrl
+            successUrl: "https://manaaapp.github.io/pagamento-sucesso.html?plan=" + encodeURIComponent(plano)
           };
           const rp = await fetch("https://met-near-organizational-chemistry.trycloudflare.com/webhook/manaa-cadastro", {
             method: "POST",
@@ -681,15 +688,13 @@
           });
           const pagData = await rp.json();
           if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
-            const payUrl = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
-            // Redireciona direto — se user quiser voltar, usa botão back do browser
-            window.location.href = payUrl;
+            window.location.href = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
           } else {
             throw new Error(pagData.message || "Sem link ASAAS");
           }
         } catch (pe) {
           const err = document.getElementById("err-final");
-          err.textContent = "Erro ao gerar cobrança no ASAAS: " + (pe.message || "tente de novo") + ". Pode também mandar uma mensagem pra gente pelo WhatsApp: " + waUrl;
+          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:14px;border-radius:10px;color:#742a2a">Erro gerando cobrança: ' + (pe.message || "tente de novo") + '. Fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</div>';
           err.style.display = "block";
           btn.disabled = false;
           btn.textContent = "Começar minha jornada";
@@ -697,7 +702,7 @@
       }
     } catch (e) {
       const err = document.getElementById("err-final");
-      err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app.br";
+      err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app";
       err.style.display = "block";
       btn.disabled = false;
       btn.textContent = "Começar minha jornada";
