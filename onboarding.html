@@ -479,6 +479,12 @@
       </label>
     </div>
 
+    <div id="pago-fields" style="display:none;background:#faf6ee;border:1px solid #e5e0d6;border-radius:12px;padding:16px;margin:12px 0">
+      <div style="font-weight:600;margin-bottom:10px">Pra finalizar o plano pago precisamos de:</div>
+      <div class="field"><label>Email (recibo da cobrança)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
+      <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" autocomplete="off"></div>
+      <small style="color:#8c847a;display:block;margin-top:8px">Exigido pelo ASAAS (processador de pagamento). Não cobramos nada antes do pagamento confirmado.</small>
+    </div>
     <div id="err-final" class="err" style="display:none"></div>
 
     <div class="nav">
@@ -566,6 +572,12 @@
     plano = planos[planoIdx];
     document.getElementById("plan-track").style.transform = `translateX(-${planoIdx * 100}%)`;
     document.querySelectorAll(".plan-dot").forEach((dot, i) => dot.classList.toggle("active", i === planoIdx));
+    // Mostra/esconde bloco email+CPF baseado no plano
+    const pagoFields = document.getElementById("pago-fields");
+    if (pagoFields) {
+      const isPago = (plano === "mensal" || plano === "anual");
+      pagoFields.style.display = isPago ? "block" : "none";
+    }
   }
   // Inicializa posição
   setTimeout(() => planMove(0), 50);
@@ -659,14 +671,15 @@
         // Pronto! já apareceu. Redireciona pro WhatsApp depois de 1.5s pra user ver confirmação
         setTimeout(() => { window.location.href = waUrl; }, 1500);
       } else {
-        // PAGO — coletar email+CPF e ir pro ASAAS (sem mostrar "Pronto")
-        // Coletar email+CPF inline se faltar
-        let email = document.getElementById("pag-email") ? document.getElementById("pag-email").value.trim() : "";
-        let cpf = document.getElementById("pag-cpf") ? document.getElementById("pag-cpf").value.replace(/\D/g, "") : "";
-        if (!email || !cpf || cpf.length !== 11) {
+        // PAGO — lê email+CPF do bloco estático (agora inline no step 4)
+        let email = (document.getElementById("pag-email-static")?.value || "").trim();
+        let cpf = (document.getElementById("pag-cpf-static")?.value || "").replace(/\D/g, "");
+        if (!email || !cpf || cpf.length !== 11 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
           const err = document.getElementById("err-final");
-          err.innerHTML = '<div style="background:#fffbe6;border:1px solid #f0c24c;padding:14px;border-radius:10px;text-align:left"><strong>Faltam 2 dados pra cobrança:</strong><br><br><input id="pag-email" placeholder="Email pra recibo" style="width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px;box-sizing:border-box"><input id="pag-cpf" placeholder="CPF (só números, ex: 12345678909)" style="width:100%;padding:11px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px;box-sizing:border-box" maxlength="14"><small style="color:#8c847a">Preencha e clique em Começar minha jornada de novo. São exigidos pelo ASAAS.</small></div>';
+          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:12px;border-radius:10px;color:#742a2a">Preenche email e CPF válidos pra continuar com o plano pago.</div>';
           err.style.display = "block";
+          // Scroll pro bloco email+CPF
+          document.getElementById("pago-fields")?.scrollIntoView({ behavior: "smooth", block: "center" });
           btn.disabled = false;
           btn.textContent = "Começar minha jornada";
           return;
