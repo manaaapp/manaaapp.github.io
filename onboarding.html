@@ -667,9 +667,20 @@
       const msg = msgsPorPlano[plano] || msgsPorPlano.trial;
       const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 
+      function openInNewTab(url) {
+        // Cria <a target="_blank"> e dispara click — driblando popup blocker
+        const a = document.createElement("a");
+        a.href = url;
+        a.target = "_blank";
+        a.rel = "noopener noreferrer";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      }
+
       if (isTrialPlan) {
-        // Pronto! já apareceu. Redireciona pro WhatsApp depois de 1.5s pra user ver confirmação
-        setTimeout(() => { window.location.href = waUrl; }, 1500);
+        // Pronto! aparece + abre WhatsApp em nova aba depois de 1s
+        setTimeout(() => { openInNewTab(waUrl); }, 1000);
       } else {
         // PAGO — lê email+CPF do bloco estático (agora inline no step 4)
         let email = (document.getElementById("pag-email-static")?.value || "").trim();
@@ -701,7 +712,12 @@
           });
           const pagData = await rp.json();
           if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
-            window.location.href = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
+            const payUrl = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
+            openInNewTab(payUrl);
+            // Mostra tela "Aguardando pagamento" na aba original
+            showStep(5);
+            document.querySelector('[data-step="5"] .step-title').textContent = "Finalizando pagamento...";
+            document.querySelector('[data-step="5"] .step-sub').innerHTML = 'Abrimos a tela de pagamento em nova aba. Depois de pagar, volta aqui e te conecto com o WhatsApp. <br><br><a href="'+payUrl+'" target="_blank" rel="noopener" style="color:var(--gold)">Não abriu? Clica aqui</a>';
           } else {
             throw new Error(pagData.message || "Sem link ASAAS");
           }
