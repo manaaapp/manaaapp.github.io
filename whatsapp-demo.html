@@ -15,11 +15,10 @@ body {
 
 .phone-wrap {
   width: 300px;
-  border-radius: 40px;
+  border-radius: 31px;
   overflow: hidden;
-  box-shadow: 0 28px 72px rgba(0,0,0,0.25), 0 4px 20px rgba(0,0,0,0.12);
+  box-shadow: 0 0 0 9px #1a1a1a, 0 28px 72px rgba(0,0,0,0.25), 0 4px 20px rgba(0,0,0,0.12);
   background: #075E54;
-  border: 9px solid #1a1a1a;
   display: flex;
   flex-direction: column;
 }
@@ -462,30 +461,16 @@ async function run() {
   await new Promise(r => setTimeout(r, 600));
   await addEl(msg(`Amém 🙏<span class="msg-time">${T()}</span>`, 'in'), 0);
 
-  // Aguarda o usuário clicar no play para ouvir a oração
+  // Aguarda o usuário clicar no play para ouvir a oração (MP3 real)
   await new Promise(res => {
     const playBtn = audioMsg.querySelector('.audio-play');
     if (!playBtn) { setTimeout(res, 5000); return; }
     playBtn.style.cursor = 'pointer';
+    const audio = new Audio('./oracao.mp3');
     playBtn.onclick = () => {
-      if (!window.speechSynthesis) { res(); return; }
-      window.speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(
-        'Senhor, obrigado por Maria. ' +
-        'Cuida dela hoje, dá força e saúde a ela. ' +
-        'Que ela sinta Teu amor de perto nesse momento difícil. ' +
-        'A-mein.'
-      );
-      u.lang = 'pt-BR'; u.rate = 0.85; u.pitch = 0.5;
-      const vs = window.speechSynthesis.getVoices();
-      const mv = vs.find(v => /daniel|ricardo|antonio|masculin|male/i.test(v.name))
-              || vs.find(v => v.lang === 'pt-PT')
-              || vs.find(v => v.lang.startsWith('pt') && !/maria|vitoria|francisca|ana|female/i.test(v.name))
-              || vs.find(v => v.lang.startsWith('pt'));
-      if (mv) { u.voice = mv; u.lang = mv.lang; }
-      u.onend = () => setTimeout(res, 1500);
-      u.onerror = () => setTimeout(res, 1500);
-      window.speechSynthesis.speak(u);
+      audio.currentTime = 0;
+      audio.play().catch(() => {});
+      audio.onended = () => setTimeout(res, 1200);
     };
   });
 
