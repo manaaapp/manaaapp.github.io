@@ -649,18 +649,30 @@
       const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 
       if (plano === "trial" || plano === "free_trial") {
-        setTimeout(() => { window.location.href = waUrl; }, 1800);
+        // Abre WhatsApp em NOVA ABA (não fecha o site)
+        setTimeout(() => { window.open(waUrl, "_blank"); }, 1200);
       } else {
         // Chama ASAAS pra gerar cobrança
         try {
           btn.textContent = "Gerando link de pagamento...";
+          // Coletar email+CPF inline se faltar
+          let email = document.getElementById("pag-email") ? document.getElementById("pag-email").value.trim() : "";
+          let cpf = document.getElementById("pag-cpf") ? document.getElementById("pag-cpf").value.replace(/\D/g, "") : "";
+          if (!email || !cpf || cpf.length !== 11) {
+            const err = document.getElementById("err-final");
+            err.innerHTML = 'Pra ativar o plano pago preciso de mais 2 dados:<br><br><input id="pag-email" placeholder="Email para recibo" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px"><input id="pag-cpf" placeholder="CPF (só números)" style="width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;margin-bottom:8px;font-size:16px" maxlength="14"><small>São necessários pelo ASAAS (processador de pagamento) pra gerar a cobrança em seu nome.</small>';
+            err.style.display = "block";
+            btn.disabled = false;
+            btn.textContent = "Começar minha jornada";
+            return;
+          }
           const pagBody = {
             name: payload.name,
             phone: payload.phone_e164,
-            email: (payload.ocupacao || "") && "",
-            cpf: "", // coletar antes ou ASAAS sandbox permite vazio em homologacao
+            email: email,
+            cpf: cpf,
             plan_code: plano,
-            successUrl: waUrl // ASAAS pode redirecionar pós-pagamento
+            successUrl: waUrl
           };
           const rp = await fetch("https://met-near-organizational-chemistry.trycloudflare.com/webhook/manaa-cadastro", {
             method: "POST",
@@ -669,13 +681,17 @@
           });
           const pagData = await rp.json();
           if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
-            window.location.href = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
+            // Gateway em nova aba, página de sucesso fica visível no tab original
+            window.open(pagData.redirect_url || pagData.init_point || pagData.paymentLink, "_blank");
           } else {
             throw new Error(pagData.message || "Sem link ASAAS");
           }
         } catch (pe) {
-          // fallback: manda pro WhatsApp mesmo assim
-          setTimeout(() => { window.location.href = waUrl; }, 1500);
+          const err = document.getElementById("err-final");
+          err.textContent = "Erro ao gerar cobrança no ASAAS: " + (pe.message || "tente de novo") + ". Pode também mandar uma mensagem pra gente pelo WhatsApp: " + waUrl;
+          err.style.display = "block";
+          btn.disabled = false;
+          btn.textContent = "Começar minha jornada";
         }
       }
     } catch (e) {
