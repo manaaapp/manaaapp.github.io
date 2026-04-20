@@ -90,8 +90,20 @@
     if (plan === 'anual') msg = "Paguei%20o%20plano%20anual%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F";
     if (plan === 'mensal') msg = "Paguei%20o%20plano%20mensal%20Mana%C3%A3%20quero%20ativar%20%F0%9F%99%8F";
     var url = "https://wa.me/15551804368?text=" + msg;
-    document.getElementById('wa-btn').href = url;
-    setTimeout(function(){ window.location.href = url; }, 3000);
+    var waBtn = document.getElementById('wa-btn');
+    waBtn.href = url;
+    waBtn.setAttribute('target', '_blank');
+    waBtn.setAttribute('rel', 'noopener noreferrer');
+    // Dispara clique programático em 3s — abre em nova aba
+    setTimeout(function(){
+      var a = document.createElement('a');
+      a.href = url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }, 3000);
   })();
 </script>
 </body>
