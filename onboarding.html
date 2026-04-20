@@ -636,6 +636,18 @@
 
       // tracking opcional
       if (window.gtag) gtag("event", "onboarding_complete", {plano: plano});
+
+      // Redireciona para WhatsApp com mensagem pré-escrita
+      // — abre janela 24h sem gastar template Marketing
+      const WA_NUMBER = "15551804368"; // número de teste do Manaã na Meta (dev mode)
+      const msgsPorPlano = {
+        trial: "Olá Manaã! Acabei de me cadastrar e quero começar meu teste 🙏",
+        mensal: "Olá Manaã! Acabei de pagar o plano mensal, quero ativar 🙏",
+        anual: "Olá Manaã! Acabei de pagar o plano anual, quero ativar 🙏"
+      };
+      const msg = msgsPorPlano[plano] || msgsPorPlano.trial;
+      const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+      setTimeout(() => { window.location.href = waUrl; }, 1800);
     } catch (e) {
       const err = document.getElementById("err-final");
       err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app.br";
