@@ -679,16 +679,14 @@
       }
 
       if (isTrialPlan) {
-        // Detecta mobile — se mobile, mostra botão manual (iOS Safari bloqueia abertura automática mesmo no click context às vezes)
+        // Substitui texto do step 5 SEMPRE com botão grande (garante UX mobile e web)
+        const confEl = document.querySelector('[data-step="5"] .step-sub');
+        if (confEl) {
+          confEl.innerHTML = 'Pra começar, toca no botão abaixo pra abrir o WhatsApp e enviar a primeira mensagem.<br><br><a href="' + waUrl + '" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold);color:white;padding:16px 32px;border-radius:12px;font-size:17px;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(184,145,46,0.3);margin-top:10px">👉 Abrir WhatsApp agora</a>';
+        }
+        // Desktop: também dispara auto-abrir nova aba (no celular é bloqueado, mas o botão acima funciona sempre)
         const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-        if (isMobile) {
-          // Mobile: adiciona botão grande na tela Pronto
-          const confEl = document.querySelector('[data-step="5"] .step-sub');
-          if (confEl) {
-            confEl.innerHTML = 'Pra começar, toca no botão abaixo pra abrir o WhatsApp e mandar a primeira mensagem.<br><br><a href="' + waUrl + '" target="_blank" rel="noopener" style="display:inline-block;background:var(--gold);color:white;padding:16px 32px;border-radius:12px;font-size:17px;font-weight:600;text-decoration:none;box-shadow:0 6px 18px rgba(184,145,46,0.3);margin-top:10px">👉 Abrir WhatsApp agora</a>';
-          }
-        } else {
-          // Desktop: abre automático em nova aba
+        if (!isMobile) {
           openInNewTab(waUrl);
         }
       } else {
