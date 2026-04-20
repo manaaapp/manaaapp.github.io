@@ -679,8 +679,8 @@
       }
 
       if (isTrialPlan) {
-        // Pronto! aparece + abre WhatsApp em nova aba depois de 1s
-        setTimeout(() => { openInNewTab(waUrl); }, 1000);
+        // Abre WhatsApp IMEDIATO no mesmo click context (mobile Safari não aceita setTimeout)
+        openInNewTab(waUrl);
       } else {
         // PAGO — lê email+CPF do bloco estático (agora inline no step 4)
         let email = (document.getElementById("pag-email-static")?.value || "").trim();
