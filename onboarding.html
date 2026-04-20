@@ -649,12 +649,8 @@
       const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
 
       if (plano === "trial" || plano === "free_trial") {
-        // Abre WhatsApp em nova aba SEM setTimeout (senão popup blocker bloqueia)
-        const w = window.open(waUrl, "_blank");
-        if (!w) {
-          // Se popup bloqueou, redireciona na mesma aba como fallback
-          window.location.href = waUrl;
-        }
+        // Redireciona direto na mesma aba (window.open era bloqueado por popup blocker)
+        window.location.href = waUrl;
       } else {
         // Chama ASAAS pra gerar cobrança
         try {
@@ -686,8 +682,8 @@
           const pagData = await rp.json();
           if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
             const payUrl = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
-            const w = window.open(payUrl, "_blank");
-            if (!w) { window.location.href = payUrl; }
+            // Redireciona direto — se user quiser voltar, usa botão back do browser
+            window.location.href = payUrl;
           } else {
             throw new Error(pagData.message || "Sem link ASAAS");
           }
