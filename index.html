@@ -1011,15 +1011,20 @@ async function run(){
   await new Promise(r=>setTimeout(r,600));
   await addEl(msg(`Amém 🙏<span class="wd-t">${T()}</span>`,'in'),0);
   await new Promise(res=>{
-    if(!window.speechSynthesis){setTimeout(res,5000);return;}
-    window.speechSynthesis.cancel();
-    const u=new SpeechSynthesisUtterance('Senhor, obrigado por Maria. Cuida dela hoje, dá força e saúde a ela. Que ela sinta Teu amor de perto nesse momento difícil. A-mein.');
-    u.lang='pt-BR';u.rate=0.88;u.pitch=0.6;
-    const vs=window.speechSynthesis.getVoices();
-    const mv=vs.find(v=>v.lang.startsWith('pt')&&/male|masculin|google/i.test(v.name))||vs.find(v=>v.lang.startsWith('pt'));
-    if(mv)u.voice=mv;
-    u.onend=()=>setTimeout(res,1500);u.onerror=()=>setTimeout(res,1500);
-    window.speechSynthesis.speak(u);
+    const pb=am.querySelector('.wd-aplay');
+    if(!pb){setTimeout(res,5000);return;}
+    pb.style.cursor='pointer';
+    pb.onclick=()=>{
+      if(!window.speechSynthesis){res();return;}
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance('Senhor, obrigado por Maria. Cuida dela hoje, dá força e saúde a ela. Que ela sinta Teu amor de perto nesse momento difícil. A-mein.');
+      u.lang='pt-BR';u.rate=0.88;u.pitch=0.6;
+      const vs=window.speechSynthesis.getVoices();
+      const mv=vs.find(v=>v.lang.startsWith('pt')&&/male|masculin|google/i.test(v.name))||vs.find(v=>v.lang.startsWith('pt'));
+      if(mv)u.voice=mv;
+      u.onend=()=>setTimeout(res,1500);u.onerror=()=>setTimeout(res,1500);
+      window.speechSynthesis.speak(u);
+    };
   });
   run();
 }
