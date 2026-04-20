@@ -637,8 +637,8 @@
       // tracking opcional
       if (window.gtag) gtag("event", "onboarding_complete", {plano: plano});
 
-      // Redireciona para WhatsApp com mensagem pré-escrita
-      // — abre janela 24h sem gastar template Marketing
+      // Após cadastrar: se trial, redireciona direto pro WhatsApp.
+      // Se mensal/anual, chama ASAAS pra gerar cobrança e redireciona pro gateway.
       const WA_NUMBER = "15551804368"; // número de teste do Manaã na Meta (dev mode)
       const msgsPorPlano = {
         trial: "Olá Manaã! Acabei de me cadastrar e quero começar meu teste 🙏",
@@ -647,7 +647,37 @@
       };
       const msg = msgsPorPlano[plano] || msgsPorPlano.trial;
       const waUrl = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
-      setTimeout(() => { window.location.href = waUrl; }, 1800);
+
+      if (plano === "trial" || plano === "free_trial") {
+        setTimeout(() => { window.location.href = waUrl; }, 1800);
+      } else {
+        // Chama ASAAS pra gerar cobrança
+        try {
+          btn.textContent = "Gerando link de pagamento...";
+          const pagBody = {
+            name: payload.name,
+            phone: payload.phone_e164,
+            email: (payload.ocupacao || "") && "",
+            cpf: "", // coletar antes ou ASAAS sandbox permite vazio em homologacao
+            plan_code: plano,
+            successUrl: waUrl // ASAAS pode redirecionar pós-pagamento
+          };
+          const rp = await fetch("https://met-near-organizational-chemistry.trycloudflare.com/webhook/manaa-cadastro", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(pagBody)
+          });
+          const pagData = await rp.json();
+          if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
+            window.location.href = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
+          } else {
+            throw new Error(pagData.message || "Sem link ASAAS");
+          }
+        } catch (pe) {
+          // fallback: manda pro WhatsApp mesmo assim
+          setTimeout(() => { window.location.href = waUrl; }, 1500);
+        }
+      }
     } catch (e) {
       const err = document.getElementById("err-final");
       err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app.br";
