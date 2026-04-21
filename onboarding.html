@@ -712,10 +712,20 @@
             body: JSON.stringify(pagBody)
           });
           const pagData = await rp.json();
-          if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
+          if (pagData.ok && pagData.flow === 'pix_automatico') {
+            showStep(5);
+            document.querySelector('[data-step="5"] .step-title').textContent = "Autorize o PIX Automático";
+            const expDate = pagData.expirationDate ? new Date(pagData.expirationDate).toLocaleString('pt-BR') : '';
+            document.querySelector('[data-step="5"] .step-sub').innerHTML =
+              '<p style="margin-bottom:12px">Escaneie o QR Code abaixo no seu banco para <strong>autorizar o débito automático</strong> mensal de R$&nbsp;' + Number(pagData.value || 14.99).toFixed(2).replace('.', ',') + ':</p>' +
+              '<img src="data:image/png;base64,' + pagData.qrCodeImage + '" style="max-width:220px;margin:0 auto 16px;display:block;border-radius:10px;box-shadow:0 2px 12px rgba(0,0,0,.15)" />' +
+              '<p style="font-size:13px;color:#666;margin-bottom:6px">Ou copie o código PIX copia e cola:</p>' +
+              '<div id="pixPayload" style="background:#f5f5f5;padding:10px 12px;border-radius:8px;font-size:11px;word-break:break-all;cursor:pointer;color:#333" onclick="navigator.clipboard.writeText(\'' + pagData.payload + '\');this.style.background=\'#d4edda\';this.textContent=\'Copiado!\'">' + (pagData.payload || '').substring(0, 50) + '...</div>' +
+              (expDate ? '<p style="font-size:12px;color:#999;margin-top:10px">Válido até: ' + expDate + '</p>' : '') +
+              '<p style="margin-top:16px;font-size:13px;color:#888">Após autorizar no banco, o seu plano será ativado automaticamente.</p>';
+          } else if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
             const payUrl = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
             openInNewTab(payUrl);
-            // Mostra tela "Aguardando pagamento" na aba original
             showStep(5);
             document.querySelector('[data-step="5"] .step-title').textContent = "Finalizando pagamento...";
             document.querySelector('[data-step="5"] .step-sub').innerHTML = 'Abrimos a tela de pagamento em nova aba. Depois de pagar, volta aqui e te conecto com o WhatsApp. <br><br><a href="'+payUrl+'" target="_blank" rel="noopener" style="color:var(--gold)">Não abriu? Clica aqui</a>';
