@@ -498,7 +498,7 @@
 </div>
 
 <script>
-  const WEBHOOK_URL = "https://met-near-organizational-chemistry.trycloudflare.com/webhook/manaa-onboarding"; // Cloudflare Tunnel temp → n8n
+  const WEBHOOK_URL = "https://duration-offline-orchestra-couple.trycloudflare.com/webhook/manaa-onboarding"; // Cloudflare Tunnel temp → n8n
   const WEBHOOK_SECRET = "iwfD3ZbZ73zfmKijEDqmmTkqZuQ1zL2N59hidvbhrWk"; // mesmo secret no n8n Validar Payload
   let momentos = new Set();
   let genero = "X";
@@ -706,7 +706,7 @@
             plan_code: plano,
             successUrl: "https://manaaapp.github.io/pagamento-sucesso.html?plan=" + encodeURIComponent(plano)
           };
-          const rp = await fetch("https://met-near-organizational-chemistry.trycloudflare.com/webhook/manaa-cadastro", {
+          const rp = await fetch("https://duration-offline-orchestra-couple.trycloudflare.com/webhook/manaa-cadastro", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(pagBody)
