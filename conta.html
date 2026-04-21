@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manaã — Minha Conta</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --gold:#B8912E;--gold-soft:#D4B86A;--gold-bg:#F9F3E8;
+      --bg:#FDFBF8;--text:#1a1a1a;--muted:#666;--border:#E8DFD0;
+      --card:#fff;--radius:16px;--shadow:0 4px 24px rgba(0,0,0,.08)
+    }
+    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+    .logo{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);letter-spacing:.5px;margin-bottom:8px;text-align:center}
+    .logo-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:32px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;width:100%;max-width:420px;border:1px solid var(--border)}
+    h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;margin-bottom:8px;color:var(--text)}
+    p.hint{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+    label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text)}
+    input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border .2s;background:#fff;color:var(--text)}
+    input:focus{border-color:var(--gold)}
+    input.otp-input{letter-spacing:6px;font-size:22px;text-align:center;font-weight:600}
+    .btn{width:100%;padding:14px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s;margin-top:16px;font-family:'Inter',sans-serif}
+    .btn:hover{opacity:.9}
+    .btn:disabled{opacity:.5;cursor:not-allowed}
+    .btn-outline{background:transparent;color:var(--gold);border:1.5px solid var(--gold);margin-top:10px}
+    .err{color:#c0392b;font-size:13px;margin-top:10px;display:none}
+    .err.show{display:block}
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* Dashboard */
+    .avatar{width:60px;height:60px;background:var(--gold-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin:0 auto 16px;font-weight:700}
+    .name-display{text-align:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:500;margin-bottom:4px}
+    .phone-display{text-align:center;font-size:13px;color:var(--muted);margin-bottom:24px}
+    .info-grid{display:grid;gap:12px}
+    .info-row{background:var(--gold-bg);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+    .info-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
+    .info-value{font-size:14px;font-weight:600;color:var(--text)}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+    .badge.trial{background:#FFF3CD;color:#856404}
+    .badge.active{background:#D1FAE5;color:#065F46}
+    .badge.canceled{background:#FEE2E2;color:#991B1B}
+    .divider{height:1px;background:var(--border);margin:20px 0}
+    .action-link{display:block;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px}
+    .action-link:hover{color:var(--gold)}
+    .versículo{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--muted);text-align:center;margin-top:20px;line-height:1.6;border-top:1px solid var(--border);padding-top:16px}
+  </style>
+</head>
+<body>
+
+<div class="logo">Manaã</div>
+<div class="logo-sub">Área do Assinante</div>
+
+<div class="card">
+
+  <!-- TELA 1: PHONE -->
+  <div class="screen active" id="screen-phone">
+    <h2>Acessar minha conta</h2>
+    <p class="hint">Informe o WhatsApp cadastrado. Você receberá um código de 6 dígitos.</p>
+    <label for="inp-phone">WhatsApp (com DDD)</label>
+    <input type="tel" id="inp-phone" placeholder="(11) 91234-5678" maxlength="15" autocomplete="tel">
+    <div class="err" id="err-phone">Número não encontrado. Verifique o WhatsApp cadastrado.</div>
+    <button class="btn" id="btn-send" onclick="sendOtp()">Enviar código</button>
+  </div>
+
+  <!-- TELA 2: OTP -->
+  <div class="screen" id="screen-otp">
+    <h2>Digite o código</h2>
+    <p class="hint">Enviamos um código de 6 dígitos para o seu WhatsApp. Válido por 10 minutos.</p>
+    <label for="inp-otp">Código de acesso</label>
+    <input type="number" id="inp-otp" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+    <div class="err" id="err-otp">Código inválido ou expirado. Tente novamente.</div>
+    <button class="btn" id="btn-verify" onclick="verifyOtp()">Entrar</button>
+    <button class="btn btn-outline" onclick="backToPhone()">Voltar</button>
+  </div>
+
+  <!-- TELA 3: DASHBOARD -->
+  <div class="screen" id="screen-dash">
+    <div class="avatar" id="dash-avatar">M</div>
+    <div class="name-display" id="dash-name">—</div>
+    <div class="phone-display" id="dash-phone">—</div>
+
+    <div class="info-grid">
+      <div class="info-row">
+        <div>
+          <div class="info-label">Status</div>
+          <div class="info-value" id="dash-status">—</div>
+        </div>
+        <span class="badge" id="dash-badge">—</span>
+      </div>
+      <div class="info-row">
+        <div>
+          <div class="info-label">Plano</div>
+          <div class="info-value" id="dash-plan">—</div>
+        </div>
+      </div>
+      <div class="info-row" id="row-trial" style="display:none">
+        <div>
+          <div class="info-label">Período de teste</div>
+          <div class="info-value" id="dash-trial">—</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div>
+          <div class="info-label">Momento de vida</div>
+          <div class="info-value" id="dash-momento">—</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <a class="action-link" onclick="cancelSub()">Cancelar assinatura</a>
+    <a class="action-link" onclick="logout()" style="margin-top:8px;color:#aaa">Sair</a>
+
+    <div class="versículo">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
+  </div>
+
+</div>
+
+<script>
+  const API = 'https://ears-requires-involving-remembered.trycloudflare.com/webhook';
+  let currentPhone = '';
+  let userData = null;
+
+  // Formatação de telefone
+  document.getElementById('inp-phone').addEventListener('input', function(e){
+    let v = e.target.value.replace(/\D/g,'');
+    if(v.length > 11) v = v.slice(0,11);
+    if(v.length > 7) v = '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+    else if(v.length > 2) v = '('+v.slice(0,2)+') '+v.slice(2);
+    else if(v.length > 0) v = '('+v;
+    e.target.value = v;
+  });
+
+  // OTP: apenas números
+  document.getElementById('inp-otp').addEventListener('input', function(e){
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,6);
+  });
+
+  // Enter to submit
+  document.getElementById('inp-phone').addEventListener('keydown', e => { if(e.key==='Enter') sendOtp(); });
+  document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-'+id).classList.add('active');
+  }
+
+  function showErr(id, show){
+    const el = document.getElementById('err-'+id);
+    if(el) el.className = show ? 'err show' : 'err';
+  }
+
+  async function sendOtp(){
+    const raw = document.getElementById('inp-phone').value;
+    const phone = raw.replace(/\D/g,'');
+    if(phone.length < 10){ showErr('phone',true); return; }
+
+    const btn = document.getElementById('btn-send');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    showErr('phone', false);
+
+    try {
+      const r = await fetch(API+'/manaa-conta-otp', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phone})
+      });
+      const data = await r.json();
+      if(data.success){
+        currentPhone = phone;
+        showScreen('otp');
+        document.getElementById('inp-otp').focus();
+      } else {
+        showErr('phone', true);
+      }
+    } catch(e) {
+      showErr('phone', true);
+    }
+    btn.disabled = false; btn.textContent = 'Enviar código';
+  }
+
+  async function verifyOtp(){
+    const otp = document.getElementById('inp-otp').value.trim();
+    if(otp.length !== 6){ showErr('otp',true); return; }
+
+    const btn = document.getElementById('btn-verify');
+    btn.disabled = true; btn.textContent = 'Verificando...';
+    showErr('otp', false);
+
+    try {
+      const r = await fetch(API+'/manaa-conta-verify', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phone: currentPhone, otp})
+      });
+      const data = await r.json();
+      if(data.success){
+        userData = data.data;
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, data: userData, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+      } else {
+        showErr('otp', true);
+      }
+    } catch(e) {
+      showErr('otp', true);
+    }
+    btn.disabled = false; btn.textContent = 'Entrar';
+  }
+
+  function renderDash(d){
+    const firstName = (d.name || '').split(' ')[0];
+    document.getElementById('dash-avatar').textContent = firstName.charAt(0).toUpperCase() || 'M';
+    document.getElementById('dash-name').textContent = d.name || '—';
+    document.getElementById('dash-phone').textContent = formatPhone(d.phone) || '—';
+
+    const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
+    const statusText = statusMap[d.status] || d.status || '—';
+    document.getElementById('dash-status').textContent = statusText;
+
+    const badge = document.getElementById('dash-badge');
+    badge.textContent = statusText;
+    badge.className = 'badge ' + (d.status || 'trial');
+    if(d.status === 'trialing') badge.className = 'badge trial';
+    else if(d.status === 'active') badge.className = 'badge active';
+    else badge.className = 'badge canceled';
+
+    const planMap = { monthly:'Mensal · R$ 14,90', annual:'Anual · R$ 159,90', free:'Gratuito' };
+    document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
+
+    if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
+      document.getElementById('row-trial').style.display = '';
+      document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
+    }
+
+    const momentoMap = { fé:'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
+    document.getElementById('dash-momento').textContent = momentoMap[d.momento_vida] || d.momento_vida || '—';
+  }
+
+  function formatPhone(p){
+    if(!p) return '';
+    const n = p.replace(/\D/g,'');
+    if(n.length === 13) return '+'+n.slice(0,2)+' ('+n.slice(2,4)+') '+n.slice(4,9)+'-'+n.slice(9);
+    return p;
+  }
+
+  function backToPhone(){
+    showErr('otp',false);
+    document.getElementById('inp-otp').value = '';
+    showScreen('phone');
+  }
+
+  function logout(){
+    localStorage.removeItem('manaa_session');
+    userData = null;
+    currentPhone = '';
+    document.getElementById('inp-phone').value = '';
+    document.getElementById('inp-otp').value = '';
+    showScreen('phone');
+  }
+
+  async function cancelSub(){
+    if(!confirm('Tem certeza que deseja cancelar sua assinatura Manaã?')) return;
+    // TODO: call n8n cancel endpoint → send WhatsApp confirmation
+    const phone = currentPhone;
+    try {
+      await fetch(API+'/manaa-wa-webhook-v2', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          object:'whatsapp_business_account',
+          entry:[{id:'web',changes:[{value:{
+            messaging_product:'whatsapp',
+            metadata:{phone_number_id:'974587859082346'},
+            messages:[{from:phone.replace('+',''),type:'text',text:{body:'cancelar'},id:'web-'+Date.now()}]
+          },field:'messages'}]}]
+        })
+      });
+      alert('Solicitação enviada! Você receberá uma confirmação no WhatsApp.');
+    } catch(e) {
+      alert('Erro ao processar. Entre em contato pelo WhatsApp.');
+    }
+  }
+
+  // Restaurar sessão
+  (function(){
+    const saved = localStorage.getItem('manaa_session');
+    if(!saved) return;
+    try{
+      const s = JSON.parse(saved);
+      // Sessão válida por 7 dias
+      if(Date.now() - s.ts < 7*24*60*60*1000 && s.data){
+        userData = s.data;
+        currentPhone = s.phone;
+        renderDash(userData);
+        showScreen('dash');
+      }
+    } catch(e){}
+  })();
+</script>
+
+</body>
+</html>
