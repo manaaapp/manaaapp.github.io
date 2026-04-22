@@ -723,6 +723,7 @@
               '<div id="pixPayload" style="background:#f5f5f5;padding:10px 12px;border-radius:8px;font-size:11px;word-break:break-all;cursor:pointer;color:#333" onclick="navigator.clipboard.writeText(\'' + pagData.payload + '\');this.style.background=\'#d4edda\';this.textContent=\'Copiado!\'">' + (pagData.payload || '').substring(0, 50) + '...</div>' +
               (expDate ? '<p style="font-size:12px;color:#999;margin-top:10px">Válido até: ' + expDate + '</p>' : '') +
               '<p id="pixStatus" style="margin-top:16px;font-size:13px;color:#888">Aguardando autorização no banco...</p>';
+            // Poll status every 6s — redirect when active
             const authId = pagData.authorizationId;
             const pollTimer = setInterval(async () => {
               try {
@@ -735,6 +736,7 @@
                 }
               } catch(e) {}
             }, 6000);
+            // Stop polling after 15min
             setTimeout(() => clearInterval(pollTimer), 900000);
           } else if (pagData.ok && (pagData.redirect_url || pagData.init_point || pagData.paymentLink)) {
             const payUrl = pagData.redirect_url || pagData.init_point || pagData.paymentLink;
