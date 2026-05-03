@@ -498,8 +498,7 @@
 </div>
 
 <script>
-  const WEBHOOK_URL = "https://duration-offline-orchestra-couple.trycloudflare.com/webhook/manaa-onboarding"; // Cloudflare Tunnel temp → n8n
-  const WEBHOOK_SECRET = "iwfD3ZbZ73zfmKijEDqmmTkqZuQ1zL2N59hidvbhrWk"; // mesmo secret no n8n Validar Payload
+  const WEBHOOK_URL = "https://blowing-caribbean-coding-breakdown.trycloudflare.com/webhook/manaa-onboarding"; // Cloudflare Tunnel temp → n8n
   let momentos = new Set();
   let genero = "X";
   const planos = ["trial", "mensal", "anual"];
@@ -627,8 +626,7 @@
       const r = await fetch(WEBHOOK_URL, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "X-Webhook-Secret": WEBHOOK_SECRET
+          "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
       });
@@ -706,7 +704,7 @@
             plan_code: plano,
             successUrl: "https://manaaapp.github.io/pagamento-sucesso.html?plan=" + encodeURIComponent(plano)
           };
-          const rp = await fetch("https://duration-offline-orchestra-couple.trycloudflare.com/webhook/manaa-cadastro", {
+          const rp = await fetch("https://blowing-caribbean-coding-breakdown.trycloudflare.com/webhook/manaa-cadastro", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(pagBody)
@@ -727,7 +725,7 @@
             const authId = pagData.authorizationId;
             const pollTimer = setInterval(async () => {
               try {
-                const sr = await fetch('https://duration-offline-orchestra-couple.trycloudflare.com/webhook/manaa-asaas-status?id=' + encodeURIComponent(authId));
+                const sr = await fetch('https://blowing-caribbean-coding-breakdown.trycloudflare.com/webhook/manaa-asaas-status?id=' + encodeURIComponent(authId));
                 const sd = await sr.json();
                 if (sd.status === 'active') {
                   clearInterval(pollTimer);
