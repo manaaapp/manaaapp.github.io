@@ -49,7 +49,12 @@
     input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset !important; -webkit-text-fill-color: #2D2A26 !important; transition: background-color 5000s ease-in-out 0s; }
     .btn { padding: 13px; font-size: 15px; }
     .nav .btn-back { flex: 0 0 80px; padding: 13px 8px; }
-    .plan-cards { grid-template-columns: 1fr; gap: 8px; }
+    #plan-cards { display: flex !important; flex-direction: row; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 4px 0 8px; margin: 0 -12px 8px; padding-left: 12px; padding-right: 12px; }
+    #plan-cards::-webkit-scrollbar { display: none; }
+    #plan-cards .plan-card { flex: 0 0 78%; scroll-snap-align: center; margin-bottom: 0; }
+    .plan-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 10px; }
+    .plan-dot { width: 6px; height: 6px; border-radius: 50%; background: #E5DDD0; transition: background 0.2s, width 0.2s; }
+    .plan-dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
     .field-row { grid-template-columns: 1fr !important; }
     #pago-fields > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
     .plan-card .plan-price-2 { font-size: 26px; }
@@ -590,6 +595,32 @@
         <p class="plan-desc-2">Equivale a R$ 13,33/mês. Sem renovação. Garantia 7 dias.</p>
       </div>
     </div>
+    <div class="plan-dots" id="plan-dots-indicator"><span class="plan-dot" data-i="0"></span><span class="plan-dot active" data-i="1"></span><span class="plan-dot" data-i="2"></span></div>
+    <script>
+    (function(){
+      const pc = document.getElementById('plan-cards');
+      const dots = document.querySelectorAll('#plan-dots-indicator .plan-dot');
+      if (!pc) return;
+      // Scroll inicial centra no Mensal (1) em mobile
+      setTimeout(() => { if (window.innerWidth <= 480) { const m = pc.querySelector('[data-plan=mensal]'); if (m) m.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'}); } }, 100);
+      pc.addEventListener('scroll', () => {
+        const cards = Array.from(pc.querySelectorAll('.plan-card'));
+        const pcr = pc.getBoundingClientRect();
+        const center = pcr.left + pcr.width/2;
+        let bestIdx = 0, bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const r = c.getBoundingClientRect();
+          const d = Math.abs((r.left + r.width/2) - center);
+          if (d < bestDist) { bestDist = d; bestIdx = i; }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+      });
+      dots.forEach((dot, i) => dot.addEventListener('click', () => {
+        const card = pc.querySelectorAll('.plan-card')[i];
+        if (card) card.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+      }));
+    })();
+    </script>
 
     <h3 id="sec-pay" style="font-family:'Lora',Georgia,serif;font-size:17px;font-weight:700;margin:22px 0 12px;color:#8B6914;display:flex;align-items:center;gap:8px">
       <span style="display:inline-block;width:4px;height:18px;background:linear-gradient(180deg,#B8912E,#8B6914);border-radius:2px"></span>
