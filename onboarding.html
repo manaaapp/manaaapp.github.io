@@ -254,6 +254,39 @@
   .err {
     color: var(--red); font-size: 13px; margin-top: 6px;
   }
+  #err-final {
+    background: linear-gradient(180deg, #fdf2f2 0%, #fbe9e9 100%);
+    border: 1.5px solid #f5c6cb;
+    border-left: 4px solid #dc3545;
+    border-radius: 12px;
+    padding: 14px 16px 14px 14px;
+    margin: 14px 0;
+    color: #842029;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(220,53,69,0.12);
+    animation: shakeErr 0.4s cubic-bezier(.36,.07,.19,.97);
+  }
+  #err-final[style*="block"], #err-final.show { display: flex !important; }
+  @keyframes shakeErr {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  #err-final::before {
+    content: '!';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #dc3545; color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+    box-shadow: 0 2px 6px rgba(220,53,69,0.3);
+  }
 </style>
 </head>
 <body>
@@ -1210,10 +1243,10 @@ async function submitForm() {
   const lgpd = document.getElementById('lgpd').checked;
   const errEl = document.getElementById('err-final');
   errEl.style.display = 'none';
-  if (!lgpd) { errEl.style.display='block'; errEl.textContent='Aceite os termos pra continuar.'; return; }
+  if (!lgpd) { errEl.style.display='flex'; errEl.textContent='Aceite os termos pra continuar.'; return; }
   const billing = currentBillingV2();
   if (currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC' && !document.getElementById('consent-cb').checked) {
-    errEl.style.display='block'; errEl.textContent='Marque o consentimento do PIX Automático.'; return;
+    errEl.style.display='flex'; errEl.textContent='Marque o consentimento do PIX Automático.'; return;
   }
   const btn = document.getElementById('btn-submit');
   btn.disabled = true;
@@ -1232,7 +1265,13 @@ async function submitForm() {
         body: JSON.stringify(getFullOnboardPayload())
       });
       goStepV2(5);
-    } catch(e) { btn.disabled=false; btn.textContent=oldLabel; errEl.style.display='block'; errEl.textContent='Erro: ' + (e && e.message || String(e)); }
+    } catch(e) {
+      btn.disabled=false;
+      if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
+      errEl.style.display='flex';
+      errEl.textContent = (e && e.message) ? e.message : 'Não conseguimos cadastrar agora. Tente de novo em instantes.';
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     return;
   }
 
@@ -1240,7 +1279,7 @@ async function submitForm() {
   const cpf = document.getElementById('pag-cpf-static').value.replace(/\D/g,'');
   if (!email.includes('@') || cpf.length !== 11) {
     btn.disabled=false; btn.textContent=oldLabel;
-    errEl.style.display='block'; errEl.textContent='Preencha email e CPF validos.';
+    errEl.style.display='flex'; errEl.textContent='Preencha email e CPF validos.';
     return;
   }
 
@@ -1271,7 +1310,7 @@ async function submitForm() {
       body: JSON.stringify(payload)
     });
     const data = await r.json();
-    if (!data.ok) throw new Error(data.error || data.error_description || 'Pagamento recusado. Verifique os dados ou tente outro cartão.');
+    if (!data.ok) throw new Error(data.error || data.error_description || 'Não conseguimos processar o pagamento. Verifique os dados ou tente outra forma.');
     // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
     if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
       const idForUrl = data.paymentId || data.subscriptionId || '';
@@ -1283,8 +1322,11 @@ async function submitForm() {
     if (data.paymentId) pollPaymentStatus(data.paymentId);
     else if (data.firstPaymentId) pollPaymentStatus(data.firstPaymentId);
   } catch(e) {
-    btn.disabled=false; btn.textContent=oldLabel;
-    errEl.style.display='block'; errEl.textContent='Erro: ' + (e && e.message || String(e));
+    btn.disabled=false;
+    if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
+    errEl.style.display='flex';
+    errEl.textContent = (e && e.message) ? e.message : 'Algo deu errado ao processar o pagamento. Tente novamente em instantes.';
+    errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
