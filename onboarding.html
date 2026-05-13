@@ -962,6 +962,12 @@ function goStepV2(n) {
 function renderStep5Result(data) {
   const sub = document.querySelector('.step[data-step="5"] .step-sub');
   const title = document.querySelector('.step[data-step="5"] .step-title');
+  // CC já confirma direto - redireciona pra tela bonita sem mostrar Assinatura criada
+  if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
+    const idForUrl = data.paymentId || data.subscriptionId || '';
+    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+    return;
+  }
   if (data.pix && data.pix.qrImage) {
     title.textContent = 'Escaneie pra pagar';
     sub.innerHTML = '<img src="data:image/png;base64,' + data.pix.qrImage + '" style="max-width:240px;border:1px solid #E5DDD0;border-radius:8px;display:block;margin:8px auto"><p style="margin:10px 0 6px;font-size:13px">Ou copie o código:</p><input value="' + data.pix.payload + '" readonly onclick="this.select()" style="width:100%;padding:8px;border:1px solid #E5DDD0;border-radius:6px;font-family:monospace;font-size:11px"><p style="margin-top:14px;font-size:13px">Após pagar você recebe confirmação no WhatsApp.</p>';
