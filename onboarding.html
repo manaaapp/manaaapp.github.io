@@ -1419,16 +1419,18 @@ function goStepV2(n) {
   window.scrollTo({top: 0, behavior: 'smooth'});
   // Quando entrar no step 4, centrar carrossel no Mensal
   if (n === 4) {
-    requestAnimationFrame(() => {
+    if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+    setTimeout(() => {
       const pc = document.getElementById('plan-cards');
       if (pc && window.innerWidth <= 480) {
         const m = pc.querySelector('[data-plan=mensal]');
-        if (m) { m.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'}); }
-        if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
-        // Atualizar dots
+        if (m) {
+          const targetLeft = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2;
+          pc.scrollLeft = Math.max(0, targetLeft);
+        }
         document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
       }
-    });
+    }, 50);
   }
 }
 
