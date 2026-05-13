@@ -704,7 +704,7 @@
       <div class="success-icon">✓</div>
       <h2 class="step-title">Pronto!</h2>
       <p class="step-sub">Você vai receber a primeira mensagem agora no WhatsApp. Amanhã às <strong id="conf-horario">06:30</strong> começa o devocional diário.</p>
-      <p style="font-size:13px;color:var(--muted);margin-top:30px">Sem WhatsApp em alguns minutos? Confere o número: <strong id="conf-fone"></strong>. Se errou, fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</p>
+      <p style="font-size:13px;color:var(--muted);margin-top:30px">Sem WhatsApp em alguns minutos? Confere o número: <strong id="conf-fone"></strong>. Se errou, fala com a gente em <a href="mailto:manaa.fbx@gmail.com">manaa.fbx@gmail.com</a>.</p>
     </div>
   </div>
 </div>
@@ -970,7 +970,7 @@
           }
         } catch (pe) {
           const err = document.getElementById("err-final");
-          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:14px;border-radius:10px;color:#742a2a">Erro gerando cobrança: ' + (p(e && e.message || String(e)) || "tente de novo") + '. Fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</div>';
+          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:14px;border-radius:10px;color:#742a2a">Erro gerando cobrança: ' + (p(e && e.message || String(e)) || "tente de novo") + '. Fala com a gente em <a href="mailto:manaa.fbx@gmail.com">manaa.fbx@gmail.com</a>.</div>';
           err.style.display = "block";
           btn.disabled = false;
           btn.textContent = "Começar minha jornada";
@@ -978,7 +978,7 @@
       }
     } catch (e) {
       const err = document.getElementById("err-final");
-      err.textContent = "Algo deu errado. Tenta de novo ou nos chama em contato@manaa.app";
+      err.textContent = "Algo deu errado. Tenta de novo ou nos chama em manaa.fbx@gmail.com";
       err.style.display = "block";
       btn.disabled = false;
       btn.textContent = "Começar minha jornada";
@@ -1327,7 +1327,8 @@ async function submitForm() {
     }
     goStepV2(5);
     renderStep5Result(data);
-    if (data.paymentId) pollPaymentStatus(data.paymentId);
+    if (data.subscriptionId) pollPaymentStatus(data.subscriptionId);
+    else if (data.paymentId) pollPaymentStatus(data.paymentId);
     else if (data.firstPaymentId) pollPaymentStatus(data.firstPaymentId);
   } catch(e) {
     btn.disabled=false;
