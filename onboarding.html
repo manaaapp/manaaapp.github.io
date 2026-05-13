@@ -1392,9 +1392,9 @@ function renderStep5Result(data) {
         el.style.background='#d4edda'; el.style.borderColor='#16a34a'; el.style.color='#16a34a';
       });
     }, 100);
-  } else if (data.subscriptionId) {
-    title.textContent = 'Assinatura criada';
-    sub.innerHTML = '<p>Você vai receber o QR de autorização no WhatsApp em instantes pra confirmar a primeira cobrança.</p>';
+  } else if (data.subscriptionId && data.idempotent) {
+    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId);
+    return;
   } else if (data.invoiceUrl) {
     title.textContent = 'Tudo pronto';
     sub.innerHTML = '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
