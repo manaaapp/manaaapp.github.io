@@ -227,6 +227,24 @@
     </div>
   </section>
 
+
+  <div id="cc-fields" style="display:none;background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px">
+    <h3 style="font-family:'Lora',serif;font-size:15px;font-weight:600;margin:0 0 10px;color:var(--ink)">Dados do cartão</h3>
+    <div style="display:grid;grid-template-columns:1fr;gap:10px">
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Número do cartão<input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;letter-spacing:0.5px"></label>
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Nome impresso no cartão<input id="cc-name" type="text" placeholder="Igual no cartão" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit;text-transform:uppercase"></label>
+    </div>
+    <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-top:10px">
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Mês<input id="cc-month" type="text" inputmode="numeric" maxlength="2" placeholder="MM" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Ano<input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">CVV<input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+    </div>
+    <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">CEP<input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Número<input id="cc-num" type="text" placeholder="Ex: 100" style="padding:10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+    </div>
+  </div>
+
   <button class="cta" id="cta-btn" disabled>
     <span id="cta-text">Autorizar PIX Automático — R$ 14,99/mês</span>
   </button>
