@@ -94,6 +94,13 @@
       var t = document.getElementById('title'); if (t) t.textContent = 'Cadastro feito!';
       var s = document.getElementById('sub'); if (s) s.textContent = 'Pra começar seu teste grátis, manda a primeira mensagem pra mim no WhatsApp.';
     }
+    var status = (p.get('status') || '').toLowerCase();
+    if (status === 'existing') {
+      msg = "Ol%C3%A1%20Mana%C3%A3!%20Quero%20continuar%20nossa%20conversa%20%F0%9F%99%8F";
+      var t2 = document.getElementById('title'); if (t2) t2.textContent = 'Você já está com a gente';
+      var s2 = document.getElementById('sub'); if (s2) s2.textContent = 'Sua assinatura do Manaã já está ativa. Continue conversando comigo pelo WhatsApp — é só seguir falando.';
+      var btnLabel = document.querySelector('#wa-btn span'); if (btnLabel) btnLabel.textContent = 'Continuar no WhatsApp';
+    }
     var url = "https://wa.me/15551804368?text=" + msg;
     var waBtn = document.getElementById('wa-btn');
     waBtn.href = url;

@@ -1393,7 +1393,7 @@ function renderStep5Result(data) {
       });
     }, 100);
   } else if (data.subscriptionId && data.idempotent) {
-    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId);
+    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
     return;
   } else if (data.invoiceUrl) {
     title.textContent = 'Tudo pronto';
