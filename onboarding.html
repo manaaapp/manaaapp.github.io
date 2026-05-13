@@ -1183,6 +1183,21 @@ function refreshPayButton() {
   const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
   const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
 
+  // Mostrar hint de campo invalido proximo ao input (inline)
+  const hintMap = { 'Nome': 'first-name', 'Sobrenome': 'last-name', 'WhatsApp': 'phone', 'Email válido': 'pag-email-static', 'CPF válido': 'pag-cpf-static', 'CEP': 'cc-cep', 'número do endereço': 'cc-num', 'número do cartão': 'cc-number', 'nome impresso': 'cc-name', 'validade do cartão': 'cc-month', 'CVV': 'cc-cvv' };
+  document.querySelectorAll('.inline-err').forEach(e => e.remove());
+  st.missing.forEach(field => {
+    const inputId = hintMap[field]; if (!inputId) return;
+    const el = document.getElementById(inputId); if (!el) return;
+    const parent = el.parentElement; if (!parent) return;
+    if (parent.querySelector('.inline-err')) return;
+    const err = document.createElement('div');
+    err.className = 'inline-err';
+    err.style.cssText = 'color:#c1402c;font-size:11.5px;margin-top:3px;font-weight:500';
+    err.textContent = field === 'CPF válido' ? 'CPF inválido — confira os dígitos' : (field === 'Email válido' ? 'Email inválido — confira' : (field === 'WhatsApp' ? 'Celular incompleto — DDD + 9 + número' : 'Preencha ' + field));
+    parent.appendChild(err);
+  });
+
   if (!st.valid) {
     btn.disabled = true;
     btn.textContent = 'Preencha os dados';
