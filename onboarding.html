@@ -937,7 +937,7 @@
           }
         } catch (pe) {
           const err = document.getElementById("err-final");
-          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:14px;border-radius:10px;color:#742a2a">Erro gerando cobrança: ' + (pe.mêssage || "tente de novo") + '. Fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</div>';
+          err.innerHTML = '<div style="background:#fde8e8;border:1px solid #e53e3e;padding:14px;border-radius:10px;color:#742a2a">Erro gerando cobrança: ' + (p(e && e.message || String(e)) || "tente de novo") + '. Fala com a gente em <a href="mailto:contato@manaa.app">contato@manaa.app</a>.</div>';
           err.style.display = "block";
           btn.disabled = false;
           btn.textContent = "Começar minha jornada";
@@ -1232,7 +1232,7 @@ async function submitForm() {
         body: JSON.stringify(getFullOnboardPayload())
       });
       goStepV2(5);
-    } catch(e) { btn.disabled=false; btn.textContent=oldLabel; errEl.style.display='block'; errEl.textContent='Erro: ' + e.mêssage; }
+    } catch(e) { btn.disabled=false; btn.textContent=oldLabel; errEl.style.display='block'; errEl.textContent='Erro: ' + (e && e.message || String(e)); }
     return;
   }
 
@@ -1284,7 +1284,7 @@ async function submitForm() {
     else if (data.firstPaymentId) pollPaymentStatus(data.firstPaymentId);
   } catch(e) {
     btn.disabled=false; btn.textContent=oldLabel;
-    errEl.style.display='block'; errEl.textContent='Erro: ' + e.mêssage;
+    errEl.style.display='block'; errEl.textContent='Erro: ' + (e && e.message || String(e));
   }
 }
 
