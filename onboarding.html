@@ -636,6 +636,11 @@
         const card = pc.querySelectorAll('.plan-card')[i];
         if (card) card.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
       }));
+      pc.querySelectorAll('.plan-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          if (window.innerWidth <= 480) { card.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'}); }
+        });
+      });
     })();
     </script>
 
