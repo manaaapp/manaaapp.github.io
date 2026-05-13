@@ -484,7 +484,14 @@
     <div class="pay-list" id="pay-anual" style="display:none">
       <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento único de R$ 159,99. Confirmação na hora.</div></div></label>
       <label class="pay-opt" data-pay="CC_AVISTA"><input type="radio" name="pay-a" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão à vista</div><div class="pay-opt-desc">R$ 159,99 em uma parcela.</div></div></label>
-      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_12"><div><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Até 12x sem juros (R$ 13,33/mês).</div></div></label>
+      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_PARC"><div style="flex:1"><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Sem juros pra você. Escolha em quantas vezes:</div><select id="cc-parcelas" style="margin-top:8px;padding:8px 10px;border:1.5px solid #E5DDD0;border-radius:8px;font-size:13.5px;font-family:inherit;width:100%;background:#fff" onclick="event.stopPropagation()">
+        <option value="2">2x de R$ 79,99</option>
+        <option value="3">3x de R$ 53,33</option>
+        <option value="4">4x de R$ 40,00</option>
+        <option value="6">6x de R$ 26,67</option>
+        <option value="10">10x de R$ 16,00</option>
+        <option value="12" selected>12x de R$ 13,33</option>
+      </select></div></label>
     </div>
 
     <div class="pay-list" id="pay-trial" style="display:none">
@@ -844,22 +851,30 @@ function refreshConsentAndExtra() {
   if (isTrial) label = 'Começar grátis';
   else if (currentPlanV2 === 'mensal') label = (billing === 'PIX_AUTOMATIC') ? 'Autorizar PIX Automático - R$ 14,99/mês' : 'Continuar com cartão - R$ 14,99/mês';
   else if (billing === 'PIX') label = 'Pagar com PIX - R$ 159,99';
-  else if (billing === 'CREDIT_CARD_12') label = 'Continuar parcelado - R$ 159,99';
+  else if (billing === 'CREDIT_CARD_12') label = 'Pagar em ' + getInstallmentsV2() + 'x - R$ 159,99';
   else label = 'Pagar à vista - R$ 159,99';
   btn.textContent = label;
 }
 function currentBillingV2() {
   if (currentPlanV2 === 'trial') return null;
   if (currentPlanV2 === 'mensal') return document.querySelector('input[name="pay-m"]:checked')?.value || 'PIX_AUTOMATIC';
-  return document.querySelector('input[name="pay-a"]:checked')?.value || 'PIX';
+  const v = document.querySelector('input[name="pay-a"]:checked')?.value || 'PIX';
+  // CREDIT_CARD_PARC virtual -> mapeia pra CREDIT_CARD pro Worker, installments separa
+  return v === 'CREDIT_CARD_PARC' ? 'CREDIT_CARD_12' : v;
 }
 function getInstallmentsV2() {
-  return (currentPlanV2 === 'anual' && document.querySelector('input[name="pay-a"]:checked')?.value === 'CREDIT_CARD_12') ? 12 : 1;
+  if (currentPlanV2 !== 'anual') return 1;
+  const v = document.querySelector('input[name="pay-a"]:checked')?.value;
+  if (v === 'CREDIT_CARD_PARC') {
+    return parseInt(document.getElementById('cc-parcelas').value || '12');
+  }
+  return 1;
 }
 
 document.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => selectPlanV2(c.dataset.plan)));
 document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', () => selectPayOpt(l)));
 document.getElementById('consent-cb').addEventListener('change', refreshConsentAndExtra);
+const ccp = document.getElementById('cc-parcelas'); if (ccp) ccp.addEventListener('change', refreshConsentAndExtra);
 
 function getFullOnboardPayload() {
   return {
