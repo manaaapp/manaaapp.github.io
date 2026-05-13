@@ -1356,7 +1356,18 @@ function renderStep5Result(data) {
   }
   if (data.pix && data.pix.qrImage) {
     title.textContent = 'Escaneie pra pagar';
-    sub.innerHTML = '<img src="data:image/png;base64,' + data.pix.qrImage + '" style="max-width:240px;border:1px solid #E5DDD0;border-radius:8px;display:block;margin:8px auto"><p style="margin:10px 0 6px;font-size:13px">Ou copie o código:</p><input value="' + data.pix.payload + '" readonly onclick="this.select()" style="width:100%;padding:8px;border:1px solid #E5DDD0;border-radius:6px;font-family:monospace;font-size:11px"><p style="margin-top:14px;font-size:13px">Após pagar você recebe confirmação no WhatsApp.</p>';
+    const payloadEscaped = (data.pix.payload || '').replace(/"/g,'&quot;').replace(/'/g,"&#39;");
+    sub.innerHTML = '<img src="data:image/png;base64,' + data.pix.qrImage + '" style="max-width:240px;border:1px solid #E5DDD0;border-radius:8px;display:block;margin:8px auto"><p style="margin:10px 0 6px;font-size:13px">Ou toque para copiar o código PIX:</p><div id="pixPayloadCopy" data-payload="' + payloadEscaped + '" style="width:100%;padding:12px;border:1.5px solid #B8912E;border-radius:8px;font-family:monospace;font-size:12px;background:#fdf9f0;cursor:pointer;word-break:break-all;color:#333;user-select:all">' + (data.pix.payload || '').slice(0,60) + '...</div><p id="pixCopiedTxt" style="display:none;color:#16a34a;font-size:13px;margin-top:10px;font-weight:600">✓ Código copiado! Cole no app do seu banco.</p><p style="margin-top:14px;font-size:13px">Após pagar você recebe confirmação no WhatsApp.</p>';
+    setTimeout(() => {
+      const el = document.getElementById('pixPayloadCopy');
+      if (el) el.addEventListener('click', async () => {
+        const v = el.dataset.payload;
+        try { await navigator.clipboard.writeText(v); }
+        catch(e) { const ta=document.createElement('textarea'); ta.value=v; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta); }
+        const ok=document.getElementById('pixCopiedTxt'); if (ok) ok.style.display='block';
+        el.style.background='#d4edda'; el.style.borderColor='#16a34a';
+      });
+    }, 100);
   } else if (data.subscriptionId) {
     title.textContent = 'Assinatura criada';
     sub.innerHTML = '<p>Você vai receber o QR de autorização no WhatsApp em instantes pra confirmar a primeira cobrança.</p>';
