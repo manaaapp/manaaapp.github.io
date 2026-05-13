@@ -1356,31 +1356,24 @@ function renderStep5Result(data) {
     return;
   }
   if (data.pix && data.pix.qrImage) {
-    title.textContent = 'Escaneie pra pagar';
+    title.textContent = '';
     const payloadEscaped = (data.pix.payload || '').replace(/"/g,'&quot;').replace(/'/g,"&#39;");
     const valor = data.value ? Number(data.value).toFixed(2).replace('.',',') : '';
     sub.innerHTML = `
-<div style="max-width:380px;margin:0 auto;text-align:center;font-family:'Inter',system-ui,sans-serif">
-  ${valor ? `<p style="font-size:14px;color:#666;margin-bottom:4px">Valor a pagar</p><p style="font-size:32px;font-weight:700;color:#B8912E;margin-bottom:20px;font-family:'Playfair Display',Georgia,serif">R$ ${valor}</p>` : ''}
-  <div style="background:#fff;border:1px solid #E5DDD0;border-radius:16px;padding:18px;box-shadow:0 4px 20px rgba(184,145,46,0.08);display:inline-block;max-width:100%">
-    <img src="data:image/png;base64,${data.pix.qrImage}" alt="QR Code PIX" style="max-width:240px;width:100%;height:auto;display:block;margin:0 auto;border-radius:8px" />
+<div style="max-width:260px;margin:0 auto;text-align:center;font-family:'Inter',system-ui,sans-serif">
+  ${valor ? `<div style="margin-bottom:14px"><div style="font-size:12px;color:#8C847A;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:2px">Pague com PIX</div><div style="font-family:'Playfair Display',Georgia,serif;font-size:30px;font-weight:700;color:#2D2A26;font-feature-settings:'tnum' 1;font-variant-numeric:tabular-nums">R$ ${valor}</div></div>` : ''}
+  <img src="data:image/png;base64,${data.pix.qrImage}" alt="QR Code PIX" style="width:240px;max-width:100%;height:auto;display:block;margin:0 auto;border:1px solid #E5DDD0;border-radius:10px" />
+  <div style="font-size:12.5px;color:#8C847A;margin-top:10px">Aponte a câmera do seu banco</div>
+  <div style="margin:14px auto 10px;width:240px;max-width:100%;display:flex;align-items:center;gap:8px;color:#C9B98B;font-size:11px;letter-spacing:1px">
+    <div style="flex:1;height:1px;background:#E5DDD0"></div><span>OU</span><div style="flex:1;height:1px;background:#E5DDD0"></div>
   </div>
-  <p style="margin:18px 0 8px;font-size:14px;color:#555;font-weight:500">Abra o app do seu banco e escaneie</p>
-  <div style="margin:20px 0 8px;display:flex;align-items:center;gap:10px;color:#999;font-size:12px">
-    <div style="flex:1;height:1px;background:#E5DDD0"></div>
-    <span>OU</span>
-    <div style="flex:1;height:1px;background:#E5DDD0"></div>
-  </div>
-  <p style="margin:8px 0 10px;font-size:13.5px;color:#444">Toque pra copiar o código PIX:</p>
-  <button type="button" id="pixPayloadCopy" data-payload="${payloadEscaped}" style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:14px 18px;border:1.5px solid #B8912E;border-radius:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;background:#fdf9f0;cursor:pointer;color:#8B6914;transition:all 0.2s;outline:none">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-    <span id="pixCopyLabel">Copiar código PIX copia e cola</span>
+  <button type="button" id="pixPayloadCopy" data-payload="${payloadEscaped}" style="width:240px;max-width:100%;padding:12px 14px;border:1px solid #B8912E;border-radius:10px;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:600;background:#fff;cursor:pointer;color:#8B6914;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:background 0.15s">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    <span id="pixCopyLabel">Copiar código copia e cola</span>
   </button>
-  <p id="pixCopiedTxt" style="display:none;color:#16a34a;font-size:13px;margin-top:12px;font-weight:600">✓ Código copiado! Agora cole no app do seu banco.</p>
-  <p style="margin-top:24px;font-size:13px;color:#888;line-height:1.5">Após pagar você é redirecionado automaticamente e recebe a confirmação no WhatsApp.</p>
-  <div style="margin-top:16px;display:inline-flex;align-items:center;gap:8px;color:#16a34a;font-size:13px;font-weight:500"><span style="display:inline-block;width:8px;height:8px;background:#16a34a;border-radius:50%;animation:pixPulse 1.5s ease-in-out infinite"></span>Aguardando pagamento...</div>
-</div>
-<style>@keyframes pixPulse{0%,100%{opacity:1}50%{opacity:0.3}}</style>`;
+  <div id="pixCopiedTxt" style="display:none;color:#16a34a;font-size:12.5px;margin-top:8px">Código copiado</div>
+  <div style="margin-top:18px;font-size:12px;color:#8C847A;line-height:1.5">Confirmação automática após pagamento</div>
+</div>`;
     setTimeout(() => {
       const el = document.getElementById('pixPayloadCopy');
       if (el) el.addEventListener('click', async () => {
