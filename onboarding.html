@@ -632,10 +632,6 @@
         <div class="field"><label>Ano</label><input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA"></div>
         <div class="field"><label>CVV</label><input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000"></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
-        <div class="field"><label>CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000"></div>
-        <div class="field"><label>Número</label><input id="cc-num" type="text" placeholder="Ex: 100"></div>
-      </div>
     </div>
 
     <div id="pago-fields" style="display:none;background:linear-gradient(180deg,#FBF5E5 0%,#FEFCF7 100%);border:1px solid #E0C97A;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
@@ -643,11 +639,15 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Pra finalizar o pagamento</div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
         <div class="field" style="margin-bottom:0"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
         <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" inputmode="numeric"></div>
       </div>
-      <small style="color:#7a7263;display:block;margin-top:10px;font-size:11.5px;line-height:1.5">Exigido pelo processador. Sem cobrança antes da confirmação.</small>
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:10px">
+        <div class="field" style="margin-bottom:0"><label>CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code"></div>
+        <div class="field" style="margin-bottom:0"><label>Número</label><input id="cc-num" type="text" placeholder="Ex: 100" autocomplete="address-line2"></div>
+      </div>
+      <small style="color:#7a7263;display:block;margin-top:10px;font-size:11.5px;line-height:1.5">Exigido pelo processador e pra emissão da nota fiscal. Sem cobrança antes da confirmação.</small>
     </div>
 
     <div class="lgpd" style="margin-bottom:10px">
@@ -1098,6 +1098,12 @@ function getValidationState() {
   if (!isValidEmail(email)) errs.push('Email válido');
   if (!isValidCPF(cpf)) errs.push('CPF válido');
 
+  // CEP e Número obrigatórios pra TODOS os pagos (necessário pra emitir NF)
+  const cep = (document.getElementById('cc-cep')?.value || '').replace(/\D/g,'');
+  const numero = (document.getElementById('cc-num')?.value || '').trim();
+  if (cep.length !== 8) errs.push('CEP');
+  if (numero.length < 1) errs.push('número do endereço');
+
   const isPixAuto = (plan === 'mensal' && billing === 'PIX_AUTOMATIC');
   if (isPixAuto && !document.getElementById('consent-cb')?.checked) errs.push('consentimento PIX Automático');
 
@@ -1108,14 +1114,10 @@ function getValidationState() {
     const mm = (document.getElementById('cc-month')?.value || '').trim();
     const yy = (document.getElementById('cc-year')?.value || '').trim();
     const cvv = (document.getElementById('cc-cvv')?.value || '').trim();
-    const cep = (document.getElementById('cc-cep')?.value || '').replace(/\D/g,'');
-    const numero = (document.getElementById('cc-num')?.value || '').trim();
     if (!luhnCheck(num)) errs.push('número do cartão');
     if (holder.length < 3) errs.push('nome impresso');
     if (!isValidExpiry(mm, yy)) errs.push('validade do cartão');
     if (cvv.length < 3 || cvv.length > 4) errs.push('CVV');
-    if (cep.length !== 8) errs.push('CEP');
-    if (numero.length < 1) errs.push('número do endereço');
   }
 
   return { valid: errs.length === 0, missing: errs };
@@ -1293,10 +1295,15 @@ async function submitForm() {
   const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
 
   try {
-    const payload = { plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(), name, first_name: _fn, last_name: _ln, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked };
+    const postalCode = document.getElementById('cc-cep').value.replace(/\D/g,'');
+    const addressNumber = document.getElementById('cc-num').value.trim();
+    const payload = {
+      plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(),
+      name, first_name: _fn, last_name: _ln, email, phone: phoneDigits, cpf,
+      postalCode, addressNumber,
+      consent: document.getElementById('consent-cb').checked
+    };
     if (billingFinal === 'CREDIT_CARD') {
-      payload.postalCode = document.getElementById('cc-cep').value.replace(/\D/g,'');
-      payload.addressNumber = document.getElementById('cc-num').value.trim();
       payload.creditCard = {
         holderName: document.getElementById('cc-name').value.trim().toUpperCase(),
         number: document.getElementById('cc-number').value.replace(/\D/g,''),
