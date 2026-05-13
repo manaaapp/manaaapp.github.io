@@ -1111,31 +1111,45 @@ setTimeout(run,600);
                 </ul>
                 <a href="/onboarding.html?plano=trial" class="btn btn-secondary" style="width:100%;text-align:center;">Começar</a>
             </div>
-            <div class="plan">
+            <div class="plan featured-popular" style="position:relative">
+                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#B8912E;color:white;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.04em">MAIS ESCOLHIDO</span>
                 <h3>Mensal</h3>
-                <div class="subtitle">Reflexão + conversa + áudio</div>
+                <div class="subtitle">Assinatura — cancele quando quiser</div>
                 <div class="price">R$14,99 <span>/mês</span></div>
                 <ul>
                     <li>Tudo do plano gratuito</li>
                     <li>Conversar sobre a Palavra</li>
-                    <li>Reflexões aprofundadas</li>
-                    <li>Conteúdo em áudio</li>
-                    <li>Mensagens que acompanham sua jornada</li>
+                    <li>Reflexões personalizadas pro seu momento</li>
+                    <li>Oração em áudio</li>
+                    <li>Companheiro espiritual que cresce com você</li>
                 </ul>
-                <a href="/onboarding.html?plano=mensal" class="btn btn-secondary" style="width:100%;text-align:center;">Assinar mensal</a>
+                <a href="/onboarding.html?plano=mensal" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
             </div>
             <div class="plan featured">
                 <h3>Anual</h3>
-                <div class="subtitle">Melhor valor — economize R$ 19,89</div>
+                <div class="subtitle">Equivale a 10 meses do mensal</div>
                 <div class="price" style="white-space:nowrap;">R$159,99<span>/ano</span></div>
                 <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">equivale a R$ 13,33/mês</p>
                 <ul>
                     <li>Tudo do plano mensal</li>
-                    <li>12 meses pelo preço de ~10,7</li>
+                    <li>Pagamento único, sem renovação</li>
                     <li>Prioridade em novos recursos</li>
-                    <li>Cancele nos primeiros 7 dias com reembolso total</li>
+                    <li>Garantia de 7 dias, estorno integral</li>
                 </ul>
-                <a href="/onboarding.html?plano=anual" class="btn btn-primary" style="width:100%;text-align:center;">Assinar anual</a>
+                <a href="/onboarding.html?plano=anual" class="btn btn-secondary" style="width:100%;text-align:center;">Assinar anual</a>
+            </div>
+        </div>
+    </section>
+
+    
+    <section class="section" id="depoimentos" style="background: linear-gradient(180deg, transparent 0%, #fbf7ee 100%);">
+        <div class="section-label">Pessoas reais</div>
+        <h2 class="section-title">Quem usa o Manaã, fala</h2>
+        <p class="section-desc">Senhoras e senhores que começaram o dia com fé pelo WhatsApp.</p>
+        <div style="max-width:760px;margin:2rem auto 0;border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#efe3c5 0%,#f7eed3 100%);aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;box-shadow:0 24px 60px rgba(70,50,20,0.12),0 4px 16px rgba(70,50,20,0.06);position:relative;">
+            <div style="text-align:center;color:#8c7647;padding:2rem;">
+                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="opacity:0.5;display:block;margin:0 auto 12px"><polygon points="6,4 20,12 6,20"/><circle cx="12" cy="12" r="10"/></svg>
+                <div style="font-size:13px;line-height:1.5">Espaço para vídeo testemunho<br>de senhora usando o Manaã</div>
             </div>
         </div>
     </section>
@@ -1280,7 +1294,7 @@ setTimeout(run,600);
                 legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>.';
             } else if (plan === 'anual') {
                 title.textContent = 'Assinar Manaã — Anual';
-                subline.textContent = 'R$ 159,99/ano (R$ 13,33/mês). Cancele nos primeiros 7 dias com reembolso total.';
+                subline.textContent = 'R$ 159,99/ano (R$ 13,33/mês). Garantia de 7 dias, estorno integral.';
                 submit.textContent = 'Continuar para pagamento';
                 refundWrap.style.display = 'flex';
                 legal.innerHTML = 'Ao continuar você aceita nossos <a href="termos.html">Termos de Uso</a> e <a href="privacidade.html">Política de Privacidade</a>. O pagamento é processado de forma segura pelo Mercado Pago.';
