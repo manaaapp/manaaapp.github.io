@@ -1416,6 +1416,7 @@ function goStepV2(n) {
   document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
   document.querySelector('.step[data-step="' + n + '"]').classList.add('active');
   document.querySelectorAll('.progress-step').forEach((s,i) => s.classList.toggle('active', i < n));
+  window.scrollTo({top: 0, behavior: 'smooth'});
   // Quando entrar no step 4, centrar carrossel no Mensal
   if (n === 4) {
     requestAnimationFrame(() => {
