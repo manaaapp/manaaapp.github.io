@@ -428,61 +428,90 @@
     </div>
   </div>
 
-  <!-- Step 4: Plano + LGPD -->
+  <!-- Step 4: Plano (mock v2 integrado) -->
   <div class="step" data-step="4">
-    <h2 class="step-title">Quase lá</h2>
-    <p class="step-sub">Escolha seu plano. Pode trocar depois quando quiser.</p>
+    <h2 class="step-title">Quase la</h2>
+    <p class="step-sub">Escolha como continuar com a gente.</p>
 
-    <div class="plan-carousel">
-      <button class="plan-arrow plan-prev" onclick="planMove(-1)" aria-label="Anterior">‹</button>
-      <div class="plan-stage">
-        <div class="plan-track" id="plan-track">
-          <div class="plan-slide" data-plan="trial">
-            <div class="plan-badge plan-badge-free">SEM CARTÃO</div>
-            <div class="plan-name">7 dias grátis</div>
-            <div class="plan-price">R$ 0</div>
-            <div class="plan-detail">Sem cobrança automática. Experimenta sem compromisso — se a gente conquistar você, é só dizer "Quero continuar" e a gente envia o link de pagamento.</div>
-          </div>
-          <div class="plan-slide" data-plan="mensal">
-            <div class="plan-badge plan-badge-best">MAIS ESCOLHIDO</div>
-            <div class="plan-name">Mensal</div>
-            <div class="plan-price">R$ 14,99<span style="font-size:14px;font-weight:500;color:var(--muted)">/mês</span></div>
-            <div class="plan-detail">≈ R$ 0,50 por dia. Cancela quando quiser sem fidelidade.</div>
-          </div>
-          <div class="plan-slide" data-plan="anual">
-            <div class="plan-badge plan-badge-save">ECONOMIZE 1 MÊS</div>
-            <div class="plan-name">Anual</div>
-            <div class="plan-price">R$ 159,99<span style="font-size:14px;font-weight:500;color:var(--muted)">/ano</span></div>
-            <div class="plan-detail">≈ R$ 13,33/mês. PIX à vista ou em até 12x no cartão. Você ganha 1 mês comparado ao mensal.</div>
-          </div>
-        </div>
+    <style>
+      .plan-card { background:#fff; border:1.5px solid #E5DDD0; border-radius:14px; padding:16px; cursor:pointer; transition:.18s; position:relative; margin-bottom:10px; }
+      .plan-card.active { border-color:#B8912E; box-shadow:0 0 0 3px rgba(184,145,46,0.08); }
+      .plan-card .plan-head-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+      .plan-card .plan-name-2 { font-family:'Lora',serif; font-size:18px; font-weight:600; color:#2D2A26; }
+      .plan-card .plan-tag-2 { font-size:11px; color:#B8912E; background:#F5EBD0; padding:3px 9px; border-radius:12px; font-weight:500; }
+      .plan-card .plan-price-2 { font-size:26px; font-weight:600; margin:2px 0 1px; letter-spacing:-0.02em; color:#2D2A26; }
+      .plan-card .plan-price-2 small { font-size:13px; font-weight:400; color:#5C564D; }
+      .plan-card .plan-desc-2 { font-size:13px; color:#5C564D; margin:4px 0 0; }
+      .badge-save-2 { position:absolute; top:-8px; right:14px; background:#B8912E; color:white; font-size:11px; padding:3px 10px; border-radius:12px; font-weight:500; }
+      .pay-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
+      .pay-opt { background:#fff; border:1.5px solid #E5DDD0; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; gap:10px; align-items:flex-start; transition:.15s; }
+      .pay-opt.active { border-color:#B8912E; background:#FEFCF7; }
+      .pay-opt input { margin-top:3px; accent-color:#B8912E; width:16px; height:16px; }
+      .pay-opt-title { font-weight:500; font-size:14.5px; color:#2D2A26; }
+      .pay-opt-desc { font-size:12.5px; color:#5C564D; margin-top:3px; line-height:1.4; }
+      .pay-tag-rec { font-size:10px; background:#F5EBD0; color:#B8912E; padding:2px 7px; border-radius:10px; font-weight:500; margin-left:6px; }
+      .consent-box { background:#F5F0E8; border:1px solid #E5DDD0; border-radius:10px; padding:11px 13px; margin-bottom:12px; display:flex; gap:10px; align-items:flex-start; }
+      .consent-box input { margin-top:2px; accent-color:#B8912E; width:17px; height:17px; flex-shrink:0; }
+      .consent-box label { font-size:12.5px; line-height:1.5; color:#2D2A26; }
+    </style>
+
+    <div id="plan-cards">
+      <div class="plan-card" data-plan="trial">
+        <div class="plan-head-row"><span class="plan-name-2">7 dias gratis</span><span class="plan-tag-2">Sem cartao</span></div>
+        <div class="plan-price-2">R$ 0</div>
+        <p class="plan-desc-2">Experimente sem compromisso. Apos 7 dias, te enviamos o link de pagamento.</p>
       </div>
-      <button class="plan-arrow plan-next" onclick="planMove(1)" aria-label="Próximo">›</button>
-    </div>
-    <div class="plan-dots" id="plan-dots">
-      <span class="plan-dot" data-i="0"></span>
-      <span class="plan-dot active" data-i="1"></span>
-      <span class="plan-dot" data-i="2"></span>
-    </div>
-
-    <div class="lgpd">
-      <label>
-        <input type="checkbox" id="lgpd" required>
-        <span>Li e aceito a <a href="/privacidade.html" target="_blank">Política de Privacidade</a> e os <a href="/termos.html" target="_blank">Termos de Uso</a>. Autorizo o Manaã a me enviar mensagens no WhatsApp informado. Posso cancelar a qualquer momento mandando "PARAR".</span>
-      </label>
+      <div class="plan-card active" data-plan="mensal">
+        <div class="plan-head-row"><span class="plan-name-2">Mensal</span><span class="plan-tag-2">Assinatura</span></div>
+        <div class="plan-price-2">R$ 14,99<small>/mes</small></div>
+        <p class="plan-desc-2">Renova automaticamente. Cancele quando quiser.</p>
+      </div>
+      <div class="plan-card" data-plan="anual">
+        <span class="badge-save-2">Economize 11%</span>
+        <div class="plan-head-row"><span class="plan-name-2">Anual</span><span class="plan-tag-2">Pagamento unico</span></div>
+        <div class="plan-price-2">R$ 159,99<small>/ano</small></div>
+        <p class="plan-desc-2">Equivale a R$ 13,33/mes. Sem renovacao. Garantia 7 dias.</p>
+      </div>
     </div>
 
-    <div id="pago-fields" style="display:none;background:#faf6ee;border:1px solid #e5e0d6;border-radius:12px;padding:16px;margin:12px 0">
-      <div style="font-weight:600;margin-bottom:10px">Pra finalizar o plano pago precisamos de:</div>
-      <div class="field"><label>Email (recibo da cobrança)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
-      <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" autocomplete="off"></div>
-      <small style="color:#8c847a;display:block;margin-top:8px">Exigido pelo ASAAS (processador de pagamento). Não cobramos nada antes do pagamento confirmado.</small>
+    <h3 id="sec-pay" style="font-family:'Lora',serif;font-size:16px;font-weight:600;margin:18px 0 10px;color:#2D2A26">Forma de pagamento</h3>
+
+    <div class="pay-list" id="pay-mensal">
+      <label class="pay-opt active" data-pay="PIX_AUTOMATIC"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automatico <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobrancas mensais automaticas.</div></div></label>
+      <label class="pay-opt" data-pay="CREDIT_CARD_REC"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartao de Credito</div><div class="pay-opt-desc">Pague mensal pelo cartao. Atualize ou cancele pelo portal.</div></div></label>
     </div>
+
+    <div class="pay-list" id="pay-anual" style="display:none">
+      <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento unico de R$ 159,99. Confirmacao na hora.</div></div></label>
+      <label class="pay-opt" data-pay="CC_AVISTA"><input type="radio" name="pay-a" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartao a vista</div><div class="pay-opt-desc">R$ 159,99 em uma parcela.</div></div></label>
+      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_12"><div><div class="pay-opt-title">Cartao parcelado</div><div class="pay-opt-desc">Ate 12x sem juros (R$ 13,33/mes).</div></div></label>
+    </div>
+
+    <div class="pay-list" id="pay-trial" style="display:none">
+      <p style="font-size:13px;color:#5C564D;text-align:center;margin:8px 0 12px">Sem cobranca. Experimente por 7 dias.</p>
+    </div>
+
+    <div class="consent-box" id="consent-box">
+      <input type="checkbox" id="consent-cb">
+      <label for="consent-cb">Entendo que serao debitados <strong>R$ 14,99</strong> da minha conta todo mes via PIX Automatico. Posso cancelar a qualquer momento.</label>
+    </div>
+
+    <div id="pago-fields" style="display:none;background:#faf6ee;border:1px solid #e5e0d6;border-radius:10px;padding:12px;margin-bottom:12px">
+      <div style="font-weight:600;margin-bottom:8px;font-size:13.5px">Pra finalizar o pagamento:</div>
+      <div class="field"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com"></div>
+      <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14"></div>
+      <small style="color:#8c847a;display:block;margin-top:6px;font-size:12px">Exigido pelo processador. Sem cobranca antes da confirmacao.</small>
+    </div>
+
+    <div class="lgpd" style="margin-bottom:10px">
+      <label><input type="checkbox" id="lgpd" required><span>Li e aceito a <a href="/privacidade.html" target="_blank">Politica</a> e os <a href="/termos.html" target="_blank">Termos</a>. Autorizo mensagens no WhatsApp. Posso cancelar a qualquer momento.</span></label>
+    </div>
+
     <div id="err-final" class="err" style="display:none"></div>
 
     <div class="nav">
       <button class="btn btn-back" onclick="back(3)">Voltar</button>
-      <button class="btn" id="btn-submit" onclick="submitForm()">Começar minha jornada</button>
+      <button class="btn" id="btn-submit" onclick="submitForm()">Comecar minha jornada</button>
     </div>
   </div>
 
@@ -589,7 +618,7 @@
     return "+" + p;
   }
 
-  async function submitForm() {
+  async function _OLDSUBMIT() {
     if (!document.getElementById("lgpd").checked) {
       const err = document.getElementById("err-final");
       err.textContent = "Aceite a Política de Privacidade e os Termos de Uso pra continuar.";
@@ -761,6 +790,160 @@
       btn.textContent = "Começar minha jornada";
     }
   }
+
+// === Checkout v2 integrado ===
+const WORKER_URL_CHK = 'https://manaa-meta-webhook.manaa-fbx.workers.dev';
+let currentPlanV2 = 'mensal';
+
+function selectPlanV2(plano) {
+  currentPlanV2 = plano;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('active', c.dataset.plan === plano));
+  document.getElementById('pay-mensal').style.display = plano === 'mensal' ? 'flex' : 'none';
+  document.getElementById('pay-anual').style.display = plano === 'anual' ? 'flex' : 'none';
+  document.getElementById('pay-trial').style.display = plano === 'trial' ? 'flex' : 'none';
+  document.getElementById('sec-pay').style.display = plano === 'trial' ? 'none' : 'block';
+  refreshConsentAndExtra();
+}
+function selectPayOpt(label) {
+  const group = label.parentElement;
+  group.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('active'));
+  label.classList.add('active');
+  refreshConsentAndExtra();
+}
+function refreshConsentAndExtra() {
+  const consent = document.getElementById('consent-box');
+  const pagoFields = document.getElementById('pago-fields');
+  const btn = document.getElementById('btn-submit');
+  const isTrial = currentPlanV2 === 'trial';
+  const billing = currentBillingV2();
+  const showConsent = currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC';
+  consent.style.display = showConsent ? 'flex' : 'none';
+  pagoFields.style.display = isTrial ? 'none' : 'block';
+  let label = '';
+  if (isTrial) label = 'Comecar gratis';
+  else if (currentPlanV2 === 'mensal') label = (billing === 'PIX_AUTOMATIC') ? 'Autorizar PIX Automatico - R$ 14,99/mes' : 'Continuar com cartao - R$ 14,99/mes';
+  else if (billing === 'PIX') label = 'Pagar com PIX - R$ 159,99';
+  else if (billing === 'CREDIT_CARD_12') label = 'Continuar parcelado - R$ 159,99';
+  else label = 'Pagar a vista - R$ 159,99';
+  btn.textContent = label;
+}
+function currentBillingV2() {
+  if (currentPlanV2 === 'trial') return null;
+  if (currentPlanV2 === 'mensal') return document.querySelector('input[name="pay-m"]:checked')?.value || 'PIX_AUTOMATIC';
+  return document.querySelector('input[name="pay-a"]:checked')?.value || 'PIX';
+}
+function getInstallmentsV2() {
+  return (currentPlanV2 === 'anual' && document.querySelector('input[name="pay-a"]:checked')?.value === 'CREDIT_CARD_12') ? 12 : 1;
+}
+
+document.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => selectPlanV2(c.dataset.plan)));
+document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', () => selectPayOpt(l)));
+document.getElementById('consent-cb').addEventListener('change', refreshConsentAndExtra);
+
+function getFullOnboardPayload() {
+  return {
+    name: document.getElementById('name').value.trim(),
+    phone: document.getElementById('phone').value.replace(/\D/g, ''),
+    genero: (typeof genero !== 'undefined') ? genero : 'X',
+    religiao: document.getElementById('religiao').value,
+    inspiracoes: document.getElementById('inspiracoes').value.trim(),
+    horario: document.getElementById('horario').value,
+    versao: document.getElementById('versao').value,
+    momentos: (typeof momentos !== 'undefined') ? Array.from(momentos) : [],
+    ocupacao: document.getElementById('ocupacao').value.trim(),
+    proposito: document.getElementById('proposito').value.trim(),
+    plano: currentPlanV2,
+    lgpd: document.getElementById('lgpd').checked
+  };
+}
+
+async function submitForm() {
+  const isTrial = currentPlanV2 === 'trial';
+  const lgpd = document.getElementById('lgpd').checked;
+  const errEl = document.getElementById('err-final');
+  errEl.style.display = 'none';
+  if (!lgpd) { errEl.style.display='block'; errEl.textContent='Aceite os termos pra continuar.'; return; }
+  const billing = currentBillingV2();
+  if (currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC' && !document.getElementById('consent-cb').checked) {
+    errEl.style.display='block'; errEl.textContent='Marque o consentimento do PIX Automatico.'; return;
+  }
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  const oldLabel = btn.textContent;
+  btn.textContent = 'Processando...';
+
+  const name = document.getElementById('name').value.trim();
+  const phoneDigits = document.getElementById('phone').value.replace(/\D/g,'');
+
+  if (isTrial) {
+    try {
+      await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(getFullOnboardPayload())
+      });
+      goStepV2(5);
+    } catch(e) { btn.disabled=false; btn.textContent=oldLabel; errEl.style.display='block'; errEl.textContent='Erro: ' + e.message; }
+    return;
+  }
+
+  const email = document.getElementById('pag-email-static').value.trim();
+  const cpf = document.getElementById('pag-cpf-static').value.replace(/\D/g,'');
+  if (!email.includes('@') || cpf.length !== 11) {
+    btn.disabled=false; btn.textContent=oldLabel;
+    errEl.style.display='block'; errEl.textContent='Preencha email e CPF validos.';
+    return;
+  }
+
+  try {
+    await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(getFullOnboardPayload())
+    });
+  } catch(e) {}
+
+  const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
+
+  try {
+    const r = await fetch(WORKER_URL_CHK + '/api/checkout/init', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({
+        plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(),
+        name, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked
+      })
+    });
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || 'Erro no checkout');
+    goStepV2(5);
+    renderStep5Result(data);
+  } catch(e) {
+    btn.disabled=false; btn.textContent=oldLabel;
+    errEl.style.display='block'; errEl.textContent='Erro: ' + e.message;
+  }
+}
+
+function goStepV2(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector('.step[data-step="' + n + '"]').classList.add('active');
+  document.querySelectorAll('.progress-step').forEach((s,i) => s.classList.toggle('active', i < n));
+}
+
+function renderStep5Result(data) {
+  const sub = document.querySelector('.step[data-step="5"] .step-sub');
+  const title = document.querySelector('.step[data-step="5"] .step-title');
+  if (data.pix && data.pix.qrImage) {
+    title.textContent = 'Escaneie pra pagar';
+    sub.innerHTML = '<img src="data:image/png;base64,' + data.pix.qrImage + '" style="max-width:240px;border:1px solid #E5DDD0;border-radius:8px;display:block;margin:8px auto"><p style="margin:10px 0 6px;font-size:13px">Ou copie o codigo:</p><input value="' + data.pix.payload + '" readonly onclick="this.select()" style="width:100%;padding:8px;border:1px solid #E5DDD0;border-radius:6px;font-family:monospace;font-size:11px"><p style="margin-top:14px;font-size:13px">Apos pagar voce recebe confirmacao no WhatsApp.</p>';
+  } else if (data.subscriptionId) {
+    title.textContent = 'Assinatura criada';
+    sub.innerHTML = '<p>Voce vai receber o QR de autorizacao no WhatsApp em instantes pra confirmar a primeira cobranca.</p>';
+  } else if (data.invoiceUrl) {
+    title.textContent = 'Tudo pronto';
+    sub.innerHTML = '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
+  }
+}
+
+selectPlanV2('mensal');
+
 </script>
 
 </body>
