@@ -797,6 +797,19 @@
       el.classList.toggle("done", i + 1 < s);
     });
     window.scrollTo({top: 0, behavior: "smooth"});
+    if (s === 4) {
+      window._suppressScrollSelect = true;
+      setTimeout(() => {
+        const pc = document.getElementById('plan-cards');
+        if (pc && window.innerWidth <= 480) {
+          const m = pc.querySelector('[data-plan=mensal]');
+          if (m) { const t = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2; pc.scrollLeft = Math.max(0, t); }
+        }
+        if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+        document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
+        setTimeout(() => { window._suppressScrollSelect = false; }, 800);
+      }, 50);
+    }
   }
   // Clicar no progress-step volta pra step anterior
   document.querySelectorAll(".progress-step").forEach(el => {
