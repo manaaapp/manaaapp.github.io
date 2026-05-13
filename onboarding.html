@@ -629,6 +629,7 @@
       }, 100);
       let scrollTimer;
       pc.addEventListener('scroll', () => {
+        if (window._suppressScrollSelect) return;
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(selectByCenter, 80);
       });
@@ -1419,7 +1420,7 @@ function goStepV2(n) {
   window.scrollTo({top: 0, behavior: 'smooth'});
   // Quando entrar no step 4, centrar carrossel no Mensal
   if (n === 4) {
-    if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+    window._suppressScrollSelect = true;
     setTimeout(() => {
       const pc = document.getElementById('plan-cards');
       if (pc && window.innerWidth <= 480) {
@@ -1428,8 +1429,10 @@ function goStepV2(n) {
           const targetLeft = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2;
           pc.scrollLeft = Math.max(0, targetLeft);
         }
-        document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
       }
+      if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+      document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
+      setTimeout(() => { window._suppressScrollSelect = false; }, 600);
     }, 50);
   }
 }
