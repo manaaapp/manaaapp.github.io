@@ -1370,7 +1370,7 @@ async function pollPaymentStatus(paymentId) {
   for (let i = 0; i < 150; i++) {
     await new Promise(r => setTimeout(r, 5000));
     try {
-      const r = await fetch(WORKER_URL_CHK + '/api/checkout/status?id=' + encodeURIComponent(paymentId));
+      const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-asaas-status?id=' + encodeURIComponent(paymentId));
       const d = await r.json();
       const s = (d && d.status || '').toLowerCase();
       if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
