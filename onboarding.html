@@ -942,7 +942,13 @@ async function submitForm() {
       body: JSON.stringify(payload)
     });
     const data = await r.json();
-    if (!data.ok) throw new Error(data.error || 'Erro no checkout');
+    if (!data.ok) throw new Error(data.error || data.error_description || 'Pagamento recusado. Verifique os dados ou tente outro cartão.');
+    // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
+    if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
+      const idForUrl = data.paymentId || data.subscriptionId || '';
+      window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+      return;
+    }
     goStepV2(5);
     renderStep5Result(data);
     if (data.paymentId) pollPaymentStatus(data.paymentId);
