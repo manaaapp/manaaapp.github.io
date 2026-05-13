@@ -256,14 +256,20 @@
     <h2 class="step-title">Quem é você?</h2>
     <p class="step-sub">Pra começar, alguns dados básicos.</p>
 
-    <div class="field">
-      <label>Nome completo</label>
-      <input type="text" id="name" placeholder="Ex: Maria Silva" required>
+    <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field">
+        <label>Nome</label>
+        <input type="text" id="first-name" placeholder="Ex: Maria" required autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label>Sobrenome</label>
+        <input type="text" id="last-name" placeholder="Ex: Silva" required autocomplete="family-name">
+      </div>
     </div>
 
     <div class="field">
       <label>WhatsApp (com DDD)</label>
-      <input type="tel" id="phone" placeholder="(43) 99999-9999" required>
+      <input type="tel" id="phone" placeholder="(43) 99999-9999" required autocomplete="tel-national">
       <div class="hint">É pra esse número que vamos enviar.</div>
     </div>
 
@@ -534,9 +540,43 @@
 
     <div id="err-final" class="err" style="display:none"></div>
 
+    <!-- Selos de segurança e bandeiras (visíveis só nos planos pagos) -->
+    <div id="security-seals" style="display:none;margin:14px 0 16px;padding:14px;background:#fafaf7;border:1px solid #ece6d8;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12.5px;color:#5b5448;font-weight:600">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2f7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Pagamento 100% seguro
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start">
+        <!-- Logo PIX -->
+        <div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center;gap:6px">
+          <svg width="22" height="22" viewBox="0 0 60 60" fill="none"><path d="M30 0L60 30L30 60L0 30L30 0Z" fill="#32BCAD"/><path d="M30 11.4L41.5 22.9L48.6 30L41.5 37.1L30 48.6L18.5 37.1L11.4 30L18.5 22.9L30 11.4Z" fill="#fff"/><path d="M30 11.4L18.5 22.9L25.6 30L30 25.6L34.4 30L41.5 22.9L30 11.4Z" fill="#32BCAD"/><path d="M30 48.6L18.5 37.1L25.6 30L30 34.4L34.4 30L41.5 37.1L30 48.6Z" fill="#32BCAD"/></svg>
+          <span style="font-size:11px;font-weight:700;color:#32BCAD">PIX</span>
+        </div>
+        <!-- Visa -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div>
+        <!-- Mastercard -->
+        <div style="background:#fff;padding:5px 8px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center">
+          <svg width="28" height="18" viewBox="0 0 48 30"><circle cx="18" cy="15" r="11" fill="#EB001B"/><circle cx="30" cy="15" r="11" fill="#F79E1B"/><path d="M24 6.5a11 11 0 0 0 0 17 11 11 0 0 0 0-17Z" fill="#FF5F00"/></svg>
+        </div>
+        <!-- Elo -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:11px;font-weight:900;color:#000">ELO</div>
+        <!-- Amex -->
+        <div style="background:#006FCF;padding:5px 8px;border-radius:6px;font-family:Arial,sans-serif;font-size:9px;font-weight:900;color:#fff;letter-spacing:0.5px">AMEX</div>
+        <!-- ASAAS -->
+        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6b6453">
+          via
+          <span style="font-family:Arial,sans-serif;font-weight:900;font-size:13px;color:#0040ff;letter-spacing:-0.5px">asaas</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#7a7263;line-height:1.4;display:flex;align-items:center;gap:6px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7a7263" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Seus dados são criptografados (SSL) e processados pela ASAAS, fintech licenciada pelo Banco Central.
+      </div>
+    </div>
+
     <div class="nav">
       <button class="btn btn-back" onclick="back(3)">Voltar</button>
-      <button class="btn" id="btn-submit" onclick="submitForm()">Começar minha jornada</button>
+      <button class="btn" id="btn-submit" onclick="submitForm()" disabled>Preencha os dados</button>
     </div>
   </div>
 
@@ -589,11 +629,18 @@
     });
   });
 
+  function getFullName() {
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
+    return (fn + " " + ln).trim();
+  }
   function validateStep1() {
-    const name = document.getElementById("name").value.trim();
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
     const phone = document.getElementById("phone").value.replace(/\D/g, "");
-    if (!name) { alert("Coloca seu nome."); return false; }
-    if (phone.length < 10) { alert("Telefone inválido."); return false; }
+    if (fn.length < 2) { alert("Coloca seu nome."); return false; }
+    if (ln.length < 2) { alert("Coloca seu sobrenome."); return false; }
+    if (phone.length < 10) { alert("Telefone inválido (com DDD)."); return false; }
     return true;
   }
   function validateStep2() {
@@ -658,8 +705,12 @@
     btn.disabled = true;
     btn.textContent = "Cadastrando…";
 
+    const _fn1 = (document.getElementById("first-name")?.value || "").trim();
+    const _ln1 = (document.getElementById("last-name")?.value || "").trim();
     const payload = {
-      name: document.getElementById("name").value.trim(),
+      name: (_fn1 + " " + _ln1).trim(),
+      first_name: _fn1,
+      last_name: _ln1,
       phone_e164: normalizePhone(document.getElementById("phone").value),
       genero: genero,
       religiao: document.getElementById("religiao").value || null,
@@ -828,18 +879,20 @@ function selectPlanV2(plano) {
   document.getElementById('pay-trial').style.display = plano === 'trial' ? 'flex' : 'none';
   document.getElementById('sec-pay').style.display = plano === 'trial' ? 'none' : 'block';
   refreshConsentAndExtra();
+  if (typeof refreshSealsVisibility === 'function') refreshSealsVisibility();
+  if (typeof refreshPayButton === 'function') refreshPayButton();
 }
 function selectPayOpt(label) {
   const group = label.parentElement;
   group.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('active'));
   label.classList.add('active');
   refreshConsentAndExtra();
+  if (typeof refreshPayButton === 'function') refreshPayButton();
 }
 function refreshConsentAndExtra() {
   const consent = document.getElementById('consent-box');
   const pagoFields = document.getElementById('pago-fields');
   const ccBox = document.getElementById('cc-box');
-  const btn = document.getElementById('btn-submit');
   const isTrial = currentPlanV2 === 'trial';
   const billing = currentBillingV2();
   const showConsent = currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC';
@@ -847,13 +900,7 @@ function refreshConsentAndExtra() {
   consent.style.display = showConsent ? 'flex' : 'none';
   pagoFields.style.display = isTrial ? 'none' : 'block';
   ccBox.style.display = isCC ? 'block' : 'none';
-  let label = '';
-  if (isTrial) label = 'Começar grátis';
-  else if (currentPlanV2 === 'mensal') label = (billing === 'PIX_AUTOMATIC') ? 'Autorizar PIX Automático - R$ 14,99/mês' : 'Continuar com cartão - R$ 14,99/mês';
-  else if (billing === 'PIX') label = 'Pagar com PIX - R$ 159,99';
-  else if (billing === 'CREDIT_CARD_12') label = 'Pagar em ' + getInstallmentsV2() + 'x - R$ 159,99';
-  else label = 'Pagar à vista - R$ 159,99';
-  btn.textContent = label;
+  if (typeof refreshPayButton === 'function') refreshPayButton();
 }
 function currentBillingV2() {
   if (currentPlanV2 === 'trial') return null;
@@ -876,9 +923,189 @@ document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', (
 document.getElementById('consent-cb').addEventListener('change', refreshConsentAndExtra);
 const ccp = document.getElementById('cc-parcelas'); if (ccp) ccp.addEventListener('change', refreshConsentAndExtra);
 
+// ==================== VALIDAÇÃO E ESTADO DO BOTÃO PAGAR ====================
+function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((v||'').trim()); }
+function isValidCPF(v){
+  const c = (v||'').replace(/\D/g,'');
+  if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
+  let s = 0;
+  for (let i=0;i<9;i++) s += parseInt(c[i]) * (10-i);
+  let d1 = 11 - (s % 11); if (d1 >= 10) d1 = 0;
+  if (d1 !== parseInt(c[9])) return false;
+  s = 0;
+  for (let i=0;i<10;i++) s += parseInt(c[i]) * (11-i);
+  let d2 = 11 - (s % 11); if (d2 >= 10) d2 = 0;
+  return d2 === parseInt(c[10]);
+}
+function luhnCheck(num){
+  const s = (num||'').replace(/\D/g,'');
+  if (s.length < 13 || s.length > 19) return false;
+  let sum = 0, alt = false;
+  for (let i = s.length - 1; i >= 0; i--) {
+    let n = parseInt(s[i]);
+    if (alt) { n *= 2; if (n > 9) n -= 9; }
+    sum += n; alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+function isValidExpiry(mm, yyyy){
+  const m = parseInt(mm||0), y = parseInt(yyyy||0);
+  if (m < 1 || m > 12) return false;
+  if (y < 2026 || y > 2050) return false;
+  const now = new Date();
+  const exp = new Date(y, m - 1, 31);
+  return exp >= now;
+}
+
+function getValidationState() {
+  const fn = (document.getElementById('first-name')?.value || '').trim();
+  const ln = (document.getElementById('last-name')?.value || '').trim();
+  const phone = (document.getElementById('phone')?.value || '').replace(/\D/g,'');
+  const email = (document.getElementById('pag-email-static')?.value || '').trim();
+  const cpf = (document.getElementById('pag-cpf-static')?.value || '').replace(/\D/g,'');
+  const lgpd = document.getElementById('lgpd')?.checked;
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
+
+  const errs = [];
+  if (fn.length < 2) errs.push('Nome');
+  if (ln.length < 2) errs.push('Sobrenome');
+  if (phone.length < 10) errs.push('WhatsApp');
+  if (!lgpd) errs.push('aceite dos Termos');
+
+  if (plan === 'trial') {
+    return { valid: errs.length === 0, missing: errs };
+  }
+
+  if (!isValidEmail(email)) errs.push('Email válido');
+  if (!isValidCPF(cpf)) errs.push('CPF válido');
+
+  const isPixAuto = (plan === 'mensal' && billing === 'PIX_AUTOMATIC');
+  if (isPixAuto && !document.getElementById('consent-cb')?.checked) errs.push('consentimento PIX Automático');
+
+  const isCC = (billing === 'CREDIT_CARD' || billing === 'CREDIT_CARD_12');
+  if (isCC) {
+    const num = (document.getElementById('cc-number')?.value || '').replace(/\D/g,'');
+    const holder = (document.getElementById('cc-name')?.value || '').trim();
+    const mm = (document.getElementById('cc-month')?.value || '').trim();
+    const yy = (document.getElementById('cc-year')?.value || '').trim();
+    const cvv = (document.getElementById('cc-cvv')?.value || '').trim();
+    const cep = (document.getElementById('cc-cep')?.value || '').replace(/\D/g,'');
+    const numero = (document.getElementById('cc-num')?.value || '').trim();
+    if (!luhnCheck(num)) errs.push('número do cartão');
+    if (holder.length < 3) errs.push('nome impresso');
+    if (!isValidExpiry(mm, yy)) errs.push('validade do cartão');
+    if (cvv.length < 3 || cvv.length > 4) errs.push('CVV');
+    if (cep.length !== 8) errs.push('CEP');
+    if (numero.length < 1) errs.push('número do endereço');
+  }
+
+  return { valid: errs.length === 0, missing: errs };
+}
+
+function refreshPayButton() {
+  const btn = document.getElementById('btn-submit');
+  if (!btn) return;
+  const st = getValidationState();
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
+
+  if (!st.valid) {
+    btn.disabled = true;
+    btn.textContent = 'Preencha os dados';
+    btn.style.opacity = '0.55';
+    btn.style.cursor = 'not-allowed';
+    return;
+  }
+  btn.disabled = false;
+  btn.style.opacity = '';
+  btn.style.cursor = '';
+
+  if (plan === 'trial') {
+    btn.textContent = 'Começar meu teste grátis';
+  } else if (plan === 'mensal') {
+    btn.textContent = billing === 'PIX_AUTOMATIC' ? 'Autorizar PIX Automático - R$ 14,99/mês' : 'Assinar - R$ 14,99/mês';
+  } else {
+    const inst = (typeof getInstallmentsV2 === 'function') ? getInstallmentsV2() : 1;
+    if (billing === 'PIX') btn.textContent = 'Pagar com PIX - R$ 159,99';
+    else if (billing === 'CREDIT_CARD') btn.textContent = 'Pagar à vista - R$ 159,99';
+    else if (billing === 'CREDIT_CARD_12') btn.textContent = 'Pagar em ' + inst + 'x - R$ 159,99';
+    else btn.textContent = 'Pagar - R$ 159,99';
+  }
+}
+
+// Liga refresh em todos os inputs relevantes (passa por input/change/click)
+function attachPayValidationListeners() {
+  const ids = ['first-name','last-name','phone','pag-email-static','pag-cpf-static','consent-cb','lgpd',
+               'cc-number','cc-name','cc-month','cc-year','cc-cvv','cc-cep','cc-num','cc-parcelas'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ['input','change','blur'].forEach(ev => el.addEventListener(ev, refreshPayButton));
+  });
+  document.querySelectorAll('input[name="pay-m"], input[name="pay-a"]').forEach(r => {
+    r.addEventListener('change', refreshPayButton);
+  });
+  document.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => setTimeout(refreshPayButton, 50)));
+  document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', () => setTimeout(refreshPayButton, 50)));
+}
+setTimeout(() => { attachPayValidationListeners(); refreshPayButton(); }, 200);
+
+// Mostra/esconde selos baseado no plano (selos só em planos pagos)
+function refreshSealsVisibility() {
+  const seals = document.getElementById('security-seals');
+  if (!seals) return;
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  seals.style.display = (plan === 'trial') ? 'none' : '';
+}
+setTimeout(refreshSealsVisibility, 250);
+
+// ==================== MÁSCARAS DE INPUT ====================
+function maskCardNumber(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,19);
+    el.value = v.replace(/(\d{4})(?=\d)/g,'$1 ').trim();
+  });
+}
+function maskCEP(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,8);
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    el.value = v;
+  });
+}
+function maskCPF(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3');
+    v = v.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
+    el.value = v;
+  });
+}
+function maskPhone(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    if (v.length > 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    else if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+    else if (v.length > 0) v = '(' + v;
+    el.value = v;
+  });
+}
+setTimeout(() => {
+  const ccn = document.getElementById('cc-number'); if (ccn) maskCardNumber(ccn);
+  const cep = document.getElementById('cc-cep'); if (cep) maskCEP(cep);
+  const cpf = document.getElementById('pag-cpf-static'); if (cpf) maskCPF(cpf);
+  const ph = document.getElementById('phone'); if (ph) maskPhone(ph);
+}, 300);
+
 function getFullOnboardPayload() {
+  const fn = (document.getElementById('first-name')?.value || '').trim();
+  const ln = (document.getElementById('last-name')?.value || '').trim();
   return {
-    name: document.getElementById('name').value.trim(),
+    name: (fn + ' ' + ln).trim(),
+    first_name: fn,
+    last_name: ln,
     phone: document.getElementById('phone').value.replace(/\D/g, ''),
     genero: (typeof genero !== 'undefined') ? genero : 'X',
     religiao: document.getElementById('religiao').value,
@@ -908,7 +1135,9 @@ async function submitForm() {
   const oldLabel = btn.textContent;
   btn.textContent = 'Processando...';
 
-  const name = document.getElementById('name').value.trim();
+  const _fn = (document.getElementById('first-name')?.value || '').trim();
+  const _ln = (document.getElementById('last-name')?.value || '').trim();
+  const name = (_fn + ' ' + _ln).trim();
   const phoneDigits = document.getElementById('phone').value.replace(/\D/g,'');
 
   if (isTrial) {
@@ -940,7 +1169,7 @@ async function submitForm() {
   const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
 
   try {
-    const payload = { plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(), name, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked };
+    const payload = { plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(), name, first_name: _fn, last_name: _ln, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked };
     if (billingFinal === 'CREDIT_CARD') {
       payload.postalCode = document.getElementById('cc-cep').value.replace(/\D/g,'');
       payload.addressNumber = document.getElementById('cc-num').value.trim();
