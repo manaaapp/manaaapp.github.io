@@ -35,22 +35,26 @@
     -moz-osx-font-smoothing: grayscale;
   }
   @media (max-width: 480px) {
-    .container { padding: 10px 12px 56px; }
-    .brand { margin-bottom: 8px; }
-    .progress { margin: 4px 0 12px; }
-    .step-title { font-size: 19px; margin-bottom: 2px; }
-    .step-sub { font-size: 12.5px; margin-bottom: 10px; line-height: 1.35; }
-    .field { margin-bottom: 9px; }
-    .field label { font-size: 12.5px; margin-bottom: 2px; }
-    .field input, .field select, .field textarea { font-size: 15px; padding: 9px 10px; }
-    .field .hint { font-size: 11px; margin-top: 3px; }
-    .chips { gap: 5px; }
-    .chip { font-size: 11.5px; padding: 5px 10px; }
+    .container { padding: 6px 12px 50px; }
+    .brand { margin-bottom: 4px; }
+    .brand .logo { width: 40px; height: 40px; }
+    .brand .brand-name { font-size: 22px; }
+    .brand .brand-tag { font-size: 11px; }
+    .progress { margin: 2px 0 8px; gap: 4px; }
+    .progress-step { height: 4px; }
+    .step-title { font-size: 17px; margin-bottom: 1px; }
+    .step-sub { font-size: 12px; margin-bottom: 8px; line-height: 1.3; }
+    .field { margin-bottom: 7px; }
+    .field label { font-size: 12px; margin-bottom: 2px; }
+    .field input, .field select, .field textarea { font-size: 14.5px; padding: 8px 10px; }
+    .field .hint { font-size: 10.5px; margin-top: 2px; }
+    .chips { gap: 4px; }
+    .chip { font-size: 11px; padding: 4px 9px; }
     .field-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
     input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset !important; -webkit-text-fill-color: #2D2A26 !important; transition: background-color 5000s ease-in-out 0s; }
     .btn { padding: 13px; font-size: 15px; }
     .nav .btn-back { flex: 0 0 80px; padding: 13px 8px; }
-    #plan-cards { display: flex !important; flex-direction: row; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 4px 0 8px; margin: 0 -12px 8px; padding-left: 12px; padding-right: 12px; }
+    #plan-cards { display: flex !important; flex-direction: row; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 16px 12px 8px; margin: 0 -12px 8px; }
     #plan-cards::-webkit-scrollbar { display: none; }
     #plan-cards .plan-card { flex: 0 0 78%; scroll-snap-align: center; margin-bottom: 0; }
     .plan-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 10px; }
@@ -311,7 +315,7 @@
     <div class="brand-logo">M</div>
     <div class="brand-text">
       <span class="brand-name">Manaã</span>
-      <span class="brand-tag">Sua palavra diária no WhatsApp</span>
+      <span class="brand-tag">Seu companheiro de fé no WhatsApp</span>
     </div>
   </a>
 
@@ -602,18 +606,31 @@
       const dots = document.querySelectorAll('#plan-dots-indicator .plan-dot');
       if (!pc) return;
       // Scroll inicial centra no Mensal (1) em mobile
-      setTimeout(() => { if (window.innerWidth <= 480) { const m = pc.querySelector('[data-plan=mensal]'); if (m) m.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'}); } }, 100);
-      pc.addEventListener('scroll', () => {
+      function selectByCenter() {
         const cards = Array.from(pc.querySelectorAll('.plan-card'));
         const pcr = pc.getBoundingClientRect();
-        const center = pcr.left + pcr.width/2;
+        const centerX = pcr.left + pcr.width/2;
         let bestIdx = 0, bestDist = Infinity;
         cards.forEach((c, i) => {
           const r = c.getBoundingClientRect();
-          const d = Math.abs((r.left + r.width/2) - center);
+          const d = Math.abs((r.left + r.width/2) - centerX);
           if (d < bestDist) { bestDist = d; bestIdx = i; }
         });
         dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+        const target = cards[bestIdx];
+        if (target && typeof selectPlanV2 === 'function') selectPlanV2(target.dataset.plan);
+      }
+      setTimeout(() => {
+        if (window.innerWidth <= 480) {
+          const m = pc.querySelector('[data-plan=mensal]');
+          if (m) m.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'});
+          selectByCenter();
+        }
+      }, 100);
+      let scrollTimer;
+      pc.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(selectByCenter, 80);
       });
       dots.forEach((dot, i) => dot.addEventListener('click', () => {
         const card = pc.querySelectorAll('.plan-card')[i];
