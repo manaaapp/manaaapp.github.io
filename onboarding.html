@@ -977,16 +977,15 @@ function renderStep5Result(data) {
 
 async function pollPaymentStatus(paymentId) {
   if (!paymentId) return;
-  for (let i = 0; i < 100; i++) {
-    await new Promise(r => setTimeout(r, 4000));
+  for (let i = 0; i < 150; i++) {
+    await new Promise(r => setTimeout(r, 5000));
     try {
       const r = await fetch(WORKER_URL_CHK + '/api/checkout/status?id=' + encodeURIComponent(paymentId));
       const d = await r.json();
-      if (d && (d.status === 'CONFIRMED' || d.status === 'RECEIVED' || d.status === 'paid')) {
-        const title = document.querySelector('.step[data-step="5"] .step-title');
-        const sub = document.querySelector('.step[data-step="5"] .step-sub');
-        if (title) title.textContent = 'Pagamento confirmado!';
-        if (sub) sub.innerHTML = '<p>Bem-vindo ao Mana&atilde;! Em instantes voc&ecirc; recebe a primeira mensagem no WhatsApp.</p><a href="https://wa.me/15558382375?text=Ola%2C%20acabei%20de%20assinar%20o%20Manaa" style="display:inline-block;margin-top:14px;background:#25D366;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600">Abrir WhatsApp</a>';
+      const s = (d && d.status || '').toLowerCase();
+      if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
+        // Redireciona pra tela bonita de sucesso
+        window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
         return;
       }
     } catch(e) {}
