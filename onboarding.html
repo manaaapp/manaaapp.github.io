@@ -5,6 +5,9 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Manaã — Comece sua jornada</title>
 <meta name="description" content="Devocional cristão diário no WhatsApp, personalizado pra você. Comece em 1 minuto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 
 <style>
   :root {
@@ -23,15 +26,17 @@
   * { box-sizing: border-box; }
   body {
     margin: 0;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background: var(--cream);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
     color: var(--text);
     line-height: 1.5;
     overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
   @media (max-width: 480px) {
     .container { padding: 16px 12px 60px; }
-    .step-title { font-size: 20px; }
+    .step-title { font-size: 22px; }
     .step-sub { font-size: 13px; margin-bottom: 16px; }
     .field { margin-bottom: 14px; }
     .field input, .field select, .field textarea { font-size: 16px; padding: 11px 12px; }
@@ -39,6 +44,9 @@
     .btn { padding: 13px; font-size: 15px; }
     .nav .btn-back { flex: 0 0 80px; padding: 13px 8px; }
     .plan-cards { grid-template-columns: 1fr; gap: 8px; }
+    .field-row { grid-template-columns: 1fr !important; }
+    #pago-fields > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .plan-card .plan-price-2 { font-size: 26px; }
   }
   .container {
     max-width: 580px;
@@ -81,11 +89,14 @@
   .progress-step.done:hover { opacity: 0.7; }
 
   .step { display: none; }
-  .step.active { display: block; animation: fade 0.3s ease; }
-  @keyframês fade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .step.active { display: block; animation: stepFadeIn 0.35s cubic-bezier(.2,.7,.3,1); }
+  @keyframes stepFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
 
   .step-title {
-    font-size: 24px; font-weight: 700; margin: 0 0 6px;
+    font-family: 'Lora', Georgia, serif;
+    font-size: 26px; font-weight: 700; margin: 0 0 6px;
+    color: var(--gold-deep);
+    letter-spacing: -0.01em;
   }
   .step-sub {
     font-size: 14px; color: var(--muted); margin: 0 0 24px;
@@ -440,23 +451,65 @@
     <p class="step-sub">Escolha como continuar com a gente.</p>
 
     <style>
-      .plan-card { background:#fff; border:1.5px solid #E5DDD0; border-radius:14px; padding:16px; cursor:pointer; transition:.18s; position:relative; margin-bottom:10px; }
-      .plan-card.active { border-color:#B8912E; box-shadow:0 0 0 3px rgba(184,145,46,0.08); }
-      .plan-card .plan-head-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-      .plan-card .plan-name-2 { font-family:'Lora',serif; font-size:18px; font-weight:600; color:#2D2A26; }
-      .plan-card .plan-tag-2 { font-size:11px; color:#B8912E; background:#F5EBD0; padding:3px 9px; border-radius:12px; font-weight:500; }
-      .plan-card .plan-price-2 { font-size:26px; font-weight:600; margin:2px 0 1px; letter-spacing:-0.02em; color:#2D2A26; }
-      .plan-card .plan-price-2 small { font-size:13px; font-weight:400; color:#5C564D; }
-      .plan-card .plan-desc-2 { font-size:13px; color:#5C564D; margin:4px 0 0; }
-      .badge-save-2 { position:absolute; top:-8px; right:14px; background:#B8912E; color:white; font-size:11px; padding:3px 10px; border-radius:12px; font-weight:500; }
-      .pay-list { display:flex; flex-direction:column; gap:8px; margin-bottom:12px; }
-      .pay-opt { background:#fff; border:1.5px solid #E5DDD0; border-radius:10px; padding:10px 12px; cursor:pointer; display:flex; gap:10px; align-items:flex-start; transition:.15s; }
-      .pay-opt.active { border-color:#B8912E; background:#FEFCF7; }
-      .pay-opt input { margin-top:3px; accent-color:#B8912E; width:16px; height:16px; }
-      .pay-opt-title { font-weight:500; font-size:14.5px; color:#2D2A26; }
-      .pay-opt-desc { font-size:12.5px; color:#5C564D; margin-top:3px; line-height:1.4; }
-      .pay-tag-rec { font-size:10px; background:#F5EBD0; color:#B8912E; padding:2px 7px; border-radius:10px; font-weight:500; margin-left:6px; }
-      .consent-box { background:#F5F0E8; border:1px solid #E5DDD0; border-radius:10px; padding:11px 13px; margin-bottom:12px; display:flex; gap:10px; align-items:flex-start; }
+      /* === REDESIGN v3 etapa 4 === */
+      .plan-card {
+        background: #fff;
+        border: 1.5px solid #ECE4D5;
+        border-radius: 16px;
+        padding: 18px 18px 16px;
+        cursor: pointer;
+        transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.22s ease, background 0.18s ease;
+        position: relative;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(139,105,20,0.04);
+      }
+      .plan-card:hover {
+        border-color: #D4B86A;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(139,105,20,0.10);
+      }
+      .plan-card.active {
+        border-color: var(--gold);
+        background: linear-gradient(180deg, #FEFCF7 0%, #FBF5E5 100%);
+        box-shadow: 0 0 0 4px rgba(184,145,46,0.10), 0 10px 28px rgba(139,105,20,0.14);
+      }
+      .plan-card .plan-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
+      .plan-card .plan-name-2 { font-family: 'Lora', Georgia, serif; font-size: 19px; font-weight: 600; color: var(--gold-deep); letter-spacing: -0.01em; }
+      .plan-card .plan-tag-2 { font-size: 10.5px; color: #fff; background: var(--gold); padding: 4px 10px; border-radius: 12px; font-weight: 700; letter-spacing: 0.3px; }
+      .plan-card .plan-price-2 { font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 700; margin: 4px 0 2px; letter-spacing: -0.02em; color: var(--gold-deep); }
+      .plan-card .plan-price-2 small { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #6b6453; }
+      .plan-card .plan-desc-2 { font-size: 13px; color: #5C564D; margin: 4px 0 0; line-height: 1.5; }
+      .badge-save-2 { position: absolute; top: -10px; right: 14px; background: linear-gradient(135deg, #B8912E, #8B6914); color: #fff; font-size: 11px; padding: 4px 12px; border-radius: 14px; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 3px 10px rgba(139,105,20,0.25); }
+
+      .pay-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+      .pay-opt {
+        background: #fff;
+        border: 1.5px solid #ECE4D5;
+        border-radius: 12px;
+        padding: 13px 14px;
+        cursor: pointer;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        transition: all 0.18s ease;
+      }
+      .pay-opt:hover { border-color: #D4B86A; background: #FEFCF7; transform: translateY(-1px); }
+      .pay-opt.active { border-color: var(--gold); background: linear-gradient(180deg, #FEFCF7 0%, #FBF5E5 100%); box-shadow: 0 4px 12px rgba(184,145,46,0.10); }
+      .pay-opt input { margin-top: 3px; accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; }
+      .pay-opt-title { font-weight: 600; font-size: 14.5px; color: var(--text); }
+      .pay-opt-desc { font-size: 12.5px; color: #6b6453; margin-top: 4px; line-height: 1.5; }
+      .pay-tag-rec { font-size: 10px; background: linear-gradient(135deg, #B8912E, #A07D2E); color: #fff; padding: 3px 9px; border-radius: 10px; font-weight: 700; margin-left: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+      .consent-box {
+        background: linear-gradient(180deg, #FBF5E5 0%, #F5EBD0 100%);
+        border: 1px solid #E0C97A;
+        border-radius: 12px;
+        padding: 13px 15px;
+        margin-bottom: 14px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
       .consent-box input { margin-top:2px; accent-color:#B8912E; width:17px; height:17px; flex-shrink:0; }
       .consent-box label { font-size:12.5px; line-height:1.5; color:#2D2A26; }
     </style>
@@ -465,7 +518,7 @@
       <div class="plan-card" data-plan="trial">
         <div class="plan-head-row"><span class="plan-name-2">7 dias grátis</span><span class="plan-tag-2">Sem cartão</span></div>
         <div class="plan-price-2">R$ 0</div>
-        <p class="plan-desc-2">Experimente sem compromisso. Apos 7 dias, te enviamos o link de pagamento.</p>
+        <p class="plan-desc-2">Experimente sem compromisso. Após 7 dias, te enviamos o link de pagamento.</p>
       </div>
       <div class="plan-card active" data-plan="mensal">
         <div class="plan-head-row"><span class="plan-name-2">Mensal</span><span class="plan-tag-2">Assinatura</span></div>
@@ -480,7 +533,10 @@
       </div>
     </div>
 
-    <h3 id="sec-pay" style="font-family:'Lora',serif;font-size:16px;font-weight:600;margin:18px 0 10px;color:#2D2A26">Forma de pagamento</h3>
+    <h3 id="sec-pay" style="font-family:'Lora',Georgia,serif;font-size:17px;font-weight:700;margin:22px 0 12px;color:#8B6914;display:flex;align-items:center;gap:8px">
+      <span style="display:inline-block;width:4px;height:18px;background:linear-gradient(180deg,#B8912E,#8B6914);border-radius:2px"></span>
+      Forma de pagamento
+    </h3>
 
     <div class="pay-list" id="pay-mensal">
       <label class="pay-opt active" data-pay="PIX_AUTOMATIC"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
@@ -510,8 +566,11 @@
     </div>
 
 
-    <div id="cc-box" style="display:none;background:#fff;border:1.5px solid #E5DDD0;border-radius:12px;padding:14px;margin-bottom:12px">
-      <div style="font-weight:600;margin-bottom:10px;font-size:13.5px;color:#2D2A26">Dados do cartão</div>
+    <div id="cc-box" style="display:none;background:linear-gradient(180deg,#fff 0%,#FEFCF7 100%);border:1.5px solid #ECE4D5;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3" ry="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Dados do cartão</div>
+      </div>
       <div style="display:grid;grid-template-columns:1fr;gap:8px">
         <div class="field"><label>Número do cartão</label><input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="letter-spacing:0.5px"></div>
         <div class="field"><label>Nome impresso</label><input id="cc-name" type="text" placeholder="Igual no cartão" style="text-transform:uppercase"></div>
@@ -527,11 +586,16 @@
       </div>
     </div>
 
-    <div id="pago-fields" style="display:none;background:#faf6ee;border:1px solid #e5e0d6;border-radius:10px;padding:12px;margin-bottom:12px">
-      <div style="font-weight:600;margin-bottom:8px;font-size:13.5px">Pra finalizar o pagamento:</div>
-      <div class="field"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com"></div>
-      <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14"></div>
-      <small style="color:#8c847a;display:block;margin-top:6px;font-size:12px">Exigido pelo processador. Sem cobrança antes da confirmação.</small>
+    <div id="pago-fields" style="display:none;background:linear-gradient(180deg,#FBF5E5 0%,#FEFCF7 100%);border:1px solid #E0C97A;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Pra finalizar o pagamento</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+        <div class="field" style="margin-bottom:0"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" inputmode="numeric"></div>
+      </div>
+      <small style="color:#7a7263;display:block;margin-top:10px;font-size:11.5px;line-height:1.5">Exigido pelo processador. Sem cobrança antes da confirmação.</small>
     </div>
 
     <div class="lgpd" style="margin-bottom:10px">
@@ -547,10 +611,12 @@
         Pagamento 100% seguro
       </div>
       <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start">
-        <!-- Logo PIX -->
-        <div style="background:#fff;padding:6px 10px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center;gap:6px">
-          <svg width="22" height="22" viewBox="0 0 60 60" fill="none"><path d="M30 0L60 30L30 60L0 30L30 0Z" fill="#32BCAD"/><path d="M30 11.4L41.5 22.9L48.6 30L41.5 37.1L30 48.6L18.5 37.1L11.4 30L18.5 22.9L30 11.4Z" fill="#fff"/><path d="M30 11.4L18.5 22.9L25.6 30L30 25.6L34.4 30L41.5 22.9L30 11.4Z" fill="#32BCAD"/><path d="M30 48.6L18.5 37.1L25.6 30L30 34.4L34.4 30L41.5 37.1L30 48.6Z" fill="#32BCAD"/></svg>
-          <span style="font-size:11px;font-weight:700;color:#32BCAD">PIX</span>
+        <!-- Logo PIX (oficial BCB, SVG vetor real) -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center;gap:6px">
+          <svg width="20" height="20" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#32BCAD" d="M45.93 41.07c-1.95 0-3.78-.76-5.16-2.13l-7.43-7.43c-.52-.52-1.43-.52-1.95 0l-7.46 7.46c-1.38 1.38-3.21 2.13-5.16 2.13h-1.46l9.42 9.42c2.94 2.94 7.71 2.94 10.65 0l9.45-9.45h-.9zM18.77 18.93c1.95 0 3.78.76 5.16 2.13l7.46 7.46c.53.53 1.41.53 1.95 0l7.43-7.43c1.38-1.38 3.21-2.13 5.16-2.13h.9l-9.45-9.45c-2.94-2.94-7.71-2.94-10.65 0l-9.42 9.42h1.46zM52.62 24.68l-5.71-5.71c-.13.05-.27.08-.41.08h-2.62c-1.34 0-2.66.55-3.61 1.5l-7.43 7.43c-.69.69-1.59 1.03-2.5 1.03s-1.81-.34-2.5-1.03L20.4 20.55c-.95-.95-2.27-1.5-3.61-1.5h-3.22c-.13 0-.26-.03-.38-.07l-5.71 5.71c-2.94 2.94-2.94 7.71 0 10.65l5.71 5.71c.12-.04.25-.07.38-.07h3.22c1.34 0 2.66-.55 3.61-1.5l7.46-7.46c1.33-1.33 3.66-1.33 4.99 0l7.43 7.43c.95.95 2.27 1.5 3.61 1.5h2.62c.14 0 .28.03.41.08l5.71-5.71c2.94-2.94 2.94-7.71 0-10.65z"/>
+          </svg>
+          <span style="font-size:11px;font-weight:800;color:#32BCAD;letter-spacing:0.3px">PIX</span>
         </div>
         <!-- Visa -->
         <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div>
