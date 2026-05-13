@@ -758,8 +758,8 @@
     const phone = document.getElementById("phone").value.replace(/\D/g, "");
     if (fn.length < 2) { alert("Coloca seu nome."); return false; }
     if (ln.length < 2) { alert("Coloca seu sobrenome."); return false; }
-    if (phone.length !== 11) { alert("Celular inválido. Coloca DDD + 9 + número (ex: 43 98823 1227 = 11 dígitos)."); return false; }
-    if (phone.charAt(2) !== '9') { alert("Celular precisa começar com 9 depois do DDD (ex: 43 9XXXX XXXX)."); return false; }
+    if (phone.length !== 11) { alert("Celular inválido. Coloca DDD + 9 + número (11 dígitos no total)."); return false; }
+    if (phone.charAt(2) !== '9') { alert("Celular precisa começar com 9 depois do DDD."); return false; }
     return true;
   }
   function validateStep2() {
