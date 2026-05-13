@@ -1516,6 +1516,11 @@ function renderStep5Result(data) {
         const ok=document.getElementById('pixCopiedTxt'); if (ok) ok.style.display='block';
         const lbl=document.getElementById('pixCopyLabel'); if (lbl) lbl.textContent='Código copiado!';
         el.style.background='#d4edda'; el.style.borderColor='#16a34a'; el.style.color='#16a34a';
+        setTimeout(() => {
+          el.style.background='#fdf9f0'; el.style.borderColor='#B8912E'; el.style.color='#8B6914';
+          if (lbl) lbl.textContent='Copiar código PIX';
+          if (ok) ok.style.display='none';
+        }, 5000);
       });
     }, 100);
   } else if (data.subscriptionId && data.idempotent) {
