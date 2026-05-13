@@ -54,26 +54,40 @@
     padding: 24px 16px 80px;
   }
   .brand {
-    text-align: center;
-    margin-bottom: 24px;
+    display: flex; align-items: center; gap: 14px;
+    margin: 4px 0 22px;
+    padding: 4px 0;
   }
   .brand-logo {
-    width: 64px; height: 64px;
-    margin: 0 auto 8px;
-    background: linear-gradient(135deg, var(--gold-deep), var(--gold), var(--gold-light));
-    border-radius: 16px;
+    width: 52px; height: 52px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 60%, var(--gold-light) 100%);
+    border-radius: 14px;
     display: flex; align-items: center; justify-content: center;
-    color: white; font-weight: 800; font-size: 36px; font-family: Georgia, serif;
+    color: white; font-weight: 800; font-size: 28px;
+    font-family: 'Lora', Georgia, serif;
+    box-shadow: 0 6px 18px rgba(139,105,20,0.22), inset 0 1px 0 rgba(255,255,255,0.2);
+    letter-spacing: -0.5px;
   }
-  .brand-name { font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
-  .brand-tag { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-name {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--gold-deep);
+    letter-spacing: -0.01em;
+  }
+  .brand-tag {
+    font-size: 12.5px; color: var(--muted);
+    margin-top: 2px; font-weight: 500;
+  }
 
   .topbar {
-    background: var(--gold); padding: 12px 18px;
+    background: transparent; padding: 14px 18px 4px;
+    max-width: 580px; margin: 0 auto;
   }
   .topbar-link {
-    color: white; text-decoration: none; font-size: 14px; font-weight: 600;
-    display: inline-flex; align-items: center; gap: 6px; opacity: 0.95;
+    color: var(--gold-deep); text-decoration: none; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px; opacity: 0.8;
+    transition: opacity 0.18s;
   }
   .topbar-link:hover { opacity: 1; }
   .progress {
@@ -84,9 +98,9 @@
     background: var(--border); transition: background 0.3s;
     cursor: pointer;
   }
-  .progress-step.active { background: var(--gold); }
-  .progress-step.done { background: var(--green); }
-  .progress-step.done:hover { opacity: 0.7; }
+  .progress-step.active { background: linear-gradient(90deg, var(--gold-deep), var(--gold)); }
+  .progress-step.done { background: var(--gold-light); opacity: 0.7; }
+  .progress-step.done:hover { opacity: 1; }
 
   .step { display: none; }
   .step.active { display: block; animation: stepFadeIn 0.35s cubic-bezier(.2,.7,.3,1); }
@@ -251,8 +265,10 @@
 <div class="container">
   <a href="/" class="brand" style="text-decoration:none;color:inherit">
     <div class="brand-logo">M</div>
-    <div class="brand-name">Manaã</div>
-    <div class="brand-tag">Sua palavra diária no WhatsApp</div>
+    <div class="brand-text">
+      <span class="brand-name">Manaã</span>
+      <span class="brand-tag">Sua palavra diária no WhatsApp</span>
+    </div>
   </a>
 
   <div class="progress">
@@ -475,7 +491,10 @@
       }
       .plan-card .plan-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
       .plan-card .plan-name-2 { font-family: 'Lora', Georgia, serif; font-size: 19px; font-weight: 600; color: var(--gold-deep); letter-spacing: -0.01em; }
-      .plan-card .plan-tag-2 { font-size: 10.5px; color: #fff; background: var(--gold); padding: 4px 10px; border-radius: 12px; font-weight: 700; letter-spacing: 0.3px; }
+      .plan-card .plan-tag-2 { font-size: 10.5px; color: #6b6453; background: transparent; border: 1.5px solid #D4C7A5; padding: 3px 10px; border-radius: 12px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
+      .plan-card[data-plan="trial"] .plan-tag-2 { color: #2f7d32; border-color: #b8d8b9; background: #f1f8f1; }
+      .plan-card[data-plan="mensal"] .plan-tag-2 { color: #8B6914; border-color: #E0C97A; background: #FBF5E5; }
+      .plan-card[data-plan="anual"] .plan-tag-2 { color: #6b6453; border-color: #D4C7A5; background: transparent; }
       .plan-card .plan-price-2 { font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 700; margin: 4px 0 2px; letter-spacing: -0.02em; color: var(--gold-deep); }
       .plan-card .plan-price-2 small { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #6b6453; }
       .plan-card .plan-desc-2 { font-size: 13px; color: #5C564D; margin: 4px 0 0; line-height: 1.5; }
