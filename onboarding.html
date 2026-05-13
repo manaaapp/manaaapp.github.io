@@ -496,6 +496,24 @@
       <label for="consent-cb">Entendo que serao debitados <strong>R$ 14,99</strong> da minha conta todo mes via PIX Automatico. Posso cancelar a qualquer momento.</label>
     </div>
 
+
+    <div id="cc-box" style="display:none;background:#fff;border:1.5px solid #E5DDD0;border-radius:12px;padding:14px;margin-bottom:12px">
+      <div style="font-weight:600;margin-bottom:10px;font-size:13.5px;color:#2D2A26">Dados do cartão</div>
+      <div style="display:grid;grid-template-columns:1fr;gap:8px">
+        <div class="field"><label>Número do cartão</label><input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="letter-spacing:0.5px"></div>
+        <div class="field"><label>Nome impresso</label><input id="cc-name" type="text" placeholder="Igual no cartão" style="text-transform:uppercase"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px">
+        <div class="field"><label>Mês</label><input id="cc-month" type="text" inputmode="numeric" maxlength="2" placeholder="MM"></div>
+        <div class="field"><label>Ano</label><input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA"></div>
+        <div class="field"><label>CVV</label><input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px">
+        <div class="field"><label>CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000"></div>
+        <div class="field"><label>Número</label><input id="cc-num" type="text" placeholder="Ex: 100"></div>
+      </div>
+    </div>
+
     <div id="pago-fields" style="display:none;background:#faf6ee;border:1px solid #e5e0d6;border-radius:10px;padding:12px;margin-bottom:12px">
       <div style="font-weight:600;margin-bottom:8px;font-size:13.5px">Pra finalizar o pagamento:</div>
       <div class="field"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com"></div>
@@ -813,12 +831,15 @@ function selectPayOpt(label) {
 function refreshConsentAndExtra() {
   const consent = document.getElementById('consent-box');
   const pagoFields = document.getElementById('pago-fields');
+  const ccBox = document.getElementById('cc-box');
   const btn = document.getElementById('btn-submit');
   const isTrial = currentPlanV2 === 'trial';
   const billing = currentBillingV2();
   const showConsent = currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC';
+  const isCC = (billing === 'CREDIT_CARD' || billing === 'CREDIT_CARD_12');
   consent.style.display = showConsent ? 'flex' : 'none';
   pagoFields.style.display = isTrial ? 'none' : 'block';
+  ccBox.style.display = isCC ? 'block' : 'none';
   let label = '';
   if (isTrial) label = 'Comecar gratis';
   else if (currentPlanV2 === 'mensal') label = (billing === 'PIX_AUTOMATIC') ? 'Autorizar PIX Automatico - R$ 14,99/mes' : 'Continuar com cartao - R$ 14,99/mes';
@@ -904,12 +925,21 @@ async function submitForm() {
   const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
 
   try {
+    const payload = { plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(), name, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked };
+    if (billingFinal === 'CREDIT_CARD') {
+      payload.postalCode = document.getElementById('cc-cep').value.replace(/\D/g,'');
+      payload.addressNumber = document.getElementById('cc-num').value.trim();
+      payload.creditCard = {
+        holderName: document.getElementById('cc-name').value.trim().toUpperCase(),
+        number: document.getElementById('cc-number').value.replace(/\D/g,''),
+        expiryMonth: document.getElementById('cc-month').value,
+        expiryYear: document.getElementById('cc-year').value,
+        ccv: document.getElementById('cc-cvv').value
+      };
+    }
     const r = await fetch(WORKER_URL_CHK + '/api/checkout/init', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(),
-        name, email, phone: phoneDigits, cpf, consent: document.getElementById('consent-cb').checked
-      })
+      body: JSON.stringify(payload)
     });
     const data = await r.json();
     if (!data.ok) throw new Error(data.error || 'Erro no checkout');
