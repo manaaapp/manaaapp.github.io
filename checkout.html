@@ -114,6 +114,7 @@
   .footer { text-align: center; margin-top: 14px; font-size: 12px; color: var(--ink-soft); }
   .footer a { color: var(--gold); text-decoration: none; }
   .footer a:hover { text-decoration: underline; }
+@media (max-width: 640px) { .form-grid { grid-template-columns: 1fr !important; } }
 </style>
 </head>
 <body>
@@ -218,10 +219,10 @@
 
   <section id="form-dados" style="background:var(--bg-card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:14px">
     <h2 class="section-title" style="margin-top:0">Seus dados</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+    <div class="form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Nome completo<input id="f-name" type="text" required style="padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
       <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">Email<input id="f-email" type="email" required style="padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
-      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">WhatsApp (com DDD)<input id="f-phone" type="tel" required placeholder="(43) 9 8823-1227" style="padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
+      <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">WhatsApp (com DDD)<input id="f-phone" type="tel" required placeholder="(11) 9 8888-7777" style="padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
       <label style="display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--ink-soft)">CPF<input id="f-cpf" type="text" required placeholder="000.000.000-00" style="padding:9px 10px;border:1.5px solid var(--line);border-radius:8px;font-size:14px;font-family:inherit"></label>
     </div>
   </section>
