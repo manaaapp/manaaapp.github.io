@@ -2,80 +2,130 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
   <title>Manaã — Minha Conta</title>
   <meta name="robots" content="noindex,nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
-      --gold:#B8912E;--gold-soft:#D4B86A;--gold-bg:#F9F3E8;
-      --bg:#FDFBF8;--text:#1a1a1a;--muted:#666;--border:#E8DFD0;
-      --card:#fff;--radius:16px;--shadow:0 4px 24px rgba(0,0,0,.08)
+      --gold:#B8912E;--gold-2:#D4B86A;--gold-dark:#8B6914;--gold-bg:#F9F3E8;
+      --bg:#FDFBF8;--text:#1a1a1a;--muted:#5C564D;--border:#E5DDD0;
+      --card:#fff;--radius:18px;--shadow:0 6px 32px rgba(139,105,20,.08);
+      --wa:#25D366;--wa-dark:#1da851;
     }
-    body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
-    .logo{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold);letter-spacing:.5px;margin-bottom:8px;text-align:center}
-    .logo-sub{font-size:13px;color:var(--muted);text-align:center;margin-bottom:32px}
-    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:32px;width:100%;max-width:420px;border:1px solid var(--border)}
-    h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:500;margin-bottom:8px;color:var(--text)}
-    p.hint{font-size:14px;color:var(--muted);margin-bottom:24px;line-height:1.5}
+    html,body{background:var(--bg);min-height:100dvh}
+    body{font-family:'Inter',sans-serif;color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:24px 16px;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+    .brand{text-align:center;margin-bottom:18px}
+    .brand .logo{font-family:'Lora',serif;font-size:32px;font-weight:600;color:var(--gold-dark);letter-spacing:.5px;line-height:1}
+    .brand .sub{font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.5px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;width:100%;max-width:440px;border:1px solid var(--border)}
+    .card-title{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--gold-dark);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+    .card-title::before{content:"";display:inline-block;width:4px;height:20px;background:linear-gradient(180deg,var(--gold-2),var(--gold-dark));border-radius:2px}
+    p.hint{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.55}
     label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text)}
-    input{width:100%;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;font-size:15px;font-family:'Inter',sans-serif;outline:none;transition:border .2s;background:#fff;color:var(--text)}
-    input:focus{border-color:var(--gold)}
-    input.otp-input{letter-spacing:6px;font-size:22px;text-align:center;font-weight:600}
-    .btn{width:100%;padding:14px;background:var(--gold);color:#fff;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s;margin-top:16px;font-family:'Inter',sans-serif}
-    .btn:hover{opacity:.9}
-    .btn:disabled{opacity:.5;cursor:not-allowed}
-    .btn-outline{background:transparent;color:var(--gold);border:1.5px solid var(--gold);margin-top:10px}
-    .err{color:#c0392b;font-size:13px;margin-top:10px;display:none}
+    input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:15.5px;font-family:'Inter',sans-serif;outline:none;transition:border .2s;background:#fff;color:var(--text)}
+    input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
+    input.otp-input{letter-spacing:8px;font-size:22px;text-align:center;font-weight:700}
+    .btn{width:100%;padding:14px 18px;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff;border:none;border-radius:12px;font-size:15.5px;font-weight:600;cursor:pointer;transition:transform .15s, box-shadow .15s;margin-top:16px;font-family:'Inter',sans-serif;box-shadow:0 3px 10px rgba(139,105,20,.18)}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(139,105,20,.25)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .btn-outline{background:transparent;color:var(--gold-dark);border:1.5px solid var(--gold-2);box-shadow:none;margin-top:10px}
+    .btn-outline:hover{background:var(--gold-bg)}
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,var(--wa),var(--wa-dark));margin-top:14px;font-weight:600;text-decoration:none}
+    .btn-wa:hover{transform:translateY(-1px)}
+    .btn-wa svg{flex-shrink:0}
+    .btn-danger{background:transparent;color:#c0392b;border:1.5px solid #f5c6c1;box-shadow:none;margin-top:18px}
+    .btn-danger:hover{background:#fde8e6}
+    .err{color:#c0392b;font-size:13px;margin-top:10px;display:none;background:#fde8e6;padding:10px 12px;border-radius:10px;border:1px solid #f5c6c1}
     .err.show{display:block}
     .screen{display:none}
     .screen.active{display:block}
 
     /* Dashboard */
-    .avatar{width:60px;height:60px;background:var(--gold-bg);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:24px;color:var(--gold);margin:0 auto 16px;font-weight:700}
-    .name-display{text-align:center;font-family:'Playfair Display',serif;font-size:20px;font-weight:500;margin-bottom:4px}
-    .phone-display{text-align:center;font-size:13px;color:var(--muted);margin-bottom:24px}
-    .info-grid{display:grid;gap:12px}
-    .info-row{background:var(--gold-bg);border-radius:10px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-    .info-label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px;font-weight:500}
-    .info-value{font-size:14px;font-weight:600;color:var(--text)}
-    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+    .avatar{width:64px;height:64px;background:linear-gradient(135deg,var(--gold-bg),#fff5dd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:26px;color:var(--gold-dark);margin:0 auto 12px;font-weight:600;border:2px solid var(--gold-2)}
+    .name-display{text-align:center;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--gold-dark);margin-bottom:4px}
+    .phone-display{text-align:center;font-size:13px;color:var(--muted);margin-bottom:22px}
+    .info-grid{display:grid;gap:10px}
+    .info-row{background:var(--gold-bg);border-radius:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid #efe7d4}
+    .info-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+    .info-value{font-size:14.5px;font-weight:600;color:var(--text);margin-top:2px}
+    .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px}
     .badge.trial{background:#FFF3CD;color:#856404}
     .badge.active{background:#D1FAE5;color:#065F46}
     .badge.canceled{background:#FEE2E2;color:#991B1B}
-    .divider{height:1px;background:var(--border);margin:20px 0}
-    .action-link{display:block;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;text-decoration:underline;margin-top:4px}
-    .action-link:hover{color:var(--gold)}
-    .versículo{font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--muted);text-align:center;margin-top:20px;line-height:1.6;border-top:1px solid var(--border);padding-top:16px}
+    .badge.past_due{background:#FEDBD3;color:#8B2A1B}
+    .divider{height:1px;background:var(--border);margin:22px 0 16px}
+    .action-link{display:block;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;margin-top:8px;text-decoration:underline}
+    .action-link:hover{color:var(--gold-dark)}
+    .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border);padding-top:14px}
+
+    /* Magic link cancel */
+    .cancel-icon{width:64px;height:64px;background:#fde8e6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#c0392b;font-size:30px}
+    .ok-icon{width:64px;height:64px;background:#D1FAE5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#065F46;font-size:30px}
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      body{padding:18px 14px}
+      .card{padding:24px 18px;border-radius:16px}
+      .brand .logo{font-size:28px}
+      .card-title{font-size:20px}
+    }
   </style>
 </head>
 <body>
 
-<div class="logo">Manaã</div>
-<div class="logo-sub">Área do Assinante</div>
+<div class="brand">
+  <div class="logo">Manaã</div>
+  <div class="sub">Sua área pessoal</div>
+</div>
 
 <div class="card">
 
+  <!-- TELA 0: Magic Link Cancel -->
+  <div class="screen" id="screen-magic">
+    <div class="cancel-icon">⚠️</div>
+    <h2 class="card-title">Cancelar assinatura</h2>
+    <p class="hint" id="magic-hint">Confirma o cancelamento da sua assinatura Manaã? Vai parar de receber o devocional diário a partir de amanhã.</p>
+    <button class="btn btn-danger" id="btn-magic-confirm" onclick="confirmMagicCancel()">Sim, cancelar</button>
+    <button class="btn btn-outline" onclick="window.location='/conta.html'">Quero continuar com Manaã</button>
+    <div class="err" id="err-magic">Link inválido ou expirado. Acesse pelo WhatsApp pra solicitar de novo.</div>
+  </div>
+
+  <!-- TELA 0b: Cancel sucesso -->
+  <div class="screen" id="screen-magic-ok">
+    <div class="ok-icon">✓</div>
+    <h2 class="card-title">Cancelado</h2>
+    <p class="hint">Sua assinatura foi cancelada. Vai receber uma confirmação no WhatsApp. Caso queira voltar um dia, é só falar com a gente.</p>
+    <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20queria%20voltar" target="_blank" rel="noopener" class="btn btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      Falar com Manaã
+    </a>
+  </div>
+
   <!-- TELA 1: PHONE -->
   <div class="screen active" id="screen-phone">
-    <h2>Acessar minha conta</h2>
-    <p class="hint">Informe o WhatsApp cadastrado. Você receberá um código de 6 dígitos.</p>
+    <h2 class="card-title">Acessar minha conta</h2>
+    <p class="hint">Informe o WhatsApp cadastrado. Vamos enviar um código de 6 dígitos.</p>
     <label for="inp-phone">WhatsApp (com DDD)</label>
     <input type="tel" id="inp-phone" placeholder="(11) 91234-5678" maxlength="15" autocomplete="tel">
-    <div class="err" id="err-phone">Número não encontrado. Verifique o WhatsApp cadastrado.</div>
+    <div class="err" id="err-phone">Número não encontrado. Verifique se digitou o WhatsApp cadastrado.</div>
     <button class="btn" id="btn-send" onclick="sendOtp()">Enviar código</button>
+    <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      Falar com Manaã
+    </a>
   </div>
 
   <!-- TELA 2: OTP -->
   <div class="screen" id="screen-otp">
-    <h2>Digite o código</h2>
-    <p class="hint">Enviamos um código de 6 dígitos para o seu WhatsApp. Válido por 10 minutos.</p>
+    <h2 class="card-title">Digite o código</h2>
+    <p class="hint">Enviamos um código de 6 dígitos no seu WhatsApp. Válido por 10 minutos.</p>
     <label for="inp-otp">Código de acesso</label>
-    <input type="number" id="inp-otp" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
-    <div class="err" id="err-otp">Código inválido ou expirado. Tente novamente.</div>
+    <input type="text" id="inp-otp" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+    <div class="err" id="err-otp">Código inválido ou expirado.</div>
     <button class="btn" id="btn-verify" onclick="verifyOtp()">Entrar</button>
     <button class="btn btn-outline" onclick="backToPhone()">Voltar</button>
   </div>
@@ -114,12 +164,17 @@
       </div>
     </div>
 
+    <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F" target="_blank" rel="noopener" class="btn btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      Falar com Manaã
+    </a>
+
     <div class="divider"></div>
 
-    <a class="action-link" onclick="cancelSub()">Cancelar assinatura</a>
-    <a class="action-link" onclick="logout()" style="margin-top:8px;color:#aaa">Sair</a>
+    <a class="action-link" onclick="requestCancelLink()">Quero cancelar minha assinatura</a>
+    <a class="action-link" onclick="logout()" style="margin-top:8px;color:#a89c83">Sair</a>
 
-    <div class="versículo">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
+    <div class="verso">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
   </div>
 
 </div>
@@ -129,8 +184,45 @@
   let currentPhone = '';
   let userData = null;
 
-  // Formatação de telefone
-  document.getElementById('inp-phone').addEventListener('input', function(e){
+  // Magic link routes
+  const params = new URLSearchParams(location.search);
+  const magicToken = params.get('token');   // legado / direct cancel link
+  const loginToken = params.get('login');   // login automatico
+
+  if (loginToken) {
+    autoLoginViaMagicLink(loginToken);
+  } else if (magicToken) {
+    showScreen('magic');
+  }
+
+  async function autoLoginViaMagicLink(token){
+    try {
+      const r = await fetch(API+'/manaa-magic-login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token})
+      });
+      const data = await r.json();
+      if (data.success && data.data){
+        userData = data.data;
+        currentPhone = (data.data.phone || '').replace(/^\+/, '');
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, data: userData, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+        // clear token from URL
+        history.replaceState({}, '', '/conta.html');
+      } else {
+        alert('Link inválido ou expirado. Solicite outro pelo WhatsApp.');
+        showScreen('phone');
+      }
+    } catch(e) {
+      alert('Erro ao acessar. Tente de novo ou solicite outro link pelo WhatsApp.');
+      showScreen('phone');
+    }
+  }
+
+  // Phone format
+  const inpPhone = document.getElementById('inp-phone');
+  inpPhone.addEventListener('input', function(e){
     let v = e.target.value.replace(/\D/g,'');
     if(v.length > 11) v = v.slice(0,11);
     if(v.length > 7) v = '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
@@ -138,21 +230,16 @@
     else if(v.length > 0) v = '('+v;
     e.target.value = v;
   });
-
-  // OTP: apenas números
   document.getElementById('inp-otp').addEventListener('input', function(e){
     e.target.value = e.target.value.replace(/\D/g,'').slice(0,6);
   });
-
-  // Enter to submit
-  document.getElementById('inp-phone').addEventListener('keydown', e => { if(e.key==='Enter') sendOtp(); });
+  inpPhone.addEventListener('keydown', e => { if(e.key==='Enter') sendOtp(); });
   document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
 
   function showScreen(id){
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-'+id).classList.add('active');
   }
-
   function showErr(id, show){
     const el = document.getElementById('err-'+id);
     if(el) el.className = show ? 'err show' : 'err';
@@ -162,15 +249,12 @@
     const raw = document.getElementById('inp-phone').value;
     const phone = raw.replace(/\D/g,'');
     if(phone.length < 10){ showErr('phone',true); return; }
-
     const btn = document.getElementById('btn-send');
     btn.disabled = true; btn.textContent = 'Enviando...';
     showErr('phone', false);
-
     try {
       const r = await fetch(API+'/manaa-conta-otp', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+        method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({phone})
       });
       const data = await r.json();
@@ -178,27 +262,20 @@
         currentPhone = phone;
         showScreen('otp');
         document.getElementById('inp-otp').focus();
-      } else {
-        showErr('phone', true);
-      }
-    } catch(e) {
-      showErr('phone', true);
-    }
+      } else { showErr('phone', true); }
+    } catch(e) { showErr('phone', true); }
     btn.disabled = false; btn.textContent = 'Enviar código';
   }
 
   async function verifyOtp(){
     const otp = document.getElementById('inp-otp').value.trim();
     if(otp.length !== 6){ showErr('otp',true); return; }
-
     const btn = document.getElementById('btn-verify');
     btn.disabled = true; btn.textContent = 'Verificando...';
     showErr('otp', false);
-
     try {
       const r = await fetch(API+'/manaa-conta-verify', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
+        method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({phone: currentPhone, otp})
       });
       const data = await r.json();
@@ -207,41 +284,29 @@
         localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, data: userData, ts: Date.now()}));
         renderDash(userData);
         showScreen('dash');
-      } else {
-        showErr('otp', true);
-      }
-    } catch(e) {
-      showErr('otp', true);
-    }
+      } else { showErr('otp', true); }
+    } catch(e) { showErr('otp', true); }
     btn.disabled = false; btn.textContent = 'Entrar';
   }
 
   function renderDash(d){
     const firstName = (d.name || '').split(' ')[0];
-    document.getElementById('dash-avatar').textContent = firstName.charAt(0).toUpperCase() || 'M';
+    document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
     document.getElementById('dash-name').textContent = d.name || '—';
     document.getElementById('dash-phone').textContent = formatPhone(d.phone) || '—';
-
     const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
     const statusText = statusMap[d.status] || d.status || '—';
     document.getElementById('dash-status').textContent = statusText;
-
     const badge = document.getElementById('dash-badge');
     badge.textContent = statusText;
     badge.className = 'badge ' + (d.status || 'trial');
-    if(d.status === 'trialing') badge.className = 'badge trial';
-    else if(d.status === 'active') badge.className = 'badge active';
-    else badge.className = 'badge canceled';
-
-    const planMap = { monthly:'Mensal · R$ 14,90', annual:'Anual · R$ 159,90', free:'Gratuito' };
+    const planMap = { monthly:'Mensal — R$ 14,99', annual:'Anual — R$ 159,99', free:'Gratuito' };
     document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
-
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
-      document.getElementById('row-trial').style.display = '';
+      document.getElementById('row-trial').style.display = 'flex';
       document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
     }
-
-    const momentoMap = { fé:'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
+    const momentoMap = { 'fé':'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
     document.getElementById('dash-momento').textContent = momentoMap[d.momento_vida] || d.momento_vida || '—';
   }
 
@@ -251,52 +316,42 @@
     if(n.length === 13) return '+'+n.slice(0,2)+' ('+n.slice(2,4)+') '+n.slice(4,9)+'-'+n.slice(9);
     return p;
   }
+  function backToPhone(){ showErr('otp',false); document.getElementById('inp-otp').value = ''; showScreen('phone'); }
+  function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; document.getElementById('inp-phone').value = ''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
 
-  function backToPhone(){
-    showErr('otp',false);
-    document.getElementById('inp-otp').value = '';
-    showScreen('phone');
-  }
-
-  function logout(){
-    localStorage.removeItem('manaa_session');
-    userData = null;
-    currentPhone = '';
-    document.getElementById('inp-phone').value = '';
-    document.getElementById('inp-otp').value = '';
-    showScreen('phone');
-  }
-
-  async function cancelSub(){
-    if(!confirm('Tem certeza que deseja cancelar sua assinatura Manaã?')) return;
-    // TODO: call n8n cancel endpoint → send WhatsApp confirmation
-    const phone = currentPhone;
+  async function requestCancelLink(){
+    if(!confirm('Vamos enviar um link no seu WhatsApp pra você acessar sua conta e cancelar. Continuar?')) return;
     try {
-      await fetch(API+'/manaa-wa-webhook-v2', {
-        method:'POST',
-        headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({
-          object:'whatsapp_business_account',
-          entry:[{id:'web',changes:[{value:{
-            messaging_product:'whatsapp',
-            metadata:{phone_number_id:'974587859082346'},
-            messages:[{from:phone.replace('+',''),type:'text',text:{body:'cancelar'},id:'web-'+Date.now()}]
-          },field:'messages'}]}]
-        })
+      await fetch(API+'/manaa-magic-request', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phone: currentPhone})
       });
-      alert('Solicitação enviada! Você receberá uma confirmação no WhatsApp.');
-    } catch(e) {
-      alert('Erro ao processar. Entre em contato pelo WhatsApp.');
-    }
+      alert('Link enviado no seu WhatsApp. Verifique a conversa com o Manaã.');
+    } catch(e) { alert('Erro. Fale com a gente direto no WhatsApp.'); }
+  }
+
+  async function confirmMagicCancel(){
+    const btn = document.getElementById('btn-magic-confirm');
+    btn.disabled = true; btn.textContent = 'Cancelando...';
+    showErr('magic', false);
+    try {
+      const r = await fetch(API+'/manaa-cancel-confirm', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: magicToken})
+      });
+      const data = await r.json();
+      if(data.success){ showScreen('magic-ok'); }
+      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, cancelar'; }
+    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, cancelar'; }
   }
 
   // Restaurar sessão
   (function(){
+    if (magicToken) return;
     const saved = localStorage.getItem('manaa_session');
     if(!saved) return;
     try{
       const s = JSON.parse(saved);
-      // Sessão válida por 7 dias
       if(Date.now() - s.ts < 7*24*60*60*1000 && s.data){
         userData = s.data;
         currentPhone = s.phone;
