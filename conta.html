@@ -80,6 +80,9 @@
 
     .select-input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238B6914' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>") no-repeat right 16px center;color:var(--ink-1);appearance:none;-webkit-appearance:none;padding-right:42px}
     .select-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
+    .edit-group{margin-top:20px;padding:18px;background:var(--gold-bg);border-radius:14px;border:1px solid var(--border-soft)}
+    .edit-group:first-of-type{margin-top:8px}
+    .edit-group-title{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--gold-dark);margin-bottom:14px;text-transform:none;letter-spacing:.3px}
 
     /* Mobile */
     @media (max-width: 480px) {
@@ -205,45 +208,72 @@
 
   <!-- TELA 4: EDIT PREFS -->
   <div class="screen" id="screen-edit">
-    <h2 class="card-title">Editar preferências</h2>
+    <h2 class="card-title">Minhas preferências</h2>
     <p class="hint">Mude o que precisar e clique em Salvar.</p>
 
-    <label for="edit-horario">Horário do devocional</label>
-    <input type="time" id="edit-horario" style="min-height:48px">
+    <div class="edit-group">
+      <h4 class="edit-group-title">Sobre você</h4>
 
-    <label for="edit-religiao" style="margin-top:16px">Tradição cristã</label>
-    <select id="edit-religiao" class="select-input">
-      <option value="">— escolha —</option>
-      <option value="catolico">Católica</option>
-      <option value="evangélico">Evangélica</option>
-      <option value="cristão">Cristã sem denominação</option>
-      <option value="universal">Universal</option>
-    </select>
+      <label for="edit-name">Nome completo</label>
+      <input type="text" id="edit-name" placeholder="Maria das Graças Silveira">
 
-    <label for="edit-versao" style="margin-top:16px">Versão bíblica preferida</label>
-    <select id="edit-versao" class="select-input">
-      <option value="">— escolha —</option>
-      <option value="ARA">Almeida Revista e Atualizada (ARA)</option>
-      <option value="ARC">Almeida Revista e Corrigida (ARC)</option>
-      <option value="NVI">Nova Versão Internacional (NVI)</option>
-      <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH)</option>
-      <option value="NAA">Nova Almeida Atualizada (NAA)</option>
-    </select>
+      <label for="edit-email" style="margin-top:14px">Email</label>
+      <input type="email" id="edit-email" placeholder="seu@email.com" autocomplete="email">
 
-    <label for="edit-momento" style="margin-top:16px">Momento de vida</label>
-    <select id="edit-momento" class="select-input">
-      <option value="">— escolha —</option>
-      <option value="fé">Crescendo na fé</option>
-      <option value="luto">Vivendo um luto</option>
-      <option value="ansiedade">Ansioso(a)</option>
-      <option value="gratidão">Em gratidão</option>
-      <option value="busca">Em busca espiritual</option>
-    </select>
+      <label for="edit-nasc" style="margin-top:14px">Data de nascimento</label>
+      <input type="date" id="edit-nasc" style="min-height:48px">
 
-    <label for="edit-inspiracoes" style="margin-top:16px">O que te inspira (opcional)</label>
-    <input type="text" id="edit-inspiracoes" placeholder="ex: salmos, oração, família">
+      <label for="edit-ocupacao" style="margin-top:14px">Ocupação (opcional)</label>
+      <input type="text" id="edit-ocupacao" placeholder="ex: aposentada, professora, estudante">
+    </div>
 
-    <button class="btn" id="btn-save-edit" onclick="saveEdit()">Salvar</button>
+    <div class="edit-group">
+      <h4 class="edit-group-title">Seu devocional</h4>
+
+      <label for="edit-horario">Horário do devocional</label>
+      <input type="time" id="edit-horario" style="min-height:48px">
+
+      <label for="edit-religiao" style="margin-top:14px">Tradição cristã</label>
+      <select id="edit-religiao" class="select-input">
+        <option value="">— escolha —</option>
+        <option value="catolico">Católica</option>
+        <option value="evangélico">Evangélica</option>
+        <option value="cristão">Cristã sem denominação</option>
+        <option value="universal">Universal</option>
+      </select>
+
+      <label for="edit-versao" style="margin-top:14px">Versão bíblica preferida</label>
+      <select id="edit-versao" class="select-input">
+        <option value="">— escolha —</option>
+        <option value="ARA">Almeida Revista e Atualizada (ARA)</option>
+        <option value="ARC">Almeida Revista e Corrigida (ARC)</option>
+        <option value="NVI">Nova Versão Internacional (NVI)</option>
+        <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH)</option>
+        <option value="NAA">Nova Almeida Atualizada (NAA)</option>
+      </select>
+    </div>
+
+    <div class="edit-group">
+      <h4 class="edit-group-title">Sua jornada</h4>
+
+      <label for="edit-momento">Momento de vida</label>
+      <select id="edit-momento" class="select-input">
+        <option value="">— escolha —</option>
+        <option value="fé">Crescendo na fé</option>
+        <option value="luto">Vivendo um luto</option>
+        <option value="ansiedade">Ansioso(a)</option>
+        <option value="gratidão">Em gratidão</option>
+        <option value="busca">Em busca espiritual</option>
+      </select>
+
+      <label for="edit-proposito" style="margin-top:14px">Propósito espiritual</label>
+      <input type="text" id="edit-proposito" placeholder="ex: paz interior, fortalecer fé, gratidão diária">
+
+      <label for="edit-inspiracoes" style="margin-top:14px">O que te inspira</label>
+      <input type="text" id="edit-inspiracoes" placeholder="ex: salmos, oração, família">
+    </div>
+
+    <button class="btn" id="btn-save-edit" onclick="saveEdit()">Salvar alterações</button>
     <button class="btn btn-ghost" onclick="closeEdit()">Voltar</button>
     <div class="err" id="err-edit">Não foi possível salvar. Tenta de novo.</div>
   </div>
@@ -328,10 +358,15 @@
   }
   function openEdit(){
     if (!userData) return;
+    document.getElementById('edit-name').value = userData.name || '';
+    document.getElementById('edit-email').value = userData.email || '';
+    document.getElementById('edit-nasc').value = userData.data_nascimento || '';
+    document.getElementById('edit-ocupacao').value = userData.ocupacao || '';
     document.getElementById('edit-horario').value = (userData.horario || '').slice(0,5);
     document.getElementById('edit-religiao').value = userData.religiao || '';
     document.getElementById('edit-versao').value = userData.versao_biblica_pref || '';
     document.getElementById('edit-momento').value = userData.momento_vida || '';
+    document.getElementById('edit-proposito').value = userData.proposito_espiritual || '';
     document.getElementById('edit-inspiracoes').value = userData.inspiracoes || '';
     showErr('edit', false);
     showScreen('edit');
@@ -345,14 +380,22 @@
     btn.disabled = true; btn.textContent = 'Salvando...';
     showErr('edit', false);
     const horario = document.getElementById('edit-horario').value || null;
-    const religiao = document.getElementById('edit-religiao').value || '';
-    const versao = document.getElementById('edit-versao').value || '';
-    const momento = document.getElementById('edit-momento').value || '';
-    const inspiracoes = document.getElementById('edit-inspiracoes').value || '';
     try {
       const r = await fetch(API+'/manaa-update-prefs', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: sessionToken, horario: horario ? horario+':00' : null, religiao, versao_biblica_pref: versao, momento_vida: momento, inspiracoes})
+        body: JSON.stringify({
+          token: sessionToken,
+          name: document.getElementById('edit-name').value.trim(),
+          email: document.getElementById('edit-email').value.trim().toLowerCase(),
+          data_nascimento: document.getElementById('edit-nasc').value || null,
+          ocupacao: document.getElementById('edit-ocupacao').value.trim(),
+          horario: horario ? horario+':00' : null,
+          religiao: document.getElementById('edit-religiao').value || '',
+          versao_biblica_pref: document.getElementById('edit-versao').value || '',
+          momento_vida: document.getElementById('edit-momento').value || '',
+          proposito_espiritual: document.getElementById('edit-proposito').value.trim(),
+          inspiracoes: document.getElementById('edit-inspiracoes').value.trim()
+        })
       });
       const data = await r.json();
       if(data.success){
@@ -362,7 +405,7 @@
         showScreen('dash');
       } else { showErr('edit', true); }
     } catch(e) { showErr('edit', true); }
-    btn.disabled = false; btn.textContent = 'Salvar';
+    btn.disabled = false; btn.textContent = 'Salvar alterações';
   }
 
   async function suspendFlow(){
