@@ -555,10 +555,11 @@
     document.getElementById('dash-phone').textContent = formatPhone(d.phone) || (d.email || '—');
     const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
     const statusText = statusMap[d.status] || d.status || '—';
-    document.getElementById('dash-status').textContent = statusText;
     const badge = document.getElementById('dash-badge');
-    badge.textContent = statusText;
-    badge.className = 'badge ' + (d.status || 'trialing');
+    if (badge) {
+      badge.textContent = statusText;
+      badge.className = 'badge ' + (d.status || 'trialing');
+    }
     const planMap = { monthly:'Mensal — R$ 14,99', annual:'Anual — R$ 159,99', free:'Gratuito' };
     document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
