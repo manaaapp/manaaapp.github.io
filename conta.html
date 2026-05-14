@@ -12,34 +12,37 @@
     *{margin:0;padding:0;box-sizing:border-box}
     :root{
       --gold:#B8912E;--gold-2:#D4B86A;--gold-dark:#8B6914;--gold-bg:#F9F3E8;
-      --bg:#FDFBF8;--text:#1a1a1a;--muted:#5C564D;--border:#E5DDD0;
+      --bg:#FDFBF8;--ink-1:#1a1a1a;--ink-2:#3a3a3a;--ink-3:#5C564D;--ink-4:#8B826F;
+      --border:#E5DDD0;--border-soft:#EFE7D4;
       --card:#fff;--radius:18px;--shadow:0 6px 32px rgba(139,105,20,.08);
-      --wa:#25D366;--wa-dark:#1da851;
+      --wa:#25D366;--wa-dark:#1da851;--danger:#B8404C;--danger-soft:#FDEEEC;
     }
     html,body{background:var(--bg);min-height:100dvh}
-    body{font-family:'Inter',sans-serif;color:var(--text);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:24px 16px;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom))}
+    body{font-family:'Inter',sans-serif;color:var(--ink-1);min-height:100dvh;display:flex;flex-direction:column;align-items:center;padding:24px 16px;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
     .brand{text-align:center;margin-bottom:18px}
     .brand .logo{font-family:'Lora',serif;font-size:32px;font-weight:600;color:var(--gold-dark);letter-spacing:.5px;line-height:1}
-    .brand .sub{font-size:13px;color:var(--muted);margin-top:6px;letter-spacing:.5px}
+    .brand .sub{font-size:13px;color:var(--ink-3);margin-top:6px;letter-spacing:.5px}
     .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;width:100%;max-width:440px;border:1px solid var(--border)}
     .card-title{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--gold-dark);margin-bottom:8px;display:flex;align-items:center;gap:10px}
     .card-title::before{content:"";display:inline-block;width:4px;height:20px;background:linear-gradient(180deg,var(--gold-2),var(--gold-dark));border-radius:2px}
-    p.hint{font-size:14px;color:var(--muted);margin-bottom:20px;line-height:1.55}
-    label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--text)}
-    input{width:100%;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:15.5px;font-family:'Inter',sans-serif;outline:none;transition:border .2s;background:#fff;color:var(--text)}
+    p.hint{font-size:14.5px;color:var(--ink-3);margin-bottom:20px;line-height:1.55}
+    label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--ink-2)}
+    input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff;color:var(--ink-1)}
     input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
-    input.otp-input{letter-spacing:8px;font-size:22px;text-align:center;font-weight:700}
-    .btn{width:100%;padding:14px 18px;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff;border:none;border-radius:12px;font-size:15.5px;font-weight:600;cursor:pointer;transition:transform .15s, box-shadow .15s;margin-top:16px;font-family:'Inter',sans-serif;box-shadow:0 3px 10px rgba(139,105,20,.18)}
+    input.otp-input{letter-spacing:10px;font-size:24px;text-align:center;font-weight:700;padding-left:18px}
+    .btn{width:100%;min-height:48px;padding:14px 18px;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff;border:none;border-radius:12px;font-size:15.5px;font-weight:600;cursor:pointer;transition:transform .12s ease-out, box-shadow .12s ease-out;margin-top:16px;font-family:'Inter',sans-serif;box-shadow:0 3px 10px rgba(139,105,20,.18);touch-action:manipulation}
+    .btn:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(139,105,20,.18)}
     .btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(139,105,20,.25)}
     .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
     .btn-outline{background:transparent;color:var(--gold-dark);border:1.5px solid var(--gold-2);box-shadow:none;margin-top:10px}
     .btn-outline:hover{background:var(--gold-bg)}
     .btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,var(--wa),var(--wa-dark));margin-top:14px;font-weight:600;text-decoration:none}
-    .btn-wa:hover{transform:translateY(-1px)}
     .btn-wa svg{flex-shrink:0}
-    .btn-danger{background:transparent;color:#c0392b;border:1.5px solid #f5c6c1;box-shadow:none;margin-top:18px}
-    .btn-danger:hover{background:#fde8e6}
-    .err{color:#c0392b;font-size:13px;margin-top:10px;display:none;background:#fde8e6;padding:10px 12px;border-radius:10px;border:1px solid #f5c6c1}
+    .btn-ghost{background:transparent;color:var(--ink-3);border:1.5px solid var(--border);box-shadow:none;margin-top:8px}
+    .btn-ghost:hover{background:var(--gold-bg);color:var(--ink-1)}
+    .btn-danger{background:transparent;color:var(--danger);border:1.5px solid #E8B8B8;box-shadow:none;margin-top:10px;font-weight:600}
+    .btn-danger:hover{background:var(--danger-soft)}
+    .err{color:#7a1f28;font-size:13.5px;margin-top:10px;display:none;background:var(--danger-soft);padding:10px 12px;border-radius:10px;border:1px solid #E8B8B8}
     .err.show{display:block}
     .screen{display:none}
     .screen.active{display:block}
@@ -47,24 +50,28 @@
     /* Dashboard */
     .avatar{width:64px;height:64px;background:linear-gradient(135deg,var(--gold-bg),#fff5dd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:26px;color:var(--gold-dark);margin:0 auto 12px;font-weight:600;border:2px solid var(--gold-2)}
     .name-display{text-align:center;font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--gold-dark);margin-bottom:4px}
-    .phone-display{text-align:center;font-size:13px;color:var(--muted);margin-bottom:22px}
+    .phone-display{text-align:center;font-size:13.5px;color:var(--ink-4);margin-bottom:22px}
     .info-grid{display:grid;gap:10px}
-    .info-row{background:var(--gold-bg);border-radius:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid #efe7d4}
-    .info-label{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
-    .info-value{font-size:14.5px;font-weight:600;color:var(--text);margin-top:2px}
+    .info-row{background:var(--gold-bg);border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;border:1px solid var(--border-soft);min-height:54px}
+    .info-label{font-size:11.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.6px;font-weight:600}
+    .info-value{font-size:14.5px;font-weight:600;color:var(--ink-1);margin-top:2px;font-variant-numeric:tabular-nums}
     .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px}
-    .badge.trial{background:#FFF3CD;color:#856404}
+    .badge.trialing{background:#FFF3CD;color:#856404}
     .badge.active{background:#D1FAE5;color:#065F46}
     .badge.canceled{background:#FEE2E2;color:#991B1B}
     .badge.past_due{background:#FEDBD3;color:#8B2A1B}
-    .divider{height:1px;background:var(--border);margin:22px 0 16px}
-    .action-link{display:block;text-align:center;font-size:13px;color:var(--muted);cursor:pointer;margin-top:8px;text-decoration:underline}
+    .divider{height:1px;background:var(--border-soft);margin:22px 0 16px}
+    .action-link{display:block;text-align:center;font-size:13px;color:var(--ink-4);cursor:pointer;margin-top:8px;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;min-height:32px;line-height:32px}
     .action-link:hover{color:var(--gold-dark)}
-    .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--muted);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border);padding-top:14px}
+    .action-link.subtle{color:#a89c83}
+    .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--ink-4);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border-soft);padding-top:14px}
 
-    /* Magic link cancel */
-    .cancel-icon{width:64px;height:64px;background:#fde8e6;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#c0392b;font-size:30px}
-    .ok-icon{width:64px;height:64px;background:#D1FAE5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 14px;color:#065F46;font-size:30px}
+    /* Suspend inline panel */
+    .suspend-panel{margin-top:14px;padding:18px;background:var(--gold-bg);border-radius:14px;border:1px solid var(--border-soft);display:none;animation:slide-in .25s ease-out}
+    .suspend-panel.show{display:block}
+    .suspend-panel h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:8px}
+    .suspend-panel p{font-size:13.5px;color:var(--ink-3);line-height:1.5;margin-bottom:14px}
+    @keyframes slide-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
 
     /* Mobile */
     @media (max-width: 480px) {
@@ -72,6 +79,10 @@
       .card{padding:24px 18px;border-radius:16px}
       .brand .logo{font-size:28px}
       .card-title{font-size:20px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .btn{transition:none}
+      .suspend-panel{animation:none}
     }
   </style>
 </head>
@@ -84,49 +95,23 @@
 
 <div class="card">
 
-  <!-- TELA 0: Suspender (chega via link com token); Excluir aparece via "Mais opções" -->
-  <div class="screen" id="screen-magic">
-    <div class="cancel-icon">⚠️</div>
-    <h2 class="card-title">Suspender minha assinatura</h2>
-    <p class="hint" id="magic-hint">Você vai parar de receber o devocional. Seus dados ficam salvos — se um dia quiser voltar, é só dizer.</p>
-    <button class="btn btn-danger" id="btn-suspend" onclick="confirmSuspend()">Sim, quero suspender</button>
-    <button class="btn btn-outline" onclick="window.location='/conta.html'">Quero continuar com Manaã</button>
-    <a class="action-link" id="link-more-options" onclick="toggleAdvancedOptions()" style="margin-top:18px;font-size:11.5px;color:#a89c83;text-decoration:none">⋯ Mais opções</a>
-    <div id="advanced-options" style="display:none;margin-top:14px;padding:14px;background:#fef7e9;border-radius:10px;border:1px dashed #e0d0a8">
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin-bottom:10px">Excluir meus dados <strong>de verdade</strong>: apaga preferências, mensagens e fatos. Mantemos apenas seu primeiro nome e contato pra eventual reconvite no futuro.</p>
-      <button class="btn btn-danger" id="btn-delete" onclick="confirmDelete()" style="margin-top:0;font-size:13.5px">Excluir meus dados</button>
-    </div>
-    <div class="err" id="err-magic">Link inválido ou expirado. Solicite outro pelo WhatsApp.</div>
-  </div>
-
-  <!-- TELA 0b: Sucesso -->
-  <div class="screen" id="screen-magic-ok">
-    <div class="ok-icon">✓</div>
-    <h2 class="card-title" id="ok-title">Cancelado</h2>
-    <p class="hint" id="ok-hint">Sua assinatura foi suspensa. Caso queira voltar um dia, é só falar com a gente.</p>
-    <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20queria%20voltar" target="_blank" rel="noopener" class="btn btn-wa">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
-      Falar com Manaã
-    </a>
-  </div>
-
-  <!-- TELA 1: EMAIL (canal padrao — sem custo Meta) -->
+  <!-- TELA 1: ACESSO via EMAIL (padrao) -->
   <div class="screen active" id="screen-phone">
     <h2 class="card-title">Acessar minha conta</h2>
     <p class="hint">Digite o email cadastrado pra receber um código de acesso.</p>
     <label for="inp-email">Email</label>
     <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
-    <div class="err" id="err-phone">Email não encontrado. Confirme se foi o email cadastrado na compra.</div>
+    <div class="err" id="err-phone">Email não encontrado. Confirme se foi o email cadastrado.</div>
     <button class="btn" id="btn-send" onclick="sendOtpEmail()">Receber código por email</button>
-    <a class="action-link" onclick="toggleWhatsLogin()" style="margin-top:14px;font-size:12.5px">Prefiro acessar pelo WhatsApp</a>
-    <div id="phone-fallback" style="display:none;margin-top:14px;padding:14px;background:#fef7e9;border-radius:10px;border:1px dashed #e0d0a8">
-      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin-bottom:10px">Vamos te enviar um link de acesso no WhatsApp (sem código pra digitar).</p>
-      <label for="inp-phone" style="margin-top:0">WhatsApp (com DDD)</label>
+    <a class="action-link subtle" onclick="toggleWhatsLogin()" id="lnk-wa-toggle">Prefiro acessar pelo WhatsApp</a>
+    <div id="phone-fallback" style="display:none;margin-top:12px;padding:16px;background:var(--gold-bg);border-radius:12px;border:1px solid var(--border-soft)">
+      <p style="font-size:13px;color:var(--ink-3);line-height:1.5;margin-bottom:12px">Vamos te enviar um link de acesso no WhatsApp.</p>
+      <label for="inp-phone">WhatsApp (com DDD)</label>
       <input type="tel" id="inp-phone" placeholder="(11) 91234-5678" maxlength="15" autocomplete="tel">
-      <button class="btn" id="btn-send-wa" onclick="sendMagicLinkWA()" style="font-size:14px">Receber link no WhatsApp</button>
+      <button class="btn" id="btn-send-wa" onclick="sendMagicLinkWA()" style="font-size:14.5px">Receber link no WhatsApp</button>
     </div>
     <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       Falar com Manaã
     </a>
   </div>
@@ -134,7 +119,7 @@
   <!-- TELA 2: OTP -->
   <div class="screen" id="screen-otp">
     <h2 class="card-title">Digite o código</h2>
-    <p class="hint">Enviamos um código de 6 dígitos no seu WhatsApp. Válido por 10 minutos.</p>
+    <p class="hint">Enviamos um código de 6 dígitos. Válido por 10 minutos.</p>
     <label for="inp-otp">Código de acesso</label>
     <input type="text" id="inp-otp" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
     <div class="err" id="err-otp">Código inválido ou expirado.</div>
@@ -142,7 +127,7 @@
     <button class="btn btn-outline" onclick="backToPhone()">Voltar</button>
   </div>
 
-  <!-- TELA 3: DASHBOARD -->
+  <!-- TELA 3: DASHBOARD (chega aqui via login OTP OU magic link) -->
   <div class="screen" id="screen-dash">
     <div class="avatar" id="dash-avatar">M</div>
     <div class="name-display" id="dash-name">—</div>
@@ -177,14 +162,27 @@
     </div>
 
     <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F" target="_blank" rel="noopener" class="btn btn-wa">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       Falar com Manaã
     </a>
 
     <div class="divider"></div>
 
-    <a class="action-link" onclick="requestCancelLink()">Quero cancelar minha assinatura</a>
-    <a class="action-link" onclick="logout()" style="margin-top:8px;color:#a89c83">Sair</a>
+    <a class="action-link" onclick="toggleSuspendPanel()" id="lnk-suspend">Suspender minha assinatura</a>
+
+    <div class="suspend-panel" id="suspend-panel" role="region" aria-label="Suspender assinatura">
+      <h3>Tem certeza?</h3>
+      <p>Você vai parar de receber o devocional. Pode voltar quando quiser sem perder seu histórico.</p>
+      <button class="btn btn-danger" id="btn-suspend" onclick="confirmSuspend()">Sim, suspender</button>
+      <button class="btn btn-ghost" onclick="toggleSuspendPanel()">Voltar</button>
+      <a class="action-link subtle" onclick="toggleAdvancedOptions()" id="lnk-more" style="margin-top:18px">⋯ Mais opções</a>
+      <div id="advanced-options" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)">
+        <p style="font-size:13px;color:var(--ink-3);line-height:1.5;margin-bottom:10px">Excluir meus dados: apaga preferências, mensagens e fatos guardados. Ação definitiva.</p>
+        <button class="btn btn-danger" id="btn-delete" onclick="confirmDelete()" style="font-size:14px">Excluir meus dados</button>
+      </div>
+    </div>
+
+    <a class="action-link subtle" onclick="logout()" style="margin-top:14px">Sair</a>
 
     <div class="verso">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
   </div>
@@ -194,18 +192,14 @@
 <script>
   const API = 'https://manaa-meta-webhook.manaa-fbx.workers.dev/webhook';
   let currentPhone = '';
+  let currentEmail = '';
+  let currentChannel = 'email';
+  let sessionToken = '';
   let userData = null;
 
-  // Magic link routes
   const params = new URLSearchParams(location.search);
-  const magicToken = params.get('token');   // legado / direct cancel link
-  const loginToken = params.get('login');   // login automatico
-
-  if (loginToken) {
-    autoLoginViaMagicLink(loginToken);
-  } else if (magicToken) {
-    showScreen('magic');
-  }
+  const loginToken = params.get('login');
+  if (loginToken) autoLoginViaMagicLink(loginToken);
 
   async function autoLoginViaMagicLink(token){
     try {
@@ -217,41 +211,38 @@
       if (data.success && data.data){
         userData = data.data;
         currentPhone = (data.data.phone || '').replace(/^\+/, '');
-        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, data: userData, ts: Date.now()}));
+        currentEmail = data.data.email || '';
+        sessionToken = token;
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
         renderDash(userData);
         showScreen('dash');
-        // clear token from URL
         history.replaceState({}, '', '/conta.html');
       } else {
-        alert('Link inválido ou expirado. Solicite outro pelo WhatsApp.');
+        alert('Link inválido ou expirado. Solicite outro pelo email.');
         showScreen('phone');
       }
     } catch(e) {
-      alert('Erro ao acessar. Tente de novo ou solicite outro link pelo WhatsApp.');
+      alert('Erro ao acessar. Tente de novo.');
       showScreen('phone');
     }
   }
 
   // Phone format
-  const inpPhone = document.getElementById('inp-phone');
-  inpPhone.addEventListener('input', function(e){
-    let v = e.target.value.replace(/\D/g,'');
+  function maskPhone(el){
+    let v = el.value.replace(/\D/g,'');
     if(v.length > 11) v = v.slice(0,11);
     if(v.length > 7) v = '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
     else if(v.length > 2) v = '('+v.slice(0,2)+') '+v.slice(2);
     else if(v.length > 0) v = '('+v;
-    e.target.value = v;
-  });
+    el.value = v;
+  }
+  const inpPhone = document.getElementById('inp-phone');
+  if (inpPhone) inpPhone.addEventListener('input', e => maskPhone(e.target));
   document.getElementById('inp-otp').addEventListener('input', function(e){
     e.target.value = e.target.value.replace(/\D/g,'').slice(0,6);
   });
   document.getElementById('inp-email').addEventListener('keydown', e => { if(e.key==='Enter') sendOtpEmail(); });
   document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
-
-  function toggleWhatsLogin(){
-    const box = document.getElementById('phone-fallback');
-    box.style.display = box.style.display === 'none' ? 'block' : 'none';
-  }
 
   function showScreen(id){
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
@@ -261,9 +252,41 @@
     const el = document.getElementById('err-'+id);
     if(el) el.className = show ? 'err show' : 'err';
   }
-
-  let currentEmail = '';
-  let currentChannel = 'email';
+  function toggleWhatsLogin(){
+    const box = document.getElementById('phone-fallback');
+    const link = document.getElementById('lnk-wa-toggle');
+    if (box.style.display === 'none' || !box.style.display) {
+      box.style.display = 'block';
+      link.textContent = 'Esconder opção do WhatsApp';
+    } else {
+      box.style.display = 'none';
+      link.textContent = 'Prefiro acessar pelo WhatsApp';
+    }
+  }
+  function toggleSuspendPanel(){
+    const p = document.getElementById('suspend-panel');
+    const lk = document.getElementById('lnk-suspend');
+    if (p.classList.contains('show')) {
+      p.classList.remove('show');
+      lk.textContent = 'Suspender minha assinatura';
+      document.getElementById('advanced-options').style.display = 'none';
+      document.getElementById('lnk-more').textContent = '⋯ Mais opções';
+    } else {
+      p.classList.add('show');
+      lk.textContent = 'Voltar';
+    }
+  }
+  function toggleAdvancedOptions(){
+    const box = document.getElementById('advanced-options');
+    const lk = document.getElementById('lnk-more');
+    if (box.style.display === 'none' || !box.style.display) {
+      box.style.display = 'block';
+      lk.textContent = '⋯ Esconder opções';
+    } else {
+      box.style.display = 'none';
+      lk.textContent = '⋯ Mais opções';
+    }
+  }
 
   async function sendOtpEmail(){
     const email = document.getElementById('inp-email').value.trim().toLowerCase();
@@ -323,7 +346,8 @@
       if(data.success){
         userData = data.data;
         currentPhone = (data.data.phone || '').replace(/^\+/, '');
-        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, ts: Date.now()}));
+        sessionToken = data.data.session_token || '';
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
         renderDash(userData);
         showScreen('dash');
       } else { showErr('otp', true); }
@@ -332,16 +356,16 @@
   }
 
   function renderDash(d){
-    const firstName = (d.name || '').split(' ')[0];
+    const firstName = (d.first_name || (d.name || '').split(' ')[0] || '');
     document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
     document.getElementById('dash-name').textContent = d.name || '—';
-    document.getElementById('dash-phone').textContent = formatPhone(d.phone) || '—';
+    document.getElementById('dash-phone').textContent = formatPhone(d.phone) || (d.email || '—');
     const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
     const statusText = statusMap[d.status] || d.status || '—';
     document.getElementById('dash-status').textContent = statusText;
     const badge = document.getElementById('dash-badge');
     badge.textContent = statusText;
-    badge.className = 'badge ' + (d.status || 'trial');
+    badge.className = 'badge ' + (d.status || 'trialing');
     const planMap = { monthly:'Mensal — R$ 14,99', annual:'Anual — R$ 159,99', free:'Gratuito' };
     document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
@@ -359,76 +383,54 @@
     return p;
   }
   function backToPhone(){ showErr('otp',false); document.getElementById('inp-otp').value = ''; showScreen('phone'); }
-  function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; const ie = document.getElementById('inp-email'); if(ie) ie.value=''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
-
-  async function requestCancelLink(){
-    if(!confirm('Vamos enviar um link no seu WhatsApp pra você acessar sua conta e cancelar. Continuar?')) return;
-    try {
-      await fetch(API+'/manaa-magic-request', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({phone: currentPhone})
-      });
-      alert('Link enviado no seu WhatsApp. Verifique a conversa com o Manaã.');
-    } catch(e) { alert('Erro. Fale com a gente direto no WhatsApp.'); }
-  }
-
-  function toggleAdvancedOptions(){
-    const box = document.getElementById('advanced-options');
-    const link = document.getElementById('link-more-options');
-    if (box.style.display === 'none') { box.style.display = 'block'; link.textContent = '⋯ Esconder opções'; }
-    else { box.style.display = 'none'; link.textContent = '⋯ Mais opções'; }
-  }
+  function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; sessionToken = ''; document.getElementById('inp-email').value = ''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
 
   async function confirmSuspend(){
-    if(!confirm('Tem certeza que quer suspender? Seu envio diário vai parar a partir de amanhã.')) return;
+    if(!confirm('Vamos suspender agora. Os envios diários param. Pode voltar depois sem perder histórico. Continuar?')) return;
     const btn = document.getElementById('btn-suspend');
     btn.disabled = true; btn.textContent = 'Suspendendo...';
-    showErr('magic', false);
     try {
       const r = await fetch(API+'/manaa-suspend', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: magicToken})
+        body: JSON.stringify({token: sessionToken})
       });
       const data = await r.json();
       if(data.success){
-        document.getElementById('ok-title').textContent = 'Suspenso';
-        document.getElementById('ok-hint').textContent = 'Sua assinatura foi suspensa. Seus dados ficam salvos. Quando quiser voltar é só falar com a gente.';
-        showScreen('magic-ok');
-      }
-      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, quero suspender'; }
-    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, quero suspender'; }
+        alert('Assinatura suspensa 🙏\n\nQuando quiser voltar é só falar com a gente no WhatsApp.');
+        logout();
+      } else { alert('Não foi possível suspender agora. Tenta de novo ou solicite novo link.'); btn.disabled = false; btn.textContent = 'Sim, suspender'; }
+    } catch(e) { alert('Erro. Tenta de novo.'); btn.disabled = false; btn.textContent = 'Sim, suspender'; }
   }
 
   async function confirmDelete(){
-    if(!confirm('Tem certeza? Vamos apagar suas preferências, mensagens e fatos. Mantemos apenas seu primeiro nome e contato. Esta ação não pode ser desfeita.')) return;
+    if(!confirm('Apagar suas preferências, mensagens e fatos guardados. Esta ação não pode ser desfeita. Continuar?')) return;
     const btn = document.getElementById('btn-delete');
     btn.disabled = true; btn.textContent = 'Excluindo...';
-    showErr('magic', false);
     try {
       const r = await fetch(API+'/manaa-delete-data', {
         method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: magicToken})
+        body: JSON.stringify({token: sessionToken})
       });
       const data = await r.json();
       if(data.success){
-        document.getElementById('ok-title').textContent = 'Dados excluídos';
-        document.getElementById('ok-hint').textContent = 'Seus dados foram apagados. Obrigado pela companhia que tivemos.';
-        showScreen('magic-ok');
-      }
-      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
-    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
+        alert('Seus dados foram excluídos. Obrigado pela companhia.');
+        logout();
+      } else { alert('Não foi possível excluir agora. Tenta de novo ou solicite novo link.'); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
+    } catch(e) { alert('Erro. Tenta de novo.'); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
   }
 
-  // Restaurar sessão
+  // Restaurar sessão (se loginToken não estiver na URL)
   (function(){
-    if (magicToken) return;
+    if (loginToken) return;
     const saved = localStorage.getItem('manaa_session');
     if(!saved) return;
     try{
       const s = JSON.parse(saved);
       if(Date.now() - s.ts < 7*24*60*60*1000 && s.data){
         userData = s.data;
-        currentPhone = s.phone;
+        currentPhone = s.phone || '';
+        currentEmail = s.email || '';
+        sessionToken = s.sessionToken || '';
         renderDash(userData);
         showScreen('dash');
       }
