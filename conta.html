@@ -84,21 +84,26 @@
 
 <div class="card">
 
-  <!-- TELA 0: Magic Link Cancel -->
+  <!-- TELA 0: Suspender (chega via link com token); Excluir aparece via "Mais opções" -->
   <div class="screen" id="screen-magic">
     <div class="cancel-icon">⚠️</div>
-    <h2 class="card-title">Cancelar assinatura</h2>
-    <p class="hint" id="magic-hint">Confirma o cancelamento da sua assinatura Manaã? Vai parar de receber o devocional diário a partir de amanhã.</p>
-    <button class="btn btn-danger" id="btn-magic-confirm" onclick="confirmMagicCancel()">Sim, cancelar</button>
+    <h2 class="card-title">Suspender minha assinatura</h2>
+    <p class="hint" id="magic-hint">Você vai parar de receber o devocional. Seus dados ficam salvos — se um dia quiser voltar, é só dizer.</p>
+    <button class="btn btn-danger" id="btn-suspend" onclick="confirmSuspend()">Sim, quero suspender</button>
     <button class="btn btn-outline" onclick="window.location='/conta.html'">Quero continuar com Manaã</button>
-    <div class="err" id="err-magic">Link inválido ou expirado. Acesse pelo WhatsApp pra solicitar de novo.</div>
+    <a class="action-link" id="link-more-options" onclick="toggleAdvancedOptions()" style="margin-top:18px;font-size:11.5px;color:#a89c83;text-decoration:none">⋯ Mais opções</a>
+    <div id="advanced-options" style="display:none;margin-top:14px;padding:14px;background:#fef7e9;border-radius:10px;border:1px dashed #e0d0a8">
+      <p style="font-size:12.5px;color:var(--muted);line-height:1.45;margin-bottom:10px">Excluir meus dados <strong>de verdade</strong>: apaga preferências, mensagens e fatos. Mantemos apenas seu primeiro nome e contato pra eventual reconvite no futuro.</p>
+      <button class="btn btn-danger" id="btn-delete" onclick="confirmDelete()" style="margin-top:0;font-size:13.5px">Excluir meus dados</button>
+    </div>
+    <div class="err" id="err-magic">Link inválido ou expirado. Solicite outro pelo WhatsApp.</div>
   </div>
 
-  <!-- TELA 0b: Cancel sucesso -->
+  <!-- TELA 0b: Sucesso -->
   <div class="screen" id="screen-magic-ok">
     <div class="ok-icon">✓</div>
-    <h2 class="card-title">Cancelado</h2>
-    <p class="hint">Sua assinatura foi cancelada. Vai receber uma confirmação no WhatsApp. Caso queira voltar um dia, é só falar com a gente.</p>
+    <h2 class="card-title" id="ok-title">Cancelado</h2>
+    <p class="hint" id="ok-hint">Sua assinatura foi suspensa. Caso queira voltar um dia, é só falar com a gente.</p>
     <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20queria%20voltar" target="_blank" rel="noopener" class="btn btn-wa">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       Falar com Manaã
@@ -330,19 +335,51 @@
     } catch(e) { alert('Erro. Fale com a gente direto no WhatsApp.'); }
   }
 
-  async function confirmMagicCancel(){
-    const btn = document.getElementById('btn-magic-confirm');
-    btn.disabled = true; btn.textContent = 'Cancelando...';
+  function toggleAdvancedOptions(){
+    const box = document.getElementById('advanced-options');
+    const link = document.getElementById('link-more-options');
+    if (box.style.display === 'none') { box.style.display = 'block'; link.textContent = '⋯ Esconder opções'; }
+    else { box.style.display = 'none'; link.textContent = '⋯ Mais opções'; }
+  }
+
+  async function confirmSuspend(){
+    if(!confirm('Tem certeza que quer suspender? Seu envio diário vai parar a partir de amanhã.')) return;
+    const btn = document.getElementById('btn-suspend');
+    btn.disabled = true; btn.textContent = 'Suspendendo...';
     showErr('magic', false);
     try {
-      const r = await fetch(API+'/manaa-cancel-confirm', {
+      const r = await fetch(API+'/manaa-suspend', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify({token: magicToken})
       });
       const data = await r.json();
-      if(data.success){ showScreen('magic-ok'); }
-      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, cancelar'; }
-    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, cancelar'; }
+      if(data.success){
+        document.getElementById('ok-title').textContent = 'Suspenso';
+        document.getElementById('ok-hint').textContent = 'Sua assinatura foi suspensa. Seus dados ficam salvos. Quando quiser voltar é só falar com a gente.';
+        showScreen('magic-ok');
+      }
+      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, quero suspender'; }
+    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Sim, quero suspender'; }
+  }
+
+  async function confirmDelete(){
+    if(!confirm('Tem certeza? Vamos apagar suas preferências, mensagens e fatos. Mantemos apenas seu primeiro nome e contato. Esta ação não pode ser desfeita.')) return;
+    const btn = document.getElementById('btn-delete');
+    btn.disabled = true; btn.textContent = 'Excluindo...';
+    showErr('magic', false);
+    try {
+      const r = await fetch(API+'/manaa-delete-data', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: magicToken})
+      });
+      const data = await r.json();
+      if(data.success){
+        document.getElementById('ok-title').textContent = 'Dados excluídos';
+        document.getElementById('ok-hint').textContent = 'Seus dados foram apagados. Obrigado pela companhia que tivemos.';
+        showScreen('magic-ok');
+      }
+      else { showErr('magic', true); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
+    } catch(e) { showErr('magic', true); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
   }
 
   // Restaurar sessão
