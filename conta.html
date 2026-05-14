@@ -66,12 +66,8 @@
     .action-link.subtle{color:#a89c83}
     .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--ink-4);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border-soft);padding-top:14px}
 
-    /* Suspend inline panel */
-    .suspend-panel{margin-top:14px;padding:18px;background:var(--gold-bg);border-radius:14px;border:1px solid var(--border-soft);display:none;animation:slide-in .25s ease-out}
-    .suspend-panel.show{display:block}
-    .suspend-panel h3{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--gold-dark);margin-bottom:8px}
-    .suspend-panel p{font-size:13.5px;color:var(--ink-3);line-height:1.5;margin-bottom:14px}
-    @keyframes slide-in{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:translateY(0)}}
+    .select-input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238B6914' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>") no-repeat right 16px center;color:var(--ink-1);appearance:none;-webkit-appearance:none;padding-right:42px}
+    .select-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
 
     /* Mobile */
     @media (max-width: 480px) {
@@ -127,7 +123,7 @@
     <button class="btn btn-outline" onclick="backToPhone()">Voltar</button>
   </div>
 
-  <!-- TELA 3: DASHBOARD (chega aqui via login OTP OU magic link) -->
+  <!-- TELA 3: DASHBOARD -->
   <div class="screen" id="screen-dash">
     <div class="avatar" id="dash-avatar">M</div>
     <div class="name-display" id="dash-name">—</div>
@@ -155,11 +151,19 @@
       </div>
       <div class="info-row">
         <div>
+          <div class="info-label">Devocional chega</div>
+          <div class="info-value" id="dash-horario">—</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div>
           <div class="info-label">Momento de vida</div>
           <div class="info-value" id="dash-momento">—</div>
         </div>
       </div>
     </div>
+
+    <button class="btn" onclick="openEdit()">Editar minhas preferências</button>
 
     <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F" target="_blank" rel="noopener" class="btn btn-wa">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
@@ -168,23 +172,56 @@
 
     <div class="divider"></div>
 
-    <a class="action-link" onclick="toggleSuspendPanel()" id="lnk-suspend">Suspender minha assinatura</a>
-
-    <div class="suspend-panel" id="suspend-panel" role="region" aria-label="Suspender assinatura">
-      <h3>Tem certeza?</h3>
-      <p>Você vai parar de receber o devocional. Pode voltar quando quiser sem perder seu histórico.</p>
-      <button class="btn btn-danger" id="btn-suspend" onclick="confirmSuspend()">Sim, suspender</button>
-      <button class="btn btn-ghost" onclick="toggleSuspendPanel()">Voltar</button>
-      <a class="action-link subtle" onclick="toggleAdvancedOptions()" id="lnk-more" style="margin-top:18px">⋯ Mais opções</a>
-      <div id="advanced-options" style="display:none;margin-top:12px;padding-top:12px;border-top:1px dashed var(--border)">
-        <p style="font-size:13px;color:var(--ink-3);line-height:1.5;margin-bottom:10px">Excluir meus dados: apaga preferências, mensagens e fatos guardados. Ação definitiva.</p>
-        <button class="btn btn-danger" id="btn-delete" onclick="confirmDelete()" style="font-size:14px">Excluir meus dados</button>
-      </div>
-    </div>
-
-    <a class="action-link subtle" onclick="logout()" style="margin-top:14px">Sair</a>
+    <a class="action-link subtle" onclick="suspendFlow()">Suspender minha assinatura</a>
+    <a class="action-link subtle" onclick="logout()">Sair</a>
+    <a class="action-link subtle" onclick="deleteFlow()" style="margin-top:18px;font-size:11.5px;color:#bfb4a0">Excluir minha conta</a>
 
     <div class="verso">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
+  </div>
+
+  <!-- TELA 4: EDIT PREFS -->
+  <div class="screen" id="screen-edit">
+    <h2 class="card-title">Editar preferências</h2>
+    <p class="hint">Mude o que precisar e clique em Salvar.</p>
+
+    <label for="edit-horario">Horário do devocional</label>
+    <input type="time" id="edit-horario" style="min-height:48px">
+
+    <label for="edit-religiao" style="margin-top:16px">Tradição cristã</label>
+    <select id="edit-religiao" class="select-input">
+      <option value="">— escolha —</option>
+      <option value="catolico">Católica</option>
+      <option value="evangélico">Evangélica</option>
+      <option value="cristão">Cristã sem denominação</option>
+      <option value="universal">Universal</option>
+    </select>
+
+    <label for="edit-versao" style="margin-top:16px">Versão bíblica preferida</label>
+    <select id="edit-versao" class="select-input">
+      <option value="">— escolha —</option>
+      <option value="ARA">Almeida Revista e Atualizada (ARA)</option>
+      <option value="ARC">Almeida Revista e Corrigida (ARC)</option>
+      <option value="NVI">Nova Versão Internacional (NVI)</option>
+      <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH)</option>
+      <option value="NAA">Nova Almeida Atualizada (NAA)</option>
+    </select>
+
+    <label for="edit-momento" style="margin-top:16px">Momento de vida</label>
+    <select id="edit-momento" class="select-input">
+      <option value="">— escolha —</option>
+      <option value="fé">Crescendo na fé</option>
+      <option value="luto">Vivendo um luto</option>
+      <option value="ansiedade">Ansioso(a)</option>
+      <option value="gratidão">Em gratidão</option>
+      <option value="busca">Em busca espiritual</option>
+    </select>
+
+    <label for="edit-inspiracoes" style="margin-top:16px">O que te inspira (opcional)</label>
+    <input type="text" id="edit-inspiracoes" placeholder="ex: salmos, oração, família">
+
+    <button class="btn" id="btn-save-edit" onclick="saveEdit()">Salvar</button>
+    <button class="btn btn-ghost" onclick="closeEdit()">Voltar</button>
+    <div class="err" id="err-edit">Não foi possível salvar. Tenta de novo.</div>
   </div>
 
 </div>
@@ -263,29 +300,70 @@
       link.textContent = 'Prefiro acessar pelo WhatsApp';
     }
   }
-  function toggleSuspendPanel(){
-    const p = document.getElementById('suspend-panel');
-    const lk = document.getElementById('lnk-suspend');
-    if (p.classList.contains('show')) {
-      p.classList.remove('show');
-      lk.textContent = 'Suspender minha assinatura';
-      document.getElementById('advanced-options').style.display = 'none';
-      document.getElementById('lnk-more').textContent = '⋯ Mais opções';
-    } else {
-      p.classList.add('show');
-      lk.textContent = 'Voltar';
-    }
+  function openEdit(){
+    if (!userData) return;
+    document.getElementById('edit-horario').value = (userData.horario || '').slice(0,5);
+    document.getElementById('edit-religiao').value = userData.religiao || '';
+    document.getElementById('edit-versao').value = userData.versao_biblica_pref || '';
+    document.getElementById('edit-momento').value = userData.momento_vida || '';
+    document.getElementById('edit-inspiracoes').value = userData.inspiracoes || '';
+    showErr('edit', false);
+    showScreen('edit');
   }
-  function toggleAdvancedOptions(){
-    const box = document.getElementById('advanced-options');
-    const lk = document.getElementById('lnk-more');
-    if (box.style.display === 'none' || !box.style.display) {
-      box.style.display = 'block';
-      lk.textContent = '⋯ Esconder opções';
-    } else {
-      box.style.display = 'none';
-      lk.textContent = '⋯ Mais opções';
-    }
+  function closeEdit(){
+    showErr('edit', false);
+    showScreen('dash');
+  }
+  async function saveEdit(){
+    const btn = document.getElementById('btn-save-edit');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    showErr('edit', false);
+    const horario = document.getElementById('edit-horario').value || null;
+    const religiao = document.getElementById('edit-religiao').value || '';
+    const versao = document.getElementById('edit-versao').value || '';
+    const momento = document.getElementById('edit-momento').value || '';
+    const inspiracoes = document.getElementById('edit-inspiracoes').value || '';
+    try {
+      const r = await fetch(API+'/manaa-update-prefs', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: sessionToken, horario: horario ? horario+':00' : null, religiao, versao_biblica_pref: versao, momento_vida: momento, inspiracoes})
+      });
+      const data = await r.json();
+      if(data.success){
+        userData = { ...userData, ...data.data };
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+      } else { showErr('edit', true); }
+    } catch(e) { showErr('edit', true); }
+    btn.disabled = false; btn.textContent = 'Salvar';
+  }
+
+  async function suspendFlow(){
+    if(!confirm('Vamos suspender sua assinatura. Você para de receber o devocional, mas pode voltar quando quiser sem perder histórico. Continuar?')) return;
+    try {
+      const r = await fetch(API+'/manaa-suspend', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: sessionToken})
+      });
+      const data = await r.json();
+      if(data.success){ alert('Assinatura suspensa 🙏'); logout(); }
+      else { alert('Não foi possível suspender. Solicite novo link e tente de novo.'); }
+    } catch(e) { alert('Erro. Tenta de novo.'); }
+  }
+
+  async function deleteFlow(){
+    if(!confirm('Excluir sua conta apaga preferências, mensagens e fatos. Ação definitiva. Continuar?')) return;
+    if(!confirm('Tem mesmo certeza? Não dá pra desfazer.')) return;
+    try {
+      const r = await fetch(API+'/manaa-delete-data', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: sessionToken})
+      });
+      const data = await r.json();
+      if(data.success){ alert('Conta excluída. Obrigado pela companhia.'); logout(); }
+      else { alert('Não foi possível excluir. Solicite novo link e tente de novo.'); }
+    } catch(e) { alert('Erro. Tenta de novo.'); }
   }
 
   async function sendOtpEmail(){
@@ -371,7 +449,8 @@
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
       document.getElementById('row-trial').style.display = 'flex';
       document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
-    }
+    } else { document.getElementById('row-trial').style.display = 'none'; }
+    document.getElementById('dash-horario').textContent = (d.horario || '06:30:00').slice(0,5);
     const momentoMap = { 'fé':'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
     document.getElementById('dash-momento').textContent = momentoMap[d.momento_vida] || d.momento_vida || '—';
   }
@@ -385,39 +464,6 @@
   function backToPhone(){ showErr('otp',false); document.getElementById('inp-otp').value = ''; showScreen('phone'); }
   function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; sessionToken = ''; document.getElementById('inp-email').value = ''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
 
-  async function confirmSuspend(){
-    if(!confirm('Vamos suspender agora. Os envios diários param. Pode voltar depois sem perder histórico. Continuar?')) return;
-    const btn = document.getElementById('btn-suspend');
-    btn.disabled = true; btn.textContent = 'Suspendendo...';
-    try {
-      const r = await fetch(API+'/manaa-suspend', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: sessionToken})
-      });
-      const data = await r.json();
-      if(data.success){
-        alert('Assinatura suspensa 🙏\n\nQuando quiser voltar é só falar com a gente no WhatsApp.');
-        logout();
-      } else { alert('Não foi possível suspender agora. Tenta de novo ou solicite novo link.'); btn.disabled = false; btn.textContent = 'Sim, suspender'; }
-    } catch(e) { alert('Erro. Tenta de novo.'); btn.disabled = false; btn.textContent = 'Sim, suspender'; }
-  }
-
-  async function confirmDelete(){
-    if(!confirm('Apagar suas preferências, mensagens e fatos guardados. Esta ação não pode ser desfeita. Continuar?')) return;
-    const btn = document.getElementById('btn-delete');
-    btn.disabled = true; btn.textContent = 'Excluindo...';
-    try {
-      const r = await fetch(API+'/manaa-delete-data', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: sessionToken})
-      });
-      const data = await r.json();
-      if(data.success){
-        alert('Seus dados foram excluídos. Obrigado pela companhia.');
-        logout();
-      } else { alert('Não foi possível excluir agora. Tenta de novo ou solicite novo link.'); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
-    } catch(e) { alert('Erro. Tenta de novo.'); btn.disabled = false; btn.textContent = 'Excluir meus dados'; }
-  }
 
   // Restaurar sessão (se loginToken não estiver na URL)
   (function(){
