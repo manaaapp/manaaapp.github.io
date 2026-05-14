@@ -66,6 +66,18 @@
     .action-link.subtle{color:#a89c83}
     .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--ink-4);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border-soft);padding-top:14px}
 
+    /* Topbar do dashboard (Sair icon) */
+    .dash-top{display:flex;justify-content:flex-end;margin:-8px -8px 4px 0}
+    .icon-btn{background:transparent;border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-3);transition:background .15s;padding:0}
+    .icon-btn:hover{background:var(--gold-bg);color:var(--gold-dark)}
+    .icon-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+    .icon-btn svg{width:20px;height:20px;display:block}
+
+    /* Excluir minha conta — texto bem pequeno cinza no rodape da pagina */
+    .danger-zone{margin-top:24px;text-align:center;font-size:11.5px;color:#b8aa90;letter-spacing:.2px}
+    .danger-zone a{color:#b8aa90;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+    .danger-zone a:hover{color:var(--danger)}
+
     .select-input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238B6914' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>") no-repeat right 16px center;color:var(--ink-1);appearance:none;-webkit-appearance:none;padding-right:42px}
     .select-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
 
@@ -125,6 +137,15 @@
 
   <!-- TELA 3: DASHBOARD -->
   <div class="screen" id="screen-dash">
+    <div class="dash-top">
+      <button class="icon-btn" onclick="logout()" aria-label="Sair" title="Sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 17l5-5-5-5"></path>
+          <path d="M20 12H9"></path>
+          <path d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+        </svg>
+      </button>
+    </div>
     <div class="avatar" id="dash-avatar">M</div>
     <div class="name-display" id="dash-name">—</div>
     <div class="phone-display" id="dash-phone">—</div>
@@ -173,10 +194,13 @@
     <div class="divider"></div>
 
     <a class="action-link subtle" onclick="suspendFlow()">Suspender minha assinatura</a>
-    <a class="action-link subtle" onclick="logout()">Sair</a>
-    <a class="action-link subtle" onclick="deleteFlow()" style="margin-top:18px;font-size:11.5px;color:#bfb4a0">Excluir minha conta</a>
 
     <div class="verso">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
+  </div>
+
+  <!-- Danger zone: fora do card, no rodape da pagina -->
+  <div class="danger-zone" id="danger-zone" style="display:none">
+    <a onclick="deleteFlow()">Excluir minha conta permanentemente</a>
   </div>
 
   <!-- TELA 4: EDIT PREFS -->
@@ -284,6 +308,8 @@
   function showScreen(id){
     document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
     document.getElementById('screen-'+id).classList.add('active');
+    const dz = document.getElementById('danger-zone');
+    if (dz) dz.style.display = id === 'dash' ? 'block' : 'none';
   }
   function showErr(id, show){
     const el = document.getElementById('err-'+id);
