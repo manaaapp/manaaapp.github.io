@@ -651,9 +651,30 @@
     </h3>
 
     <div class="pay-list" id="pay-mensal">
-      <label class="pay-opt active" data-pay="PIX_AUTOMATIC"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
-      <label class="pay-opt" data-pay="CREDIT_CARD_REC"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
+      <label class="pay-opt active" data-pay="PIX_AUTOMATIC" id="pay-opt-pix-auto"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
+      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
     </div>
+    <script>
+    // PIX Automatic só libera quando CNPJ Manaã (Funaro Ltda, aberto 13/01/2026) completar 6 meses (regra Bacen + ASAAS)
+    (function gatePixAutoMensal(){
+      var release = new Date('2026-07-13T00:00:00-03:00');
+      if (Date.now() < release.getTime()) {
+        var pa = document.getElementById('pay-opt-pix-auto');
+        var cc = document.getElementById('pay-opt-cc-rec');
+        if (pa) {
+          pa.style.display = 'none';
+          var inp = pa.querySelector('input[type=radio]');
+          if (inp) { inp.checked = false; inp.disabled = true; }
+          pa.classList.remove('active');
+        }
+        if (cc) {
+          cc.classList.add('active');
+          var ccInp = cc.querySelector('input[type=radio]');
+          if (ccInp) ccInp.checked = true;
+        }
+      }
+    })();
+    </script>
 
     <div class="pay-list" id="pay-anual" style="display:none">
       <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento único de R$ 159,99. Confirmação na hora.</div></div></label>
@@ -1094,7 +1115,13 @@ function refreshConsentAndExtra() {
 }
 function currentBillingV2() {
   if (currentPlanV2 === 'trial') return null;
-  if (currentPlanV2 === 'mensal') return document.querySelector('input[name="pay-m"]:checked')?.value || 'PIX_AUTOMATIC';
+  if (currentPlanV2 === 'mensal') {
+    var checked = document.querySelector('input[name="pay-m"]:checked')?.value;
+    if (checked) return checked;
+    var pixOpt = document.getElementById('pay-opt-pix-auto');
+    var pixHidden = pixOpt && pixOpt.style.display === 'none';
+    return pixHidden ? 'CREDIT_CARD' : 'PIX_AUTOMATIC';
+  }
   const v = document.querySelector('input[name="pay-a"]:checked')?.value || 'PIX';
   // CREDIT_CARD_PARC virtual -> mapeia pra CREDIT_CARD pro Worker, installments separa
   return v === 'CREDIT_CARD_PARC' ? 'CREDIT_CARD_12' : v;
