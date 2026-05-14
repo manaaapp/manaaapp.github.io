@@ -60,7 +60,6 @@
     .info-row{background:var(--gold-bg);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border-soft);min-height:54px;gap:2px}
     .info-row.full{grid-column:1 / -1}
     .info-row.with-badge{flex-direction:row;align-items:center;justify-content:space-between}
-    .info-row.with-badge > div{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1}
     .info-label{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
     .info-value{font-size:14px;font-weight:600;color:var(--ink-1);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .info-row.full .info-value{white-space:normal}
@@ -115,8 +114,6 @@
       .info-row .info-label{font-size:11px}
       .info-row .info-value{font-size:15px;text-align:right;white-space:normal;overflow:visible;text-overflow:clip}
       .info-row.with-badge{justify-content:space-between}
-      .info-row.with-badge > div{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;flex:1}
-      .info-row.with-badge .info-value{order:1}
       .info-row.full{grid-column:auto}
       .info-row.full .info-value{text-align:right}
     }
@@ -189,10 +186,7 @@
 
     <div class="info-grid">
       <div class="info-row with-badge">
-        <div>
-          <div class="info-label">Status</div>
-          <div class="info-value" id="dash-status">—</div>
-        </div>
+        <div class="info-label">Status</div>
         <span class="badge" id="dash-badge">—</span>
       </div>
       <div class="info-row">
