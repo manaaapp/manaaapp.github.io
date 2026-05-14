@@ -109,27 +109,26 @@
       .card{max-width:560px;padding:36px 32px}
       .card-title{font-size:24px}
     }
+    @media (min-width: 720px) {
+      .info-grid{grid-template-columns:1fr;gap:10px}
+      .info-row{flex-direction:row;align-items:center;justify-content:space-between;padding:14px 18px;min-height:60px;gap:14px}
+      .info-row .info-label{font-size:11px}
+      .info-row .info-value{font-size:15px;text-align:right;white-space:normal;overflow:visible;text-overflow:clip}
+      .info-row.with-badge{justify-content:space-between}
+      .info-row.with-badge > div{flex-direction:row;align-items:center;justify-content:space-between;gap:12px;flex:1}
+      .info-row.with-badge .info-value{order:1}
+      .info-row.full{grid-column:auto}
+      .info-row.full .info-value{text-align:right}
+    }
     @media (min-width: 960px) {
       body{padding:60px 32px}
       .brand .logo{font-size:48px}
       .brand .sub{font-size:15px;margin-top:10px}
-      .card{max-width:880px;padding:44px}
-      #screen-dash.active{display:grid;grid-template-columns:1.15fr 1fr;column-gap:40px;align-items:start}
-      #screen-dash .dash-header{grid-column:1 / -1;margin-bottom:24px;padding-bottom:20px;border-bottom:1px solid var(--border-soft)}
-      #screen-dash .info-grid{grid-column:1}
-      #screen-dash > .btn,
-      #screen-dash > .btn-wa,
-      #screen-dash > .divider,
-      #screen-dash > .action-link,
-      #screen-dash > #account-options,
-      #screen-dash > .verso{grid-column:2;margin-top:0}
-      #screen-dash > .btn:not(.btn-wa){margin-top:0}
-      #screen-dash > .btn-wa{margin-top:14px}
-      #screen-dash > .divider{margin:22px 0 12px;grid-column:2;background:transparent;height:0}
-      #screen-dash > .verso{margin-top:24px;text-align:left;border-top:1px solid var(--border-soft);padding-top:18px}
+      .card{max-width:640px;padding:44px}
       .avatar{width:64px;height:64px;font-size:26px}
       .name-display{font-size:22px}
       .phone-display{font-size:13.5px}
+      .dash-header{padding-bottom:18px;border-bottom:1px solid var(--border-soft);margin-bottom:20px}
     }
     @media (prefers-reduced-motion: reduce){
       .btn{transition:none}
