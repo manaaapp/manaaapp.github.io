@@ -27,8 +27,11 @@
     .card-title::before{content:"";display:inline-block;width:4px;height:20px;background:linear-gradient(180deg,var(--gold-2),var(--gold-dark));border-radius:2px}
     p.hint{font-size:14.5px;color:var(--ink-3);margin-bottom:20px;line-height:1.55}
     label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--ink-2)}
-    input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff;color:var(--ink-1)}
+    input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff;color:var(--ink-1);-webkit-appearance:none;appearance:none}
     input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
+    input[type=date],input[type=time]{-webkit-appearance:none;appearance:none;text-align:left;padding:14px 16px;line-height:1.2;min-height:48px;font-family:'Inter',sans-serif}
+    input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:left}
+    input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{opacity:.45;cursor:pointer}
     input.otp-input{letter-spacing:10px;font-size:24px;text-align:center;font-weight:700;padding-left:18px}
     .btn{width:100%;min-height:48px;padding:14px 18px;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff;border:none;border-radius:12px;font-size:15.5px;font-weight:600;cursor:pointer;transition:transform .12s ease-out, box-shadow .12s ease-out;margin-top:16px;font-family:'Inter',sans-serif;box-shadow:0 3px 10px rgba(139,105,20,.18);touch-action:manipulation}
     .btn:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(139,105,20,.18)}
@@ -83,6 +86,10 @@
     .edit-group{margin-top:20px;padding:18px;background:var(--gold-bg);border-radius:14px;border:1px solid var(--border-soft)}
     .edit-group:first-of-type{margin-top:8px}
     .edit-group-title{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--gold-dark);margin-bottom:14px;text-transform:none;letter-spacing:.3px}
+    .chips-mini{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .chip-mini{padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--ink-2);user-select:none}
+    .chip-mini:hover{border-color:var(--gold-2);background:#fff8e7}
+    .chip-mini.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff}
 
     /* Mobile */
     @media (max-width: 480px) {
@@ -106,7 +113,7 @@
 
 <div class="card">
 
-  <!-- TELA 1: ACESSO via EMAIL (padrao) -->
+  <!-- TELA 1: ACESSO via EMAIL -->
   <div class="screen active" id="screen-phone">
     <h2 class="card-title">Acessar minha conta</h2>
     <p class="hint">Digite o email cadastrado pra receber um código de acesso.</p>
@@ -114,13 +121,6 @@
     <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
     <div class="err" id="err-phone">Email não encontrado. Confirme se foi o email cadastrado.</div>
     <button class="btn" id="btn-send" onclick="sendOtpEmail()">Receber código por email</button>
-    <a class="action-link subtle" onclick="toggleWhatsLogin()" id="lnk-wa-toggle">Prefiro acessar pelo WhatsApp</a>
-    <div id="phone-fallback" style="display:none;margin-top:12px;padding:16px;background:var(--gold-bg);border-radius:12px;border:1px solid var(--border-soft)">
-      <p style="font-size:13px;color:var(--ink-3);line-height:1.5;margin-bottom:12px">Vamos te enviar um link de acesso no WhatsApp.</p>
-      <label for="inp-phone">WhatsApp (com DDD)</label>
-      <input type="tel" id="inp-phone" placeholder="(11) 91234-5678" maxlength="15" autocomplete="tel">
-      <button class="btn" id="btn-send-wa" onclick="sendMagicLinkWA()" style="font-size:14.5px">Receber link no WhatsApp</button>
-    </div>
     <a href="https://wa.me/15551804368?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
       Falar com Manaã
@@ -256,15 +256,28 @@
     <div class="edit-group">
       <h4 class="edit-group-title">Sua jornada</h4>
 
-      <label for="edit-momento">Momento de vida</label>
-      <select id="edit-momento" class="select-input">
-        <option value="">— escolha —</option>
-        <option value="fé">Crescendo na fé</option>
-        <option value="luto">Vivendo um luto</option>
-        <option value="ansiedade">Ansioso(a)</option>
-        <option value="gratidão">Em gratidão</option>
-        <option value="busca">Em busca espiritual</option>
-      </select>
+      <label>Momento de vida (escolha um ou mais)</label>
+      <div class="chips-mini" id="edit-momento-chips">
+        <div class="chip-mini" data-val="paz">Paz</div>
+        <div class="chip-mini" data-val="duvida">Dúvida</div>
+        <div class="chip-mini" data-val="ansiedade">Ansiedade</div>
+        <div class="chip-mini" data-val="luto">Luto</div>
+        <div class="chip-mini" data-val="alegria">Alegria</div>
+        <div class="chip-mini" data-val="recomeco">Recomeço</div>
+        <div class="chip-mini" data-val="cansaco">Cansaço</div>
+        <div class="chip-mini" data-val="busca">Busca</div>
+        <div class="chip-mini" data-val="gratidao">Gratidão</div>
+        <div class="chip-mini" data-val="solidao_cuidado">Preciso de companhia</div>
+        <div class="chip-mini" data-val="familia">Foco em família</div>
+        <div class="chip-mini" data-val="trabalho">Trabalho intenso</div>
+        <div class="chip-mini" data-val="perda">Perdi alguém querido</div>
+        <div class="chip-mini" data-val="separacao">Separação ou divórcio</div>
+        <div class="chip-mini" data-val="doenca_familia">Doença na família</div>
+        <div class="chip-mini" data-val="desemprego">Desemprego</div>
+        <div class="chip-mini" data-val="recomeco_espiritual">Recomeço espiritual</div>
+        <div class="chip-mini" data-val="maternidade">Maternidade/paternidade recente</div>
+      </div>
+      <input type="hidden" id="edit-momento">
 
       <label for="edit-proposito" style="margin-top:14px">Propósito espiritual</label>
       <input type="text" id="edit-proposito" placeholder="ex: paz interior, fortalecer fé, gratidão diária">
@@ -345,17 +358,6 @@
     const el = document.getElementById('err-'+id);
     if(el) el.className = show ? 'err show' : 'err';
   }
-  function toggleWhatsLogin(){
-    const box = document.getElementById('phone-fallback');
-    const link = document.getElementById('lnk-wa-toggle');
-    if (box.style.display === 'none' || !box.style.display) {
-      box.style.display = 'block';
-      link.textContent = 'Esconder opção do WhatsApp';
-    } else {
-      box.style.display = 'none';
-      link.textContent = 'Prefiro acessar pelo WhatsApp';
-    }
-  }
   function openEdit(){
     if (!userData) return;
     document.getElementById('edit-name').value = userData.name || '';
@@ -365,12 +367,26 @@
     document.getElementById('edit-horario').value = (userData.horario || '').slice(0,5);
     document.getElementById('edit-religiao').value = userData.religiao || '';
     document.getElementById('edit-versao').value = userData.versao_biblica_pref || '';
-    document.getElementById('edit-momento').value = userData.momento_vida || '';
     document.getElementById('edit-proposito').value = userData.proposito_espiritual || '';
     document.getElementById('edit-inspiracoes').value = userData.inspiracoes || '';
+    // momento_vida: chips multiselect
+    const selected = new Set((userData.momento_vida || '').split(',').map(s => s.trim()).filter(Boolean));
+    document.querySelectorAll('#edit-momento-chips .chip-mini').forEach(c => {
+      c.classList.toggle('active', selected.has(c.dataset.val));
+    });
+    document.getElementById('edit-momento').value = Array.from(selected).join(', ');
     showErr('edit', false);
     showScreen('edit');
   }
+
+  // Toggle chips momento
+  document.addEventListener('click', function(e){
+    if (e.target.classList && e.target.classList.contains('chip-mini')) {
+      e.target.classList.toggle('active');
+      const vals = Array.from(document.querySelectorAll('#edit-momento-chips .chip-mini.active')).map(c => c.dataset.val);
+      document.getElementById('edit-momento').value = vals.join(', ');
+    }
+  });
   function closeEdit(){
     showErr('edit', false);
     showScreen('dash');
@@ -422,8 +438,9 @@
   }
 
   async function deleteFlow(){
-    if(!confirm('Excluir sua conta apaga preferências, mensagens e fatos. Ação definitiva. Continuar?')) return;
-    if(!confirm('Tem mesmo certeza? Não dá pra desfazer.')) return;
+    if(!confirm('ATENÇÃO\n\nExcluir sua conta apaga TUDO: preferências, mensagens, fatos guardados.\n\nAção definitiva. Pra confirmar, digite EXCLUIR na próxima janela.')) return;
+    const code = prompt('Digite EXCLUIR (em maiúsculas) pra confirmar:');
+    if(code !== 'EXCLUIR'){ alert('Cancelado. Sua conta está intacta.'); return; }
     try {
       const r = await fetch(API+'/manaa-delete-data', {
         method:'POST', headers:{'Content-Type':'application/json'},
