@@ -8,24 +8,23 @@
 <style>
   /* ===========================================================
      MemeÁlbum — PROTÓTIPO isolado (client-side, chumbado).
-     Tudo salvo só no localStorage do navegador. Pagamento
-     simulado. Nada depende do app Manaã. Remover = apagar a
-     pasta experiments/memealbum/.
+     Tudo no localStorage do navegador. Pagamento simulado.
+     Nada depende do app Manaã. Remover = apagar a pasta
+     experiments/memealbum/.
      =========================================================== */
   :root{
-    --bg:#0b0b0f;--surface:#15151c;--surface-2:#1d1d27;--surface-3:#26263300;
+    --bg:#0b0b0f;--surface:#15151c;--surface-2:#1d1d27;
     --border:rgba(255,255,255,.09);--text:#f5f5f7;--text-2:#a3a3b0;--text-3:#71717f;
     --accent:#b06bff;--accent-2:#ff5fa2;--accent-3:#ffcf5c;
     --grad:linear-gradient(135deg,#b06bff 0%,#ff5fa2 55%,#ffcf5c 100%);
-    --ok:#34d399;--radius:18px;--radius-sm:12px;--shadow:0 12px 34px -14px rgba(0,0,0,.75);
+    --wa:#25d366;--ok:#34d399;--radius:18px;--rsm:12px;
+    --shadow:0 12px 34px -14px rgba(0,0,0,.75);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{background:var(--bg);color:var(--text)}
-  body{
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
     font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
-    min-height:100dvh;max-width:520px;margin:0 auto;padding:0 0 50px;
-  }
+    min-height:100dvh;max-width:520px;margin:0 auto;padding:0 0 50px}
   body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
     background:radial-gradient(900px 480px at 80% -10%,rgba(176,107,255,.16),transparent 60%),
                radial-gradient(700px 420px at -10% 18%,rgba(255,95,162,.12),transparent 60%)}
@@ -33,46 +32,44 @@
   input,select{font-family:inherit}
   .proto-tag{background:#2a2233;color:#d9c7ee;font-size:11px;text-align:center;
     padding:6px 12px;border-bottom:1px solid var(--border)}
-
-  /* topo */
-  .topbar{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
-  .brand{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:18px;letter-spacing:-.3px}
-  .brand .mk{width:26px;height:26px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .topbar{display:flex;align-items:center;gap:10px;padding:15px 18px 8px}
+  .brand{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:18px;
+    letter-spacing:-.3px;text-decoration:none;color:inherit}
+  .brand .mk{width:26px;height:26px;border-radius:8px;background:var(--grad);
+    display:flex;align-items:center;justify-content:center}
   .brand .mk svg{width:15px;height:15px;color:#15101f}
   .spacer{flex:1}
-  .ghost-btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);
-    font-size:13px;font-weight:600;padding:9px 13px;border-radius:999px}
-
+  .pill{background:var(--surface-2);border:1px solid var(--border);color:var(--text-2);
+    font-size:12px;font-weight:700;padding:7px 12px;border-radius:999px}
+  .pill.ok{color:#bff3d8;border-color:rgba(52,211,153,.4)}
   .wrap{padding:8px 18px}
   h2.sec{font-size:13px;font-weight:700;color:var(--text-2);text-transform:uppercase;
     letter-spacing:.7px;margin:22px 0 12px;display:flex;align-items:center;gap:8px}
   h2.sec .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2)}
 
-  /* busca + CTA criar */
   .search{display:flex;gap:9px;margin-top:6px}
   .search input{flex:1;min-height:48px;background:var(--surface-2);border:1px solid var(--border);
-    color:var(--text);border-radius:var(--radius-sm);padding:12px 14px;font-size:16px;outline:none}
+    color:var(--text);border-radius:var(--rsm);padding:12px 14px;font-size:16px;outline:none}
   .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,107,255,.22)}
-  .search button{min-height:48px;padding:0 16px;border-radius:var(--radius-sm);
+  .search button{min-height:48px;padding:0 16px;border-radius:var(--rsm);
     background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-weight:700}
   .cta-create{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;
     background:var(--grad);color:#15101f;border-radius:16px;padding:15px 18px;
     font-weight:800;font-size:16px;box-shadow:0 12px 28px -12px rgba(176,107,255,.6)}
   .cta-create:active{transform:scale(.985)}
-  .cta-create .px{margin-left:auto;background:rgba(21,16,31,.18);padding:5px 11px;border-radius:999px;font-size:13px}
+  .cta-create .px{margin-left:auto;background:rgba(21,16,31,.18);padding:5px 11px;
+    border-radius:999px;font-size:13px}
   .cta-create svg{width:20px;height:20px}
 
-  /* tabs ranking */
   .tabs{display:flex;gap:8px;margin:4px 0 6px}
   .tabs button{flex:1;min-height:40px;background:var(--surface-2);border:1px solid var(--border);
     color:var(--text-2);font-weight:700;font-size:13px;border-radius:10px}
   .tabs button.on{background:var(--grad);color:#15101f;border-color:transparent}
 
-  /* lista de álbuns */
   .album-row{display:flex;align-items:center;gap:13px;background:var(--surface);
     border:1px solid var(--border);border-radius:16px;padding:11px;margin-bottom:11px}
   .album-row:active{border-color:rgba(176,107,255,.5)}
-  .rank-n{width:24px;text-align:center;font-weight:800;color:var(--text-3);font-size:15px;flex:none}
+  .rank-n{width:22px;text-align:center;font-weight:800;color:var(--text-3);font-size:15px;flex:none}
   .mini-cover{width:54px;height:72px;border-radius:9px;flex:none;overflow:hidden;
     background:var(--surface-2);position:relative}
   .mini-cover img{width:100%;height:100%;object-fit:cover}
@@ -83,66 +80,80 @@
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .stars-sm{color:var(--accent-3);font-size:13px;margin-top:5px;font-weight:700}
   .stars-sm span{color:var(--text-3);font-weight:500}
-
   .empty-note{color:var(--text-3);font-size:14px;text-align:center;padding:26px 10px}
 
-  /* ===== VER ÁLBUM ===== */
   .back{display:inline-flex;align-items:center;gap:6px;color:var(--text-2);
     font-size:14px;font-weight:600;background:none;padding:14px 18px 4px}
   .back svg{width:17px;height:17px}
 
-  .cover{position:relative;width:100%;aspect-ratio:3/4;border-radius:22px;overflow:hidden;
-    background:var(--surface-2);border:1px solid var(--border);box-shadow:var(--shadow)}
+  /* ===== STAGE (folha: capa ou página) ===== */
+  .stage-nav{display:flex;align-items:center;justify-content:space-between;margin:6px 0 12px}
+  .stage-nav .lbl{font-weight:800;font-size:15px}
+  .stage-nav .lbl small{display:block;font-weight:600;font-size:12px;color:var(--text-3);margin-top:1px}
+  .nav-btn{width:44px;height:44px;border-radius:50%;background:var(--surface-2);
+    border:1px solid var(--border);color:var(--text);display:flex;align-items:center;
+    justify-content:center;flex:none}
+  .nav-btn:disabled{opacity:.3}
+  .nav-btn svg{width:18px;height:18px}
+
+  .sheet{width:100%;aspect-ratio:3/4;border-radius:22px;overflow:hidden;
+    border:1px solid var(--border);box-shadow:var(--shadow);position:relative}
+
+  /* capa */
   .cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
   .cover .gph{position:absolute;inset:0;background:var(--grad);opacity:.9}
   .cover .scrim{position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(11,11,15,.5) 0%,transparent 26%,transparent 50%,rgba(11,11,15,.88) 100%)}
+    background:linear-gradient(180deg,rgba(11,11,15,.5) 0%,transparent 26%,transparent 50%,rgba(11,11,15,.9) 100%)}
   .cover .seal{position:absolute;top:15px;left:15px;display:inline-flex;align-items:center;gap:6px;
     background:var(--grad);color:#15101f;font-weight:800;font-size:12px;padding:6px 12px;border-radius:999px}
   .cover .seal svg{width:13px;height:13px}
   .cover .meta{position:absolute;left:18px;right:18px;bottom:18px}
-  .cover .meta .nm{font-size:30px;font-weight:800;line-height:1.05;letter-spacing:-.6px;
+  .cover .meta .nm{font-size:29px;font-weight:800;line-height:1.06;letter-spacing:-.5px;
     text-shadow:0 2px 14px rgba(0,0,0,.6)}
   .cover .meta .sb{color:#e9e9ef;font-size:14px;margin-top:6px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
   .cover .meta .ch{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
   .cover .meta .ch span{background:rgba(255,255,255,.15);-webkit-backdrop-filter:blur(4px);
     backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.18);
     font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
+  .cover .edit-hint,.fig .edit-hint{position:absolute;top:12px;right:12px;
+    background:rgba(0,0,0,.55);color:#fff;font-size:11px;font-weight:700;
+    padding:5px 9px;border-radius:999px;display:flex;align-items:center;gap:4px}
+  .cover .edit-hint svg{width:12px;height:12px}
 
-  /* página do álbum (molde FIXO — encaixe garantido por CSS) */
-  .page-nav{display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px}
-  .page-nav .pg-name{font-weight:700;font-size:14px;color:var(--text-2)}
-  .nav-btn{width:42px;height:42px;border-radius:50%;background:var(--surface-2);
-    border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center}
-  .nav-btn:disabled{opacity:.32}
-  .nav-btn svg{width:18px;height:18px}
-
-  .album-page{position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;
-    border:1px solid var(--border);box-shadow:var(--shadow);
-    background:linear-gradient(160deg,#241a3a,#1a2740 55%,#10202e)}
+  /* página */
   .album-page .pg-deco{position:absolute;inset:0;opacity:.5;
-    background:radial-gradient(600px 300px at 110% -10%,rgba(255,207,92,.25),transparent 55%),
-               radial-gradient(500px 280px at -10% 110%,rgba(255,95,162,.22),transparent 55%)}
+    background:radial-gradient(600px 300px at 110% -10%,rgba(255,207,92,.22),transparent 55%),
+               radial-gradient(500px 280px at -10% 110%,rgba(255,95,162,.2),transparent 55%)}
   .album-page .pg-title{position:absolute;top:0;left:0;right:0;display:flex;
-    align-items:center;justify-content:space-between;padding:15px 17px;z-index:2}
-  .album-page .pg-title b{font-size:16px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+    align-items:center;justify-content:space-between;padding:13px 15px;z-index:2}
+  .album-page .pg-title b{font-size:15px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:70%}
   .album-page .pg-title .cnt{background:var(--grad);color:#15101f;font-weight:800;
-    font-size:12px;padding:5px 10px;border-radius:999px}
-  .grid{position:absolute;inset:0;display:grid;gap:9px;padding:56px 15px 16px;align-content:center;z-index:1}
-  /* figurinha = moldura fixa (carta), foto encaixa dentro com cover */
-  .fig{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;
+    font-size:11px;padding:5px 10px;border-radius:999px;flex:none}
+  .album-page.has-bg .pg-deco{display:none}
+  .pg-bg-scrim{position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(0,0,0,.58),rgba(0,0,0,.22) 28%,rgba(0,0,0,.22) 72%,rgba(0,0,0,.62))}
+  .bgctl{display:flex;gap:9px;margin-top:11px}
+  .bgctl button{flex:1;min-height:44px;border-radius:11px;font-weight:700;font-size:13px;
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    display:flex;align-items:center;justify-content:center;gap:7px}
+  .bgctl button svg{width:15px;height:15px}
+  .bgctl button.rm{color:#ffb4b4;border-color:rgba(255,90,90,.35)}
+  .grid{position:absolute;left:0;right:0;top:46px;bottom:0;display:grid;
+    gap:10px;padding:8px 13px 14px;z-index:1}
+  .fig{position:relative;border-radius:11px;overflow:hidden;min-width:0;min-height:0;
     background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
-    border:1.5px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center}
+    border:1.5px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center}
   .fig.has{border-color:transparent;background:#000;
-    box-shadow:0 0 0 1.5px rgba(255,207,92,.5),0 6px 16px -8px rgba(0,0,0,.7)}
+    box-shadow:0 0 0 1.5px rgba(255,207,92,.45),0 6px 16px -8px rgba(0,0,0,.7)}
   .fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .fig .no{color:rgba(255,255,255,.42);font-weight:800;font-size:15px}
-  .fig.tap{cursor:pointer;border-style:dashed;border-color:rgba(176,107,255,.55)}
-  .fig.tap:active{transform:scale(.96)}
-  .fig .add{position:absolute;bottom:6px;left:0;right:0;text-align:center;
-    font-size:10px;color:var(--accent);font-weight:700}
+  .fig .no{color:rgba(255,255,255,.4);font-weight:800;font-size:15px}
+  .fig.tap{cursor:pointer}
+  .fig.tap:not(.has){border-style:dashed;border-color:rgba(176,107,255,.5)}
+  .fig.tap:active{transform:scale(.95)}
+  .fig .add{position:absolute;bottom:5px;left:0;right:0;text-align:center;
+    font-size:10px;color:var(--accent-3);font-weight:700}
 
-  /* avaliação */
   .rate{background:var(--surface);border:1px solid var(--border);border-radius:16px;
     padding:16px;margin-top:18px;text-align:center}
   .rate .avg{font-size:30px;font-weight:800}
@@ -153,9 +164,8 @@
   .rate .stars button.lit{color:var(--accent-3)}
   .rate .done{color:var(--ok);font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
 
-  /* CTA compartilhar */
   .share-cta{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
-    min-height:54px;background:#25d366;color:#06301a;font-size:16px;font-weight:800;
+    min-height:54px;background:var(--wa);color:#06301a;font-size:16px;font-weight:800;
     border-radius:15px;margin-top:16px;box-shadow:0 12px 26px -12px rgba(37,211,102,.6)}
   .share-cta:active{transform:scale(.98)}
   .share-cta svg{width:21px;height:21px}
@@ -163,23 +173,25 @@
     color:var(--text);font-weight:700;font-size:15px;border-radius:14px;margin-top:10px}
   .share-hint{font-size:12px;color:var(--text-3);text-align:center;margin-top:10px}
 
-  /* paywall */
   .pay-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;
     padding:22px 18px;margin-top:14px;text-align:center}
-  .pay-card h3{font-size:20px;font-weight:800;margin-bottom:6px}
+  .pay-card .tag2{display:inline-block;background:var(--grad);color:#15101f;font-weight:800;
+    font-size:12px;padding:5px 12px;border-radius:999px;margin-bottom:12px}
+  .pay-card h3{font-size:21px;font-weight:800;margin-bottom:6px}
   .pay-card p{color:var(--text-2);font-size:14px;margin-bottom:18px}
-  .price-opts{display:flex;gap:11px;margin-bottom:18px}
+  .price-opts{display:flex;gap:11px;margin-bottom:16px}
   .price-opts button{flex:1;background:var(--surface-2);border:2px solid var(--border);
-    color:var(--text);border-radius:14px;padding:16px 8px}
+    color:var(--text);border-radius:14px;padding:15px 8px}
   .price-opts button.on{border-color:var(--accent);background:rgba(176,107,255,.12)}
-  .price-opts .v{font-size:24px;font-weight:800}
-  .price-opts .t{font-size:12px;color:var(--text-2);margin-top:3px}
+  .price-opts .v{font-size:23px;font-weight:800}
+  .price-opts .t{font-size:11px;color:var(--text-2);margin-top:3px}
   .pay-go{width:100%;min-height:52px;background:var(--grad);color:#15101f;
     font-weight:800;font-size:16px;border-radius:14px}
   .pay-go:active{transform:scale(.98)}
+  .pay-alt{width:100%;min-height:46px;background:none;border:1px solid var(--border);
+    color:var(--text-2);font-weight:700;font-size:13px;border-radius:12px;margin-top:10px}
   .pay-note{font-size:12px;color:var(--text-3);margin-top:12px}
 
-  /* editor */
   .ed-card{background:var(--surface);border:1px solid var(--border);
     border-radius:16px;padding:16px;margin-top:14px}
   .fld{margin-bottom:13px}.fld:last-child{margin-bottom:0}
@@ -189,131 +201,160 @@
     font-size:16px;outline:none}
   .fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,107,255,.2)}
   .fld select{appearance:none}
-  .file-pill{display:flex;align-items:center;gap:10px;background:var(--surface-2);
-    border:1px dashed rgba(176,107,255,.5);border-radius:11px;padding:12px;
-    color:var(--text);font-size:14px;font-weight:600}
-  .file-pill input{flex:1;color:var(--text);font-size:13px}
-  .file-pill input::file-selector-button{background:var(--grad);color:#15101f;
-    font-weight:700;border:0;border-radius:8px;padding:8px 12px;margin-right:10px;font-size:13px}
   .ed-actions{display:flex;gap:10px;margin-top:16px}
   .ed-actions button{flex:1;min-height:50px;border-radius:13px;font-weight:800;font-size:15px}
   .btn-add-pg{background:var(--surface-2);border:1px solid var(--border);color:var(--text)}
   .btn-publish{background:var(--grad);color:#15101f}
   .tip{font-size:12.5px;color:var(--text-3);text-align:center;margin-top:12px}
+  .busy{position:fixed;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;
+    justify-content:center;z-index:50;color:#fff;font-weight:700;font-size:15px}
   .hidden{display:none!important}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-  <div class="proto-tag">Protótipo — dados salvos só neste navegador · pagamento simulado</div>
+  <div class="proto-tag">Protótipo — dados só neste navegador · pagamento simulado</div>
   <div class="topbar">
-    <a class="brand" href="#/" style="text-decoration:none;color:inherit">
+    <a class="brand" href="#/">
       <span class="mk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg></span>
       MemeÁlbum
     </a>
     <span class="spacer"></span>
-    <button class="ghost-btn" onclick="location.hash='#/'">Início</button>
+    <span class="pill" id="member-pill">Sem passe</span>
   </div>
   <main id="app" class="wrap"></main>
 
 <script>
 "use strict";
 (function(){
-  /* ---------------- util ---------------- */
   var $=function(s,r){return (r||document).querySelector(s);};
   var el=function(h){var d=document.createElement("div");d.innerHTML=h.trim();return d.firstChild;};
-  var esc=function(s){return String(s||"").replace(/[&<>"]/g,function(c){
+  var esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){
     return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});};
   var slugify=function(s){return String(s||"").toLowerCase().normalize("NFD")
     .replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")||"album";};
-  var PRICE=20; // R$ — chumbado
 
-  /* ---------------- "banco" chumbado ---------------- */
+  /* ---- compressão de imagem (canvas SÓ pra encolher, não monta nada) ---- */
+  function compress(file,cb){
+    var url=URL.createObjectURL(file), img=new Image();
+    img.onload=function(){
+      var max=900,w=img.width,h=img.height;
+      if(w>=h && w>max){h=Math.round(h*max/w);w=max;}
+      else if(h>w && h>max){w=Math.round(w*max/h);h=max;}
+      var c=document.createElement("canvas");c.width=w;c.height=h;
+      try{ c.getContext("2d").drawImage(img,0,0,w,h);
+        cb(c.toDataURL("image/jpeg",0.82)); }
+      catch(e){ cb(null); }
+      URL.revokeObjectURL(url);
+    };
+    img.onerror=function(){ URL.revokeObjectURL(url); cb(null); };
+    img.src=url;
+  }
+  function busy(on){
+    var b=$("#busy");
+    if(on && !b){document.body.appendChild(el('<div class="busy" id="busy">Processando imagem…</div>'));}
+    else if(!on && b){b.remove();}
+  }
+  function pickImage(onReady){
+    var inp=document.createElement("input");inp.type="file";inp.accept="image/*";
+    inp.style.cssText="position:fixed;left:-9999px;opacity:0";
+    document.body.appendChild(inp);
+    inp.addEventListener("change",function(){
+      var f=inp.files&&inp.files[0];
+      if(f){ busy(true); compress(f,function(d){ busy(false);
+        if(d)onReady(d); else alert("Não consegui processar essa imagem. Tenta outra."); }); }
+      if(inp.parentNode)inp.parentNode.removeChild(inp);
+    });
+    inp.click();
+  }
+
+  /* ---- "banco" chumbado ---- */
+  var PRICE=29;
   var SEED=[
-    {slug:"copa-da-resenha-2026",name:"Copa da Resenha 2026",author:"Léo",city:"Londrina / PR",
-     team:"Tubarões FC",rating:4.8,votes:312,when:"d",theme:0,pages:1,grid:9},
-    {slug:"memes-do-trampo",name:"Memes do Trampo",author:"Bia",city:"Maringá / PR",
-     team:"Time da firma",rating:4.6,votes:198,when:"d",theme:1,pages:2,grid:12},
-    {slug:"galera-da-facul",name:"Galera da Facul",author:"Rafa",city:"Curitiba / PR",
-     team:"ADS 2026",rating:4.5,votes:140,when:"w",theme:2,pages:1,grid:9},
-    {slug:"pelada-de-domingo",name:"Pelada de Domingo",author:"Tonho",city:"São Paulo / SP",
-     team:"FC Várzea",rating:4.3,votes:96,when:"w",theme:3,pages:1,grid:16},
-    {slug:"familia-funaro",name:"Família Funaro",author:"Luigi",city:"Londrina / PR",
-     team:"Os Funaro",rating:4.9,votes:71,when:"m",theme:0,pages:1,grid:9}
+    {slug:"copa-da-resenha-2026",name:"Copa da Resenha 2026",author:"Léo",city:"Londrina / PR",team:"Tubarões FC",rating:4.8,votes:312,when:"d",theme:0,grid:9,pages:[[]]},
+    {slug:"memes-do-trampo",name:"Memes do Trampo",author:"Bia",city:"Maringá / PR",team:"Time da firma",rating:4.6,votes:198,when:"d",theme:1,grid:12,pages:[[],[]]},
+    {slug:"galera-da-facul",name:"Galera da Facul",author:"Rafa",city:"Curitiba / PR",team:"ADS 2026",rating:4.5,votes:140,when:"w",theme:2,grid:9,pages:[[]]},
+    {slug:"pelada-de-domingo",name:"Pelada de Domingo",author:"Tonho",city:"São Paulo / SP",team:"FC Várzea",rating:4.3,votes:96,when:"w",theme:3,grid:16,pages:[[]]},
+    {slug:"familia-funaro",name:"Família Funaro",author:"Luigi",city:"Londrina / PR",team:"Os Funaro",rating:4.9,votes:71,when:"m",theme:0,grid:9,pages:[[]]}
   ];
-  function DB(){
-    var raw; try{raw=JSON.parse(localStorage.getItem("memealbum_db"));}catch(e){}
-    if(!raw||!raw.albums){raw={albums:{},rated:{}};}
-    return raw;
-  }
-  function saveDB(db){ try{localStorage.setItem("memealbum_db",JSON.stringify(db));}
-    catch(e){ alert("Memória do navegador cheia (protótipo). Use fotos menores."); } }
-  function allAlbums(){
-    var db=DB(),list=SEED.slice();
-    Object.keys(db.albums).forEach(function(k){list.unshift(db.albums[k]);});
-    return list;
-  }
-  function findAlbum(slug){
-    var db=DB(); if(db.albums[slug]) return db.albums[slug];
-    for(var i=0;i<SEED.length;i++) if(SEED[i].slug===slug) return SEED[i];
-    return null;
-  }
-  var THEMES=[
-    "linear-gradient(160deg,#241a3a,#1a2740 55%,#10202e)",
+  function DB(){var r;try{r=JSON.parse(localStorage.getItem("memealbum_db"));}catch(e){}
+    if(!r||!r.albums)r={albums:{},rated:{},member:false};return r;}
+  function saveDB(d){try{localStorage.setItem("memealbum_db",JSON.stringify(d));return true;}
+    catch(e){alert("Memória do navegador cheia (protótipo). Apague algum álbum de teste.");return false;}}
+  function isMember(){return !!DB().member;}
+  function setMember(v){var d=DB();d.member=v;saveDB(d);paintMemberPill();}
+  function paintMemberPill(){var p=$("#member-pill");
+    if(isMember()){p.textContent="Passe ativo ✓";p.className="pill ok";}
+    else{p.textContent="Sem passe";p.className="pill";}}
+  function allAlbums(){var d=DB(),l=SEED.slice();
+    Object.keys(d.albums).forEach(function(k){l.unshift(d.albums[k]);});return l;}
+  function findAlbum(s){var d=DB();if(d.albums[s])return d.albums[s];
+    for(var i=0;i<SEED.length;i++)if(SEED[i].slug===s)return SEED[i];return null;}
+  var THEMES=["linear-gradient(160deg,#241a3a,#1a2740 55%,#10202e)",
     "linear-gradient(160deg,#3a1a2a,#401a2c 55%,#2e1020)",
     "linear-gradient(160deg,#1a3a2c,#1a4034 55%,#102e22)",
-    "linear-gradient(160deg,#3a311a,#403a1a 55%,#2e2810)"
-  ];
+    "linear-gradient(160deg,#5b4710,#e0bd55 47%,#7a5c12)"];
 
-  /* ---------------- componentes ---------------- */
-  function coverEl(a,big){
+  /* ---- componentes ---- */
+  function coverEl(a,opts){
+    opts=opts||{};
     var nm=esc(a.name||"Meu álbum"),sb=esc([a.city,a.team].filter(Boolean).join(" · ")||"Cidade / UF · Torcida");
     var img=a.cover?'<img src="'+a.cover+'" alt="Capa">':'<div class="gph"></div>';
-    return el('<div class="cover">'+img+'<div class="scrim"></div>'+
+    var hint=opts.editable?'<div class="edit-hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>trocar capa</div>':'';
+    var c=el('<div class="sheet cover">'+img+'<div class="scrim"></div>'+hint+
       '<div class="seal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg>MemeÁlbum</div>'+
       '<div class="meta"><div class="nm">'+nm+'</div><div class="sb">'+sb+'</div>'+
-      '<div class="ch"><span>⭐ '+(a.rating||"—")+'</span><span>🔥 '+(a.votes||0)+' votos</span><span>'+((a.pages||1))+' pág.</span></div>'+
-      '</div></div>');
+      '<div class="ch"><span>⭐ '+(a.rating||"—")+'</span><span>🔥 '+(a.votes||0)+' votos</span><span>'+(a.pages?a.pages.length:1)+' pág.</span></div></div></div>');
+    if(opts.editable && opts.onEditCover){c.style.cursor="pointer";
+      c.addEventListener("click",opts.onEditCover);}
+    return c;
   }
-  function pageEl(a,pageIdx,opts){
+  function pageEl(a,pi,opts){
     opts=opts||{};
-    var grid=a.grid||9, cols=grid===16?4:3;
-    var theme=THEMES[a.theme||0];
-    var imgs=(a.figs&&a.figs[pageIdx])||[];
-    var box=el('<div class="album-page"><div class="pg-deco"></div>'+
-      '<div class="pg-title"><b>'+esc(a.name||"Meu álbum")+'</b><span class="cnt">Pág. '+(pageIdx+1)+'/'+(a.pages||1)+'</span></div>'+
+    var grid=a.grid||9,cols=grid===16?4:3,rows=Math.ceil(grid/cols);
+    var imgs=(a.pages&&a.pages[pi])||[];
+    var bg=(a.bgs&&a.bgs[pi])||null;
+    var box=el('<div class="sheet album-page'+(bg?' has-bg':'')+'">'+
+      (bg?'<div class="pg-bg-scrim"></div>':'<div class="pg-deco"></div>')+
+      '<div class="pg-title"><b>'+esc(a.name||"Meu álbum")+'</b><span class="cnt">Pág. '+(pi+1)+'</span></div>'+
       '<div class="grid"></div></div>');
-    box.style.background=theme;
-    var g=$(".grid",box); g.style.gridTemplateColumns="repeat("+cols+",1fr)";
+    if(bg){box.style.backgroundImage="url('"+bg+"')";box.style.backgroundSize="cover";box.style.backgroundPosition="center";}
+    else{box.style.background=THEMES[a.theme||0];}
+    var g=$(".grid",box);
+    g.style.gridTemplateColumns="repeat("+cols+",1fr)";
+    g.style.gridTemplateRows="repeat("+rows+",1fr)";
     for(var i=0;i<grid;i++){
-      var src=imgs[i];
-      var f=el('<div class="fig'+(src?" has":(opts.editable?" tap":""))+'">'+
-        (src?'<img src="'+src+'" alt="Figurinha">':'<span class="no">'+(i+1)+'</span>'+
-          (opts.editable?'<span class="add">+ foto</span>':''))+'</div>');
-      if(opts.editable && !src){ (function(idx){ f.addEventListener("click",function(){opts.onTap(idx);}); })(i); }
+      var src=imgs[i],has=!!src;
+      var f=el('<div class="fig'+(has?" has":"")+(opts.editable?" tap":"")+'">'+
+        (has?'<img src="'+src+'" alt="">':'<span class="no">'+(i+1)+'</span>')+
+        (opts.editable?'<span class="add">'+(has?"trocar":"+ foto")+'</span>':'')+'</div>');
+      if(opts.editable){(function(idx){f.addEventListener("click",function(){opts.onTap(idx);});})(i);}
       g.appendChild(f);
     }
     return box;
   }
 
-  /* ---------------- HOME ---------------- */
+  /* ---- HOME ---- */
   var rankWhen="d";
   function renderHome(){
-    var app=$("#app"); app.innerHTML="";
+    paintMemberPill();
+    var app=$("#app");app.innerHTML="";
     app.appendChild(el(
       '<div><h2 class="sec"><span class="dot"></span>Achar um álbum</h2>'+
       '<div class="search"><input id="q" placeholder="Nome do álbum (ex.: Copa da Resenha)"/>'+
       '<button id="qb">Buscar</button></div>'+
-      '<button class="cta-create" onclick="location.hash=\'#/pay\'">'+
+      '<button class="cta-create" id="cc">'+
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'+
-      'Criar meu álbum<span class="px">R$ '+PRICE+'</span></button>'+
+      'Criar meu álbum<span class="px" id="ccpx"></span></button>'+
       '<div id="qres"></div>'+
       '<h2 class="sec"><span class="dot"></span>Ranking</h2>'+
       '<div class="tabs"><button data-w="d">Dia</button><button data-w="w">Semana</button><button data-w="m">Mês</button></div>'+
       '<div id="rank"></div></div>'));
+    $("#ccpx").textContent=isMember()?"passe ativo":"R$ "+PRICE;
+    $("#cc").addEventListener("click",function(){location.hash=isMember()?"#/new":"#/pay";});
     var tabs=app.querySelectorAll(".tabs button");
-    tabs.forEach(function(b){ if(b.dataset.w===rankWhen)b.classList.add("on");
-      b.addEventListener("click",function(){rankWhen=b.dataset.w;renderHome();}); });
+    tabs.forEach(function(b){if(b.dataset.w===rankWhen)b.classList.add("on");
+      b.addEventListener("click",function(){rankWhen=b.dataset.w;renderHome();});});
     drawRank();
     $("#qb").addEventListener("click",doSearch);
     $("#q").addEventListener("keydown",function(e){if(e.key==="Enter")doSearch();});
@@ -321,211 +362,203 @@
   function rowEl(a,n){
     var img=a.cover?'<img src="'+a.cover+'">':'<div class="ph"></div>';
     var r=el('<div class="album-row">'+(n?'<div class="rank-n">'+n+'</div>':'')+
-      '<div class="mini-cover">'+img+'</div>'+
-      '<div class="info"><div class="nm">'+esc(a.name)+'</div>'+
-      '<div class="by">por '+esc(a.author||"alguém")+' · '+esc(a.city||"")+'</div>'+
+      '<div class="mini-cover">'+img+'</div><div class="info"><div class="nm">'+esc(a.name)+
+      '</div><div class="by">por '+esc(a.author||"alguém")+' · '+esc(a.city||"")+'</div>'+
       '<div class="stars-sm">★ '+(a.rating||"—")+' <span>('+(a.votes||0)+')</span></div></div></div>');
     r.addEventListener("click",function(){location.hash="#/a/"+a.slug;});
     return r;
   }
   function drawRank(){
-    var box=$("#rank"); box.innerHTML="";
-    var list=allAlbums().filter(function(a){return (a.when||"d")===rankWhen || a.mine;})
+    var box=$("#rank");box.innerHTML="";
+    var list=allAlbums().filter(function(a){return (a.when||"d")===rankWhen||a.mine;})
       .sort(function(x,y){return (y.rating||0)-(x.rating||0);});
     if(!list.length){box.appendChild(el('<div class="empty-note">Sem álbuns nesse período ainda.</div>'));return;}
     list.forEach(function(a,i){box.appendChild(rowEl(a,i+1));});
   }
   function doSearch(){
-    var q=slugify($("#q").value), box=$("#qres"); box.innerHTML="";
+    var q=slugify($("#q").value),box=$("#qres");box.innerHTML="";
     if(!$("#q").value.trim())return;
     var hit=allAlbums().filter(function(a){return slugify(a.name).indexOf(q)>=0;});
     if(!hit.length){box.appendChild(el('<div class="empty-note">Nenhum álbum com esse nome. Que tal criar o seu?</div>'));return;}
     hit.forEach(function(a){box.appendChild(rowEl(a));});
   }
 
-  /* ---------------- VER ÁLBUM ---------------- */
-  var viewPage=0;
+  /* ---- VER ÁLBUM (folhas: capa, pág1, pág2...) ---- */
   function renderAlbum(slug){
-    var a=findAlbum(slug), app=$("#app"); app.innerHTML="";
+    var a=findAlbum(slug),app=$("#app");app.innerHTML="";
     if(!a){app.appendChild(el('<div class="empty-note">Álbum não encontrado.<br><br>'+
-      '<button class="ghost-btn" onclick="location.hash=\'#/\'">Voltar</button></div>'));return;}
-    if(viewPage>=(a.pages||1))viewPage=0;
+      '<button class="pill" onclick="location.hash=\'#/\'">Voltar ao início</button></div>'));return;}
+    var nPages=a.pages?a.pages.length:1, sheet=0; // 0=capa, 1..n=páginas
     app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>'));
-    app.appendChild(coverEl(a,true));
-
-    var navWrap=el('<div><div class="page-nav">'+
+    var nav=el('<div class="stage-nav">'+
       '<button class="nav-btn" id="pp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>'+
-      '<span class="pg-name" id="pgn"></span>'+
-      '<button class="nav-btn" id="pn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>'+
-      '</div><div id="pgbox"></div></div>');
-    app.appendChild(navWrap);
+      '<div class="lbl" id="slbl" style="text-align:center"></div>'+
+      '<button class="nav-btn" id="pn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button></div>');
+    app.appendChild(nav);
+    var stage=el('<div id="stage"></div>');app.appendChild(stage);
     function paint(){
-      $("#pgbox").innerHTML=""; $("#pgbox").appendChild(pageEl(a,viewPage,{}));
-      $("#pgn").textContent="Página "+(viewPage+1)+" de "+(a.pages||1);
-      $("#pp").disabled=viewPage<=0; $("#pn").disabled=viewPage>=(a.pages||1)-1;
+      stage.innerHTML="";
+      stage.appendChild(sheet===0?coverEl(a,{}):pageEl(a,sheet-1,{}));
+      $("#slbl",nav).innerHTML=(sheet===0?"Capa":"Página "+sheet)+
+        "<small>"+(sheet+1)+" de "+(nPages+1)+"</small>";
+      $("#pp",nav).disabled=sheet<=0;
+      $("#pn",nav).disabled=sheet>=nPages;
     }
-    $("#pp",navWrap).addEventListener("click",function(){if(viewPage>0){viewPage--;paint();}});
-    $("#pn",navWrap).addEventListener("click",function(){if(viewPage<(a.pages||1)-1){viewPage++;paint();}});
+    $("#pp",nav).addEventListener("click",function(){if(sheet>0){sheet--;paint();}});
+    $("#pn",nav).addEventListener("click",function(){if(sheet<nPages){sheet++;paint();}});
     paint();
 
-    /* avaliação */
-    var db=DB(), myR=db.rated[slug]||0;
+    var db=DB(),myR=db.rated[slug]||0;
     var rate=el('<div class="rate"><div class="avg">'+(a.rating||"—")+
       ' <small>/ 5</small></div><div class="lbl">'+(a.votes||0)+' avaliações · toque pra avaliar</div>'+
       '<div class="stars"></div><div class="done"></div></div>');
     var st=$(".stars",rate);
     for(var s=1;s<=5;s++){(function(v){
-      var b=el('<button>★</button>'); if(v<=myR)b.classList.add("lit");
+      var b=el('<button>★</button>');if(v<=myR)b.classList.add("lit");
       b.addEventListener("click",function(){
-        var d=DB(); d.rated[slug]=v; saveDB(d);
+        var d=DB();d.rated[slug]=v;saveDB(d);
         st.querySelectorAll("button").forEach(function(x,ix){x.classList.toggle("lit",ix<v);});
-        $(".done",rate).textContent="Valeu! Você deu "+v+"★ (protótipo)";
-      });
-      st.appendChild(b);
-    })(s);}
+        $(".done",rate).textContent="Valeu! Você deu "+v+"★ (protótipo)";});
+      st.appendChild(b);})(s);}
     app.appendChild(rate);
 
-    /* CTA compartilhar */
-    var share=el('<button class="share-cta">'+
-      '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.1-.2-.2-.4-.3z"/></svg>'+
-      'Compartilhar no WhatsApp</button>');
+    /* CTA WhatsApp — tudo em UMA mensagem (sem url separada: iOS descarta o texto) */
     var link="https://memealbum.app/a/"+slug;
-    var msg="🔥 Olha o álbum \""+(a.name||"")+"\" no MemeÁlbum!\n\n"+
-      "Dá uma nota e monta o seu também 👇\n"+link;
+    var msg="🏆 Entrei no MemeÁlbum e montei o álbum \""+(a.name||"")+"\"!\n\n"+
+      "👀 Dá uma olhada, avalia o meu e monta o teu também:\n"+link+
+      "\n\nQuem fizer o melhor álbum sobe no ranking 🔥";
+    var share=el('<button class="share-cta"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.1-.2-.2-.4-.3z"/></svg>Compartilhar no WhatsApp</button>');
     share.addEventListener("click",function(){
-      if(navigator.share){
-        navigator.share({title:"MemeÁlbum",text:msg,url:link}).catch(function(){});
-      } else {
-        window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
-      }
+      if(navigator.share){navigator.share({text:msg}).catch(function(){});}
+      else{window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");}
     });
     app.appendChild(share);
-    app.appendChild(el('<button class="sub-cta" onclick="location.hash=\'#/pay\'">Quero criar o meu álbum</button>'));
-    app.appendChild(el('<div class="share-hint">O link leva pro seu álbum e convida o amigo a avaliar e criar o dele (chumbado no protótipo).</div>'));
+    app.appendChild(el('<button class="sub-cta" id="mk">'+(isMember()?"Criar outro álbum":"Quero criar o meu álbum")+'</button>'));
+    $("#mk",app).addEventListener("click",function(){location.hash=isMember()?"#/new":"#/pay";});
+    app.appendChild(el('<div class="share-hint">O link leva pro álbum e convida o amigo a avaliar e criar o dele (chumbado no protótipo).</div>'));
   }
 
-  /* ---------------- PAYWALL ---------------- */
+  /* ---- PAYWALL (Passe da Copa) ---- */
   function renderPay(){
-    var app=$("#app"); app.innerHTML="";
+    var app=$("#app");app.innerHTML="";
     app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>'));
-    var c=el('<div class="pay-card"><h3>Criar seu álbum</h3>'+
-      '<p>Criar e publicar é pago (uma vez). Ver e avaliar álbuns é sempre grátis.</p>'+
+    var c=el('<div class="pay-card"><span class="tag2">PASSE DA COPA</span>'+
+      '<h3>Crie quantos álbuns quiser</h3>'+
+      '<p>Um pagamento só, vale por toda a Copa (~2 meses). Ver e avaliar álbuns é sempre grátis.</p>'+
       '<div class="price-opts">'+
-      '<button data-v="10"><div class="v">R$10</div><div class="t">básico</div></button>'+
-      '<button data-v="20" class="on"><div class="v">R$20</div><div class="t">recomendado</div></button>'+
-      '</div><button class="pay-go">Pagar e criar álbum</button>'+
-      '<div class="pay-note">Pagamento SIMULADO — nenhum valor é cobrado neste protótipo.</div></div>');
+      '<button data-v="19"><div class="v">R$19</div><div class="t">passe básico</div></button>'+
+      '<button data-v="29" class="on"><div class="v">R$29</div><div class="t">passe completo</div></button>'+
+      '</div><button class="pay-go">Ativar passe e criar</button>'+
+      '<button class="pay-alt">Simular que já sou assinante</button>'+
+      '<div class="pay-note">Pagamento SIMULADO — nada é cobrado neste protótipo.</div></div>');
     var opts=c.querySelectorAll(".price-opts button");
     opts.forEach(function(b){b.addEventListener("click",function(){
       opts.forEach(function(x){x.classList.remove("on");});b.classList.add("on");PRICE=+b.dataset.v;});});
-    $(".pay-go",c).addEventListener("click",function(){
-      sessionStorage.setItem("paid","1"); location.hash="#/new";});
+    $(".pay-go",c).addEventListener("click",function(){setMember(true);location.hash="#/new";});
+    $(".pay-alt",c).addEventListener("click",function(){setMember(true);location.hash="#/new";});
     app.appendChild(c);
   }
 
-  /* ---------------- EDITOR ---------------- */
+  /* ---- EDITOR (folhas: capa, pág1, pág2...) ---- */
   var draft=null;
   function newDraft(){return {slug:"",name:"",city:"",team:"",author:"Você",
-    rating:0,votes:0,when:"d",theme:0,grid:9,pages:1,cover:null,figs:[[]],mine:true};}
+    rating:0,votes:0,when:"d",theme:0,grid:9,pages:[[]],bgs:[null],cover:null,mine:true};}
   function renderEditor(){
-    if(sessionStorage.getItem("paid")!=="1"){location.hash="#/pay";return;}
+    if(!isMember()){location.hash="#/pay";return;}
     if(!draft)draft=newDraft();
-    var app=$("#app"); app.innerHTML="";
-    app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
+    var app=$("#app");app.innerHTML="";
+    app.appendChild(el('<button class="back" onclick="if(confirm(\'Sair sem publicar?\'))location.hash=\'#/\'">'+
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Sair sem publicar</button>'));
-
     var form=el('<div class="ed-card">'+
       '<div class="fld"><label>Nome do álbum</label><input id="e-nm" placeholder="Ex.: Copa da Resenha 2026"></div>'+
       '<div class="fld"><label>Cidade / UF</label><input id="e-ct" placeholder="Ex.: Londrina / PR"></div>'+
       '<div class="fld"><label>Torcida / time</label><input id="e-tm" placeholder="Ex.: Tubarões FC"></div>'+
-      '<div class="fld"><label>Tema da página</label><select id="e-th">'+
-        '<option value="0">Roxo</option><option value="1">Rosa</option><option value="2">Verde</option><option value="3">Dourado</option></select></div>'+
-      '<div class="fld"><label>Figurinhas por página</label><select id="e-gr">'+
-        '<option value="9">9</option><option value="12">12</option><option value="16">16</option></select></div>'+
-      '<div class="fld"><label>Capa do álbum</label>'+
-        '<div class="file-pill"><input type="file" id="e-cv" accept="image/*"></div></div>'+
+      '<div class="fld"><label>Tema da página</label><select id="e-th"><option value="0">Roxo</option><option value="1">Rosa</option><option value="2">Verde</option><option value="3">Dourado</option></select></div>'+
+      '<div class="fld"><label>Figurinhas por página</label><select id="e-gr"><option value="9">9</option><option value="12">12</option><option value="16">16</option></select></div>'+
       '</div>');
     app.appendChild(form);
-    $("#e-nm",form).value=draft.name; $("#e-ct",form).value=draft.city;
-    $("#e-tm",form).value=draft.team; $("#e-th",form).value=draft.theme; $("#e-gr",form).value=draft.grid;
-    $("#e-nm",form).addEventListener("input",function(e){draft.name=e.target.value;refreshEd();});
-    $("#e-ct",form).addEventListener("input",function(e){draft.city=e.target.value;refreshEd();});
-    $("#e-tm",form).addEventListener("input",function(e){draft.team=e.target.value;refreshEd();});
-    $("#e-th",form).addEventListener("change",function(e){draft.theme=+e.target.value;refreshEd();});
-    $("#e-gr",form).addEventListener("change",function(e){draft.grid=+e.target.value;refreshEd();});
-    $("#e-cv",form).addEventListener("change",function(e){
-      var f=e.target.files&&e.target.files[0]; if(!f)return;
-      var r=new FileReader(); r.onload=function(){draft.cover=r.result;refreshEd();}; r.readAsDataURL(f);
-    });
+    $("#e-nm",form).value=draft.name;$("#e-ct",form).value=draft.city;$("#e-tm",form).value=draft.team;
+    $("#e-th",form).value=draft.theme;$("#e-gr",form).value=draft.grid;
+    $("#e-nm",form).addEventListener("input",function(e){draft.name=e.target.value;repaint();});
+    $("#e-ct",form).addEventListener("input",function(e){draft.city=e.target.value;repaint();});
+    $("#e-tm",form).addEventListener("input",function(e){draft.team=e.target.value;repaint();});
+    $("#e-th",form).addEventListener("change",function(e){draft.theme=+e.target.value;repaint();});
+    $("#e-gr",form).addEventListener("change",function(e){draft.grid=+e.target.value;repaint();});
 
-    app.appendChild(el('<h2 class="sec"><span class="dot"></span>Prévia da capa</h2>'));
-    var cvBox=el('<div id="ed-cv"></div>'); app.appendChild(cvBox);
-
-    var nav=el('<div class="page-nav">'+
-      '<button class="nav-btn" id="epp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>'+
-      '<span class="pg-name" id="epgn"></span>'+
-      '<button class="nav-btn" id="epn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button></div>');
+    app.appendChild(el('<h2 class="sec"><span class="dot"></span>Prévia — toque pra editar</h2>'));
+    var nav=el('<div class="stage-nav">'+
+      '<button class="nav-btn" id="ep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+      '<div class="lbl" id="elbl" style="text-align:center"></div>'+
+      '<button class="nav-btn" id="en"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button></div>');
     app.appendChild(nav);
-    var pgBox=el('<div id="ed-pg"></div>'); app.appendChild(pgBox);
-    app.appendChild(el('<div class="tip">Toque num espaço vazio pra colocar a figurinha. A moldura é fixa: encaixa sempre.</div>'));
-
+    var stage=el('<div id="estage"></div>');app.appendChild(stage);
+    var bgctl=el('<div class="bgctl" id="bgctl"></div>');app.appendChild(bgctl);
+    app.appendChild(el('<div class="tip">Folheie: Capa → Página 1 → Página 2. Toque na capa ou numa figurinha pra trocar. Use o fundo pra pôr uma foto atrás das figurinhas.</div>'));
     var acts=el('<div class="ed-actions">'+
-      '<button class="btn-add-pg" id="addpg">+ Adicionar página</button>'+
+      '<button class="btn-add-pg" id="addpg">+ Página</button>'+
       '<button class="btn-publish" id="pub">Publicar álbum</button></div>');
     app.appendChild(acts);
 
-    var edPage=0;
-    function clampFigs(){ // garante estrutura figs[page] = []
-      if(!draft.figs)draft.figs=[]; while(draft.figs.length<draft.pages)draft.figs.push([]); }
-    function refreshEd(){
-      clampFigs();
-      $("#ed-cv").innerHTML=""; $("#ed-cv").appendChild(coverEl(draft,true));
-      $("#ed-pg").innerHTML="";
-      $("#ed-pg").appendChild(pageEl(draft,edPage,{editable:true,onTap:function(idx){
-        var inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
-        inp.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
-        document.body.appendChild(inp);
-        inp.addEventListener("change",function(){
-          var f=inp.files&&inp.files[0];
-          if(f){ var r=new FileReader();
-            r.onload=function(){ clampFigs(); if(!draft.figs[edPage])draft.figs[edPage]=[];
-              draft.figs[edPage][idx]=r.result; refreshEd(); };
-            r.readAsDataURL(f); }
-          if(inp.parentNode)inp.parentNode.removeChild(inp);
-        });
-        inp.click();
-      }}));
-      $("#epgn").textContent="Página "+(edPage+1)+" de "+draft.pages;
-      $("#epp").disabled=edPage<=0; $("#epn").disabled=edPage>=draft.pages-1;
+    var sheet=0; // 0=capa, 1..n=páginas
+    function repaint(){
+      if(!draft.bgs)draft.bgs=[];
+      while(draft.bgs.length<draft.pages.length)draft.bgs.push(null);
+      var nPages=draft.pages.length;
+      if(sheet>nPages)sheet=nPages;
+      stage.innerHTML="";
+      if(sheet===0){
+        bgctl.style.display="none";
+        stage.appendChild(coverEl(draft,{editable:true,onEditCover:function(){
+          pickImage(function(d){draft.cover=d;repaint();});}}));
+      } else {
+        var pidx=sheet-1;
+        stage.appendChild(pageEl(draft,pidx,{editable:true,onTap:function(idx){
+          pickImage(function(d){
+            if(!draft.pages[pidx])draft.pages[pidx]=[];
+            draft.pages[pidx][idx]=d;repaint();});
+        }}));
+        bgctl.style.display="flex";bgctl.innerHTML="";
+        var hasBg=!!draft.bgs[pidx];
+        var bset=el('<button><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>'+(hasBg?"Trocar fundo":"Colocar fundo")+'</button>');
+        bset.addEventListener("click",function(){pickImage(function(d){draft.bgs[pidx]=d;repaint();});});
+        bgctl.appendChild(bset);
+        if(hasBg){
+          var brm=el('<button class="rm">Remover fundo</button>');
+          brm.addEventListener("click",function(){draft.bgs[pidx]=null;repaint();});
+          bgctl.appendChild(brm);
+        }
+      }
+      $("#elbl",nav).innerHTML=(sheet===0?"Capa":"Página "+sheet)+
+        "<small>"+(sheet+1)+" de "+(nPages+1)+"</small>";
+      $("#ep",nav).disabled=sheet<=0;
+      $("#en",nav).disabled=sheet>=nPages;
     }
-    $("#epp",nav).addEventListener("click",function(){if(edPage>0){edPage--;refreshEd();}});
-    $("#epn",nav).addEventListener("click",function(){if(edPage<draft.pages-1){edPage++;refreshEd();}});
+    $("#ep",nav).addEventListener("click",function(){if(sheet>0){sheet--;repaint();}});
+    $("#en",nav).addEventListener("click",function(){if(sheet<draft.pages.length){sheet++;repaint();}});
     $("#addpg",acts).addEventListener("click",function(){
-      draft.pages++; draft.figs.push([]); edPage=draft.pages-1; refreshEd();});
+      draft.pages.push([]);sheet=draft.pages.length;repaint();});
     $("#pub",acts).addEventListener("click",function(){
       if(!draft.name.trim()){alert("Dá um nome pro álbum.");return;}
-      var db=DB(); draft.slug=slugify(draft.name);
-      draft.rating=("4."+(5+Math.floor(Math.random()*4)))*1; draft.votes=1;
-      db.albums[draft.slug]=JSON.parse(JSON.stringify(draft));
-      saveDB(db); sessionStorage.removeItem("paid");
-      var s=draft.slug; draft=null; viewPage=0; location.hash="#/a/"+s;
-    });
-
-    window.__refreshEd=refreshEd; refreshEd();
+      var d=DB();draft.slug=slugify(draft.name);
+      draft.rating=+("4."+(5+Math.floor(Math.random()*4)));draft.votes=1;
+      d.albums[draft.slug]=JSON.parse(JSON.stringify(draft));
+      if(!saveDB(d))return;
+      var s=draft.slug;draft=null;location.hash="#/a/"+s;});
+    window.__rep=repaint;repaint();
   }
 
-  /* ---------------- router ---------------- */
+  /* ---- router ---- */
   function route(){
     var h=location.hash.replace(/^#\/?/,"");
-    if(h.indexOf("a/")===0){ viewPage=0; return renderAlbum(h.slice(2)); }
-    if(h==="pay") return renderPay();
-    if(h==="new") return renderEditor();
+    if(h.indexOf("a/")===0)return renderAlbum(h.slice(2));
+    if(h==="pay")return renderPay();
+    if(h==="new")return renderEditor();
     return renderHome();
   }
   window.addEventListener("hashchange",route);
-  route();
+  paintMemberPill();route();
 })();
 </script>
 </body>
