@@ -4,597 +4,528 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <meta name="robots" content="noindex,nofollow" />
-<title>MemeÁlbum — teste de montagem de álbum</title>
+<title>MemeÁlbum — protótipo</title>
 <style>
   /* ===========================================================
-     MemeÁlbum — experimento ISOLADO (client-side puro)
-     Nada aqui depende do app Manaã. Para remover: apague a
-     pasta experiments/memealbum/ inteira. Zero efeito colateral.
+     MemeÁlbum — PROTÓTIPO isolado (client-side, chumbado).
+     Tudo salvo só no localStorage do navegador. Pagamento
+     simulado. Nada depende do app Manaã. Remover = apagar a
+     pasta experiments/memealbum/.
      =========================================================== */
   :root{
-    --bg:#0b0b0f;
-    --surface:#16161d;
-    --surface-2:#1e1e28;
-    --border:rgba(255,255,255,.09);
-    --text:#f5f5f7;
-    --text-2:#a3a3b0;
-    --accent:#b06bff;
-    --accent-2:#ff5fa2;
-    --accent-3:#ffcf5c;
+    --bg:#0b0b0f;--surface:#15151c;--surface-2:#1d1d27;--surface-3:#26263300;
+    --border:rgba(255,255,255,.09);--text:#f5f5f7;--text-2:#a3a3b0;--text-3:#71717f;
+    --accent:#b06bff;--accent-2:#ff5fa2;--accent-3:#ffcf5c;
     --grad:linear-gradient(135deg,#b06bff 0%,#ff5fa2 55%,#ffcf5c 100%);
-    --radius:18px;
-    --radius-sm:12px;
-    --shadow:0 10px 30px -12px rgba(0,0,0,.7);
+    --ok:#34d399;--radius:18px;--radius-sm:12px;--shadow:0 12px 34px -14px rgba(0,0,0,.75);
   }
   *{box-sizing:border-box;margin:0;padding:0}
-  html,body{background:var(--bg);color:var(--text);}
+  html,body{background:var(--bg);color:var(--text)}
   body{
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
-    font-size:16px;line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-    min-height:100dvh;
-    padding:18px 16px 60px;
-    max-width:520px;margin:0 auto;
+    font-size:16px;line-height:1.5;-webkit-font-smoothing:antialiased;
+    min-height:100dvh;max-width:520px;margin:0 auto;padding:0 0 50px;
   }
-  /* fundo decorativo sutil */
-  body::before{
-    content:"";position:fixed;inset:0;z-index:-1;
-    background:
-      radial-gradient(900px 480px at 80% -10%,rgba(176,107,255,.18),transparent 60%),
-      radial-gradient(700px 420px at -10% 20%,rgba(255,95,162,.14),transparent 60%);
-    pointer-events:none;
-  }
+  body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:radial-gradient(900px 480px at 80% -10%,rgba(176,107,255,.16),transparent 60%),
+               radial-gradient(700px 420px at -10% 18%,rgba(255,95,162,.12),transparent 60%)}
+  button{font-family:inherit;cursor:pointer;border:0}
+  input,select{font-family:inherit}
+  .proto-tag{background:#2a2233;color:#d9c7ee;font-size:11px;text-align:center;
+    padding:6px 12px;border-bottom:1px solid var(--border)}
 
-  header.app{margin-bottom:22px;text-align:center}
-  .badge-brand{
-    display:inline-flex;align-items:center;gap:7px;
-    padding:7px 14px;border-radius:999px;
-    background:var(--grad);color:#15101f;font-weight:800;
-    font-size:13px;letter-spacing:.3px;
-  }
-  .badge-brand svg{width:15px;height:15px}
-  header.app h1{font-size:24px;font-weight:800;margin:12px 0 2px;letter-spacing:-.4px}
-  header.app p{color:var(--text-2);font-size:14px}
+  /* topo */
+  .topbar{display:flex;align-items:center;gap:10px;padding:16px 18px 10px}
+  .brand{display:inline-flex;align-items:center;gap:7px;font-weight:800;font-size:18px;letter-spacing:-.3px}
+  .brand .mk{width:26px;height:26px;border-radius:8px;background:var(--grad);display:flex;align-items:center;justify-content:center}
+  .brand .mk svg{width:15px;height:15px;color:#15101f}
+  .spacer{flex:1}
+  .ghost-btn{background:var(--surface-2);border:1px solid var(--border);color:var(--text);
+    font-size:13px;font-weight:600;padding:9px 13px;border-radius:999px}
 
-  /* ---------- Formulário ---------- */
-  .card{
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:var(--radius);
-    padding:18px;margin-bottom:20px;
-    box-shadow:var(--shadow);
-  }
-  .card-title{font-size:13px;font-weight:700;color:var(--text-2);
-    text-transform:uppercase;letter-spacing:.7px;margin-bottom:14px;display:flex;align-items:center;gap:8px}
-  .card-title .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2)}
+  .wrap{padding:8px 18px}
+  h2.sec{font-size:13px;font-weight:700;color:var(--text-2);text-transform:uppercase;
+    letter-spacing:.7px;margin:22px 0 12px;display:flex;align-items:center;gap:8px}
+  h2.sec .dot{width:7px;height:7px;border-radius:50%;background:var(--accent-2)}
 
-  .field{margin-bottom:14px}
-  .field:last-child{margin-bottom:0}
-  .field label{display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px}
-  .field input[type=text],
-  .field select{
-    width:100%;min-height:46px;
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    color:var(--text);
-    border-radius:var(--radius-sm);
-    padding:12px 14px;font-size:16px;
-    outline:none;transition:border-color .18s,box-shadow .18s;
-  }
-  .field input[type=text]:focus,
-  .field select:focus{
-    border-color:var(--accent);
-    box-shadow:0 0 0 3px rgba(176,107,255,.25);
-  }
-  .field select{appearance:none;
-    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23a3a3b0' stroke-width='2'><path d='M3 5l4 4 4-4'/></svg>");
-    background-repeat:no-repeat;background-position:right 14px center}
+  /* busca + CTA criar */
+  .search{display:flex;gap:9px;margin-top:6px}
+  .search input{flex:1;min-height:48px;background:var(--surface-2);border:1px solid var(--border);
+    color:var(--text);border-radius:var(--radius-sm);padding:12px 14px;font-size:16px;outline:none}
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,107,255,.22)}
+  .search button{min-height:48px;padding:0 16px;border-radius:var(--radius-sm);
+    background:var(--surface-2);border:1px solid var(--border);color:var(--text);font-weight:700}
+  .cta-create{display:flex;align-items:center;gap:12px;width:100%;margin-top:14px;
+    background:var(--grad);color:#15101f;border-radius:16px;padding:15px 18px;
+    font-weight:800;font-size:16px;box-shadow:0 12px 28px -12px rgba(176,107,255,.6)}
+  .cta-create:active{transform:scale(.985)}
+  .cta-create .px{margin-left:auto;background:rgba(21,16,31,.18);padding:5px 11px;border-radius:999px;font-size:13px}
+  .cta-create svg{width:20px;height:20px}
 
-  /* ---------- Uploads (inputs VISÍVEIS — Safari/iPhone) ---------- */
-  .upload{margin-bottom:14px}
-  .upload:last-child{margin-bottom:0}
-  .upload > span.lbl{display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px}
-  .upload input[type=file]{
-    width:100%;
-    background:var(--surface-2);
-    border:1px dashed rgba(176,107,255,.45);
-    color:var(--text);
-    border-radius:var(--radius-sm);
-    padding:12px;font-size:14px;
-    cursor:pointer;min-height:48px;
-  }
-  .upload input[type=file]::file-selector-button{
-    background:var(--grad);color:#15101f;font-weight:700;
-    border:0;border-radius:9px;padding:9px 14px;margin-right:12px;
-    font-size:13px;cursor:pointer;
-  }
-  .hint{font-size:12px;color:var(--text-2);margin-top:6px}
+  /* tabs ranking */
+  .tabs{display:flex;gap:8px;margin:4px 0 6px}
+  .tabs button{flex:1;min-height:40px;background:var(--surface-2);border:1px solid var(--border);
+    color:var(--text-2);font-weight:700;font-size:13px;border-radius:10px}
+  .tabs button.on{background:var(--grad);color:#15101f;border-color:transparent}
 
-  /* ---------- Bloco de preview ---------- */
-  .preview-block{margin-bottom:22px}
-  .preview-block > h2{
-    font-size:13px;font-weight:700;color:var(--text-2);
-    text-transform:uppercase;letter-spacing:.7px;margin-bottom:10px;
-    display:flex;align-items:center;gap:8px;
-  }
-  .preview-block > h2 .tag{
-    background:var(--surface-2);border:1px solid var(--border);
-    color:var(--text-2);font-size:11px;font-weight:600;
-    padding:3px 8px;border-radius:999px;text-transform:none;letter-spacing:0;
-  }
+  /* lista de álbuns */
+  .album-row{display:flex;align-items:center;gap:13px;background:var(--surface);
+    border:1px solid var(--border);border-radius:16px;padding:11px;margin-bottom:11px}
+  .album-row:active{border-color:rgba(176,107,255,.5)}
+  .rank-n{width:24px;text-align:center;font-weight:800;color:var(--text-3);font-size:15px;flex:none}
+  .mini-cover{width:54px;height:72px;border-radius:9px;flex:none;overflow:hidden;
+    background:var(--surface-2);position:relative}
+  .mini-cover img{width:100%;height:100%;object-fit:cover}
+  .mini-cover .ph{position:absolute;inset:0;background:var(--grad);opacity:.85}
+  .album-row .info{flex:1;min-width:0}
+  .album-row .info .nm{font-weight:700;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .album-row .info .by{color:var(--text-3);font-size:12.5px;margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .stars-sm{color:var(--accent-3);font-size:13px;margin-top:5px;font-weight:700}
+  .stars-sm span{color:var(--text-3);font-weight:500}
 
-  /* ===== CAPA ===== */
-  .cover{
-    position:relative;aspect-ratio:3/4;width:100%;
-    border-radius:22px;overflow:hidden;
-    background:var(--surface-2);
-    border:1px solid var(--border);
-    box-shadow:var(--shadow);
-  }
-  .cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-  .cover .empty{
-    position:absolute;inset:0;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;gap:10px;color:var(--text-2);
-    font-size:14px;text-align:center;padding:20px;
-  }
-  .cover .empty svg{width:42px;height:42px;opacity:.5}
-  .cover .scrim{
-    position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(11,11,15,.55) 0%,transparent 28%,transparent 52%,rgba(11,11,15,.85) 100%);
-  }
-  .cover .seal{
-    position:absolute;top:16px;left:16px;
-    display:inline-flex;align-items:center;gap:6px;
-    background:var(--grad);color:#15101f;font-weight:800;
-    font-size:12px;padding:6px 12px;border-radius:999px;letter-spacing:.3px;
-  }
+  .empty-note{color:var(--text-3);font-size:14px;text-align:center;padding:26px 10px}
+
+  /* ===== VER ÁLBUM ===== */
+  .back{display:inline-flex;align-items:center;gap:6px;color:var(--text-2);
+    font-size:14px;font-weight:600;background:none;padding:14px 18px 4px}
+  .back svg{width:17px;height:17px}
+
+  .cover{position:relative;width:100%;aspect-ratio:3/4;border-radius:22px;overflow:hidden;
+    background:var(--surface-2);border:1px solid var(--border);box-shadow:var(--shadow)}
+  .cover>img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center}
+  .cover .gph{position:absolute;inset:0;background:var(--grad);opacity:.9}
+  .cover .scrim{position:absolute;inset:0;
+    background:linear-gradient(180deg,rgba(11,11,15,.5) 0%,transparent 26%,transparent 50%,rgba(11,11,15,.88) 100%)}
+  .cover .seal{position:absolute;top:15px;left:15px;display:inline-flex;align-items:center;gap:6px;
+    background:var(--grad);color:#15101f;font-weight:800;font-size:12px;padding:6px 12px;border-radius:999px}
   .cover .seal svg{width:13px;height:13px}
   .cover .meta{position:absolute;left:18px;right:18px;bottom:18px}
-  .cover .meta .name{font-size:30px;font-weight:800;line-height:1.05;letter-spacing:-.6px;
+  .cover .meta .nm{font-size:30px;font-weight:800;line-height:1.05;letter-spacing:-.6px;
     text-shadow:0 2px 14px rgba(0,0,0,.6)}
-  .cover .meta .sub{color:#e6e6ec;font-size:14px;margin-top:6px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
-  .cover .chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:14px}
-  .cover .chips span{
-    background:rgba(255,255,255,.14);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
-    border:1px solid rgba(255,255,255,.18);
-    font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px;
-  }
+  .cover .meta .sb{color:#e9e9ef;font-size:14px;margin-top:6px;text-shadow:0 1px 8px rgba(0,0,0,.6)}
+  .cover .meta .ch{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}
+  .cover .meta .ch span{background:rgba(255,255,255,.15);-webkit-backdrop-filter:blur(4px);
+    backdrop-filter:blur(4px);border:1px solid rgba(255,255,255,.18);
+    font-size:12px;font-weight:600;padding:5px 11px;border-radius:999px}
 
-  /* ===== PÁGINA DO ÁLBUM ===== */
-  .album{
-    position:relative;aspect-ratio:3/4;width:100%;
-    border-radius:22px;overflow:hidden;
-    background:#1a1a22 center/cover no-repeat;
+  /* página do álbum (molde FIXO — encaixe garantido por CSS) */
+  .page-nav{display:flex;align-items:center;justify-content:space-between;margin:16px 0 10px}
+  .page-nav .pg-name{font-weight:700;font-size:14px;color:var(--text-2)}
+  .nav-btn{width:42px;height:42px;border-radius:50%;background:var(--surface-2);
+    border:1px solid var(--border);color:var(--text);display:flex;align-items:center;justify-content:center}
+  .nav-btn:disabled{opacity:.32}
+  .nav-btn svg{width:18px;height:18px}
+
+  .album-page{position:relative;width:100%;aspect-ratio:3/4;border-radius:20px;overflow:hidden;
     border:1px solid var(--border);box-shadow:var(--shadow);
-  }
-  .album .pg-scrim{position:absolute;inset:0;
-    background:linear-gradient(180deg,rgba(11,11,15,.78) 0%,rgba(11,11,15,.32) 30%,rgba(11,11,15,.32) 70%,rgba(11,11,15,.78) 100%)}
-  .album .pg-head{
-    position:absolute;top:0;left:0;right:0;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:16px 18px;gap:10px;
-  }
-  .album .pg-head .title{font-size:18px;font-weight:800;letter-spacing:-.3px;
-    text-shadow:0 2px 10px rgba(0,0,0,.7)}
-  .album .pg-head .count{
-    background:var(--grad);color:#15101f;font-weight:800;font-size:12px;
-    padding:5px 11px;border-radius:999px;white-space:nowrap;
-  }
-  .album .grid{
-    position:absolute;inset:0;
-    display:grid;gap:8px;
-    padding:58px 16px 18px;
-    align-content:center;
-  }
-  .slot{
-    aspect-ratio:1;border-radius:12px;overflow:hidden;
-    background:rgba(255,255,255,.05);
-    border:1.5px dashed rgba(255,255,255,.22);
-    display:flex;align-items:center;justify-content:center;
-    color:rgba(255,255,255,.4);font-size:13px;font-weight:700;
-  }
-  .slot.filled{border-style:solid;border-color:transparent;background:#000}
-  .slot img{width:100%;height:100%;object-fit:cover;display:block}
+    background:linear-gradient(160deg,#241a3a,#1a2740 55%,#10202e)}
+  .album-page .pg-deco{position:absolute;inset:0;opacity:.5;
+    background:radial-gradient(600px 300px at 110% -10%,rgba(255,207,92,.25),transparent 55%),
+               radial-gradient(500px 280px at -10% 110%,rgba(255,95,162,.22),transparent 55%)}
+  .album-page .pg-title{position:absolute;top:0;left:0;right:0;display:flex;
+    align-items:center;justify-content:space-between;padding:15px 17px;z-index:2}
+  .album-page .pg-title b{font-size:16px;font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+  .album-page .pg-title .cnt{background:var(--grad);color:#15101f;font-weight:800;
+    font-size:12px;padding:5px 10px;border-radius:999px}
+  .grid{position:absolute;inset:0;display:grid;gap:9px;padding:56px 15px 16px;align-content:center;z-index:1}
+  /* figurinha = moldura fixa (carta), foto encaixa dentro com cover */
+  .fig{position:relative;aspect-ratio:3/4;border-radius:11px;overflow:hidden;
+    background:linear-gradient(150deg,rgba(255,255,255,.1),rgba(255,255,255,.03));
+    border:1.5px solid rgba(255,255,255,.16);display:flex;align-items:center;justify-content:center}
+  .fig.has{border-color:transparent;background:#000;
+    box-shadow:0 0 0 1.5px rgba(255,207,92,.5),0 6px 16px -8px rgba(0,0,0,.7)}
+  .fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .fig .no{color:rgba(255,255,255,.42);font-weight:800;font-size:15px}
+  .fig.tap{cursor:pointer;border-style:dashed;border-color:rgba(176,107,255,.55)}
+  .fig.tap:active{transform:scale(.96)}
+  .fig .add{position:absolute;bottom:6px;left:0;right:0;text-align:center;
+    font-size:10px;color:var(--accent);font-weight:700}
 
-  /* ===== PREVIEW WHATSAPP ===== */
-  .wa{
-    background:#0b141a;
-    background-image:linear-gradient(rgba(11,20,26,.92),rgba(11,20,26,.92)),
-      radial-gradient(rgba(255,255,255,.04) 1px,transparent 1px);
-    background-size:auto,22px 22px;
-    border-radius:18px;border:1px solid var(--border);
-    padding:18px 14px;box-shadow:var(--shadow);
-  }
-  .wa .bubble{
-    background:#005c4b;border-radius:14px;border-top-right-radius:4px;
-    max-width:88%;margin-left:auto;overflow:hidden;
-  }
-  .wa .link-card{background:rgba(0,0,0,.22);margin:6px 6px 0;border-radius:9px;overflow:hidden}
-  .wa .hero{position:relative;width:100%;aspect-ratio:1.91/1;background:#04231d}
-  .wa .hero img{width:100%;height:100%;object-fit:cover;display:block}
-  .wa .hero .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    color:rgba(255,255,255,.35);font-size:12px}
-  .wa .lc-body{padding:9px 11px}
-  .wa .lc-body .t{font-size:14px;font-weight:700;color:#e9edef;line-height:1.25}
-  .wa .lc-body .d{font-size:12.5px;color:#cdd6db;margin-top:3px;line-height:1.35;
-    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-  .wa .lc-body .u{font-size:11px;color:#8aa6a0;margin-top:5px}
-  .wa .thumb-row{display:flex;gap:9px;padding:10px 11px;align-items:flex-start}
-  .wa .mini{
-    width:74px;flex:none;aspect-ratio:3/4;border-radius:7px;overflow:hidden;
-    background:#04231d center/cover no-repeat;position:relative;
-  }
-  .wa .mini .mgrid{position:absolute;inset:0;display:grid;gap:2px;padding:5px;align-content:center}
-  .wa .mini .mcell{aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,.12);overflow:hidden}
-  .wa .mini .mcell img{width:100%;height:100%;object-fit:cover;display:block}
-  .wa .thumb-cap{font-size:12px;color:#cdd6db;line-height:1.4}
-  .wa .thumb-cap b{color:#e9edef;display:block;margin-bottom:2px}
-  .wa .time{font-size:10.5px;color:#8aa6a0;text-align:right;padding:4px 11px 9px}
-  .wa .time b{color:#53bdeb;font-weight:400}
+  /* avaliação */
+  .rate{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+    padding:16px;margin-top:18px;text-align:center}
+  .rate .avg{font-size:30px;font-weight:800}
+  .rate .avg small{font-size:14px;color:var(--text-3);font-weight:600}
+  .rate .lbl{color:var(--text-2);font-size:13px;margin:4px 0 12px}
+  .rate .stars{display:flex;justify-content:center;gap:6px}
+  .rate .stars button{background:none;font-size:32px;line-height:1;color:#3a3a45;padding:2px}
+  .rate .stars button.lit{color:var(--accent-3)}
+  .rate .done{color:var(--ok);font-size:13px;font-weight:700;margin-top:10px;min-height:18px}
 
-  /* ===== STATUS / DEBUG ===== */
-  .status{
-    background:#0c0c11;border:1px solid var(--border);
-    border-radius:14px;padding:14px 16px;
-    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
-    font-size:12.5px;
-  }
-  .status .st-title{color:var(--text-2);font-weight:700;margin-bottom:8px;
-    text-transform:uppercase;letter-spacing:.6px;font-family:inherit}
-  #log div{display:flex;gap:8px;padding:2px 0;color:#cfcfd8}
-  #log div::before{content:"●";color:var(--accent-3)}
+  /* CTA compartilhar */
+  .share-cta{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+    min-height:54px;background:#25d366;color:#06301a;font-size:16px;font-weight:800;
+    border-radius:15px;margin-top:16px;box-shadow:0 12px 26px -12px rgba(37,211,102,.6)}
+  .share-cta:active{transform:scale(.98)}
+  .share-cta svg{width:21px;height:21px}
+  .sub-cta{width:100%;min-height:50px;background:var(--surface-2);border:1px solid var(--border);
+    color:var(--text);font-weight:700;font-size:15px;border-radius:14px;margin-top:10px}
+  .share-hint{font-size:12px;color:var(--text-3);text-align:center;margin-top:10px}
 
-  /* ===== BOTÃO COMPARTILHAR ===== */
-  .share-btn{
-    width:100%;min-height:52px;
-    display:flex;align-items:center;justify-content:center;gap:10px;
-    background:var(--grad);color:#15101f;
-    font-size:16px;font-weight:800;letter-spacing:.2px;
-    border:0;border-radius:14px;cursor:pointer;
-    margin-bottom:22px;
-    box-shadow:0 10px 26px -10px rgba(176,107,255,.65);
-    transition:transform .15s,filter .15s;
-  }
-  .share-btn:active{transform:scale(.97);filter:brightness(1.05)}
-  .share-btn svg{width:20px;height:20px}
-  .share-note{font-size:12px;color:var(--text-2);text-align:center;margin:-12px 0 22px}
+  /* paywall */
+  .pay-card{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+    padding:22px 18px;margin-top:14px;text-align:center}
+  .pay-card h3{font-size:20px;font-weight:800;margin-bottom:6px}
+  .pay-card p{color:var(--text-2);font-size:14px;margin-bottom:18px}
+  .price-opts{display:flex;gap:11px;margin-bottom:18px}
+  .price-opts button{flex:1;background:var(--surface-2);border:2px solid var(--border);
+    color:var(--text);border-radius:14px;padding:16px 8px}
+  .price-opts button.on{border-color:var(--accent);background:rgba(176,107,255,.12)}
+  .price-opts .v{font-size:24px;font-weight:800}
+  .price-opts .t{font-size:12px;color:var(--text-2);margin-top:3px}
+  .pay-go{width:100%;min-height:52px;background:var(--grad);color:#15101f;
+    font-weight:800;font-size:16px;border-radius:14px}
+  .pay-go:active{transform:scale(.98)}
+  .pay-note{font-size:12px;color:var(--text-3);margin-top:12px}
 
+  /* editor */
+  .ed-card{background:var(--surface);border:1px solid var(--border);
+    border-radius:16px;padding:16px;margin-top:14px}
+  .fld{margin-bottom:13px}.fld:last-child{margin-bottom:0}
+  .fld label{display:block;font-size:13px;font-weight:600;color:var(--text-2);margin-bottom:6px}
+  .fld input,.fld select{width:100%;min-height:46px;background:var(--surface-2);
+    border:1px solid var(--border);color:var(--text);border-radius:11px;padding:11px 13px;
+    font-size:16px;outline:none}
+  .fld input:focus,.fld select:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(176,107,255,.2)}
+  .fld select{appearance:none}
+  .file-pill{display:flex;align-items:center;gap:10px;background:var(--surface-2);
+    border:1px dashed rgba(176,107,255,.5);border-radius:11px;padding:12px;
+    color:var(--text);font-size:14px;font-weight:600}
+  .file-pill input{flex:1;color:var(--text);font-size:13px}
+  .file-pill input::file-selector-button{background:var(--grad);color:#15101f;
+    font-weight:700;border:0;border-radius:8px;padding:8px 12px;margin-right:10px;font-size:13px}
+  .ed-actions{display:flex;gap:10px;margin-top:16px}
+  .ed-actions button{flex:1;min-height:50px;border-radius:13px;font-weight:800;font-size:15px}
+  .btn-add-pg{background:var(--surface-2);border:1px solid var(--border);color:var(--text)}
+  .btn-publish{background:var(--grad);color:#15101f}
+  .tip{font-size:12.5px;color:var(--text-3);text-align:center;margin-top:12px}
+  .hidden{display:none!important}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-
-  <header class="app">
-    <span class="badge-brand">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg>
+  <div class="proto-tag">Protótipo — dados salvos só neste navegador · pagamento simulado</div>
+  <div class="topbar">
+    <a class="brand" href="#/" style="text-decoration:none;color:inherit">
+      <span class="mk"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg></span>
       MemeÁlbum
-    </span>
-    <h1>Teste de montagem de álbum</h1>
-    <p>Preview local em tempo real — nada é enviado nem salvo.</p>
-  </header>
-
-  <!-- ====== FORM ====== -->
-  <section class="card" aria-label="Dados do álbum">
-    <div class="card-title"><span class="dot"></span> Dados do álbum</div>
-
-    <div class="field">
-      <label for="f-nome">Nome do álbum</label>
-      <input type="text" id="f-nome" placeholder="Ex.: Memes da Resenha 2026" />
-    </div>
-    <div class="field">
-      <label for="f-cidade">Cidade / UF</label>
-      <input type="text" id="f-cidade" placeholder="Ex.: Londrina / PR" />
-    </div>
-    <div class="field">
-      <label for="f-time">Torcida / time</label>
-      <input type="text" id="f-time" placeholder="Ex.: Tubarões FC" />
-    </div>
-    <div class="field">
-      <label for="f-previa">Texto da prévia</label>
-      <input type="text" id="f-previa" placeholder="Ex.: Monte seu álbum e desafie a galera!" />
-    </div>
-    <div class="field">
-      <label for="f-grade">Grade de figurinhas</label>
-      <select id="f-grade">
-        <option value="9">9 figurinhas</option>
-        <option value="12">12 figurinhas</option>
-        <option value="16">16 figurinhas</option>
-      </select>
-    </div>
-  </section>
-
-  <!-- ====== UPLOADS ====== -->
-  <section class="card" aria-label="Imagens">
-    <div class="card-title"><span class="dot"></span> Imagens</div>
-
-    <div class="upload">
-      <span class="lbl">Capa do álbum</span>
-      <input type="file" id="u-capa" accept="image/*" />
-      <div class="hint">Aparece na hora na capa e no card do WhatsApp.</div>
-    </div>
-    <div class="upload">
-      <span class="lbl">Imagem / fundo da página</span>
-      <input type="file" id="u-fundo" accept="image/*" />
-      <div class="hint">Vira o fundo da página do álbum (figurinhas ficam por cima).</div>
-    </div>
-    <div class="upload">
-      <span class="lbl">Figurinhas (pode escolher várias)</span>
-      <input type="file" id="u-figs" accept="image/*" multiple />
-      <div class="hint">Preenchem os slots da grade automaticamente.</div>
-    </div>
-  </section>
-
-  <!-- ====== PREVIEW: CAPA ====== -->
-  <div class="preview-block">
-    <h2>Capa <span class="tag">atualiza sozinha</span></h2>
-    <div class="cover" id="cover">
-      <div class="empty" id="cover-empty">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
-        Escolha a imagem da capa
-      </div>
-      <img id="cover-img" alt="Capa do álbum" style="display:none" />
-      <div class="scrim"></div>
-      <div class="seal">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg>
-        MemeÁlbum
-      </div>
-      <div class="meta">
-        <div class="name" id="cv-nome">Nome do álbum</div>
-        <div class="sub" id="cv-sub">Cidade / UF · Torcida</div>
-        <div class="chips">
-          <span>⭐ 9,4</span><span>🔥 #1 do dia</span><span>238 votos</span>
-        </div>
-      </div>
-    </div>
+    </a>
+    <span class="spacer"></span>
+    <button class="ghost-btn" onclick="location.hash='#/'">Início</button>
   </div>
-
-  <!-- ====== PREVIEW: PÁGINA ====== -->
-  <div class="preview-block">
-    <h2>Página do álbum <span class="tag">fundo + figurinhas</span></h2>
-    <div class="album" id="album">
-      <div class="pg-scrim"></div>
-      <div class="pg-head">
-        <div class="title" id="pg-title">Nome do álbum</div>
-        <div class="count" id="pg-count">9 figurinhas</div>
-      </div>
-      <div class="grid" id="grid"></div>
-    </div>
-  </div>
-
-  <!-- ====== PREVIEW: WHATSAPP ====== -->
-  <div class="preview-block">
-    <h2>Preview no WhatsApp <span class="tag">como chega pro amigo</span></h2>
-    <div class="wa">
-      <div class="bubble">
-        <div class="link-card">
-          <div class="hero">
-            <img id="wa-hero" alt="Prévia do álbum" style="display:none" />
-            <div class="ph" id="wa-hero-ph">imagem da capa</div>
-          </div>
-          <div class="lc-body">
-            <div class="t" id="wa-title">Nome do álbum</div>
-            <div class="d" id="wa-desc">Monte seu álbum e desafie a galera!</div>
-            <div class="u">memealbum.app</div>
-          </div>
-        </div>
-        <div class="thumb-row">
-          <div class="mini" id="wa-mini"><div class="mgrid" id="wa-mgrid"></div></div>
-          <div class="thumb-cap">
-            <b id="wa-cap-title">Nome do álbum</b>
-            <span id="wa-cap-sub">Sua página personalizada</span>
-          </div>
-        </div>
-        <div class="time">agora <b>✓✓</b></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ====== BOTÃO COMPARTILHAR ====== -->
-  <button id="btn-share" class="share-btn" type="button">
-    <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.1-.2-.2-.4-.3z"/></svg>
-    Compartilhar no WhatsApp
-  </button>
-  <div class="share-note">Sem montagem: envia o texto + a foto da capa que você escolheu (se o navegador suportar).</div>
-
-  <!-- ====== STATUS ====== -->
-  <div class="status">
-    <div class="st-title">Status / debug</div>
-    <div id="log" aria-live="polite"></div>
-  </div>
+  <main id="app" class="wrap"></main>
 
 <script>
-/* MemeÁlbum — lógica de preview em tempo real. Puro, sem libs. */
+"use strict";
 (function(){
-  "use strict";
-  var $ = function(s){ return document.querySelector(s); };
+  /* ---------------- util ---------------- */
+  var $=function(s,r){return (r||document).querySelector(s);};
+  var el=function(h){var d=document.createElement("div");d.innerHTML=h.trim();return d.firstChild;};
+  var esc=function(s){return String(s||"").replace(/[&<>"]/g,function(c){
+    return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});};
+  var slugify=function(s){return String(s||"").toLowerCase().normalize("NFD")
+    .replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"")||"album";};
+  var PRICE=20; // R$ — chumbado
 
-  /* ---- Status log (confirma que o Safari executa o JS) ---- */
-  function log(msg){
-    var d = document.createElement("div");
-    d.textContent = msg;
-    $("#log").appendChild(d);
+  /* ---------------- "banco" chumbado ---------------- */
+  var SEED=[
+    {slug:"copa-da-resenha-2026",name:"Copa da Resenha 2026",author:"Léo",city:"Londrina / PR",
+     team:"Tubarões FC",rating:4.8,votes:312,when:"d",theme:0,pages:1,grid:9},
+    {slug:"memes-do-trampo",name:"Memes do Trampo",author:"Bia",city:"Maringá / PR",
+     team:"Time da firma",rating:4.6,votes:198,when:"d",theme:1,pages:2,grid:12},
+    {slug:"galera-da-facul",name:"Galera da Facul",author:"Rafa",city:"Curitiba / PR",
+     team:"ADS 2026",rating:4.5,votes:140,when:"w",theme:2,pages:1,grid:9},
+    {slug:"pelada-de-domingo",name:"Pelada de Domingo",author:"Tonho",city:"São Paulo / SP",
+     team:"FC Várzea",rating:4.3,votes:96,when:"w",theme:3,pages:1,grid:16},
+    {slug:"familia-funaro",name:"Família Funaro",author:"Luigi",city:"Londrina / PR",
+     team:"Os Funaro",rating:4.9,votes:71,when:"m",theme:0,pages:1,grid:9}
+  ];
+  function DB(){
+    var raw; try{raw=JSON.parse(localStorage.getItem("memealbum_db"));}catch(e){}
+    if(!raw||!raw.albums){raw={albums:{},rated:{}};}
+    return raw;
   }
-  log("JavaScript carregado");
+  function saveDB(db){ try{localStorage.setItem("memealbum_db",JSON.stringify(db));}
+    catch(e){ alert("Memória do navegador cheia (protótipo). Use fotos menores."); } }
+  function allAlbums(){
+    var db=DB(),list=SEED.slice();
+    Object.keys(db.albums).forEach(function(k){list.unshift(db.albums[k]);});
+    return list;
+  }
+  function findAlbum(slug){
+    var db=DB(); if(db.albums[slug]) return db.albums[slug];
+    for(var i=0;i<SEED.length;i++) if(SEED[i].slug===slug) return SEED[i];
+    return null;
+  }
+  var THEMES=[
+    "linear-gradient(160deg,#241a3a,#1a2740 55%,#10202e)",
+    "linear-gradient(160deg,#3a1a2a,#401a2c 55%,#2e1020)",
+    "linear-gradient(160deg,#1a3a2c,#1a4034 55%,#102e22)",
+    "linear-gradient(160deg,#3a311a,#403a1a 55%,#2e2810)"
+  ];
 
-  /* ---- Helper: gera URL local da imagem (objectURL + fallback) ---- */
-  function srcFromFile(file, cb){
-    try {
-      cb(URL.createObjectURL(file));
-    } catch(e){
-      var r = new FileReader();
-      r.onload = function(){ cb(r.result); };
-      r.readAsDataURL(file);
+  /* ---------------- componentes ---------------- */
+  function coverEl(a,big){
+    var nm=esc(a.name||"Meu álbum"),sb=esc([a.city,a.team].filter(Boolean).join(" · ")||"Cidade / UF · Torcida");
+    var img=a.cover?'<img src="'+a.cover+'" alt="Capa">':'<div class="gph"></div>';
+    return el('<div class="cover">'+img+'<div class="scrim"></div>'+
+      '<div class="seal"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.6 6.5L21 9.3l-5 4.4 1.6 6.8L12 16.9 6.4 20.5 8 13.7 3 9.3l6.4-.8z"/></svg>MemeÁlbum</div>'+
+      '<div class="meta"><div class="nm">'+nm+'</div><div class="sb">'+sb+'</div>'+
+      '<div class="ch"><span>⭐ '+(a.rating||"—")+'</span><span>🔥 '+(a.votes||0)+' votos</span><span>'+((a.pages||1))+' pág.</span></div>'+
+      '</div></div>');
+  }
+  function pageEl(a,pageIdx,opts){
+    opts=opts||{};
+    var grid=a.grid||9, cols=grid===16?4:3;
+    var theme=THEMES[a.theme||0];
+    var imgs=(a.figs&&a.figs[pageIdx])||[];
+    var box=el('<div class="album-page"><div class="pg-deco"></div>'+
+      '<div class="pg-title"><b>'+esc(a.name||"Meu álbum")+'</b><span class="cnt">Pág. '+(pageIdx+1)+'/'+(a.pages||1)+'</span></div>'+
+      '<div class="grid"></div></div>');
+    box.style.background=theme;
+    var g=$(".grid",box); g.style.gridTemplateColumns="repeat("+cols+",1fr)";
+    for(var i=0;i<grid;i++){
+      var src=imgs[i];
+      var f=el('<div class="fig'+(src?" has":(opts.editable?" tap":""))+'">'+
+        (src?'<img src="'+src+'" alt="Figurinha">':'<span class="no">'+(i+1)+'</span>'+
+          (opts.editable?'<span class="add">+ foto</span>':''))+'</div>');
+      if(opts.editable && !src){ (function(idx){ f.addEventListener("click",function(){opts.onTap(idx);}); })(i); }
+      g.appendChild(f);
     }
+    return box;
   }
 
-  /* ---- Estado ---- */
-  var stickerURLs = [];   // urls das figurinhas escolhidas
-  var lastCapa = null, lastFundo = null;
-  var capaFile = null, fundoFile = null;   // arquivos originais (p/ compartilhar sem montar)
-
-  function gridCount(){ return parseInt($("#f-grade").value, 10); }
-  function gridCols(){ return gridCount() === 16 ? 4 : 3; }
-
-  /* ---- Campos de texto -> capa / página / whatsapp ---- */
-  function refreshTexts(){
-    var nome   = $("#f-nome").value.trim()   || "Nome do álbum";
-    var cidade = $("#f-cidade").value.trim();
-    var time   = $("#f-time").value.trim();
-    var previa = $("#f-previa").value.trim() || "Monte seu álbum e desafie a galera!";
-    var sub    = [cidade, time].filter(Boolean).join(" · ") || "Cidade / UF · Torcida";
-
-    $("#cv-nome").textContent  = nome;
-    $("#cv-sub").textContent   = sub;
-    $("#pg-title").textContent = nome;
-    $("#wa-title").textContent = nome;
-    $("#wa-desc").textContent  = previa;
-    $("#wa-cap-title").textContent = nome;
-    $("#wa-cap-sub").textContent   = sub;
+  /* ---------------- HOME ---------------- */
+  var rankWhen="d";
+  function renderHome(){
+    var app=$("#app"); app.innerHTML="";
+    app.appendChild(el(
+      '<div><h2 class="sec"><span class="dot"></span>Achar um álbum</h2>'+
+      '<div class="search"><input id="q" placeholder="Nome do álbum (ex.: Copa da Resenha)"/>'+
+      '<button id="qb">Buscar</button></div>'+
+      '<button class="cta-create" onclick="location.hash=\'#/pay\'">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>'+
+      'Criar meu álbum<span class="px">R$ '+PRICE+'</span></button>'+
+      '<div id="qres"></div>'+
+      '<h2 class="sec"><span class="dot"></span>Ranking</h2>'+
+      '<div class="tabs"><button data-w="d">Dia</button><button data-w="w">Semana</button><button data-w="m">Mês</button></div>'+
+      '<div id="rank"></div></div>'));
+    var tabs=app.querySelectorAll(".tabs button");
+    tabs.forEach(function(b){ if(b.dataset.w===rankWhen)b.classList.add("on");
+      b.addEventListener("click",function(){rankWhen=b.dataset.w;renderHome();}); });
+    drawRank();
+    $("#qb").addEventListener("click",doSearch);
+    $("#q").addEventListener("keydown",function(e){if(e.key==="Enter")doSearch();});
   }
-  ["f-nome","f-cidade","f-time","f-previa"].forEach(function(id){
-    document.getElementById(id).addEventListener("input", refreshTexts);
-  });
+  function rowEl(a,n){
+    var img=a.cover?'<img src="'+a.cover+'">':'<div class="ph"></div>';
+    var r=el('<div class="album-row">'+(n?'<div class="rank-n">'+n+'</div>':'')+
+      '<div class="mini-cover">'+img+'</div>'+
+      '<div class="info"><div class="nm">'+esc(a.name)+'</div>'+
+      '<div class="by">por '+esc(a.author||"alguém")+' · '+esc(a.city||"")+'</div>'+
+      '<div class="stars-sm">★ '+(a.rating||"—")+' <span>('+(a.votes||0)+')</span></div></div></div>');
+    r.addEventListener("click",function(){location.hash="#/a/"+a.slug;});
+    return r;
+  }
+  function drawRank(){
+    var box=$("#rank"); box.innerHTML="";
+    var list=allAlbums().filter(function(a){return (a.when||"d")===rankWhen || a.mine;})
+      .sort(function(x,y){return (y.rating||0)-(x.rating||0);});
+    if(!list.length){box.appendChild(el('<div class="empty-note">Sem álbuns nesse período ainda.</div>'));return;}
+    list.forEach(function(a,i){box.appendChild(rowEl(a,i+1));});
+  }
+  function doSearch(){
+    var q=slugify($("#q").value), box=$("#qres"); box.innerHTML="";
+    if(!$("#q").value.trim())return;
+    var hit=allAlbums().filter(function(a){return slugify(a.name).indexOf(q)>=0;});
+    if(!hit.length){box.appendChild(el('<div class="empty-note">Nenhum álbum com esse nome. Que tal criar o seu?</div>'));return;}
+    hit.forEach(function(a){box.appendChild(rowEl(a));});
+  }
 
-  /* ---- Monta a grade de slots (página + mini do whatsapp) ---- */
-  function buildGrid(){
-    var n = gridCount(), cols = gridCols();
-    $("#pg-count").textContent = n + " figurinhas";
+  /* ---------------- VER ÁLBUM ---------------- */
+  var viewPage=0;
+  function renderAlbum(slug){
+    var a=findAlbum(slug), app=$("#app"); app.innerHTML="";
+    if(!a){app.appendChild(el('<div class="empty-note">Álbum não encontrado.<br><br>'+
+      '<button class="ghost-btn" onclick="location.hash=\'#/\'">Voltar</button></div>'));return;}
+    if(viewPage>=(a.pages||1))viewPage=0;
+    app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>'));
+    app.appendChild(coverEl(a,true));
 
-    var grid = $("#grid");
-    grid.style.gridTemplateColumns = "repeat(" + cols + ",1fr)";
-    grid.innerHTML = "";
-
-    var mgrid = $("#wa-mgrid");
-    mgrid.style.gridTemplateColumns = "repeat(" + cols + ",1fr)";
-    mgrid.innerHTML = "";
-
-    for (var i = 0; i < n; i++){
-      var slot = document.createElement("div");
-      slot.className = "slot";
-      slot.textContent = (i + 1);
-      grid.appendChild(slot);
-
-      var mc = document.createElement("div");
-      mc.className = "mcell";
-      mgrid.appendChild(mc);
+    var navWrap=el('<div><div class="page-nav">'+
+      '<button class="nav-btn" id="pp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+      '<span class="pg-name" id="pgn"></span>'+
+      '<button class="nav-btn" id="pn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button>'+
+      '</div><div id="pgbox"></div></div>');
+    app.appendChild(navWrap);
+    function paint(){
+      $("#pgbox").innerHTML=""; $("#pgbox").appendChild(pageEl(a,viewPage,{}));
+      $("#pgn").textContent="Página "+(viewPage+1)+" de "+(a.pages||1);
+      $("#pp").disabled=viewPage<=0; $("#pn").disabled=viewPage>=(a.pages||1)-1;
     }
-    paintStickers();
-  }
+    $("#pp",navWrap).addEventListener("click",function(){if(viewPage>0){viewPage--;paint();}});
+    $("#pn",navWrap).addEventListener("click",function(){if(viewPage<(a.pages||1)-1){viewPage++;paint();}});
+    paint();
 
-  /* ---- Aplica as figurinhas já escolhidas nos slots ---- */
-  function paintStickers(){
-    var slots = $("#grid").children;
-    var cells = $("#wa-mgrid").children;
-    for (var i = 0; i < slots.length; i++){
-      if (stickerURLs[i]){
-        slots[i].className = "slot filled";
-        slots[i].innerHTML = '<img alt="Figurinha ' + (i+1) + '">';
-        slots[i].firstChild.src = stickerURLs[i];
-        if (cells[i]){
-          cells[i].innerHTML = '<img alt="">';
-          cells[i].firstChild.src = stickerURLs[i];
-        }
+    /* avaliação */
+    var db=DB(), myR=db.rated[slug]||0;
+    var rate=el('<div class="rate"><div class="avg">'+(a.rating||"—")+
+      ' <small>/ 5</small></div><div class="lbl">'+(a.votes||0)+' avaliações · toque pra avaliar</div>'+
+      '<div class="stars"></div><div class="done"></div></div>');
+    var st=$(".stars",rate);
+    for(var s=1;s<=5;s++){(function(v){
+      var b=el('<button>★</button>'); if(v<=myR)b.classList.add("lit");
+      b.addEventListener("click",function(){
+        var d=DB(); d.rated[slug]=v; saveDB(d);
+        st.querySelectorAll("button").forEach(function(x,ix){x.classList.toggle("lit",ix<v);});
+        $(".done",rate).textContent="Valeu! Você deu "+v+"★ (protótipo)";
+      });
+      st.appendChild(b);
+    })(s);}
+    app.appendChild(rate);
+
+    /* CTA compartilhar */
+    var share=el('<button class="share-cta">'+
+      '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.1-.2-.2-.4-.3z"/></svg>'+
+      'Compartilhar no WhatsApp</button>');
+    var link="https://memealbum.app/a/"+slug;
+    var msg="🔥 Olha o álbum \""+(a.name||"")+"\" no MemeÁlbum!\n\n"+
+      "Dá uma nota e monta o seu também 👇\n"+link;
+    share.addEventListener("click",function(){
+      if(navigator.share){
+        navigator.share({title:"MemeÁlbum",text:msg,url:link}).catch(function(){});
+      } else {
+        window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");
       }
-    }
+    });
+    app.appendChild(share);
+    app.appendChild(el('<button class="sub-cta" onclick="location.hash=\'#/pay\'">Quero criar o meu álbum</button>'));
+    app.appendChild(el('<div class="share-hint">O link leva pro seu álbum e convida o amigo a avaliar e criar o dele (chumbado no protótipo).</div>'));
   }
 
-  $("#f-grade").addEventListener("change", function(){
-    buildGrid();
-    log(gridCount() + " slots na grade");
-  });
+  /* ---------------- PAYWALL ---------------- */
+  function renderPay(){
+    var app=$("#app"); app.innerHTML="";
+    app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Voltar</button>'));
+    var c=el('<div class="pay-card"><h3>Criar seu álbum</h3>'+
+      '<p>Criar e publicar é pago (uma vez). Ver e avaliar álbuns é sempre grátis.</p>'+
+      '<div class="price-opts">'+
+      '<button data-v="10"><div class="v">R$10</div><div class="t">básico</div></button>'+
+      '<button data-v="20" class="on"><div class="v">R$20</div><div class="t">recomendado</div></button>'+
+      '</div><button class="pay-go">Pagar e criar álbum</button>'+
+      '<div class="pay-note">Pagamento SIMULADO — nenhum valor é cobrado neste protótipo.</div></div>');
+    var opts=c.querySelectorAll(".price-opts button");
+    opts.forEach(function(b){b.addEventListener("click",function(){
+      opts.forEach(function(x){x.classList.remove("on");});b.classList.add("on");PRICE=+b.dataset.v;});});
+    $(".pay-go",c).addEventListener("click",function(){
+      sessionStorage.setItem("paid","1"); location.hash="#/new";});
+    app.appendChild(c);
+  }
 
-  /* ---- Upload: CAPA ---- */
-  $("#u-capa").addEventListener("change", function(e){
-    var f = e.target.files && e.target.files[0];
-    if (!f) return;
-    capaFile = f;
-    srcFromFile(f, function(url){
-      if (lastCapa) { try{ URL.revokeObjectURL(lastCapa); }catch(_){} }
-      lastCapa = url;
-      var img = $("#cover-img");
-      img.src = url; img.style.display = "block";
-      $("#cover-empty").style.display = "none";
-      var hero = $("#wa-hero");
-      hero.src = url; hero.style.display = "block";
-      $("#wa-hero-ph").style.display = "none";
-      log("Capa adicionada");
+  /* ---------------- EDITOR ---------------- */
+  var draft=null;
+  function newDraft(){return {slug:"",name:"",city:"",team:"",author:"Você",
+    rating:0,votes:0,when:"d",theme:0,grid:9,pages:1,cover:null,figs:[[]],mine:true};}
+  function renderEditor(){
+    if(sessionStorage.getItem("paid")!=="1"){location.hash="#/pay";return;}
+    if(!draft)draft=newDraft();
+    var app=$("#app"); app.innerHTML="";
+    app.appendChild(el('<button class="back" onclick="location.hash=\'#/\'">'+
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>Sair sem publicar</button>'));
+
+    var form=el('<div class="ed-card">'+
+      '<div class="fld"><label>Nome do álbum</label><input id="e-nm" placeholder="Ex.: Copa da Resenha 2026"></div>'+
+      '<div class="fld"><label>Cidade / UF</label><input id="e-ct" placeholder="Ex.: Londrina / PR"></div>'+
+      '<div class="fld"><label>Torcida / time</label><input id="e-tm" placeholder="Ex.: Tubarões FC"></div>'+
+      '<div class="fld"><label>Tema da página</label><select id="e-th">'+
+        '<option value="0">Roxo</option><option value="1">Rosa</option><option value="2">Verde</option><option value="3">Dourado</option></select></div>'+
+      '<div class="fld"><label>Figurinhas por página</label><select id="e-gr">'+
+        '<option value="9">9</option><option value="12">12</option><option value="16">16</option></select></div>'+
+      '<div class="fld"><label>Capa do álbum</label>'+
+        '<div class="file-pill"><input type="file" id="e-cv" accept="image/*"></div></div>'+
+      '</div>');
+    app.appendChild(form);
+    $("#e-nm",form).value=draft.name; $("#e-ct",form).value=draft.city;
+    $("#e-tm",form).value=draft.team; $("#e-th",form).value=draft.theme; $("#e-gr",form).value=draft.grid;
+    $("#e-nm",form).addEventListener("input",function(e){draft.name=e.target.value;refreshEd();});
+    $("#e-ct",form).addEventListener("input",function(e){draft.city=e.target.value;refreshEd();});
+    $("#e-tm",form).addEventListener("input",function(e){draft.team=e.target.value;refreshEd();});
+    $("#e-th",form).addEventListener("change",function(e){draft.theme=+e.target.value;refreshEd();});
+    $("#e-gr",form).addEventListener("change",function(e){draft.grid=+e.target.value;refreshEd();});
+    $("#e-cv",form).addEventListener("change",function(e){
+      var f=e.target.files&&e.target.files[0]; if(!f)return;
+      var r=new FileReader(); r.onload=function(){draft.cover=r.result;refreshEd();}; r.readAsDataURL(f);
     });
-  });
 
-  /* ---- Upload: FUNDO DA PÁGINA ---- */
-  $("#u-fundo").addEventListener("change", function(e){
-    var f = e.target.files && e.target.files[0];
-    if (!f) return;
-    fundoFile = f;
-    srcFromFile(f, function(url){
-      if (lastFundo) { try{ URL.revokeObjectURL(lastFundo); }catch(_){} }
-      lastFundo = url;
-      $("#album").style.backgroundImage = "url('" + url + "')";
-      $("#wa-mini").style.backgroundImage = "url('" + url + "')";
-      log("Página adicionada");
-    });
-  });
+    app.appendChild(el('<h2 class="sec"><span class="dot"></span>Prévia da capa</h2>'));
+    var cvBox=el('<div id="ed-cv"></div>'); app.appendChild(cvBox);
 
-  /* ---- Upload: FIGURINHAS (várias) ---- */
-  $("#u-figs").addEventListener("change", function(e){
-    var files = e.target.files;
-    if (!files || !files.length) return;
-    var limite = gridCount();
-    var pend = 0, added = 0;
-    for (var i = 0; i < files.length && i < limite; i++){
-      (function(idx){
-        pend++;
-        srcFromFile(files[idx], function(url){
-          stickerURLs[idx] = url;
-          added++; pend--;
-          paintStickers();
-          if (pend === 0) log(added + " figurinhas adicionadas");
+    var nav=el('<div class="page-nav">'+
+      '<button class="nav-btn" id="epp"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg></button>'+
+      '<span class="pg-name" id="epgn"></span>'+
+      '<button class="nav-btn" id="epn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg></button></div>');
+    app.appendChild(nav);
+    var pgBox=el('<div id="ed-pg"></div>'); app.appendChild(pgBox);
+    app.appendChild(el('<div class="tip">Toque num espaço vazio pra colocar a figurinha. A moldura é fixa: encaixa sempre.</div>'));
+
+    var acts=el('<div class="ed-actions">'+
+      '<button class="btn-add-pg" id="addpg">+ Adicionar página</button>'+
+      '<button class="btn-publish" id="pub">Publicar álbum</button></div>');
+    app.appendChild(acts);
+
+    var edPage=0;
+    function clampFigs(){ // garante estrutura figs[page] = []
+      if(!draft.figs)draft.figs=[]; while(draft.figs.length<draft.pages)draft.figs.push([]); }
+    function refreshEd(){
+      clampFigs();
+      $("#ed-cv").innerHTML=""; $("#ed-cv").appendChild(coverEl(draft,true));
+      $("#ed-pg").innerHTML="";
+      $("#ed-pg").appendChild(pageEl(draft,edPage,{editable:true,onTap:function(idx){
+        var inp=document.createElement("input"); inp.type="file"; inp.accept="image/*";
+        inp.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+        document.body.appendChild(inp);
+        inp.addEventListener("change",function(){
+          var f=inp.files&&inp.files[0];
+          if(f){ var r=new FileReader();
+            r.onload=function(){ clampFigs(); if(!draft.figs[edPage])draft.figs[edPage]=[];
+              draft.figs[edPage][idx]=r.result; refreshEd(); };
+            r.readAsDataURL(f); }
+          if(inp.parentNode)inp.parentNode.removeChild(inp);
         });
-      })(i);
+        inp.click();
+      }}));
+      $("#epgn").textContent="Página "+(edPage+1)+" de "+draft.pages;
+      $("#epp").disabled=edPage<=0; $("#epn").disabled=edPage>=draft.pages-1;
     }
-  });
+    $("#epp",nav).addEventListener("click",function(){if(edPage>0){edPage--;refreshEd();}});
+    $("#epn",nav).addEventListener("click",function(){if(edPage<draft.pages-1){edPage++;refreshEd();}});
+    $("#addpg",acts).addEventListener("click",function(){
+      draft.pages++; draft.figs.push([]); edPage=draft.pages-1; refreshEd();});
+    $("#pub",acts).addEventListener("click",function(){
+      if(!draft.name.trim()){alert("Dá um nome pro álbum.");return;}
+      var db=DB(); draft.slug=slugify(draft.name);
+      draft.rating=("4."+(5+Math.floor(Math.random()*4)))*1; draft.votes=1;
+      db.albums[draft.slug]=JSON.parse(JSON.stringify(draft));
+      saveDB(db); sessionStorage.removeItem("paid");
+      var s=draft.slug; draft=null; viewPage=0; location.hash="#/a/"+s;
+    });
 
-  /* ---- Compartilhar no WhatsApp (sem montagem, sem canvas) ---- */
-  function shareMsg(){
-    var nome   = $("#f-nome").value.trim()   || "Meu MemeÁlbum";
-    var cidade = $("#f-cidade").value.trim();
-    var time   = $("#f-time").value.trim();
-    var previa = $("#f-previa").value.trim() || "Monte seu álbum e desafie a galera!";
-    var linha2 = [cidade, time].filter(Boolean).join(" · ");
-    return nome + (linha2 ? "\n" + linha2 : "") + "\n" + previa + "\n\nmemealbum.app";
+    window.__refreshEd=refreshEd; refreshEd();
   }
 
-  $("#btn-share").addEventListener("click", function(){
-    var texto = shareMsg();
-    var foto  = capaFile || fundoFile;   // foto original que o usuário escolheu (sem montar)
-
-    // 1) iPhone/Safari moderno: folha nativa COM a foto original (sem canvas)
-    if (foto && navigator.canShare){
-      var arq;
-      try { arq = new File([foto], "memealbum.jpg", { type: foto.type || "image/jpeg" }); }
-      catch(_) { arq = foto; }
-      if (navigator.canShare({ files: [arq] })){
-        navigator.share({ files: [arq], title: "MemeÁlbum", text: texto })
-          .then(function(){ log("Compartilhado (com foto)"); })
-          .catch(function(){ log("Compartilhamento cancelado"); });
-        return;
-      }
-    }
-    // 2) Web Share só texto/link (sem foto)
-    if (navigator.share){
-      navigator.share({ title: "MemeÁlbum", text: texto, url: "https://memealbum.app" })
-        .then(function(){ log("Compartilhado (texto)"); })
-        .catch(function(){ log("Compartilhamento cancelado"); });
-      return;
-    }
-    // 3) Fallback universal: abre o WhatsApp com o texto pronto
-    window.open("https://wa.me/?text=" + encodeURIComponent(texto), "_blank");
-    log("Abrindo WhatsApp (texto)");
-  });
-
-  /* ---- Inicialização ---- */
-  refreshTexts();
-  buildGrid();
+  /* ---------------- router ---------------- */
+  function route(){
+    var h=location.hash.replace(/^#\/?/,"");
+    if(h.indexOf("a/")===0){ viewPage=0; return renderAlbum(h.slice(2)); }
+    if(h==="pay") return renderPay();
+    if(h==="new") return renderEditor();
+    return renderHome();
+  }
+  window.addEventListener("hashchange",route);
+  route();
 })();
 </script>
 </body>
