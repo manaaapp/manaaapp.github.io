@@ -350,10 +350,17 @@
     var l=all().filter(function(a){return (a.when||"d")===rw||a.mine;}).sort(function(x,y){return (y.rating||0)-(x.rating||0);});
     if(!l.length){b.appendChild(el('<div class="note">Sem álbuns nesse período.</div>'));return;}
     l.forEach(function(a,i){b.appendChild(rowEl(a,i+1));});}
-  function srch(){var q=slug($("#q").value),b=$("#qr");b.innerHTML="";if(!$("#q").value.trim())return;
-    var h=all().filter(function(a){return slug(a.name).indexOf(q)>=0;});
-    if(!h.length){b.appendChild(el('<div class="note">Nenhum álbum com esse nome. Cria o seu!</div>'));return;}
-    h.forEach(function(a){b.appendChild(rowEl(a));});}
+  function srch(){var raw=$("#q").value.trim(),q=slug(raw),b=$("#qr");b.innerHTML="";if(!raw)return;
+    var alb=all().filter(function(a){return slug(a.name).indexOf(q)>=0;});
+    var ppl=creators().filter(function(c){return slug(c.name).indexOf(q)>=0||slug(c.by).indexOf(q)>=0;});
+    if(!alb.length&&!ppl.length){b.appendChild(el('<div class="note">Nada encontrado. Cria o seu álbum!</div>'));return;}
+    if(ppl.length){b.appendChild(el('<h2 class="sec" style="margin:14px 0 10px">Pessoas</h2>'));
+      ppl.forEach(function(c){var r=el('<div class="row"><div class="av">'+esc((c.name[0]||"?").toUpperCase())+
+        '</div><div class="i"><div class="nm">'+esc(c.name)+' <span style="color:var(--text-3);font-weight:600">@'+esc(c.by)+'</span></div>'+
+        '<div class="by">'+c.albums+' álbuns · '+c.votes+' votos</div></div></div>');
+      r.addEventListener("click",function(){location.hash="#/u/"+c.by;});b.appendChild(r);});}
+    if(alb.length){b.appendChild(el('<h2 class="sec" style="margin:14px 0 10px">Álbuns</h2>'));
+      alb.forEach(function(a){b.appendChild(rowEl(a));});}}
 
   function zoom(src){var z=el('<div class="zoomwrap"><img src="'+src+'"><button class="x">Fechar</button></div>');
     z.addEventListener("click",function(e){if(e.target===z||e.target.className==="x")z.remove();});
@@ -388,13 +395,13 @@
     var msg="🏆 Fiz meu álbum no MemeÁlbum: \""+(a.name||"")+"\"\n\n"+
       "Abre, dá tua nota e monta o teu — quem faz o melhor leva o topo do ranking 👇\n"+link;
     var sc=el('<button class="scta"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.8 4.9-1.3A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.9.8.8-2.8-.2-.3A8 8 0 1112 20zm4.4-6c-.2-.1-1.4-.7-1.6-.8s-.4-.1-.5.1-.6.8-.7 1-.3.2-.5.1a6.5 6.5 0 01-1.9-1.2 7.3 7.3 0 01-1.3-1.7c-.1-.2 0-.4.1-.5l.4-.4.2-.4v-.4c0-.1-.5-1.3-.7-1.8s-.4-.4-.5-.4h-.5a1 1 0 00-.7.3 3 3 0 00-.9 2.2 5.2 5.2 0 001.1 2.7 11.8 11.8 0 004.5 4c.6.3 1.1.4 1.5.5a3.6 3.6 0 001.6.1c.5-.1 1.4-.6 1.6-1.1a2 2 0 00.1-1.1c0-.1-.2-.2-.4-.3z"/></svg>Compartilhar no WhatsApp</button>');
-    sc.addEventListener("click",function(){window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");});
+    sc.addEventListener("click",function(){
+      var cf=a.cover?dataURLtoFile(a.cover,"memealbum-capa.jpg"):null;
+      if(cf&&navigator.canShare&&navigator.canShare({files:[cf]})){
+        navigator.share({files:[cf],text:msg}).catch(function(){
+          window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");});
+      }else window.open("https://wa.me/?text="+encodeURIComponent(msg),"_blank");});
     app.appendChild(sc);
-    if(a.cover&&navigator.canShare){var cf=dataURLtoFile(a.cover,"memealbum-capa.jpg");
-      if(cf&&navigator.canShare({files:[cf]})){
-        var sf=el('<button class="subc">Enviar com a foto da capa</button>');
-        sf.addEventListener("click",function(){navigator.share({files:[cf],text:msg}).catch(function(){});});
-        app.appendChild(sf);}}
     if(mine(s)){var eb=el('<button class="subc">Editar este álbum</button>');
       eb.addEventListener("click",function(){location.hash="#/edit/"+s;});app.appendChild(eb);}
     var mk=el('<button class="subc">'+(member()?"Criar outro álbum":"Quero criar o meu")+'</button>');
@@ -432,8 +439,7 @@
   function me(){if(!myHandle()){return askHandle("#/me");}
     var app=$("#app");app.innerHTML="";app.appendChild(el(back("#/")));
     var h=myHandle();
-    var d=DB(),my=Object.keys(d.albums).map(function(k){return d.albums[k];})
-      .filter(function(a){return (a.by||"")===h;});
+    var d=DB(),my=Object.keys(d.albums).map(function(k){return d.albums[k];});
     var tv=my.reduce(function(s,a){return s+(a.votes||0);},0);
     var p=el('<div class="prof"><div class="bigav">'+esc(h[0].toUpperCase())+'</div>'+
       '<div class="pi"><div class="h">@'+esc(h)+'</div><div class="s">'+my.length+' álbuns · '+tv+' votos recebidos</div></div></div>');
@@ -556,16 +562,25 @@
       draft=null;editingSlug=null;location.hash="#/a/"+ns;});
     rp();}
 
+  function migrate(){var d=DB(),ch=false,h=d.profile.handle||"voce";
+    Object.keys(d.albums).forEach(function(k){var a=d.albums[k];
+      if(!a.by){a.by=h;ch=true;}
+      if(!a.author||a.author==="Você"){a.author=a.by||h;ch=true;}
+      if(a.orient===undefined){a.orient="v";ch=true;}
+      if(a.figOrient===undefined){a.figOrient="v";ch=true;}
+      if(!a.bgs){a.bgs=[];ch=true;}
+      if(!a.pageNames){a.pageNames=[];ch=true;}});
+    if(ch)save(d);}
   function route(){var h=location.hash.replace(/^#\/?/,"");mp();
-    if(h.indexOf("a/")===0)return album(h.slice(2));
-    if(h.indexOf("edit/")===0)return editor(h.slice(5));
-    if(h.indexOf("u/")===0)return user(h.slice(2));
+    if(h.indexOf("a/")===0)return album(decodeURIComponent(h.slice(2)));
+    if(h.indexOf("edit/")===0)return editor(decodeURIComponent(h.slice(5)));
+    if(h.indexOf("u/")===0)return user(decodeURIComponent(h.slice(2)));
     if(h==="me")return me();
     if(h==="people")return people();
     if(h==="pay")return pay();
     if(h==="new")return editor(null);
     return home();}
-  window.addEventListener("hashchange",route);route();
+  migrate();window.addEventListener("hashchange",route);route();
 })();
 </script>
 </body>
