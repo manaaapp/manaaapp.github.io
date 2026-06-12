@@ -72,7 +72,7 @@
         .serif { font-family: 'Playfair Display', Georgia, serif; }
 
         /* Nav */
-        nav {
+        nav { position: relative;
             position: fixed;
             top: 0;
             width: 100%;
@@ -424,6 +424,7 @@
         @media (max-width: 768px) {
             .nav-links, .nav-cta { display: none; }
             .mobile-menu { display: block; }
+            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #fffdf8; padding: 1rem 1.6rem 1.4rem; gap: 1rem; box-shadow: 0 14px 30px rgba(60,45,20,0.12); border-bottom: 1px solid #eee3cc; }
             .hero { padding: 6rem 1.5rem 3rem; min-height: auto; }
             .section { padding: 3.5rem 1.5rem; }
             .features-section { padding: 3.5rem 1.5rem; }
@@ -749,7 +750,7 @@
             .hero-text { max-width: none; margin: 0 auto; }
             .hero h1, .hero p { text-align: center; }
             .hero-buttons { justify-content: center; flex-direction: column; align-items: center; }
-            .hero-media { width: 100%; max-width: 380px; margin: 0 auto; aspect-ratio: 1/1; }
+            .hero-media { width: 100%; max-width: 380px; margin: 0 auto; aspect-ratio: 4/5; }
         }
         .btn-primary { box-shadow: 0 6px 18px rgba(184,145,46,0.28); transition: transform .15s, box-shadow .15s; }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(184,145,46,0.35); }
@@ -776,7 +777,7 @@
             <li><a href="/faq.html">FAQ</a></li>
         </ul>
         <a href="/onboarding.html?plano=trial" class="nav-cta">Começar</a>
-        <div class="mobile-menu">&#9776;</div>
+        <div class="mobile-menu" role="button" aria-label="Abrir menu" aria-expanded="false" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'));">&#9776;</div>
     </nav>
 
     <section class="hero" id="home">
@@ -790,12 +791,8 @@
             <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele por WhatsApp · Conformidade LGPD</p>
         </div>
         <div class="hero-media" id="hero-media">
-            <!-- Placeholder pra imagem. Quando tiver a foto, trocar pelo <img src="/assets/senhora-hero.jpg" alt="Senhora sorrindo usando WhatsApp"> -->
-            <div class="hero-media-placeholder">
-                <div style="width:88px;height:88px;border-radius:50%;background:#B8912E;display:flex;align-items:center;justify-content:center;margin-bottom:14px;box-shadow:0 12px 32px rgba(184,145,46,0.35);"><svg width="42" height="42" viewBox="0 0 24 24" fill="white"><polygon points="7,4 21,12 7,20"/></svg></div>
-                <div style="font-weight:500;color:#5C4628;font-size:14px">Espaço para vídeo<br>de senhora usando o Manaã</div>
-                <div style="font-size:11.5px;margin-top:6px;color:#8c7647">Substituir por <code>&lt;video&gt;</code> autoplay loop muted</div>
-            </div>
+            <!-- Vídeo da senhora entra aqui quando estiver pronto (autoplay loop muted) -->
+            <img src="/assets/hero-devocional.png" alt="Devocional diário do Manaã chegando no WhatsApp" width="600" height="750">
         </div>
     </section>
 
