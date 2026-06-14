@@ -2,95 +2,52 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Postar no story — Manaã</title>
 <style>
-  :root{--bg:#1a1410;--gold:#d9b26a;--gold2:#c79a4e;--ink:#f3ece0;--muted:#a89b86}
-  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html,body{margin:0;background:#1a1410;color:#f3ece0;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
-  body{min-height:100vh;display:flex;flex-direction:column;align-items:center;
-    padding:24px 18px 40px;gap:16px}
-  .brand{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#d9b26a;font-weight:600;margin-top:6px}
-  h1{font-size:20px;margin:6px 0 2px;font-weight:700;text-align:center}
-  .sub{font-size:14px;color:#a89b86;margin:0;text-align:center;line-height:1.45}
-  .preview{position:relative;width:min(70vw,250px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;
-    background:#000;box-shadow:0 14px 40px rgba(0,0,0,.5);border:1px solid rgba(217,178,106,.18);margin-top:4px}
-  .preview canvas,.preview img.fb{position:absolute;inset:0;width:100%;height:100%;display:block}
-  .preview img.fb{object-fit:cover;filter:none}
-  .actions{width:100%;max-width:420px;display:flex;flex-direction:column;gap:12px;margin-top:6px}
-  button,a.btn{font:inherit;font-size:17px;font-weight:700;border:0;border-radius:16px;
-    padding:17px;text-align:center;text-decoration:none;display:block;color:inherit}
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  body{background:#1a1410;color:#f3ece0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    text-align:center;padding:22px 16px 40px}
+  .brand{font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#d9b26a;font-weight:600}
+  h1{font-size:20px;margin:6px 0 4px}
+  .sub{font-size:14px;color:#a89b86;margin-bottom:16px}
+  img.art{width:min(62vw,220px);border-radius:16px;border:1px solid rgba(217,178,106,.2);
+    box-shadow:0 12px 32px rgba(0,0,0,.5);display:block;margin:0 auto 18px}
+  .btn{display:block;width:100%;max-width:400px;margin:10px auto;font-size:17px;font-weight:700;
+    border:0;border-radius:15px;padding:16px;text-decoration:none}
   .primary{background:linear-gradient(135deg,#d9b26a,#c79a4e);color:#2a1f12}
-  .primary:active{transform:translateY(1px)}
   .ghost{background:transparent;color:#f3ece0;border:1px solid rgba(243,236,224,.22)}
-  .hint{font-size:13px;color:#a89b86;text-align:center;line-height:1.5;max-width:340px;margin:4px auto 0}
+  .hint{font-size:13px;color:#a89b86;margin-top:12px;line-height:1.5;max-width:340px;margin-left:auto;margin-right:auto}
   .hint b{color:#d9b26a}
-  .foot{margin-top:18px;font-size:12px;color:#6f6453;text-align:center}
 </style>
 </head>
 <body>
   <div class="brand">Manaã</div>
   <h1>Seu devocional de hoje</h1>
-  <p class="sub">Pronto no formato de story.<br>Toque pra salvar e abrir o Instagram.</p>
-
-  <div class="preview">
-    <img class="fb" id="fallback" src="img/devo-luigi.jpg" alt="Devocional Manaã">
-    <canvas id="cv" width="1080" height="1920" style="display:none"></canvas>
-  </div>
-
-  <div class="actions">
-    <button class="primary" id="share">📲 Salvar e postar no story</button>
-    <a class="btn ghost" id="dl" href="img/devo-luigi.jpg" download="devocional-manaa.jpg">⬇️ Só baixar a imagem</a>
-  </div>
-
-  <p class="hint" id="hint">Vai abrir o menu de compartilhar — escolha <b>Instagram → Stories</b>. A imagem já vai carregada. 🙏</p>
-  <div class="foot">feito com carinho pelo Manaã</div>
-
+  <div class="sub">Pronto pro story.</div>
+  <img class="art" src="img/story-9x16.jpg?v=3" alt="Devocional">
+  <button class="primary btn" id="share">📲 Salvar e postar no story</button>
+  <a class="ghost btn" id="dl" href="img/story-9x16.jpg?v=3" download="devocional-manaa.jpg">⬇️ Só baixar a imagem</a>
+  <p class="hint" id="hint">Toque acima → escolha <b>Instagram → Stories</b>. 🙏</p>
 <script>
-const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
-const W=1080,H=1920;let storyBlob=null,ready=false;
-function rr(c,x,y,w,h,r){c.beginPath();c.moveTo(x+r,y);c.arcTo(x+w,y,x+w,y+h,r);
-  c.arcTo(x+w,y+h,x,y+h,r);c.arcTo(x,y+h,x,y,r);c.arcTo(x,y,x+w,y,r);c.closePath();}
-function build(img){
-  try{
-    const iw=img.naturalWidth||img.width,ih=img.naturalHeight||img.height;
-    const s=Math.max(W/iw,H/ih)*1.15,bw=iw*s,bh=ih*s;
-    ctx.save();ctx.filter='blur(34px) brightness(.55)';
-    ctx.drawImage(img,(W-bw)/2,(H-bh)/2,bw,bh);ctx.restore();
-    const g=ctx.createLinearGradient(0,0,0,H);
-    g.addColorStop(0,'rgba(20,14,9,.35)');g.addColorStop(.5,'rgba(20,14,9,.05)');g.addColorStop(1,'rgba(20,14,9,.5)');
-    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-    const cw=940,ch=cw*(ih/iw),cx=(W-cw)/2,cy=(H-ch)/2;
-    ctx.save();ctx.shadowColor='rgba(0,0,0,.45)';ctx.shadowBlur=48;ctx.shadowOffsetY=18;
-    rr(ctx,cx,cy,cw,ch,40);ctx.fillStyle='#000';ctx.fill();ctx.restore();
-    ctx.save();rr(ctx,cx,cy,cw,ch,40);ctx.clip();ctx.drawImage(img,cx,cy,cw,ch);ctx.restore();
-    cv.style.display='block';document.getElementById('fallback').style.display='none';
-    cv.toBlob(b=>{storyBlob=b;ready=true;},'image/jpeg',0.92);
-  }catch(e){ ready=false; } // se canvas falhar, mantém o <img> visível
-}
-const src=new Image();
-src.onload=()=>build(src);
-src.onerror=()=>{/* mantém fallback img */};
-src.src='img/devo-luigi.jpg';
-
-document.getElementById('share').addEventListener('click',async()=>{
-  const hint=document.getElementById('hint');
-  try{
-    let file=null;
-    if(ready&&storyBlob) file=new File([storyBlob],'devocional-manaa.jpg',{type:'image/jpeg'});
-    else{ const r=await fetch('img/devo-luigi.jpg');const b=await r.blob();
-          file=new File([b],'devocional-manaa.jpg',{type:'image/jpeg'}); }
-    if(navigator.canShare&&navigator.canShare({files:[file]})){
-      await navigator.share({files:[file],title:'Devocional Manaã'});
-    }else if(navigator.share){
-      await navigator.share({title:'Devocional Manaã',text:'Meu devocional de hoje 🙏',url:location.href});
-    }else{
-      document.getElementById('dl').click();
-      hint.innerHTML='Imagem baixada! 📥 Abra o <b>Instagram → Story</b> e escolha ela na galeria.';
+  document.getElementById('share').addEventListener('click', async function(){
+    var hint=document.getElementById('hint');
+    try{
+      var r=await fetch('img/story-9x16.jpg?v=3');
+      var b=await r.blob();
+      var f=new File([b],'devocional-manaa.jpg',{type:'image/jpeg'});
+      if(navigator.canShare && navigator.canShare({files:[f]})){
+        await navigator.share({files:[f]});
+      }else if(navigator.share){
+        await navigator.share({title:'Devocional Manaã',url:location.href});
+      }else{
+        document.getElementById('dl').click();
+        hint.innerHTML='Imagem baixada! Abra o <b>Instagram → Story</b> e escolha ela na galeria.';
+      }
+    }catch(e){
+      hint.innerHTML='Se não abriu, toque em <b>Só baixar a imagem</b> e poste pela galeria do Instagram.';
     }
-  }catch(e){ hint.innerHTML='Se não abriu, toque em <b>Só baixar a imagem</b> e poste pela galeria do Instagram.'; }
-});
+  });
 </script>
 </body>
 </html>
