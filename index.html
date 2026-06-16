@@ -429,6 +429,39 @@
             .quote-section { padding: 3rem 1.5rem; }
             .hero-buttons { flex-direction: column; align-items: center; }
             .btn { width: 100%; max-width: 320px; text-align: center; }
+
+            /* Planos viram carrossel "hero" no mobile */
+            #planos .pricing-grid {
+                display: flex;
+                grid-template-columns: none;
+                gap: 1rem;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                scroll-padding: 0 calc(50% - 145px);
+                padding: 1.6rem calc(50% - 145px) 1.2rem;
+                margin: 0 -1.5rem;
+                scrollbar-width: none;
+            }
+            #planos .pricing-grid::-webkit-scrollbar { display: none; }
+            #planos .pricing-grid .plan {
+                flex: 0 0 290px;
+                scroll-snap-align: center;
+                transform: scale(0.93);
+                opacity: 0.82;
+                transition: transform 0.25s ease, opacity 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            }
+            #planos .pricing-grid .plan.is-active {
+                transform: scale(1);
+                opacity: 1;
+                border-color: var(--gold);
+                box-shadow: 0 14px 34px rgba(184,145,46,0.24);
+            }
+            #planos .pricing-grid .plan.is-active .price { color: var(--gold); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            #planos .pricing-grid .plan { transition: border-color 0.2s ease; }
         }
 
         html { scroll-behavior: smooth; }
@@ -1091,10 +1124,19 @@ async function run(){
     if(!pb){setTimeout(res,5000);return;}
     pb.style.cursor='pointer';
     const audio=new Audio('./oracao.mp3');
+    const ICON_PLAY='<svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg>';
+    const ICON_PAUSE='<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
+    let started=false;
+    audio.onended=()=>{pb.innerHTML=ICON_PLAY;started=false;setTimeout(res,1200);};
     pb.onclick=()=>{
-      audio.currentTime=0;
-      audio.play().catch(()=>{});
-      audio.onended=()=>setTimeout(res,1200);
+      if(audio.paused){
+        if(!started){audio.currentTime=0;started=true;}
+        audio.play().catch(()=>{});
+        pb.innerHTML=ICON_PAUSE;
+      }else{
+        audio.pause();
+        pb.innerHTML=ICON_PLAY;
+      }
     };
   });
   run();
@@ -1126,10 +1168,10 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 <div class="subtitle">7 dias grátis pra experimentar</div>
                 <div class="price">R$0 <span>/mês</span></div>
                 <ul>
-                    <li>Reflexão bíblica diária</li>
-                    <li>Imagem personalizada</li>
-                    <li>Escolha de tradição e horário</li>
-                    <li>Cancele quando quiser</li>
+                    <li>Uma reflexão bíblica todo dia, no seu horário</li>
+                    <li>Imagem do versículo feita pra você</li>
+                    <li>Sua tradição: católica ou evangélica</li>
+                    <li>Sem fidelidade, cancele quando quiser</li>
                 </ul>
                 <a href="/onboarding.html?plano=trial" class="btn btn-secondary" style="width:100%;text-align:center;">Começar</a>
             </div>
@@ -1139,11 +1181,11 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 <div class="subtitle">Assinatura — cancele quando quiser</div>
                 <div class="price">R$14,99 <span>/mês</span></div>
                 <ul>
-                    <li>Tudo do plano gratuito</li>
-                    <li>Conversar sobre a Palavra</li>
-                    <li>Reflexões personalizadas pro seu momento</li>
-                    <li>Oração em áudio</li>
-                    <li>Companheiro espiritual que cresce com você</li>
+                    <li>Seu devocional diário com imagem personalizada</li>
+                    <li>Converse sobre o versículo e tire dúvidas</li>
+                    <li>Reflexões pro seu momento: gratidão, luto, recomeço</li>
+                    <li>Sua oração do dia também em áudio</li>
+                    <li>Um companheiro de fé que lembra da sua história</li>
                 </ul>
                 <a href="/onboarding.html?plano=mensal" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
             </div>
@@ -1153,15 +1195,46 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 <div class="price" style="white-space:nowrap;">R$159,99<span>/ano</span></div>
                 <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">equivale a R$ 13,33/mês</p>
                 <ul>
-                    <li>Tudo do plano mensal</li>
-                    <li>Pagamento único, sem renovação</li>
-                    <li>Prioridade em novos recursos</li>
-                    <li>Garantia de 7 dias, estorno integral</li>
+                    <li>Um ano de companhia diária, sem interrupção</li>
+                    <li>Pagamento único, esquece a cobrança mensal</li>
+                    <li>Sai mais barato: equivale a 2 meses de presente</li>
+                    <li>Primeiro a receber cada novidade do app</li>
+                    <li>7 dias de garantia, estorno integral</li>
                 </ul>
                 <a href="/onboarding.html?plano=anual" class="btn btn-secondary" style="width:100%;text-align:center;">Assinar anual</a>
             </div>
         </div>
     </section>
+    <script>
+    (function(){
+        var grid=document.querySelector('#planos .pricing-grid');
+        if(!grid) return;
+        var cards=Array.prototype.slice.call(grid.querySelectorAll('.plan'));
+        var isMobile=function(){return window.matchMedia('(max-width:768px)').matches;};
+        function markActive(){
+            if(!isMobile()){cards.forEach(function(c){c.classList.remove('is-active');});return;}
+            var gr=grid.getBoundingClientRect();
+            var center=gr.left+gr.width/2, best=null, bestDist=Infinity;
+            cards.forEach(function(c){
+                var r=c.getBoundingClientRect();
+                var d=Math.abs((r.left+r.width/2)-center);
+                if(d<bestDist){bestDist=d;best=c;}
+            });
+            cards.forEach(function(c){c.classList.toggle('is-active',c===best);});
+        }
+        var raf;
+        grid.addEventListener('scroll',function(){if(raf)cancelAnimationFrame(raf);raf=requestAnimationFrame(markActive);},{passive:true});
+        window.addEventListener('resize',markActive);
+        function init(){
+            if(isMobile()){
+                var mensal=cards[1];
+                if(mensal){grid.scrollLeft=mensal.offsetLeft-(grid.clientWidth-mensal.clientWidth)/2;}
+            }
+            markActive();
+        }
+        if(document.readyState!=='loading'){init();}else{document.addEventListener('DOMContentLoaded',init);}
+    })();
+    </script>
 
     
     <section class="section" id="depoimentos" style="background: linear-gradient(180deg, transparent 0%, #fbf7ee 100%);">
