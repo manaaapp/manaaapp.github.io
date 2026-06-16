@@ -6,13 +6,15 @@
     <meta name="facebook-domain-verification" content="86a9s3shbc6jc49a93pnhajtwhorav" />
     <title>Manaã — Seu companheiro de fé no WhatsApp</title>
     <meta name="description" content="Manaã é seu companheiro de fé no WhatsApp: reflexão bíblica diária personalizada, oração por voz, e um agente que lembra de você — sua família, suas lutas, sua fé. Católico ou evangélico.">
-    <meta name="theme-color" content="#B8912E">
-    <link rel="canonical" href="https://manaaapp.github.io/">
+    <meta name="theme-color" content="#b48e43">
+    <link rel="icon" type="image/png" href="/assets/manaa-logo-round.png">
+    <link rel="apple-touch-icon" href="/assets/manaa-logo-round.png">
+    <link rel="canonical" href="https://manaaapp.com/">
     <meta property="og:type" content="website">
     <meta property="og:title" content="Manaã — Seu companheiro de fé no WhatsApp">
     <meta property="og:description" content="Reflexão diária personalizada, oração por voz e conversa sobre a Palavra — tudo no WhatsApp. 7 dias grátis, sem cartão.">
     <meta property="og:image" content="https://manaaapp.github.io/og-cover.png">
-    <meta property="og:url" content="https://manaaapp.github.io/">
+    <meta property="og:url" content="https://manaaapp.com/">
     <meta property="og:locale" content="pt_BR">
     <meta name="twitter:card" content="summary_large_image">
     <script type="application/ld+json">
@@ -38,14 +40,12 @@
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
-    <link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --gold: #B8912E;
+            --gold: #b48e43;
             --gold-soft: #D4B86A;
             --gold-bg: #F9F3E8;
             --bg: #FDFBF8;
@@ -72,7 +72,7 @@
         .serif { font-family: 'Playfair Display', Georgia, serif; }
 
         /* Nav */
-        nav { position: relative;
+        nav {
             position: fixed;
             top: 0;
             width: 100%;
@@ -87,15 +87,14 @@
         }
 
         .logo {
-            font-family: 'Poppins', 'Inter', sans-serif;
-            font-size: 1.35rem;
-            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 700;
             color: var(--gold);
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 0.5rem;
         }
-
         .logo img {
             height: 38px;
             width: 38px;
@@ -130,7 +129,7 @@
             transition: background 0.2s;
         }
 
-        .nav-cta:hover { background: #A07D2E; }
+        .nav-cta:hover { background: #9a7836; }
 
         /* Hero */
         .hero {
@@ -184,7 +183,7 @@
             color: var(--white);
         }
 
-        .btn-primary:hover { background: #A07D2E; }
+        .btn-primary:hover { background: #9a7836; }
 
         .btn-secondary {
             background: transparent;
@@ -424,7 +423,6 @@
         @media (max-width: 768px) {
             .nav-links, .nav-cta { display: none; }
             .mobile-menu { display: block; }
-            .nav-links.open { display: flex; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: #fffdf8; padding: 1rem 1.6rem 1.4rem; gap: 1rem; box-shadow: 0 14px 30px rgba(60,45,20,0.12); border-bottom: 1px solid #eee3cc; }
             .hero { padding: 6rem 1.5rem 3rem; min-height: auto; }
             .section { padding: 3.5rem 1.5rem; }
             .features-section { padding: 3.5rem 1.5rem; }
@@ -447,13 +445,16 @@
         }
 
         .wa-header {
-            background: #075E54;
-            color: white;
-            padding: 0.8rem 1rem;
+            background: #008069;
+            color: #fff;
+            padding: 10px 12px;
             display: flex;
             align-items: center;
-            gap: 0.8rem;
+            gap: 9px;
         }
+        .wa-back { font-size: 20px; line-height: 1; opacity: .95; margin-right: -3px; }
+        .wa-actions { margin-left: auto; display: flex; align-items: center; gap: 20px; }
+        .wa-actions svg { width: 19px; height: 19px; fill: #fff; opacity: .92; display: block; }
 
         .wa-avatar {
             width: 36px;
@@ -466,45 +467,57 @@
             font-weight: 700;
             font-size: 0.85rem;
             color: white;
+            overflow: hidden;
+            flex-shrink: 0;
         }
+        .wa-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-        .wa-name { font-weight: 600; font-size: 0.95rem; }
-        .wa-status { font-size: 0.72rem; opacity: 0.8; }
-        .wa-verified { font-size: 0.75rem; margin-left: 0.3rem; display: inline-flex; align-items: center; justify-content: center; width: 16px; height: 16px; background: #25D366; color: white; border-radius: 50%; vertical-align: middle; line-height: 1; }
+        .wa-name { font-weight: 600; font-size: 15px; line-height: 1.2; display: flex; align-items: center; }
+        .wa-status { font-size: 12px; opacity: 0.85; line-height: 1.3; }
+        .wa-verified { margin-left: 4px; display: inline-flex; align-items: center; }
+        .wa-verified svg { width: 16px; height: 16px; display: block; }
 
         .wa-chat {
-            background: #ECE5DD;
-            padding: 1rem;
+            background-color: #EFEAE2;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='44' height='44'%3E%3Cg fill='%23D8CFC2' fill-opacity='0.4'%3E%3Ccircle cx='9' cy='9' r='1.3'/%3E%3Ccircle cx='31' cy='25' r='1.3'/%3E%3C/g%3E%3C/svg%3E");
+            padding: 14px 9px 13px;
             min-height: 420px;
             display: flex;
             flex-direction: column;
-            gap: 0.6rem;
+            gap: 8px;
         }
 
         .wa-date {
-            text-align: center;
-            font-size: 0.7rem;
-            color: #8696A0;
-            background: rgba(255,255,255,0.7);
-            padding: 0.2rem 0.8rem;
-            border-radius: 6px;
             align-self: center;
-            margin-bottom: 0.3rem;
+            font-size: 12.5px;
+            color: #54656F;
+            background: #fff;
+            padding: 5px 12px;
+            border-radius: 8px;
+            box-shadow: 0 1px 0.5px rgba(11,20,26,0.13);
+            margin-bottom: 4px;
         }
 
         .wa-msg {
-            max-width: 85%;
-            padding: 0.6rem 0.8rem;
-            border-radius: 8px;
-            line-height: 1.5;
+            max-width: 80%;
+            padding: 6px 9px 8px;
+            border-radius: 7.5px;
+            line-height: 1.33;
             position: relative;
-            color: #111;
+            color: #111B21;
+            font-size: 14.2px;
+            box-shadow: 0 1px 0.5px rgba(11,20,26,0.13);
         }
 
         .wa-msg.received {
-            background: white;
+            background: #fff;
             align-self: flex-start;
             border-top-left-radius: 0;
+        }
+        .wa-msg.received::before {
+            content: ""; position: absolute; top: 0; left: -8px;
+            width: 8px; height: 13px; background: #fff;
+            clip-path: polygon(100% 0, 0 0, 100% 100%);
         }
 
         .wa-msg.sent {
@@ -512,68 +525,45 @@
             align-self: flex-end;
             border-top-right-radius: 0;
         }
+        .wa-msg.sent::before {
+            content: ""; position: absolute; top: 0; right: -8px;
+            width: 8px; height: 13px; background: #D9FDD3;
+            clip-path: polygon(0 0, 100% 0, 0 100%);
+        }
 
         .wa-msg .time {
-            font-size: 0.65rem;
-            color: #8696A0;
-            text-align: right;
-            margin-top: 0.2rem;
+            font-size: 11px;
+            color: #667781;
+            margin-top: 2px;
+            display: flex; align-items: center; justify-content: flex-end; gap: 3px;
         }
+        .wa-msg.sent .time .tick { color: #53BDEB; font-size: 14px; letter-spacing: -3px; margin-left: 1px; }
 
         .wa-msg .wa-img {
             width: 100%;
-            height: 180px;
-            background: linear-gradient(135deg, #2C1810 0%, #4A3228 40%, #B8912E 100%);
             border-radius: 6px;
-            margin-bottom: 0.5rem;
+            margin-bottom: 6px;
+            overflow: hidden;
+            display: block;
+        }
+        .wa-msg .wa-img img { width: 100%; display: block; }
+
+        .wa-btns {
+            margin: 6px -9px -8px;
+        }
+        .wa-btn {
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: rgba(255,255,255,0.95);
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .wa-img .verse {
-            font-family: 'Playfair Display', serif;
-            font-style: italic;
-            font-size: 0.85rem;
-            line-height: 1.5;
-            margin-bottom: 0.5rem;
-        }
-
-        .wa-img .ref {
-            font-size: 0.7rem;
-            opacity: 0.8;
-        }
-
-        .wa-img .brand-tag {
-            font-size: 0.6rem;
-            opacity: 0.5;
-            margin-top: auto;
-            padding-top: 0.5rem;
-        }
-
-        .wa-btn-row {
-            display: flex;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            margin: 0.3rem -0.8rem -0.6rem;
-        }
-
-        .wa-btn-row a {
-            flex: 1;
-            text-align: center;
-            padding: 0.6rem;
-            color: #34B7F1;
+            gap: 7px;
+            padding: 11px 8px;
+            color: #00A5F4;
             text-decoration: none;
-            font-size: 0.82rem;
+            font-size: 14px;
             font-weight: 500;
+            border-top: 1px solid #E9EDEF;
         }
-
-        .wa-btn-row a + a {
-            border-left: 1px solid rgba(0,0,0,0.08);
-        }
+        .wa-btn svg { width: 17px; height: 17px; fill: #00A5F4; display: block; }
 
         .wa-mockup-section {
             padding: 5rem 2rem;
@@ -687,7 +677,7 @@
             margin-top: 0.6rem;
             transition: background 0.2s;
         }
-        .modal-submit:hover { background: #A07D2E; }
+        .modal-submit:hover { background: #9a7836; }
         .modal-submit:disabled {
             background: var(--text-muted);
             cursor: not-allowed;
@@ -727,13 +717,16 @@
         .hero-buttons { justify-content: flex-start; }
         .hero-media {
             position: relative;
-            border-radius: 24px;
-            overflow: hidden;
-            background: linear-gradient(135deg, #efe3c5 0%, #f7eed3 100%);
-            aspect-ratio: 4/5;
-            box-shadow: 0 24px 60px rgba(70, 50, 20, 0.12), 0 4px 16px rgba(70, 50, 20, 0.06);
+            max-width: 360px;
+            margin: 0 auto;
         }
-        .hero-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .hero-media > img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 24px;
+            box-shadow: 0 24px 60px rgba(70, 50, 20, 0.18), 0 4px 16px rgba(70, 50, 20, 0.08);
+        }
         .hero-media .hero-media-placeholder {
             position: absolute; inset: 0;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -750,7 +743,7 @@
             .hero-text { max-width: none; margin: 0 auto; }
             .hero h1, .hero p { text-align: center; }
             .hero-buttons { justify-content: center; flex-direction: column; align-items: center; }
-            .hero-media { width: 100%; max-width: 380px; margin: 0 auto; aspect-ratio: 4/5; }
+            .hero-media { width: 100%; max-width: 320px; margin: 0 auto; }
         }
         .btn-primary { box-shadow: 0 6px 18px rgba(184,145,46,0.28); transition: transform .15s, box-shadow .15s; }
         .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(184,145,46,0.35); }
@@ -768,7 +761,7 @@
 </head>
 <body>
     <nav>
-        <div class="logo"><img src="/assets/logo-manaa-256.png" alt="Logo Manaã">Manaã</div>
+        <div class="logo"><img src="/assets/manaa-logo-round.png" alt="Logo Manaã">Manaã</div>
         <ul class="nav-links">
             <li><a href="#sobre">Sobre</a></li>
             <li><a href="#como-funciona">Como funciona</a></li>
@@ -777,7 +770,7 @@
             <li><a href="/faq.html">FAQ</a></li>
         </ul>
         <a href="/onboarding.html?plano=trial" class="nav-cta">Começar</a>
-        <div class="mobile-menu" role="button" aria-label="Abrir menu" aria-expanded="false" onclick="var n=document.querySelector('.nav-links');n.classList.toggle('open');this.setAttribute('aria-expanded',n.classList.contains('open'));">&#9776;</div>
+        <div class="mobile-menu">&#9776;</div>
     </nav>
 
     <section class="hero" id="home">
@@ -791,8 +784,7 @@
             <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele por WhatsApp · Conformidade LGPD</p>
         </div>
         <div class="hero-media" id="hero-media">
-            <!-- Vídeo da senhora entra aqui quando estiver pronto (autoplay loop muted) -->
-            <img src="/assets/hero-devocional.png" alt="Devocional diário do Manaã chegando no WhatsApp" width="600" height="750">
+            <img src="/assets/devocional-exemplo.jpg" alt="Exemplo de devocional diário do Manaã com versículo">
         </div>
     </section>
 
@@ -872,31 +864,33 @@
             </div>
             <div class="wa-mockup">
                 <div class="wa-header">
-                    <div class="wa-avatar">M</div>
+                    <span class="wa-back">&#8249;</span>
+                    <div class="wa-avatar"><img src="/assets/manaa-logo-round.png" alt="Manaã"></div>
                     <div>
-                        <div class="wa-name">Manaã <span class="wa-verified">&#10003;</span></div>
+                        <div class="wa-name">Manaã <span class="wa-verified"><svg viewBox="0 0 22 22"><path fill="#1d9bf0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></span></div>
                         <div class="wa-status">online</div>
+                    </div>
+                    <div class="wa-actions">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15.05 15.05 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .2-1C8.7 6.5 8.5 5.2 8.5 4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1A17 17 0 0 0 20 21a1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
                     </div>
                 </div>
                 <div class="wa-chat">
                     <div class="wa-date">Hoje</div>
                     <div class="wa-msg received">
-                        <div class="wa-img">
-                            <div class="verse">"O Senhor é o meu pastor; nada me faltará."</div>
-                            <div class="ref">Salmos 23:1</div>
-                            <div class="brand-tag">Manaã</div>
-                        </div>
-                        <strong>Bom dia, Maria!</strong><br><br>
-                        Hoje o Salmo 23 nos lembra que não estamos sozinhos. Em meio à correria do dia, reserve um momento para confiar: Ele cuida de você. Quando a ansiedade bater, respire e repita: nada me faltará.
-                        <div class="wa-btn-row">
-                            <a href="#">Amém</a>
-                            <a href="#">Conversar sobre a Palavra</a>
-                        </div>
+                        <div class="wa-img"><img src="/assets/devocional-exemplo.jpg" alt="Devocional do dia"></div>
+                        Olá <strong>Maria</strong>, seu devocional assinado chegou:<br><br>
+                        Que esta Palavra ilumine seu dia. Reserve um momento para confiar — Ele cuida de você.<br><br>
+                        Amém
                         <div class="time">07:00</div>
+                        <div class="wa-btns">
+                            <a href="#" class="wa-btn"><svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>Conversar sobre a Palavra</a>
+                        </div>
                     </div>
                     <div class="wa-msg sent">
                         Amém!
-                        <div class="time">07:02</div>
+                        <div class="time">07:02 <span class="tick">&#10003;&#10003;</span></div>
                     </div>
                 </div>
             </div>
@@ -907,17 +901,23 @@
         <div class="wa-mockup-grid">
             <div class="wa-mockup">
                 <div class="wa-header">
-                    <div class="wa-avatar">M</div>
+                    <span class="wa-back">&#8249;</span>
+                    <div class="wa-avatar"><img src="/assets/manaa-logo-round.png" alt="Manaã"></div>
                     <div>
-                        <div class="wa-name">Manaã <span class="wa-verified">&#10003;</span></div>
+                        <div class="wa-name">Manaã <span class="wa-verified"><svg viewBox="0 0 22 22"><path fill="#1d9bf0" d="M20.396 11c-.018-.646-.215-1.275-.57-1.816-.354-.54-.852-.972-1.438-1.246.223-.607.27-1.264.14-1.897-.131-.634-.437-1.218-.882-1.687-.47-.445-1.053-.75-1.687-.882-.633-.13-1.29-.083-1.897.14-.273-.587-.704-1.086-1.245-1.44S11.647 1.62 11 1.604c-.646.017-1.273.213-1.813.568s-.969.854-1.24 1.44c-.608-.223-1.267-.272-1.902-.14-.635.13-1.22.436-1.69.882-.445.47-.749 1.055-.878 1.688-.13.633-.08 1.29.144 1.896-.587.274-1.087.705-1.443 1.245-.356.54-.555 1.17-.574 1.817.02.647.218 1.276.574 1.817.356.54.856.972 1.443 1.245-.224.606-.274 1.263-.144 1.896.13.634.433 1.218.877 1.688.47.443 1.054.747 1.687.878.633.132 1.29.084 1.897-.136.274.586.705 1.084 1.246 1.439.54.354 1.17.551 1.816.569.647-.016 1.276-.213 1.817-.567s.972-.854 1.245-1.44c.604.239 1.266.296 1.903.164.636-.132 1.22-.447 1.68-.907.46-.46.776-1.044.908-1.681s.075-1.299-.165-1.903c.586-.274 1.084-.705 1.439-1.246.354-.54.551-1.17.569-1.816zM9.662 14.85l-3.429-3.428 1.293-1.302 2.072 2.072 4.4-4.794 1.347 1.246z"/></svg></span></div>
                         <div class="wa-status">digitando...</div>
+                    </div>
+                    <div class="wa-actions">
+                        <svg viewBox="0 0 24 24"><path d="M17 10.5V7a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-3.5l4 4v-11l-4 4z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M20 15.5c-1.2 0-2.5-.2-3.6-.6a1 1 0 0 0-1 .2l-2.2 2.2a15.05 15.05 0 0 1-6.6-6.6l2.2-2.2a1 1 0 0 0 .2-1C8.7 6.5 8.5 5.2 8.5 4a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1A17 17 0 0 0 20 21a1 1 0 0 0 1-1v-3.5a1 1 0 0 0-1-1z"/></svg>
+                        <svg viewBox="0 0 24 24"><path d="M12 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 2a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm0 6a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></svg>
                     </div>
                 </div>
                 <div class="wa-chat">
                     <div class="wa-date">Hoje</div>
                     <div class="wa-msg sent">
                         Estou passando por um momento difícil no trabalho, muita ansiedade. Tem alguma palavra pra mim?
-                        <div class="time">14:23</div>
+                        <div class="time">14:23 <span class="tick">&#10003;&#10003;</span></div>
                     </div>
                     <div class="wa-msg received">
                         Entendo, Maria. A ansiedade é algo que muitos enfrentam, e a Palavra nos acolhe nesses momentos.<br><br>
@@ -927,7 +927,7 @@
                     </div>
                     <div class="wa-msg sent">
                         Obrigada, precisava muito ler isso hoje.
-                        <div class="time">14:26</div>
+                        <div class="time">14:26 <span class="tick">&#10003;&#10003;</span></div>
                     </div>
                     <div class="wa-msg received">
                         Estou aqui sempre que precisar. Amanhã sua reflexão vai trazer mais sobre paz e confiança em Deus. Tenha um dia abençoado.
@@ -951,9 +951,10 @@
           <div id="wa-demo-root" style="font-family:-apple-system,'Segoe UI','Helvetica Neue',sans-serif;">
 
 <style>
-#wa-demo-root .wd-phone{width:300px;border-radius:31px;overflow:hidden;box-shadow:0 0 0 9px #1a1a1a,0 28px 72px rgba(0,0,0,0.25),0 4px 20px rgba(0,0,0,0.12);background:#075E54;display:flex;flex-direction:column}
-#wa-demo-root .wd-hdr{background:#075E54;padding:9px 12px;display:flex;align-items:center;gap:9px;flex-shrink:0}
-#wa-demo-root .wd-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#B8912E 0%,#D4B86A 100%);display:flex;align-items:center;justify-content:center;font-size:16px}
+#wa-demo-root .wd-phone{width:300px;border-radius:31px;overflow:hidden;box-shadow:0 0 0 9px #1a1a1a,0 28px 72px rgba(0,0,0,0.25),0 4px 20px rgba(0,0,0,0.12);background:#008069;display:flex;flex-direction:column}
+#wa-demo-root .wd-hdr{background:#008069;padding:9px 12px;display:flex;align-items:center;gap:9px;flex-shrink:0}
+#wa-demo-root .wd-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;background:linear-gradient(135deg,#b48e43 0%,#D4B86A 100%);display:flex;align-items:center;justify-content:center;font-size:16px;overflow:hidden}
+#wa-demo-root .wd-av img{width:100%;height:100%;object-fit:cover;display:block}
 #wa-demo-root .wd-info{flex:1;min-width:0}
 #wa-demo-root .wd-nrow{display:flex;align-items:center;gap:4px}
 #wa-demo-root .wd-name{color:#fff;font-size:13.5px;font-weight:600;line-height:1.2}
@@ -967,10 +968,10 @@
 #wa-demo-root .wd-msg.show{opacity:1;transform:translateY(0)}
 #wa-demo-root .wd-in{background:#fff;align-self:flex-start;border-top-left-radius:2px}
 #wa-demo-root .wd-in::before{content:'';position:absolute;left:-5px;top:0;border-right:5px solid #fff;border-top:5px solid transparent}
-#wa-demo-root .wd-out{background:#dcf8c6;align-self:flex-end;border-top-right-radius:2px}
-#wa-demo-root .wd-out::before{content:'';position:absolute;right:-5px;top:0;border-left:5px solid #dcf8c6;border-top:5px solid transparent}
+#wa-demo-root .wd-out{background:#D9FDD3;align-self:flex-end;border-top-right-radius:2px}
+#wa-demo-root .wd-out::before{content:'';position:absolute;right:-5px;top:0;border-left:5px solid #D9FDD3;border-top:5px solid transparent}
 #wa-demo-root .wd-t{font-size:9.5px;color:rgba(0,0,0,0.38);float:right;margin:2px 0 0 8px}
-#wa-demo-root .wd-out .wd-t::after{content:' ✓✓';color:#4fc3f7}
+#wa-demo-root .wd-out .wd-t::after{content:' ✓✓';color:#53BDEB}
 #wa-demo-root .wd-tpl{background:#fff;border-radius:8px;border-top-left-radius:2px;align-self:flex-start;max-width:85%;overflow:hidden;flex-shrink:0;opacity:0;transform:translateY(6px);transition:opacity 0.3s ease,transform 0.3s ease;position:relative}
 #wa-demo-root .wd-tpl::before{content:'';position:absolute;left:-5px;top:0;border-right:5px solid #fff;border-top:5px solid transparent;z-index:1}
 #wa-demo-root .wd-tpl.show{opacity:1;transform:translateY(0)}
@@ -988,13 +989,13 @@
 #wa-demo-root .wd-tbtn{display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 9px;color:#009de2;font-size:12.5px;font-weight:400;cursor:pointer;opacity:1;transition:background 0.15s;background:transparent;border:none;width:100%}
 #wa-demo-root .wd-tbtn.tapped{background:rgba(0,157,226,0.08)}
 #wa-demo-root .wd-tbtn svg{width:14px;height:14px;fill:#009de2;flex-shrink:0}
-#wa-demo-root .wd-qr{background:#dcf8c6;align-self:flex-end;border-radius:8px;border-top-right-radius:2px;max-width:85%;padding:0 0 4px;font-size:12.5px;line-height:1.45;position:relative;flex-shrink:0;overflow:hidden;opacity:0;transform:translateY(6px);transition:opacity 0.3s ease,transform 0.3s ease}
-#wa-demo-root .wd-qr::before{content:'';position:absolute;right:-5px;top:0;border-left:5px solid #dcf8c6;border-top:5px solid transparent}
+#wa-demo-root .wd-qr{background:#D9FDD3;align-self:flex-end;border-radius:8px;border-top-right-radius:2px;max-width:85%;padding:0 0 4px;font-size:12.5px;line-height:1.45;position:relative;flex-shrink:0;overflow:hidden;opacity:0;transform:translateY(6px);transition:opacity 0.3s ease,transform 0.3s ease}
+#wa-demo-root .wd-qr::before{content:'';position:absolute;right:-5px;top:0;border-left:5px solid #D9FDD3;border-top:5px solid transparent}
 #wa-demo-root .wd-qr.show{opacity:1;transform:translateY(0)}
 #wa-demo-root .wd-qq{background:rgba(0,0,0,0.07);border-left:3px solid #25D366;padding:5px 8px 5px 7px;margin-bottom:4px;display:flex;align-items:center;gap:6px}
 #wa-demo-root .wd-qq img{width:36px;height:36px;border-radius:3px;flex-shrink:0;object-fit:cover}
 #wa-demo-root .wd-qqt{flex:1;min-width:0}
-#wa-demo-root .wd-qqn{font-size:10px;font-weight:600;color:#075E54}
+#wa-demo-root .wd-qqn{font-size:10px;font-weight:600;color:#008069}
 #wa-demo-root .wd-qqb{font-size:10px;color:#555;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #wa-demo-root .wd-qtext{padding:0 9px 2px}
 #wa-demo-root .wd-audio{display:flex;align-items:center;gap:8px;padding:7px 9px}
@@ -1034,11 +1035,11 @@
 
 <div class="wd-phone">
   <div class="wd-hdr">
-    <div class="wd-av">✨</div>
+    <div class="wd-av"><img src="/assets/manaa-logo-round.png" alt="Manaã"></div>
     <div class="wd-info">
       <div class="wd-nrow">
         <div class="wd-name">Manaã</div>
-        <svg class="wd-vbadge" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.79 1.27L12 1.07L12.85 3.15L14.93 4L14.73 6.21L16 8L14.73 9.79L14.93 12L12.85 12.85L12 14.93L9.79 14.73L8 16L6.21 14.73L4 14.93L3.15 12.85L1.07 12L1.27 9.79L0 8L1.27 6.21L1.07 4L3.15 3.15L4 1.07L6.21 1.27L8 0Z" fill="#25D366"/><path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="wd-vbadge" viewBox="0 0 16 16" fill="none"><path d="M8 0L9.79 1.27L12 1.07L12.85 3.15L14.93 4L14.73 6.21L16 8L14.73 9.79L14.93 12L12.85 12.85L12 14.93L9.79 14.73L8 16L6.21 14.73L4 14.93L3.15 12.85L1.07 12L1.27 9.79L0 8L1.27 6.21L1.07 4L3.15 3.15L4 1.07L6.21 1.27L8 0Z" fill="#1d9bf0"/><path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="wd-st" id="wd-status">on-line</div>
     </div>
@@ -1068,13 +1069,13 @@ async function run(){
   status.textContent='on-line';resetTime();
   await typing(700);await new Promise(r=>setTimeout(r,1500));rmTyping();
   const tpl=document.createElement('div');tpl.className='wd-tpl';
-  tpl.innerHTML=`<div class="wd-timg"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=600&q=75" alt="" loading="eager"><div class="wd-tovl"><div class="wd-tname">Jacinta, lembre-se:</div><div class="wd-tverse">"Planos de dar a vocês esperança e um futuro." (Jr 29:11)<br>Amém 🙏</div><div class="wd-ttag">@manaaapp</div></div></div><div class="wd-tbody">Olá <strong>Jacinta</strong>, seu devocional assinado chegou:<br><br>"Porque eu sei os planos que tenho para vocês… planos de dar a vocês esperança e um futuro." (Jeremias 29:11). Que esta Palavra ilumine seu dia.<br><br>Amém</div><div class="wd-tfoot"><span class="wd-tsender">Manaã</span><span class="wd-ttime">${T()}</span></div><div class="wd-tdiv"></div><button class="wd-tbtn" id="wd-tbtn"><svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>Conversar sobre a Palavra</button>`;
+  tpl.innerHTML=`<div class="wd-timg"><img src="/assets/devocional-exemplo.jpg" alt="Devocional do dia" loading="eager"></div><div class="wd-tbody">Olá <strong>Jacinta</strong>, seu devocional assinado chegou:<br><br>Que esta Palavra ilumine seu dia e traga paz ao seu coração.<br><br>Amém</div><div class="wd-tfoot"><span class="wd-tsender">Manaã</span><span class="wd-ttime">${T()}</span></div><div class="wd-tdiv"></div><button class="wd-tbtn" id="wd-tbtn"><svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>Conversar sobre a Palavra</button>`;
   await addEl(tpl,0);
   await new Promise(r=>setTimeout(r,2200));
   const btn=document.getElementById('wd-tbtn');if(btn)btn.classList.add('tapped');
   await new Promise(r=>setTimeout(r,300));
   const qr=document.createElement('div');qr.className='wd-qr';
-  qr.innerHTML=`<div class="wd-qq"><img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=80&q=60" alt=""><div class="wd-qqt"><div class="wd-qqn">Manaã</div><div class="wd-qqb">📷 Olá Jacinta, seu devocional assinado chegou:</div></div></div><div class="wd-qtext">Conversar sobre a Palavra<span class="wd-t">${T()}</span><span style="font-size:9.5px;color:#4fc3f7;margin-left:2px">✓✓</span></div>`;
+  qr.innerHTML=`<div class="wd-qq"><img src="/assets/devocional-exemplo.jpg" alt=""><div class="wd-qqt"><div class="wd-qqn">Manaã</div><div class="wd-qqb">📷 Olá Jacinta, seu devocional assinado chegou:</div></div></div><div class="wd-qtext">Conversar sobre a Palavra<span class="wd-t">${T()}</span><span style="font-size:9.5px;color:#53BDEB;margin-left:2px">✓✓</span></div>`;
   chat.appendChild(qr);chat.scrollTop=9999;requestAnimationFrame(()=>requestAnimationFrame(()=>qr.classList.add('show')));
   await new Promise(r=>setTimeout(r,400));
   await typing(500);await new Promise(r=>setTimeout(r,1400));rmTyping();
@@ -1098,7 +1099,16 @@ async function run(){
   });
   run();
 }
-setTimeout(run,600);
+const _demoRoot=document.getElementById('wa-demo-root');
+let _demoStarted=false;
+if(_demoRoot && 'IntersectionObserver' in window){
+  const _io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting && !_demoStarted){ _demoStarted=true; setTimeout(run,400); _io.disconnect(); } });
+  },{threshold:0.35});
+  _io.observe(_demoRoot);
+} else {
+  setTimeout(run,600);
+}
 })();
 </script>
 
@@ -1124,7 +1134,7 @@ setTimeout(run,600);
                 <a href="/onboarding.html?plano=trial" class="btn btn-secondary" style="width:100%;text-align:center;">Começar</a>
             </div>
             <div class="plan featured-popular" style="position:relative">
-                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#B8912E;color:white;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.04em">MAIS ESCOLHIDO</span>
+                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#b48e43;color:white;font-size:11px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.04em">MAIS ESCOLHIDO</span>
                 <h3>Mensal</h3>
                 <div class="subtitle">Assinatura — cancele quando quiser</div>
                 <div class="price">R$14,99 <span>/mês</span></div>
