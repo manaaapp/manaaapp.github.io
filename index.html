@@ -423,6 +423,19 @@
         @media (max-width: 768px) {
             .nav-links, .nav-cta { display: none; }
             .mobile-menu { display: block; }
+            .nav-links.open {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #fffdf8;
+                padding: 1rem 1.6rem 1.4rem;
+                gap: 1rem;
+                box-shadow: 0 14px 30px rgba(60,45,20,0.12);
+                border-bottom: 1px solid var(--border);
+            }
             .hero { padding: 6rem 1.5rem 3rem; min-height: auto; }
             .section { padding: 3.5rem 1.5rem; }
             .features-section { padding: 3.5rem 1.5rem; }
@@ -458,6 +471,11 @@
                 box-shadow: 0 14px 34px rgba(184,145,46,0.24);
             }
             #planos .pricing-grid .plan.is-active .price { color: var(--gold); }
+            #planos .pricing-grid .plan.is-active .btn-secondary {
+                background: var(--gold);
+                border-color: var(--gold);
+                color: #fff;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -805,6 +823,16 @@
         <a href="/onboarding.html?plano=trial" class="nav-cta">Começar</a>
         <div class="mobile-menu">&#9776;</div>
     </nav>
+    <script>
+    (function(){
+        var btn=document.querySelector('.mobile-menu');
+        var links=document.querySelector('.nav-links');
+        if(!btn||!links) return;
+        btn.addEventListener('click',function(e){e.stopPropagation();links.classList.toggle('open');});
+        links.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){links.classList.remove('open');});});
+        document.addEventListener('click',function(e){if(!links.contains(e.target)&&e.target!==btn){links.classList.remove('open');}});
+    })();
+    </script>
 
     <section class="hero" id="home">
         <div class="hero-text">
