@@ -1130,13 +1130,13 @@ async function run(){
   status.textContent='on-line';resetTime();
   await typing(700);await new Promise(r=>setTimeout(r,1500));rmTyping();
   const tpl=document.createElement('div');tpl.className='wd-tpl';
-  tpl.innerHTML=`<div class="wd-timg"><img src="/assets/devocional-exemplo.jpg" alt="Devocional do dia" loading="eager"></div><div class="wd-tbody">Olá <strong>Jacinta</strong>, seu devocional assinado chegou:<br><br>Que esta Palavra ilumine seu dia e traga paz ao seu coração.<br><br>Amém</div><div class="wd-tfoot"><span class="wd-tsender">Manaã</span><span class="wd-ttime">${T()}</span></div><div class="wd-tdiv"></div><button class="wd-tbtn" id="wd-tbtn"><svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>Conversar sobre a Palavra</button>`;
+  tpl.innerHTML=`<div class="wd-timg"><img src="/assets/devocional-exemplo.jpg" alt="Devocional do dia" loading="eager"></div><div class="wd-tbody">Olá <strong>Maria</strong>, seu devocional assinado chegou:<br><br>Que esta Palavra ilumine seu dia e traga paz ao seu coração.<br><br>Amém</div><div class="wd-tfoot"><span class="wd-tsender">Manaã</span><span class="wd-ttime">${T()}</span></div><div class="wd-tdiv"></div><button class="wd-tbtn" id="wd-tbtn"><svg viewBox="0 0 24 24"><path d="M10 9V5l-7 7 7 7v-4.1c5 0 8.5 1.6 11 5.1-1-5-4-10-11-11z"/></svg>Conversar sobre a Palavra</button>`;
   await addEl(tpl,0);
   await new Promise(r=>setTimeout(r,2200));
   const btn=document.getElementById('wd-tbtn');if(btn)btn.classList.add('tapped');
   await new Promise(r=>setTimeout(r,300));
   const qr=document.createElement('div');qr.className='wd-qr';
-  qr.innerHTML=`<div class="wd-qq"><img src="/assets/devocional-exemplo.jpg" alt=""><div class="wd-qqt"><div class="wd-qqn">Manaã</div><div class="wd-qqb">📷 Olá Jacinta, seu devocional assinado chegou:</div></div></div><div class="wd-qtext">Conversar sobre a Palavra<span class="wd-t">${T()}</span><span style="font-size:9.5px;color:#53BDEB;margin-left:2px">✓✓</span></div>`;
+  qr.innerHTML=`<div class="wd-qq"><img src="/assets/devocional-exemplo.jpg" alt=""><div class="wd-qqt"><div class="wd-qqn">Manaã</div><div class="wd-qqb">📷 Olá Maria, seu devocional assinado chegou:</div></div></div><div class="wd-qtext">Conversar sobre a Palavra<span class="wd-t">${T()}</span><span style="font-size:9.5px;color:#53BDEB;margin-left:2px">✓✓</span></div>`;
   chat.appendChild(qr);chat.scrollTop=9999;requestAnimationFrame(()=>requestAnimationFrame(()=>qr.classList.add('show')));
   await new Promise(r=>setTimeout(r,400));
   await typing(500);await new Promise(r=>setTimeout(r,1400));rmTyping();
