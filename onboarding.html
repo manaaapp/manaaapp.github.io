@@ -1224,6 +1224,7 @@ function getValidationState() {
   return { valid: errs.length === 0, missing: errs };
 }
 
+const touchedFields = new Set();
 function refreshPayButton() {
   const btn = document.getElementById('btn-submit');
   if (!btn) return;
@@ -1236,6 +1237,8 @@ function refreshPayButton() {
   document.querySelectorAll('.inline-err').forEach(e => e.remove());
   st.missing.forEach(field => {
     const inputId = hintMap[field]; if (!inputId) return;
+    // só mostra erro depois que o usuário tocou no campo (ou tentou avançar) — nunca no load
+    if (!touchedFields.has(inputId) && !window._forceShowErrors) return;
     const el = document.getElementById(inputId); if (!el) return;
     const parent = el.parentElement; if (!parent) return;
     if (parent.querySelector('.inline-err')) return;
@@ -1278,6 +1281,7 @@ function attachPayValidationListeners() {
     const el = document.getElementById(id);
     if (!el) return;
     ['input','change','blur'].forEach(ev => el.addEventListener(ev, refreshPayButton));
+    el.addEventListener('blur', () => { touchedFields.add(id); refreshPayButton(); });
   });
   document.querySelectorAll('input[name="pay-m"], input[name="pay-a"]').forEach(r => {
     r.addEventListener('change', refreshPayButton);
