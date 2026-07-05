@@ -349,6 +349,12 @@
     </div>
 
     <div class="field">
+      <label>Email</label>
+      <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email">
+      <div class="hint">Pra você acessar sua conta depois.</div>
+    </div>
+
+    <div class="field">
       <label>Gênero</label>
       <div class="chips" id="chips-genero">
         <div class="chip" data-val="F">Mulher</div>
@@ -852,6 +858,8 @@
     if (ln.length < 2) { alert("Coloca seu sobrenome."); return false; }
     if (phone.length !== 11) { alert("Celular inválido. Coloca DDD + 9 + número (11 dígitos no total)."); return false; }
     if (phone.charAt(2) !== '9') { alert("Celular precisa começar com 9 depois do DDD."); return false; }
+    const email = (document.getElementById("email")?.value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Coloca um email válido — é por ele que você acessa sua conta depois."); return false; }
     return true;
   }
   function validateStep2() {
@@ -923,6 +931,7 @@
       first_name: _fn1,
       last_name: _ln1,
       phone_e164: normalizePhone(document.getElementById("phone").value),
+      email: (document.getElementById("email")?.value || "").trim().toLowerCase() || null,
       genero: genero,
       religiao: document.getElementById("religiao").value || null,
       inspiracoes: document.getElementById("inspiracoes").value.trim() || null,
