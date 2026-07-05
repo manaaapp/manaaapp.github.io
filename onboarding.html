@@ -1356,6 +1356,7 @@ function getFullOnboardPayload() {
     first_name: fn,
     last_name: ln,
     phone: document.getElementById('phone').value.replace(/\D/g, ''),
+    email: (document.getElementById('email')?.value || '').trim().toLowerCase() || null,
     genero: (typeof genero !== 'undefined') ? genero : 'X',
     religiao: document.getElementById('religiao').value,
     inspiracoes: document.getElementById('inspiracoes').value.trim(),
