@@ -1,0 +1,35 @@
+/* Manaã — camada de movimento sutil (progressive enhancement).
+   Só faz efeito quando <html class="motion-on"> está presente (adicionado por JS
+   apenas se o usuário NÃO pediu redução de movimento). Sem JS ou sem GSAP,
+   nada fica escondido: o conteúdo aparece normal. */
+
+/* estado inicial dos elementos que vão surgir (só sob motion-on) */
+html.motion-on :is(
+  .section-label, .section-title, .section-desc,
+  .feature, .step, .plan, .card, .faq-item,
+  .hero-text, .hero-media, [data-reveal]
+){ opacity: 0; will-change: opacity, transform; }
+
+/* micro-interação sutil (só em dispositivos com hover real; sombra, sem transform,
+   pra não brigar com os transforms inline do GSAP) */
+@media (hover: hover) and (pointer: fine){
+  html.motion-on .plan,
+  html.motion-on .feature,
+  html.motion-on .card{
+    transition: box-shadow .3s ease, border-color .3s ease;
+  }
+  html.motion-on .plan:hover,
+  html.motion-on .feature:hover,
+  html.motion-on .card:hover{
+    box-shadow: 0 16px 38px rgba(45, 42, 38, 0.12);
+  }
+}
+
+/* respeito absoluto à redução de movimento: mostra tudo, sem animar */
+@media (prefers-reduced-motion: reduce){
+  html.motion-on :is(
+    .section-label, .section-title, .section-desc,
+    .feature, .step, .plan, .card, .faq-item,
+    .hero-text, .hero-media, [data-reveal]
+  ){ opacity: 1 !important; transform: none !important; }
+}

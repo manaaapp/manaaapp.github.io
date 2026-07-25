@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
+    <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
+    <link rel="stylesheet" href="/assets/motion.css">
+  <title>Manaã — Minha Conta</title>
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    :root{
+      --gold:#B8912E;--gold-2:#D4B86A;--gold-dark:#8B6914;--gold-bg:#F9F3E8;
+      --bg:#FDFBF8;--ink-1:#1a1a1a;--ink-2:#3a3a3a;--ink-3:#5C564D;--ink-4:#8B826F;
+      --border:#E5DDD0;--border-soft:#EFE7D4;
+      --card:#fff;--radius:18px;--shadow:0 6px 32px rgba(139,105,20,.08);
+      --wa:#25D366;--wa-dark:#1da851;--danger:#B8404C;--danger-soft:#FDEEEC;
+    }
+    html,body{background:var(--bg);min-height:100dvh}
+    body{font-family:'Inter',sans-serif;color:var(--ink-1);min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:safe center;padding:24px 16px;padding-top:max(24px,env(safe-area-inset-top));padding-bottom:max(24px,env(safe-area-inset-bottom));-webkit-tap-highlight-color:transparent}
+    .brand{text-align:center;margin-bottom:26px}
+    .brand .logo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--gold-dark);letter-spacing:.3px;line-height:1.05}
+    .brand .sub{font-size:13px;color:var(--ink-3);margin-top:8px;letter-spacing:.5px}
+    .card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:28px 24px;width:100%;max-width:440px;border:1px solid var(--border)}
+    .card-title{font-family:'Lora',serif;font-size:22px;font-weight:600;color:var(--gold-dark);margin-bottom:8px;display:flex;align-items:center;gap:10px}
+    .card-title::before{content:"";display:inline-block;width:4px;height:20px;background:linear-gradient(180deg,var(--gold-2),var(--gold-dark));border-radius:2px}
+    p.hint{font-size:14.5px;color:var(--ink-3);margin-bottom:20px;line-height:1.55}
+    label{display:block;font-size:13px;font-weight:500;margin-bottom:6px;color:var(--ink-2)}
+    input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff;color:var(--ink-1);-webkit-appearance:none;appearance:none}
+    input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
+    input[type=date],input[type=time]{-webkit-appearance:none;appearance:none;text-align:left;padding:14px 16px;line-height:1.2;min-height:48px;font-family:'Inter',sans-serif}
+    input[type=date]::-webkit-date-and-time-value,input[type=time]::-webkit-date-and-time-value{text-align:left}
+    input[type=date]::-webkit-calendar-picker-indicator,input[type=time]::-webkit-calendar-picker-indicator{opacity:.45;cursor:pointer}
+    input.otp-input{letter-spacing:10px;font-size:24px;text-align:center;font-weight:700;padding-left:18px}
+    .btn{width:100%;min-height:48px;padding:14px 18px;background:linear-gradient(180deg,var(--gold-2),var(--gold));color:#fff;border:none;border-radius:12px;font-size:15.5px;font-weight:600;cursor:pointer;transition:transform .12s ease-out, box-shadow .12s ease-out;margin-top:16px;font-family:'Inter',sans-serif;box-shadow:0 3px 10px rgba(139,105,20,.18);touch-action:manipulation}
+    .btn:active{transform:translateY(1px);box-shadow:0 1px 4px rgba(139,105,20,.18)}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 5px 16px rgba(139,105,20,.25)}
+    .btn:disabled{opacity:.55;cursor:not-allowed;transform:none}
+    .btn-outline{background:transparent;color:var(--gold-dark);border:1.5px solid var(--gold-2);box-shadow:none;margin-top:10px}
+    .btn-outline:hover{background:var(--gold-bg)}
+    .btn-wa{display:flex;align-items:center;justify-content:center;gap:10px;background:linear-gradient(180deg,var(--wa),var(--wa-dark));margin-top:14px;font-weight:600;text-decoration:none}
+    .btn-wa svg{flex-shrink:0}
+    .btn-ghost{background:transparent;color:var(--ink-3);border:1.5px solid var(--border);box-shadow:none;margin-top:8px}
+    .btn-ghost:hover{background:var(--gold-bg);color:var(--ink-1)}
+    .btn-danger{background:transparent;color:var(--danger);border:1.5px solid #E8B8B8;box-shadow:none;margin-top:10px;font-weight:600}
+    .btn-danger:hover{background:var(--danger-soft)}
+    .err{color:#7a1f28;font-size:13.5px;margin-top:10px;display:none;background:var(--danger-soft);padding:10px 12px;border-radius:10px;border:1px solid #E8B8B8}
+    .err.show{display:block}
+    .screen{display:none}
+    .screen.active{display:block}
+
+    /* Dashboard compacto */
+    .dash-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+    .avatar{width:54px;height:54px;background:linear-gradient(135deg,var(--gold-bg),#fff5dd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-size:22px;color:var(--gold-dark);font-weight:600;border:2px solid var(--gold-2);flex-shrink:0}
+    .dash-meta{flex:1;min-width:0}
+    .name-display{font-family:'Lora',serif;font-size:18px;font-weight:600;color:var(--gold-dark);line-height:1.4;padding:2px 0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .phone-display{font-size:12.5px;color:var(--ink-4);margin-top:4px;line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+    .info-row{background:var(--gold-bg);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;justify-content:center;border:1px solid var(--border-soft);min-height:54px;gap:2px}
+    .info-row.full{grid-column:1 / -1}
+    .info-row.with-badge{flex-direction:row;align-items:center;justify-content:space-between}
+    .info-label{font-size:10.5px;color:var(--ink-3);text-transform:uppercase;letter-spacing:.5px;font-weight:600}
+    .info-value{font-size:14px;font-weight:600;color:var(--ink-1);font-variant-numeric:tabular-nums;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .info-row.full .info-value{white-space:normal}
+    .badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:.3px}
+    .badge.trialing{background:#FFF3CD;color:#856404}
+    .badge.active{background:#D1FAE5;color:#065F46}
+    .badge.canceled{background:#FEE2E2;color:#991B1B}
+    .badge.past_due{background:#FEDBD3;color:#8B2A1B}
+    .divider{height:1px;background:var(--border-soft);margin:22px 0 16px}
+    .action-link{display:block;text-align:center;font-size:13px;color:var(--ink-4);cursor:pointer;margin-top:8px;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;min-height:32px;line-height:32px}
+    .action-link:hover{color:var(--gold-dark)}
+    .action-link.subtle{color:#a89c83}
+    .verso{font-family:'Lora',serif;font-style:italic;font-size:13px;color:var(--ink-4);text-align:center;margin-top:18px;line-height:1.55;border-top:1px solid var(--border-soft);padding-top:14px}
+
+    /* Topbar do dashboard (Sair icon) */
+    .dash-top{display:flex;justify-content:flex-end;margin:-8px -8px 4px 0}
+    .icon-btn{background:transparent;border:none;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink-3);transition:background .15s;padding:0;flex-shrink:0}
+    .icon-btn:hover{background:var(--gold-bg);color:var(--gold-dark)}
+    .icon-btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+    .icon-btn svg{width:20px;height:20px;display:block}
+
+
+    .select-input{width:100%;min-height:48px;padding:14px 16px;border:1.5px solid var(--border);border-radius:12px;font-size:16px;font-family:'Inter',sans-serif;outline:none;transition:border .15s, box-shadow .15s;background:#fff url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' stroke='%238B6914' stroke-width='1.5' fill='none' stroke-linecap='round'/></svg>") no-repeat right 16px center;color:var(--ink-1);appearance:none;-webkit-appearance:none;padding-right:42px}
+    .select-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(184,145,46,.12)}
+    .edit-group{margin-top:20px;padding:18px;background:var(--gold-bg);border-radius:14px;border:1px solid var(--border-soft)}
+    .edit-group:first-of-type{margin-top:8px}
+    .edit-group-title{font-family:'Lora',serif;font-size:15px;font-weight:600;color:var(--gold-dark);margin-bottom:14px;text-transform:none;letter-spacing:.3px}
+    .chips-mini{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+    .chip-mini{padding:8px 12px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;color:var(--ink-2);user-select:none}
+    .chip-mini:hover{border-color:var(--gold-2);background:#fff8e7}
+    .chip-mini.active{background:var(--gold-dark);border-color:var(--gold-dark);color:#fff}
+
+    /* Mobile */
+    @media (max-width: 480px) {
+      body{padding:18px 14px}
+      .card{padding:24px 18px;border-radius:16px}
+      .brand .logo{font-size:30px}
+      .card-title{font-size:20px}
+    }
+    /* Desktop */
+    @media (min-width: 720px) {
+      body{padding:48px 24px;justify-content:center}
+      .brand{margin-bottom:32px}
+      .brand .logo{font-size:42px}
+      .brand .sub{font-size:14px}
+      .card{max-width:560px;padding:36px 32px}
+      .card-title{font-size:24px}
+    }
+    @media (min-width: 720px) {
+      .info-grid{grid-template-columns:1fr;gap:10px}
+      .info-row{flex-direction:row;align-items:center;justify-content:space-between;padding:14px 18px;min-height:60px;gap:14px}
+      .info-row .info-label{font-size:11px}
+      .info-row .info-value{font-size:15px;text-align:right;white-space:normal;overflow:visible;text-overflow:clip}
+      .info-row.with-badge{justify-content:space-between}
+      .info-row.full{grid-column:auto}
+      .info-row.full .info-value{text-align:right}
+    }
+    @media (min-width: 960px) {
+      body{padding:60px 32px}
+      .brand .logo{font-size:48px}
+      .brand .sub{font-size:15px;margin-top:10px}
+      .card{max-width:640px;padding:44px}
+      .avatar{width:64px;height:64px;font-size:26px}
+      .name-display{font-size:22px}
+      .phone-display{font-size:13.5px}
+      .dash-header{padding-bottom:18px;border-bottom:1px solid var(--border-soft);margin-bottom:20px}
+    }
+    @media (prefers-reduced-motion: reduce){
+      .btn{transition:none}
+      .suspend-panel{animation:none}
+    }
+  </style>
+</head>
+<body>
+
+<div class="brand">
+  <div class="logo"><img src="/assets/manaa-logo-round.png" alt="Logo Manaã" style="height:34px;width:34px;border-radius:50%;vertical-align:middle;margin-right:8px;">Manaã</div>
+  <div class="sub">Sua área pessoal</div>
+</div>
+
+<div class="card">
+
+  <!-- TELA 1: ACESSO via EMAIL -->
+  <div class="screen active" id="screen-phone">
+    <h2 class="card-title">Acessar minha conta</h2>
+    <p class="hint">Digite o email cadastrado pra receber um código de acesso.</p>
+    <label for="inp-email">Email</label>
+    <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
+    <div class="err" id="err-phone">Email não encontrado. Confirme se foi o email cadastrado.</div>
+    <button class="btn" id="btn-send" onclick="sendOtpEmail()">Receber código por email</button>
+    <a href="https://wa.me/15559382375?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      Falar com Manaã
+    </a>
+  </div>
+
+  <!-- TELA 2: OTP -->
+  <div class="screen" id="screen-otp">
+    <h2 class="card-title">Digite o código</h2>
+    <p class="hint">Enviamos um código de 6 dígitos. Válido por 10 minutos.</p>
+    <label for="inp-otp">Código de acesso</label>
+    <input type="text" id="inp-otp" class="otp-input" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+    <div class="err" id="err-otp">Código inválido ou expirado.</div>
+    <button class="btn" id="btn-verify" onclick="verifyOtp()">Entrar</button>
+    <button class="btn btn-outline" onclick="backToPhone()">Voltar</button>
+  </div>
+
+  <!-- TELA 3: DASHBOARD -->
+  <div class="screen" id="screen-dash">
+    <div class="dash-header">
+      <div class="avatar" id="dash-avatar">M</div>
+      <div class="dash-meta">
+        <div class="name-display" id="dash-name">—</div>
+        <div class="phone-display" id="dash-phone">—</div>
+      </div>
+      <button class="icon-btn" onclick="logout()" aria-label="Sair" title="Sair">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M15 17l5-5-5-5"></path>
+          <path d="M20 12H9"></path>
+          <path d="M12 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="info-grid">
+      <div class="info-row with-badge">
+        <div class="info-label">Status</div>
+        <span class="badge" id="dash-badge">—</span>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Plano</div>
+        <div class="info-value" id="dash-plan">—</div>
+      </div>
+      <div class="info-row" id="row-trial" style="display:none">
+        <div class="info-label">Período de teste</div>
+        <div class="info-value" id="dash-trial">—</div>
+      </div>
+      <div class="info-row">
+        <div class="info-label">Devocional chega</div>
+        <div class="info-value" id="dash-horario">—</div>
+      </div>
+      <div class="info-row full">
+        <div class="info-label">Momento de vida</div>
+        <div class="info-value" id="dash-momento">—</div>
+      </div>
+    </div>
+
+    <button class="btn" onclick="openEdit()">Editar minhas preferências</button>
+
+    <a href="https://wa.me/15559382375?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F" target="_blank" rel="noopener" class="btn btn-wa">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#fff" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg>
+      Falar com Manaã
+    </a>
+
+    <div class="divider"></div>
+
+    <a class="action-link subtle" onclick="toggleAccountOptions()" id="lnk-other-opts">Outras opções</a>
+    <div id="account-options" style="display:none;margin-top:6px">
+      <a class="action-link subtle" onclick="suspendFlow()">Suspender minha assinatura</a>
+      <a class="action-link" onclick="deleteFlow()" style="color:#b8404c;font-size:12.5px;margin-top:6px">Excluir minha conta</a>
+    </div>
+
+    <div class="verso">"Porque sou eu que conheço os planos que tenho para vocês." — Jr 29,11</div>
+  </div>
+
+  <!-- TELA 4: EDIT PREFS -->
+  <div class="screen" id="screen-edit">
+    <h2 class="card-title">Minhas preferências</h2>
+    <p class="hint">Mude o que precisar e clique em Salvar.</p>
+
+    <div class="edit-group">
+      <h4 class="edit-group-title">Sobre você</h4>
+
+      <label for="edit-name">Nome completo</label>
+      <input type="text" id="edit-name" placeholder="Maria das Graças Silveira">
+
+      <label for="edit-email" style="margin-top:14px">Email</label>
+      <input type="email" id="edit-email" placeholder="seu@email.com" autocomplete="email">
+
+      <label for="edit-nasc" style="margin-top:14px">Data de nascimento</label>
+      <input type="date" id="edit-nasc" style="min-height:48px">
+
+      <label for="edit-ocupacao" style="margin-top:14px">Ocupação (opcional)</label>
+      <input type="text" id="edit-ocupacao" placeholder="ex: aposentada, professora, estudante">
+    </div>
+
+    <div class="edit-group">
+      <h4 class="edit-group-title">Seu devocional</h4>
+
+      <label for="edit-horario">Horário do devocional</label>
+      <input type="time" id="edit-horario" style="min-height:48px">
+
+      <label for="edit-religiao" style="margin-top:14px">Tradição cristã</label>
+      <select id="edit-religiao" class="select-input">
+        <option value="">— escolha —</option>
+        <option value="catolico">Católica</option>
+        <option value="evangélico">Evangélica</option>
+        <option value="cristão">Cristã sem denominação</option>
+        <option value="universal">Universal</option>
+      </select>
+
+      <label for="edit-versao" style="margin-top:14px">Versão bíblica preferida</label>
+      <select id="edit-versao" class="select-input">
+        <option value="">— escolha —</option>
+        <option value="ARA">Almeida Revista e Atualizada (ARA)</option>
+        <option value="ARC">Almeida Revista e Corrigida (ARC)</option>
+        <option value="NVI">Nova Versão Internacional (NVI)</option>
+        <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH)</option>
+        <option value="NAA">Nova Almeida Atualizada (NAA)</option>
+      </select>
+    </div>
+
+    <div class="edit-group">
+      <h4 class="edit-group-title">Sua jornada</h4>
+
+      <label>Momento de vida (escolha um ou mais)</label>
+      <div class="chips-mini" id="edit-momento-chips">
+        <div class="chip-mini" data-val="paz">Paz</div>
+        <div class="chip-mini" data-val="duvida">Dúvida</div>
+        <div class="chip-mini" data-val="ansiedade">Ansiedade</div>
+        <div class="chip-mini" data-val="luto">Luto</div>
+        <div class="chip-mini" data-val="alegria">Alegria</div>
+        <div class="chip-mini" data-val="recomeco">Recomeço</div>
+        <div class="chip-mini" data-val="cansaco">Cansaço</div>
+        <div class="chip-mini" data-val="busca">Busca</div>
+        <div class="chip-mini" data-val="gratidao">Gratidão</div>
+        <div class="chip-mini" data-val="solidao_cuidado">Preciso de companhia</div>
+        <div class="chip-mini" data-val="familia">Foco em família</div>
+        <div class="chip-mini" data-val="trabalho">Trabalho intenso</div>
+        <div class="chip-mini" data-val="perda">Perdi alguém querido</div>
+        <div class="chip-mini" data-val="separacao">Separação ou divórcio</div>
+        <div class="chip-mini" data-val="doenca_familia">Doença na família</div>
+        <div class="chip-mini" data-val="desemprego">Desemprego</div>
+        <div class="chip-mini" data-val="recomeco_espiritual">Recomeço espiritual</div>
+        <div class="chip-mini" data-val="maternidade">Maternidade/paternidade recente</div>
+      </div>
+      <input type="hidden" id="edit-momento">
+
+      <label for="edit-proposito" style="margin-top:14px">Propósito espiritual</label>
+      <input type="text" id="edit-proposito" placeholder="ex: paz interior, fortalecer fé, gratidão diária">
+
+      <label for="edit-inspiracoes" style="margin-top:14px">O que te inspira</label>
+      <input type="text" id="edit-inspiracoes" placeholder="ex: salmos, oração, família">
+    </div>
+
+    <button class="btn" id="btn-save-edit" onclick="saveEdit()">Salvar alterações</button>
+    <button class="btn btn-ghost" onclick="closeEdit()">Voltar</button>
+    <div class="err" id="err-edit">Não foi possível salvar. Tenta de novo.</div>
+  </div>
+
+</div>
+
+<script>
+  const API = 'https://manaa-meta-webhook.manaa-fbx.workers.dev/webhook';
+  let currentPhone = '';
+  let currentEmail = '';
+  let currentChannel = 'email';
+  let sessionToken = '';
+  let userData = null;
+
+  const params = new URLSearchParams(location.search);
+  const loginToken = params.get('login');
+  if (loginToken) autoLoginViaMagicLink(loginToken);
+
+  async function autoLoginViaMagicLink(token){
+    try {
+      const r = await fetch(API+'/manaa-magic-login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token})
+      });
+      const data = await r.json();
+      if (data.success && data.data){
+        userData = data.data;
+        currentPhone = (data.data.phone || '').replace(/^\+/, '');
+        currentEmail = data.data.email || '';
+        sessionToken = token;
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+        history.replaceState({}, '', '/conta.html');
+      } else {
+        alert('Link inválido ou expirado. Solicite outro pelo email.');
+        showScreen('phone');
+      }
+    } catch(e) {
+      alert('Erro ao acessar. Tente de novo.');
+      showScreen('phone');
+    }
+  }
+
+  // Phone format
+  function maskPhone(el){
+    let v = el.value.replace(/\D/g,'');
+    if(v.length > 11) v = v.slice(0,11);
+    if(v.length > 7) v = '('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7);
+    else if(v.length > 2) v = '('+v.slice(0,2)+') '+v.slice(2);
+    else if(v.length > 0) v = '('+v;
+    el.value = v;
+  }
+  const inpPhone = document.getElementById('inp-phone');
+  if (inpPhone) inpPhone.addEventListener('input', e => maskPhone(e.target));
+  document.getElementById('inp-otp').addEventListener('input', function(e){
+    e.target.value = e.target.value.replace(/\D/g,'').slice(0,6);
+  });
+  document.getElementById('inp-email').addEventListener('keydown', e => { if(e.key==='Enter') sendOtpEmail(); });
+  document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
+
+  function showScreen(id){
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-'+id).classList.add('active');
+    // Reset account options panel ao trocar tela
+    const ao = document.getElementById('account-options');
+    const lk = document.getElementById('lnk-other-opts');
+    if (ao) ao.style.display = 'none';
+    if (lk) lk.textContent = 'Outras opções';
+  }
+  function toggleAccountOptions(){
+    const box = document.getElementById('account-options');
+    const lk = document.getElementById('lnk-other-opts');
+    const open = box.style.display === 'none' || !box.style.display;
+    box.style.display = open ? 'block' : 'none';
+    lk.textContent = open ? 'Esconder opções' : 'Outras opções';
+  }
+  function showErr(id, show){
+    const el = document.getElementById('err-'+id);
+    if(el) el.className = show ? 'err show' : 'err';
+  }
+  function openEdit(){
+    if (!userData) return;
+    document.getElementById('edit-name').value = userData.name || '';
+    document.getElementById('edit-email').value = userData.email || '';
+    document.getElementById('edit-nasc').value = userData.data_nascimento || '';
+    document.getElementById('edit-ocupacao').value = userData.ocupacao || '';
+    document.getElementById('edit-horario').value = (userData.horario || '').slice(0,5);
+    document.getElementById('edit-religiao').value = userData.religiao || '';
+    document.getElementById('edit-versao').value = userData.versao_biblica_pref || '';
+    document.getElementById('edit-proposito').value = userData.proposito_espiritual || '';
+    document.getElementById('edit-inspiracoes').value = userData.inspiracoes || '';
+    // momento_vida: chips multiselect
+    const selected = new Set((userData.momento_vida || '').split(',').map(s => s.trim()).filter(Boolean));
+    document.querySelectorAll('#edit-momento-chips .chip-mini').forEach(c => {
+      c.classList.toggle('active', selected.has(c.dataset.val));
+    });
+    document.getElementById('edit-momento').value = Array.from(selected).join(', ');
+    showErr('edit', false);
+    showScreen('edit');
+  }
+
+  // Toggle chips momento
+  document.addEventListener('click', function(e){
+    if (e.target.classList && e.target.classList.contains('chip-mini')) {
+      e.target.classList.toggle('active');
+      const vals = Array.from(document.querySelectorAll('#edit-momento-chips .chip-mini.active')).map(c => c.dataset.val);
+      document.getElementById('edit-momento').value = vals.join(', ');
+    }
+  });
+  function closeEdit(){
+    showErr('edit', false);
+    showScreen('dash');
+  }
+  async function saveEdit(){
+    const btn = document.getElementById('btn-save-edit');
+    btn.disabled = true; btn.textContent = 'Salvando...';
+    showErr('edit', false);
+    const horario = document.getElementById('edit-horario').value || null;
+    try {
+      const r = await fetch(API+'/manaa-update-prefs', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          token: sessionToken,
+          name: document.getElementById('edit-name').value.trim(),
+          email: document.getElementById('edit-email').value.trim().toLowerCase(),
+          data_nascimento: document.getElementById('edit-nasc').value || null,
+          ocupacao: document.getElementById('edit-ocupacao').value.trim(),
+          horario: horario ? horario+':00' : null,
+          religiao: document.getElementById('edit-religiao').value || '',
+          versao_biblica_pref: document.getElementById('edit-versao').value || '',
+          momento_vida: document.getElementById('edit-momento').value || '',
+          proposito_espiritual: document.getElementById('edit-proposito').value.trim(),
+          inspiracoes: document.getElementById('edit-inspiracoes').value.trim()
+        })
+      });
+      const data = await r.json();
+      if(data.success){
+        userData = { ...userData, ...data.data };
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+      } else { showErr('edit', true); }
+    } catch(e) { showErr('edit', true); }
+    btn.disabled = false; btn.textContent = 'Salvar alterações';
+  }
+
+  async function suspendFlow(){
+    if(!confirm('Vamos suspender sua assinatura. Você para de receber o devocional, mas pode voltar quando quiser sem perder histórico. Continuar?')) return;
+    try {
+      const r = await fetch(API+'/manaa-suspend', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: sessionToken})
+      });
+      const data = await r.json();
+      if(data.success){ alert('Assinatura suspensa 🙏'); logout(); }
+      else { alert('Não foi possível suspender. Solicite novo link e tente de novo.'); }
+    } catch(e) { alert('Erro. Tenta de novo.'); }
+  }
+
+  async function deleteFlow(){
+    if(!confirm('ATENÇÃO\n\nExcluir sua conta apaga TUDO: preferências, mensagens, fatos guardados.\n\nAção definitiva. Pra confirmar, digite EXCLUIR na próxima janela.')) return;
+    const code = prompt('Digite EXCLUIR (em maiúsculas) pra confirmar:');
+    if(code !== 'EXCLUIR'){ alert('Cancelado. Sua conta está intacta.'); return; }
+    try {
+      const r = await fetch(API+'/manaa-delete-data', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({token: sessionToken})
+      });
+      const data = await r.json();
+      if(data.success){ alert('Conta excluída. Obrigado pela companhia.'); logout(); }
+      else { alert('Não foi possível excluir. Solicite novo link e tente de novo.'); }
+    } catch(e) { alert('Erro. Tenta de novo.'); }
+  }
+
+  async function sendOtpEmail(){
+    const email = document.getElementById('inp-email').value.trim().toLowerCase();
+    if(!email || !email.includes('@')){ showErr('phone',true); return; }
+    const btn = document.getElementById('btn-send');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    showErr('phone', false);
+    try {
+      const r = await fetch(API+'/manaa-conta-otp-email', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({email})
+      });
+      const data = await r.json();
+      if(data.success){
+        currentEmail = email;
+        currentChannel = 'email';
+        showScreen('otp');
+        document.getElementById('inp-otp').focus();
+      } else { showErr('phone', true); }
+    } catch(e) { showErr('phone', true); }
+    btn.disabled = false; btn.textContent = 'Receber código por email';
+  }
+
+  async function sendMagicLinkWA(){
+    const raw = document.getElementById('inp-phone').value;
+    const phone = raw.replace(/\D/g,'');
+    if(phone.length < 10){ alert('WhatsApp inválido'); return; }
+    const btn = document.getElementById('btn-send-wa');
+    btn.disabled = true; btn.textContent = 'Enviando...';
+    try {
+      const r = await fetch(API+'/manaa-magic-request', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({phone})
+      });
+      const data = await r.json();
+      if(data.success){
+        alert('Link enviado no seu WhatsApp! Clica nele pra entrar.');
+      } else { alert('Não foi possível enviar. Verifica o número.'); }
+    } catch(e) { alert('Erro. Tenta de novo.'); }
+    btn.disabled = false; btn.textContent = 'Receber link no WhatsApp';
+  }
+
+  async function verifyOtp(){
+    const otp = document.getElementById('inp-otp').value.trim();
+    if(otp.length !== 6){ showErr('otp',true); return; }
+    const btn = document.getElementById('btn-verify');
+    btn.disabled = true; btn.textContent = 'Verificando...';
+    showErr('otp', false);
+    try {
+      const endpoint = currentChannel === 'email' ? '/manaa-conta-otp-verify-email' : '/manaa-conta-verify';
+      const body = currentChannel === 'email' ? {email: currentEmail, otp} : {phone: currentPhone, otp};
+      const r = await fetch(API+endpoint, {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(body)
+      });
+      const data = await r.json();
+      if(data.success){
+        userData = data.data;
+        currentPhone = (data.data.phone || '').replace(/^\+/, '');
+        sessionToken = data.data.session_token || '';
+        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        renderDash(userData);
+        showScreen('dash');
+      } else { showErr('otp', true); }
+    } catch(e) { showErr('otp', true); }
+    btn.disabled = false; btn.textContent = 'Entrar';
+  }
+
+  function renderDash(d){
+    const firstName = (d.first_name || (d.name || '').split(' ')[0] || '');
+    document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
+    document.getElementById('dash-name').textContent = d.name || '—';
+    document.getElementById('dash-phone').textContent = formatPhone(d.phone) || (d.email || '—');
+    const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
+    const statusText = statusMap[d.status] || d.status || '—';
+    const badge = document.getElementById('dash-badge');
+    if (badge) {
+      badge.textContent = statusText;
+      badge.className = 'badge ' + (d.status || 'trialing');
+    }
+    const planMap = { monthly:'Mensal — R$ 14,99', annual:'Anual — R$ 159,99', free:'Gratuito' };
+    document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
+    if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
+      document.getElementById('row-trial').style.display = 'flex';
+      document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
+    } else { document.getElementById('row-trial').style.display = 'none'; }
+    document.getElementById('dash-horario').textContent = (d.horario || '06:30:00').slice(0,5);
+    const momentoMap = { 'fé':'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
+    document.getElementById('dash-momento').textContent = momentoMap[d.momento_vida] || d.momento_vida || '—';
+  }
+
+  function formatPhone(p){
+    if(!p) return '';
+    const n = p.replace(/\D/g,'');
+    if(n.length === 13) return '+'+n.slice(0,2)+' ('+n.slice(2,4)+') '+n.slice(4,9)+'-'+n.slice(9);
+    return p;
+  }
+  function backToPhone(){ showErr('otp',false); document.getElementById('inp-otp').value = ''; showScreen('phone'); }
+  function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; sessionToken = ''; document.getElementById('inp-email').value = ''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
+
+
+  // Restaurar sessão (se loginToken não estiver na URL)
+  (function(){
+    if (loginToken) return;
+    const saved = localStorage.getItem('manaa_session');
+    if(!saved) return;
+    try{
+      const s = JSON.parse(saved);
+      if(Date.now() - s.ts < 7*24*60*60*1000 && s.data){
+        userData = s.data;
+        currentPhone = s.phone || '';
+        currentEmail = s.email || '';
+        sessionToken = s.sessionToken || '';
+        renderDash(userData);
+        showScreen('dash');
+      }
+    } catch(e){}
+  })();
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/assets/motion.js"></script>
+</body>
+</html>
