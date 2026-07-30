@@ -2,6 +2,19 @@
 <html lang="pt-BR">
 <head>
     <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var reduz = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var hero = document.getElementById('hero-video');
+      if (hero && reduz) { hero.removeAttribute('autoplay'); hero.pause(); }
+      var demo = document.querySelector('.video-conversa');
+      if (demo && !reduz && 'IntersectionObserver' in window) {
+        new IntersectionObserver(function (es) {
+          es.forEach(function (e) { if (e.isIntersecting) { demo.play().catch(function(){}); } else { demo.pause(); } });
+        }, { threshold: 0.4 }).observe(demo);
+      }
+    });
+    </script>
     <link rel="stylesheet" href="/assets/motion.css">
 
     <meta charset="UTF-8">
@@ -774,12 +787,23 @@
             max-width: 360px;
             margin: 0 auto;
         }
-        .hero-media > img {
+        .hero-media > img,
+        .hero-media > video {
             width: 100%;
             height: auto;
             display: block;
             border-radius: 24px;
             box-shadow: 0 24px 60px rgba(70, 50, 20, 0.18), 0 4px 16px rgba(70, 50, 20, 0.08);
+            background: #efe7d9;
+        }
+        .video-conversa {
+            width: 100%;
+            max-width: 340px;
+            display: block;
+            margin: 0 auto;
+            border-radius: 24px;
+            box-shadow: 0 20px 50px rgba(70, 50, 20, 0.16), 0 4px 14px rgba(70, 50, 20, 0.07);
+            background: #efe7d9;
         }
         .hero-media .hero-media-placeholder {
             position: absolute; inset: 0;
@@ -848,7 +872,10 @@
             <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele por WhatsApp · Conformidade LGPD</p>
         </div>
         <div class="hero-media" id="hero-media">
-            <img src="/assets/devocional-exemplo.jpg" alt="Exemplo de devocional diário do Manaã com versículo">
+            <!-- video mudo em loop; quem pede menos animacao ve so o poster -->
+            <video id="hero-video" src="/assets/video/hero-conversa.mp4" poster="/assets/video/hero-conversa.jpg"
+                   autoplay muted loop playsinline preload="metadata"
+                   aria-label="Mulher conversando com o Manaã no WhatsApp à noite"></video>
         </div>
     </section>
 
@@ -1015,6 +1042,11 @@
         <div class="section-label">Ao vivo</div>
         <h2 class="section-title">Veja como é na prática</h2>
         <p class="section-desc">Reflexão, pedido de oração e áudio — tudo no mesmo WhatsApp, do jeito mais simples possível.</p>
+        <div style="display:flex;justify-content:center;margin:28px 0 8px;" data-reveal>
+          <video class="video-conversa" src="/assets/video/duvida.mp4" poster="/assets/video/duvida.jpg"
+                 muted loop playsinline controls preload="none"
+                 aria-label="Conversa: quando bate a dúvida, o Manaã acolhe sem julgar"></video>
+        </div>
         <div style="display:flex;justify-content:center;margin-top:32px;">
           <div id="wa-demo-root" style="font-family:-apple-system,'Segoe UI','Helvetica Neue',sans-serif;">
 
