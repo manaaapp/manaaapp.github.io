@@ -1,6 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
+    <link rel="stylesheet" href="/assets/motion.css">
+
+<link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Manaã — Comece sua jornada</title>
@@ -312,7 +318,7 @@
 
 <div class="container">
   <a href="/" class="brand" style="text-decoration:none;color:inherit">
-    <div class="brand-logo" style="background:none"><img src="/assets/manaa-logo-round.png" alt="Manaã" style="width:52px;height:52px;object-fit:contain"></div>
+    <div class="brand-logo" style="background:none;box-shadow:none;border-radius:0"><img src="/assets/manaa-logo-round.png?v=2" alt="Manaã" style="width:52px;height:52px;object-fit:contain"></div>
     <div class="brand-text">
       <span class="brand-name">Manaã</span>
       <span class="brand-tag">Seu companheiro de fé no WhatsApp</span>
@@ -879,21 +885,9 @@
     };
   });
 
-  function planMove(d) {
-    planoIdx = (planoIdx + d + planos.length) % planos.length;
-    plano = planos[planoIdx];
-    document.getElementById("plan-track").style.transform = `translateX(-${planoIdx * 100}%)`;
-    document.querySelectorAll(".plan-dot").forEach((dot, i) => dot.classList.toggle("active", i === planoIdx));
-    // Mostra/esconde bloco email+CPF baseado no plano
-    const pagoFields = document.getElementById("pago-fields");
-    if (pagoFields) {
-      const isPago = (plano === "mensal" || plano === "anual");
-      pagoFields.style.display = isPago ? "block" : "none";
-    }
-  }
-  // Inicializa posição
-  setTimeout(() => planMove(0), 50);
-  document.querySelectorAll(".plan-dot").forEach((dot, i) => dot.onclick = () => { planMove(i - planoIdx); });
+  // planMove/plan-track = carrossel ANTIGO, substituído pelo #plan-cards + selectPlanV2.
+  // Removido: o elemento "plan-track" não existe mais, então ele lançava
+  // "Cannot read properties of null" em toda carga da página e a cada clique nas bolinhas.
 
   document.querySelectorAll("#chips-genero .chip").forEach(c => {
     c.onclick = () => {
@@ -974,7 +968,7 @@
 
       // Após cadastrar: se trial, redireciona direto pro WhatsApp.
       // Se mensal/anual, chama ASAAS pra gerar cobrança e redireciona pro gateway.
-      const WA_NUMBER = "15559382375"; // número de teste do Manaã na Meta (dev mode)
+      const WA_NUMBER = "5543988709624"; // número oficial Manaã (Cloud API, +55 43 98870-9624)
       const msgsPorPlano = {
         trial: "Olá Manaã! Acabei de me cadastrar e quero começar meu teste 🙏",
         mensal: "Olá Manaã! Acabei de pagar o plano mensal, quero ativar 🙏",
@@ -1073,7 +1067,7 @@
         } catch (pe) {
           const err = document.getElementById("err-final");
           const waMsg = encodeURIComponent('Oi Manaã 🙏 tentei pagar pelo site mas deu erro. Pode me ajudar?');
-          err.innerHTML = '<div style="background:#fef5e6;border:1px solid #d4a849;padding:16px;border-radius:12px;color:#5C4A1A"><div style="font-weight:700;margin-bottom:6px">Algo deu errado na cobrança</div><div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">Pode ser conexão, banco offline ou cartão recusado. Tenta de novo em alguns segundos.</div><a href="https://wa.me/15559382375?text=' + waMsg + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg> Chamar Manaã no WhatsApp</a></div>';
+          err.innerHTML = '<div style="background:#fef5e6;border:1px solid #d4a849;padding:16px;border-radius:12px;color:#5C4A1A"><div style="font-weight:700;margin-bottom:6px">Algo deu errado na cobrança</div><div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">Pode ser conexão, banco offline ou cartão recusado. Tenta de novo em alguns segundos.</div><a href="https://wa.me/5543988709624?text=' + waMsg + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg> Chamar Manaã no WhatsApp</a></div>';
           err.style.display = "block";
           btn.disabled = false;
           btn.textContent = "Começar minha jornada";
@@ -1082,7 +1076,7 @@
     } catch (e) {
       const err = document.getElementById("err-final");
       const waMsg = encodeURIComponent('Oi Manaã 🙏 tentei me cadastrar pelo site mas deu erro. Pode me ajudar?');
-      err.innerHTML = '<div style="background:#fef5e6;border:1px solid #d4a849;padding:16px;border-radius:12px;color:#5C4A1A"><div style="font-weight:700;margin-bottom:6px">Algo deu errado</div><div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">Não conseguimos finalizar agora. Tenta de novo ou nos chama direto no WhatsApp.</div><a href="https://wa.me/15559382375?text=' + waMsg + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg> Chamar Manaã no WhatsApp</a></div>';
+      err.innerHTML = '<div style="background:#fef5e6;border:1px solid #d4a849;padding:16px;border-radius:12px;color:#5C4A1A"><div style="font-weight:700;margin-bottom:6px">Algo deu errado</div><div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">Não conseguimos finalizar agora. Tenta de novo ou nos chama direto no WhatsApp.</div><a href="https://wa.me/5543988709624?text=' + waMsg + '" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413"/></svg> Chamar Manaã no WhatsApp</a></div>';
       err.style.display = "block";
       btn.disabled = false;
       btn.textContent = "Começar minha jornada";
@@ -1370,6 +1364,31 @@ function getFullOnboardPayload() {
   };
 }
 
+// Mensagem de falha em português claro (público 50+), sempre com saída pelo WhatsApp.
+// Nunca mostrar texto técnico do navegador ("Failed to fetch", "TypeError...").
+function mensagemDeFalha(e, contexto) {
+  const bruto = (e && e.message) ? String(e.message) : '';
+  const tecnico = /failed to fetch|networkerror|load failed|typeerror|__backend__|error in workflow|internal server/i.test(bruto);
+  const semRede = /failed to fetch|networkerror|load failed/i.test(bruto);
+  let titulo, texto;
+  if (semRede) {
+    titulo = 'Sem conexão';
+    texto = 'Não conseguimos falar com o servidor. Confira sua internet e toque no botão de novo — nada foi cobrado.';
+  } else if (contexto === 'cadastro') {
+    titulo = 'Não conseguimos concluir seu cadastro';
+    texto = 'Deu um problema aqui do nosso lado. Tente de novo em alguns segundos. Se continuar, fale com a gente no WhatsApp que resolvemos na hora.';
+  } else {
+    titulo = 'Não conseguimos concluir o pagamento';
+    texto = (bruto && !tecnico) ? bruto : 'Deu um problema ao processar. Tente de novo em alguns segundos ou escolha outra forma de pagamento. Se continuar, fale com a gente no WhatsApp.';
+  }
+  const msg = encodeURIComponent('Oi Manaã 🙏 tentei me cadastrar no site e deu erro. Podem me ajudar?');
+  return '<div><div style="font-weight:700;margin-bottom:6px">' + titulo + '</div>'
+    + '<div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">' + texto + '</div>'
+    + '<a href="https://wa.me/5543988709624?text=' + msg + '" target="_blank" rel="noopener" '
+    + 'style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px">'
+    + 'Falar com o Manaã no WhatsApp</a></div>';
+}
+
 async function submitForm() {
   const isTrial = currentPlanV2 === 'trial';
   const lgpd = document.getElementById('lgpd').checked;
@@ -1392,17 +1411,29 @@ async function submitForm() {
 
   if (isTrial) {
     try {
-      await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+      const rOn = await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
         method:'POST', headers:{'Content-Type':'application/json'},
         body: JSON.stringify(getFullOnboardPayload())
       });
+      // Só comemora se o cadastro REALMENTE foi aceito. Antes redirecionava pra
+      // tela de sucesso mesmo com erro 500 no backend (pessoa achava que assinou).
+      if (!rOn.ok) throw new Error('__BACKEND__');
+      let okBody = true;
+      try {
+        const txt = (await rOn.text() || '').trim();
+        if (txt) {
+          const j = JSON.parse(txt);
+          if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
+        }
+      } catch(_) { /* resposta sem JSON = tolerada */ }
+      if (!okBody) throw new Error('__BACKEND__');
       window.location.href = '/pagamento-sucesso.html?plan=trial';
       return;
     } catch(e) {
       btn.disabled=false;
       if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
       errEl.style.display='flex';
-      errEl.textContent = (e && e.message) ? e.message : 'Não conseguimos cadastrar agora. Tente de novo em instantes.';
+      errEl.innerHTML = mensagemDeFalha(e, 'cadastro');
       errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     return;
@@ -1464,7 +1495,7 @@ async function submitForm() {
     btn.disabled=false;
     if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
     errEl.style.display='flex';
-    errEl.textContent = (e && e.message) ? e.message : 'Algo deu errado ao processar o pagamento. Tente novamente em instantes.';
+    errEl.innerHTML = mensagemDeFalha(e, 'pagamento');
     errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
@@ -1597,5 +1628,8 @@ selectPlanV2('mensal');
 
 </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/assets/motion.js"></script>
 </body>
 </html>
