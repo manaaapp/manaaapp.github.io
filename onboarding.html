@@ -1359,7 +1359,10 @@ function getFullOnboardPayload() {
     ocupacao: document.getElementById('ocupacao').value.trim(),
     proposito: document.getElementById('proposito').value.trim(),
     plano: currentPlanV2,
-    lgpd: document.getElementById('lgpd').checked
+    lgpd: document.getElementById('lgpd').checked,
+    // prova de consentimento (o IP vem do servidor; aqui vai o aparelho/navegador)
+    user_agent: navigator.userAgent,
+    aceite_versao: '1.0'
   };
 }
 
