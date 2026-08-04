@@ -154,6 +154,7 @@
     <p class="hint">Digite o email cadastrado pra receber um código de acesso.</p>
     <label for="inp-email">Email</label>
     <input type="email" id="inp-email" placeholder="seu@email.com" autocomplete="email">
+    <p class="hint" id="dica-email" style="display:none;margin:6px 0 0;font-size:13.5px"></p>
     <div class="err" id="err-phone">Email não encontrado. Confirme se foi o email cadastrado.</div>
     <button class="btn" id="btn-send" onclick="sendOtpEmail()">Receber código por email</button>
     <a href="https://wa.me/5543988709624?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
@@ -371,6 +372,30 @@
     e.target.value = e.target.value.replace(/\D/g,'').slice(0,6);
   });
   document.getElementById('inp-email').addEventListener('keydown', e => { if(e.key==='Enter') sendOtpEmail(); });
+  // O erro ficava preso na tela depois de uma tentativa que falhou: a pessoa corrigia o email e
+  // continuava vendo "Email nao encontrado". Some assim que ela comeca a digitar de novo.
+  document.getElementById('inp-email').addEventListener('input', () => showErr('phone', false));
+
+  // Dica do email cadastrado. O link que o Manaa manda no WhatsApp traz o numero da pessoa, entao
+  // da pra lembrar QUAL email ela usou sem gastar mensagem de WhatsApp (que passa a ser cobrada
+  // em 01/10/2026). Mostra so a primeira letra e o dominio: d***@gmail.com.
+  (async function mostrarDicaEmail(){
+    const waid = (new URLSearchParams(location.search).get('waid') || '').replace(/\D/g,'');
+    if(!waid) return;
+    try {
+      const r = await fetch(API+'/manaa-dica-email?waid='+encodeURIComponent(waid));
+      const d = await r.json();
+      const el = document.getElementById('dica-email');
+      if(d && d.situacao === 'ok' && d.dica){
+        el.textContent = 'Seu email cadastrado começa com ' + d.dica;
+        el.style.display = 'block';
+      }
+      if(d && d.primeiro_nome){
+        const t = document.querySelector('#screen-phone .card-title');
+        if(t) t.textContent = 'Oi, ' + d.primeiro_nome + '!';
+      }
+    } catch(e) { /* sem dica, a pessoa digita o email do mesmo jeito */ }
+  })();
   document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
 
   function showScreen(id){
