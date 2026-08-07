@@ -53,6 +53,11 @@
     .btn-danger:hover{background:var(--danger-soft)}
     .err{color:#7a1f28;font-size:13.5px;margin-top:10px;display:none;background:var(--danger-soft);padding:10px 12px;border-radius:10px;border:1px solid #E8B8B8}
     .err.show{display:block}
+    /* erro do campo fica colado nele, não num aviso solto no fim do formulário */
+    .err-campo{color:#7a1f28;font-size:13px;margin-top:6px;min-height:0;line-height:1.4}
+    .err-campo:empty{display:none}
+    input.invalido{border-color:#C97B7B}
+    input.invalido:focus{box-shadow:0 0 0 3px rgba(201,123,123,.15)}
     .screen{display:none}
     .screen.active{display:block}
 
@@ -315,6 +320,80 @@
     <button class="btn" id="btn-save-edit" onclick="saveEdit()">Salvar alterações</button>
     <button class="btn btn-ghost" onclick="closeEdit()">Voltar</button>
     <div class="err" id="err-edit">Não foi possível salvar. Tenta de novo.</div>
+  </div>
+
+  <!-- TELA 5: ação vinda do link do WhatsApp (mudar plano / trocar cartão).
+       Quem chega aqui já foi identificada pelo link — não pede email nem código. -->
+  <div class="screen" id="screen-acao">
+    <h2 class="card-title" id="acao-titulo">Um instante</h2>
+    <p class="hint" id="acao-sub">Estamos confirmando seu link.</p>
+
+    <div id="acao-cartao" style="display:none">
+      <label for="ac-numero" style="margin-top:14px">Número do cartão</label>
+      <input type="text" id="ac-numero" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" onblur="validaCampo('ac-numero')">
+      <div class="err-campo" id="e-ac-numero" role="alert"></div>
+
+      <label for="ac-nome" style="margin-top:14px">Nome impresso no cartão</label>
+      <input type="text" id="ac-nome" autocomplete="cc-name" placeholder="Como está no cartão" onblur="validaCampo('ac-nome')">
+      <div class="err-campo" id="e-ac-nome" role="alert"></div>
+
+      <div style="display:flex;gap:10px">
+        <div style="flex:1">
+          <label for="ac-mes" style="margin-top:14px">Mês</label>
+          <input type="text" id="ac-mes" inputmode="numeric" autocomplete="cc-exp-month" maxlength="2" placeholder="12" onblur="validaCampo('ac-mes')">
+        </div>
+        <div style="flex:1">
+          <label for="ac-ano" style="margin-top:14px">Ano</label>
+          <input type="text" id="ac-ano" inputmode="numeric" autocomplete="cc-exp-year" maxlength="4" placeholder="2030" onblur="validaCampo('ac-ano')">
+        </div>
+        <div style="flex:1">
+          <label for="ac-cvv" style="margin-top:14px">Código</label>
+          <input type="text" id="ac-cvv" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123" onblur="validaCampo('ac-cvv')">
+        </div>
+      </div>
+      <div class="err-campo" id="e-ac-validade" role="alert"></div>
+
+      <p class="hint" style="margin-top:10px">Os dados vão direto pro processador de pagamento. A gente não guarda seu cartão.</p>
+
+    <div style="margin:14px 0 16px;padding:14px;background:#fafaf7;border:1px solid #ece6d8;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12.5px;color:#5b5448;font-weight:600">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2f7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Pagamento 100% seguro
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start">
+        <!-- Logo PIX (oficial BCB, SVG vetor real) -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center;gap:6px">
+          <svg width="20" height="20" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#32BCAD" d="M45.93 41.07c-1.95 0-3.78-.76-5.16-2.13l-7.43-7.43c-.52-.52-1.43-.52-1.95 0l-7.46 7.46c-1.38 1.38-3.21 2.13-5.16 2.13h-1.46l9.42 9.42c2.94 2.94 7.71 2.94 10.65 0l9.45-9.45h-.9zM18.77 18.93c1.95 0 3.78.76 5.16 2.13l7.46 7.46c.53.53 1.41.53 1.95 0l7.43-7.43c1.38-1.38 3.21-2.13 5.16-2.13h.9l-9.45-9.45c-2.94-2.94-7.71-2.94-10.65 0l-9.42 9.42h1.46zM52.62 24.68l-5.71-5.71c-.13.05-.27.08-.41.08h-2.62c-1.34 0-2.66.55-3.61 1.5l-7.43 7.43c-.69.69-1.59 1.03-2.5 1.03s-1.81-.34-2.5-1.03L20.4 20.55c-.95-.95-2.27-1.5-3.61-1.5h-3.22c-.13 0-.26-.03-.38-.07l-5.71 5.71c-2.94 2.94-2.94 7.71 0 10.65l5.71 5.71c.12-.04.25-.07.38-.07h3.22c1.34 0 2.66-.55 3.61-1.5l7.46-7.46c1.33-1.33 3.66-1.33 4.99 0l7.43 7.43c.95.95 2.27 1.5 3.61 1.5h2.62c.14 0 .28.03.41.08l5.71-5.71c2.94-2.94 2.94-7.71 0-10.65z"/>
+          </svg>
+          <span style="font-size:11px;font-weight:800;color:#32BCAD;letter-spacing:0.3px">PIX</span>
+        </div>
+        <!-- Visa -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div>
+        <!-- Mastercard -->
+        <div style="background:#fff;padding:5px 8px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center">
+          <svg width="28" height="18" viewBox="0 0 48 30"><circle cx="18" cy="15" r="11" fill="#EB001B"/><circle cx="30" cy="15" r="11" fill="#F79E1B"/><path d="M24 6.5a11 11 0 0 0 0 17 11 11 0 0 0 0-17Z" fill="#FF5F00"/></svg>
+        </div>
+        <!-- Elo -->
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:11px;font-weight:900;color:#000">ELO</div>
+        <!-- Amex -->
+        <div style="background:#006FCF;padding:5px 8px;border-radius:6px;font-family:Arial,sans-serif;font-size:9px;font-weight:900;color:#fff;letter-spacing:0.5px">AMEX</div>
+        <!-- ASAAS -->
+        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6b6453">
+          via
+          <span style="font-family:Arial,sans-serif;font-weight:900;font-size:13px;color:#0040ff;letter-spacing:-0.5px">asaas</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#7a7263;line-height:1.4;display:flex;align-items:center;gap:6px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7a7263" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Seus dados são criptografados (SSL) e processados pela ASAAS, fintech licenciada pelo Banco Central.
+      </div>
+    </div>
+    </div>
+
+    <button class="btn" id="acao-btn" style="display:none" onclick="confirmarAcao()">Confirmar</button>
+    <div class="err" id="err-acao">Não foi possível concluir. Tente de novo.</div>
+    <button class="btn btn-ghost" id="acao-voltar" style="display:none" onclick="showScreen('phone')">Entrar com meu email</button>
   </div>
 
 </div>
@@ -629,6 +708,164 @@
       }
     } catch(e){}
   })();
+
+/* ===== Ação vinda do link do WhatsApp: /conta?t=<token>&acao=plano|cartao&plano=anual =====
+   A pessoa pediu no WhatsApp e o bot mandou o link. Ela já foi identificada — não faz sentido
+   pedir email e código de novo. O link é de uso único e o servidor decide tudo; aqui só
+   confirmamos a ação e mostramos o resultado. */
+(function acaoPorLink(){
+  const p = new URLSearchParams(location.search);
+  const token = p.get('t');
+  const acao = p.get('acao');
+  if (!token || !acao) return;
+
+  // tira o token da barra de endereço: ele fica no histórico, em print e em log
+  try { history.replaceState(null, '', location.pathname); } catch(e) {}
+
+  window.__acao = { token: token, tipo: acao, plano: p.get('plano') || '' };
+
+  const t = document.getElementById('acao-titulo');
+  const s = document.getElementById('acao-sub');
+  const btn = document.getElementById('acao-btn');
+  const box = document.getElementById('acao-cartao');
+  showScreen('acao');
+  // "Sua área pessoal" não combina com uma tela que pede cartão. O subtítulo passa a dizer
+  // o que a pessoa está fazendo ali — isso também ajuda quem chegou pelo link e ficou em dúvida.
+  const subTopo = document.querySelector('.brand .sub');
+  if (subTopo) subTopo.textContent = acao === 'cartao' ? 'Atualizar forma de pagamento' : 'Sua assinatura';
+
+  if (acao === 'cartao') {
+    t.textContent = 'Atualizar seu cartão';
+    s.textContent = 'Preencha os dados do cartão novo. A cobrança da sua assinatura passa a usar ele.';
+    box.style.display = 'block';
+    btn.textContent = 'Salvar cartão';
+  } else {
+    const alvo = window.__acao.plano;
+    t.textContent = alvo ? ('Mudar para o plano ' + alvo) : 'Mudar seu plano';
+    s.textContent = alvo === 'anual'
+      ? 'Sua assinatura passa a ser anual. Você não perde nenhum dia do que já pagou.'
+      : 'Sua assinatura passa a ser mensal a partir do próximo ciclo.';
+    btn.textContent = 'Confirmar mudança';
+  }
+  btn.style.display = 'block';
+})();
+
+/* Valida no blur, não a cada tecla: corrigir a pessoa enquanto ela digita é hostil,
+   ainda mais pra quem digita devagar. E o erro aparece colado no campo, não num aviso
+   genérico no fim — quem tem 60 anos não faz a ligação entre os dois. */
+function validaCampo(id){
+  const el = document.getElementById(id);
+  if (!el) return true;
+  const v = (el.value || '').trim();
+  let erro = '';
+
+  if (id === 'ac-numero') {
+    const n = v.replace(/\D/g,'');
+    if (n && n.length < 13) erro = 'Faltam dígitos. O cartão tem 16 números.';
+  } else if (id === 'ac-nome') {
+    if (v && v.length < 3) erro = 'Escreva o nome como está no cartão.';
+  } else if (id === 'ac-mes') {
+    const m = parseInt(v, 10);
+    if (v && (!m || m < 1 || m > 12)) erro = 'Mês entre 01 e 12.';
+  } else if (id === 'ac-ano') {
+    const ano = v.length === 2 ? 2000 + parseInt(v, 10) : parseInt(v, 10);
+    const atual = new Date().getFullYear();
+    if (v && (!ano || ano < atual || ano > atual + 25)) erro = 'Confira o ano de validade.';
+  } else if (id === 'ac-cvv') {
+    if (v && (v.length < 3 || v.length > 4)) erro = 'O código tem 3 ou 4 números.';
+  }
+
+  const alvo = (id === 'ac-mes' || id === 'ac-ano' || id === 'ac-cvv') ? 'e-ac-validade' : ('e-' + id);
+  const cx = document.getElementById(alvo);
+  if (cx) cx.textContent = erro;
+  el.classList.toggle('invalido', !!erro);
+  return !erro;
+}
+
+async function confirmarAcao(){
+  const a = window.__acao || {};
+  const btn = document.getElementById('acao-btn');
+  const t = document.getElementById('acao-titulo');
+  const s = document.getElementById('acao-sub');
+  showErr('acao', false);
+  btn.disabled = true;
+  const rotulo = btn.textContent;
+  btn.textContent = 'Um instante...';
+
+  let rota, corpo;
+  if (a.tipo === 'cartao') {
+    const num = (document.getElementById('ac-numero').value || '').replace(/\D/g,'');
+    const nome = (document.getElementById('ac-nome').value || '').trim();
+    const mes = (document.getElementById('ac-mes').value || '').trim();
+    const ano = (document.getElementById('ac-ano').value || '').trim();
+    const cvv = (document.getElementById('ac-cvv').value || '').trim();
+    // marca o que está faltando NO CAMPO e leva o foco pro primeiro problema
+    const campos = ['ac-numero','ac-nome','ac-mes','ac-ano','ac-cvv'];
+    let primeiroRuim = null;
+    for (const c of campos) {
+      const el = document.getElementById(c);
+      const vazio = !(el.value || '').trim();
+      if (vazio) {
+        const alvo = (c === 'ac-mes' || c === 'ac-ano' || c === 'ac-cvv') ? 'e-ac-validade' : ('e-' + c);
+        document.getElementById(alvo).textContent = 'Preencha este campo.';
+        el.classList.add('invalido');
+      } else {
+        validaCampo(c);
+      }
+      if (!primeiroRuim && el.classList.contains('invalido')) primeiroRuim = el;
+    }
+    if (primeiroRuim) {
+      btn.disabled = false; btn.textContent = rotulo;
+      primeiroRuim.focus();
+      primeiroRuim.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      return;
+    }
+    rota = '/manaa-trocar-cartao';
+    corpo = { token: a.token, creditCard: { holderName: nome, number: num,
+              expiryMonth: mes, expiryYear: ano.length === 2 ? ('20' + ano) : ano, ccv: cvv } };
+  } else {
+    rota = '/manaa-mudar-plano';
+    corpo = { token: a.token, plano: a.plano || 'anual' };
+  }
+
+  // rede ruim não pode virar "deu erro": o público é 60+ e ela precisa saber se pode tentar de novo
+  const ctl = new AbortController();
+  const relogio = setTimeout(() => ctl.abort(), 20000);
+  let d = null, falhou = false;
+  try {
+    const r = await fetch(API + rota, { method:'POST', headers:{'Content-Type':'application/json'},
+                                        body: JSON.stringify(corpo), signal: ctl.signal });
+    d = await r.json();
+  } catch(e) { falhou = true; }
+  finally { clearTimeout(relogio); }
+
+  btn.disabled = false; btn.textContent = rotulo;
+
+  if (falhou || !d) {
+    document.getElementById('err-acao').textContent = 'Não conseguimos falar com o servidor. Pode ser a internet — tente de novo.';
+    showErr('acao', true);
+    return;
+  }
+  if (!d.ok) {
+    document.getElementById('err-acao').textContent = d.motivo || 'Não foi possível concluir.';
+    showErr('acao', true);
+    document.getElementById('acao-voltar').style.display = 'block';
+    return;
+  }
+
+  // deu certo
+  document.getElementById('acao-cartao').style.display = 'none';
+  btn.style.display = 'none';
+  if (a.tipo === 'cartao') {
+    t.textContent = 'Cartão atualizado';
+    s.textContent = 'Pronto. As próximas cobranças vão usar o cartão final ' + (d.final || '') + '.';
+  } else {
+    t.textContent = 'Plano alterado';
+    s.textContent = 'Sua assinatura agora é ' + (d.plano || '') + '. Nada muda no seu devocional de amanhã.';
+  }
+  document.getElementById('acao-voltar').textContent = 'Ver minha conta';
+  document.getElementById('acao-voltar').style.display = 'block';
+}
 </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>

@@ -91,7 +91,9 @@
   }
   .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
   .brand-name {
-    font-family: 'Lora', Georgia, serif;
+    /* A marca Manaa usa Playfair Display em todo o site. Aqui estava Lora, e a diferenca
+       aparecia justamente na tela onde a pessoa decide se confia o suficiente pra pagar. */
+    font-family: 'Playfair Display', Georgia, serif;
     font-size: 24px; font-weight: 700;
     color: var(--gold-deep);
     letter-spacing: -0.01em;
@@ -317,7 +319,7 @@
 
 <div class="container">
   <a href="/" class="brand" style="text-decoration:none;color:inherit">
-    <div class="brand-logo" style="background:none;box-shadow:none;border-radius:0"><img src="/assets/manaa-logo-round.png?v=2" alt="Manaã" style="width:52px;height:52px;object-fit:contain"></div>
+    <div class="brand-logo" style="background:none;box-shadow:none;border-radius:0"><img src="/assets/manaa-logo-round.png?v=2" alt="Manaã" style="width:48px;height:48px;object-fit:contain"></div>
     <div class="brand-text">
       <span class="brand-name">Manaã</span>
       <span class="brand-tag">Seu companheiro de fé no WhatsApp</span>
@@ -338,23 +340,23 @@
 
     <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
       <div class="field">
-        <label>Nome</label>
+        <label for="first-name">Nome</label>
         <input type="text" id="first-name" placeholder="Ex: Maria" required autocomplete="given-name">
       </div>
       <div class="field">
-        <label>Sobrenome</label>
+        <label for="last-name">Sobrenome</label>
         <input type="text" id="last-name" placeholder="Ex: Silva" required autocomplete="family-name">
       </div>
     </div>
 
     <div class="field">
-      <label>WhatsApp (com DDD)</label>
+      <label for="phone">WhatsApp (com DDD)</label>
       <input type="tel" id="phone" placeholder="(43) 99999-9999" required autocomplete="tel-national">
       <div class="hint">É pra esse número que vamos enviar.</div>
     </div>
 
     <div class="field">
-      <label>Email</label>
+      <label for="email">Email</label>
       <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email">
       <div class="hint">Pra você acessar sua conta depois.</div>
     </div>
@@ -370,7 +372,7 @@
     </div>
 
     <div class="field">
-      <label>Você é de qual religião/tradição?</label>
+      <label for="religiao">Você é de qual religião/tradição?</label>
       <select id="religiao">
         <option value="">Prefiro não dizer</option>
         <option value="catolico">Católica</option>
@@ -381,7 +383,7 @@
     </div>
 
     <div class="field">
-      <label>Quem te inspira espiritualmente? (opcional)</label>
+      <label for="inspiracoes">Quem te inspira espiritualmente? (opcional)</label>
       <input type="text" id="inspiracoes" placeholder="Ex: Padre Fábio de Melo, Aline Barros, Provérbios">
       <div class="hint">Pode citar pessoas, livros bíblicos, músicas — qualquer coisa que te toca. Pula se preferir.</div>
     </div>
@@ -395,7 +397,7 @@
     <p class="step-sub">Pra escolher a melhor hora pra te alcançar.</p>
 
     <div class="field">
-      <label>Que horas você quer receber o devocional?</label>
+      <label for="horario">Que horas você quer receber o devocional?</label>
       <select id="horario" required>
         <option value="05:00">05:00</option>
         <option value="05:30">05:30</option>
@@ -437,7 +439,7 @@
     </div>
 
     <div class="field">
-      <label>Versão da Bíblia preferida</label>
+      <label for="versao">Versão da Bíblia preferida</label>
       <select id="versao">
         <option value="">Sem preferência</option>
         <option value="ARC">Almeida Corrigida (ARC)</option>
@@ -504,13 +506,13 @@
     </div>
 
     <div class="field">
-      <label>Sua ocupação (opcional)</label>
+      <label for="ocupacao">Sua ocupação (opcional)</label>
       <input type="text" id="ocupacao" placeholder="Ex: professora, motorista, dona de casa, aposentada">
       <div class="hint">Ajuda a gente a entender o seu dia a dia.</div>
     </div>
 
     <div class="field">
-      <label>Por que você quer o Manaã? (opcional)</label>
+      <label for="proposito">Por que você quer o Manaã? (opcional)</label>
       <textarea id="proposito" placeholder="Ex: Quero começar o dia com algo bom. / Tô voltando pra fé. / Procuro paz."></textarea>
     </div>
 
@@ -690,7 +692,7 @@
     <div class="pay-list" id="pay-anual" style="display:none">
       <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento único de R$ 159,99. Confirmação na hora.</div></div></label>
       <label class="pay-opt" data-pay="CC_AVISTA"><input type="radio" name="pay-a" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão à vista</div><div class="pay-opt-desc">R$ 159,99 em uma parcela.</div></div></label>
-      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_PARC"><div style="flex:1"><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Sem juros pra você. Escolha em quantas vezes:</div><select id="cc-parcelas" style="margin-top:8px;padding:8px 10px;border:1.5px solid #E5DDD0;border-radius:8px;font-size:13.5px;font-family:inherit;width:100%;background:#fff" onclick="event.stopPropagation()">
+      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_PARC"><div style="flex:1"><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Sem juros pra você. Escolha em quantas vezes:</div><select id="cc-parcelas" style="margin-top:8px;padding:10px 12px;border:1.5px solid #E5DDD0;border-radius:8px;font-size:16px;min-height:44px;font-family:inherit;width:100%;background:#fff" onclick="event.stopPropagation()">
         <option value="2">2x de R$ 79,99</option>
         <option value="3">3x de R$ 53,33</option>
         <option value="4">4x de R$ 40,00</option>
@@ -716,13 +718,13 @@
         <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Dados do cartão</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr;gap:8px">
-        <div class="field"><label>Número do cartão</label><input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="letter-spacing:0.5px"></div>
-        <div class="field"><label>Nome impresso</label><input id="cc-name" type="text" placeholder="Igual no cartão" style="text-transform:uppercase"></div>
+        <div class="field"><label for="cc-number">Número do cartão</label><input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="letter-spacing:0.5px"></div>
+        <div class="field"><label for="cc-name">Nome impresso</label><input id="cc-name" type="text" placeholder="Igual no cartão" style="text-transform:uppercase"></div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px">
-        <div class="field"><label>Mês</label><input id="cc-month" type="text" inputmode="numeric" maxlength="2" placeholder="MM"></div>
-        <div class="field"><label>Ano</label><input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA"></div>
-        <div class="field"><label>CVV</label><input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000"></div>
+        <div class="field"><label for="cc-month">Mês</label><input id="cc-month" type="text" inputmode="numeric" maxlength="2" placeholder="MM"></div>
+        <div class="field"><label for="cc-year">Ano</label><input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA"></div>
+        <div class="field"><label for="cc-cvv">CVV</label><input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000"></div>
       </div>
     </div>
 
@@ -732,12 +734,12 @@
         <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Pra finalizar o pagamento</div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
-        <div class="field" style="margin-bottom:0"><label>Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
-        <div class="field" style="margin-bottom:0"><label>CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" inputmode="numeric"></div>
+        <div class="field" style="margin-bottom:0"><label for="pag-email-static">Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field" style="margin-bottom:0"><label for="pag-cpf-static">CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" inputmode="numeric"></div>
       </div>
       <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:10px">
-        <div class="field" style="margin-bottom:0"><label>CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code"></div>
-        <div class="field" style="margin-bottom:0"><label>Número</label><input id="cc-num" type="text" placeholder="Ex: 100" autocomplete="address-line2"></div>
+        <div class="field" style="margin-bottom:0"><label for="cc-cep">CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code"></div>
+        <div class="field" style="margin-bottom:0"><label for="cc-num">Número</label><input id="cc-num" type="text" placeholder="Ex: 100" autocomplete="address-line2"></div>
       </div>
       <small style="color:#7a7263;display:block;margin-top:10px;font-size:11.5px;line-height:1.5">Exigido pelo processador e pra emissão da nota fiscal. Sem cobrança antes da confirmação.</small>
     </div>
@@ -1449,12 +1451,16 @@ async function submitForm() {
     return;
   }
 
-  try {
-    await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(getFullOnboardPayload())
-    });
-  } catch(e) {}
+  // Quem entrou pelo link do WhatsApp já está cadastrada e pulou os passos 2 e 3 — reenviar o
+  // onboarding com eles vazios apagaria horário de envio, versão da bíblia e preferências dela.
+  if (!window.__reativacao) {
+    try {
+      await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(getFullOnboardPayload())
+      });
+    } catch(e) {}
+  }
 
   const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
 
@@ -1467,6 +1473,9 @@ async function submitForm() {
       postalCode, addressNumber,
       consent: document.getElementById('consent-cb').checked
     };
+    // O token manda mais que o telefone digitado: é ele que diz de quem é esta assinatura.
+    // Sem isso, um dígito trocado no campo criaria cadastro novo e o pagamento sumiria.
+    if (window.__reativacao) payload.reativacao_token = window.__reativacao;
     if (billingFinal === 'CREDIT_CARD') {
       payload.creditCard = {
         holderName: document.getElementById('cc-name').value.trim().toUpperCase(),
@@ -1627,6 +1636,118 @@ async function pollPaymentStatus(paymentId) {
 }
 
 selectPlanV2('mensal');
+
+/* ===== Entrada pelo link do WhatsApp: manaaapp.com/onboarding.html?r=<token> =====
+   Quem já é cadastrada não pode ser obrigada a refazer os 5 passos só pra pagar — o
+   público é 60+ e cada campo a mais é gente que desiste. O token identifica a pessoa,
+   a página preenche o que já sabemos e abre direto o pagamento pedindo só o que falta:
+   CPF, CEP e número. Sem digitar código, sem recadastro. */
+(function entradaPorToken() {
+  const token = new URLSearchParams(location.search).get('r');
+  if (!token) return;
+
+  // Tira o token da barra de endereço assim que lemos. Ele fica no histórico, em print de
+  // tela, em log de CDN e no Referer — e é a chave da conta dela.
+  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+
+  const wrap = document.querySelector('.wrap') || document.body;
+  const aviso = document.createElement('div');
+  aviso.style.cssText = 'padding:16px;text-align:center;font-size:16px;line-height:1.5;color:#7a7263';
+  wrap.prepend(aviso);
+
+  const botao = (texto, acao) => {
+    const b = document.createElement('button');
+    b.textContent = texto;
+    b.style.cssText = 'margin-top:10px;background:#B8912E;color:#fff;border:0;padding:12px 22px;' +
+                      'border-radius:8px;font-size:16px;font-weight:600;cursor:pointer';
+    b.onclick = acao;
+    return b;
+  };
+
+  async function validar() {
+    aviso.textContent = 'Um instante, estamos te reconhecendo...';
+    aviso.style.color = '#7a7263';
+
+    // Sem isso a tela fica em "um instante" pra sempre quando a rede trava.
+    const ctl = new AbortController();
+    const relogio = setTimeout(() => ctl.abort(), 12000);
+    let d = null, falhaDeRede = false;
+    try {
+      const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-reativar-token', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ token }), signal: ctl.signal
+      });
+      if (!r.ok) { falhaDeRede = true; }
+      else { d = await r.json(); }
+    } catch (e) {
+      falhaDeRede = true;   // abort, offline, DNS, CORS — nada disso quer dizer link vencido
+    } finally { clearTimeout(relogio); }
+
+    // Rede ruim NÃO é link vencido. Dizer "expirou" aqui joga a pessoa de volta nos 5 passos
+    // por causa de um 4G instável — justamente o que esta tela existe pra evitar.
+    if (falhaDeRede || !d) {
+      aviso.style.color = '#8B6914';
+      aviso.textContent = 'Não conseguimos confirmar seus dados agora. Pode ser a internet.';
+      aviso.appendChild(document.createElement('br'));
+      aviso.appendChild(botao('Tentar de novo', validar));
+      const outro = botao('Preencher meus dados', () => aviso.remove());
+      outro.style.background = 'transparent'; outro.style.color = '#8B6914';
+      outro.style.textDecoration = 'underline'; outro.style.marginLeft = '8px';
+      aviso.appendChild(outro);
+      return;
+    }
+
+    if (!d.ok) {
+      aviso.style.color = '#8B6914';
+      aviso.textContent = 'Esse link já foi usado ou passou da validade. É só preencher seus dados aqui embaixo que a gente continua.';
+      return;
+    }
+
+    // O checkout vai casar a pessoa por ESTE token, não pelo telefone da tela — o campo é
+    // editável e um dígito trocado mandaria o pagamento pro cadastro errado.
+    window.__reativacao = token;
+
+    const set = (id, v) => {
+      const e = document.getElementById(id);
+      if (!e || !v) return;
+      e.value = v;
+      e.dispatchEvent(new Event('input', {bubbles:true}));
+    };
+    set('first-name', d.first_name);
+    set('last-name', d.last_name);
+    set('phone', d.phone);
+    set('email', d.email);
+    set('pag-email-static', d.email);
+
+    // Esconder o card de trial é só conforto visual; quem barra o teste repetido é o servidor.
+    const cardTrial = Array.prototype.find.call(
+      document.querySelectorAll('.step[data-step="4"] .plan-card'),
+      c => /teste gr|7 dias gr|trial/i.test(c.innerText));
+    if (cardTrial) cardTrial.style.display = 'none';
+
+    aviso.remove();
+    selectPlanV2('mensal');
+    (typeof goStepV2 === 'function' ? goStepV2 : showStep)(4);
+
+    const titulo = document.querySelector('.step[data-step="4"] .step-title');
+    const sub = document.querySelector('.step[data-step="4"] .step-sub');
+    if (titulo) titulo.textContent = 'Que bom te ver de volta, ' + (d.first_name || '') + '!';
+    if (sub) {
+      sub.textContent = d.falta_email
+        ? 'Falta só o seu email, o CPF e o endereço pra emitir a nota fiscal.'
+        : 'Seus dados já estão aqui. Falta só confirmar o pagamento pra continuar recebendo seu devocional.';
+    }
+    // Sem email o checkout não emite nota: leva ela direto pro campo em vez de deixar o botão
+    // travado sem explicação.
+    if (d.falta_email) {
+      const campo = document.getElementById('pag-email-static');
+      if (campo) { campo.focus(); campo.scrollIntoView({block:'center', behavior:'smooth'}); }
+    }
+    if (typeof refreshPayButton === 'function') refreshPayButton();
+  }
+
+  validar();
+})();
 
 </script>
 
