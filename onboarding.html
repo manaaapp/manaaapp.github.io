@@ -1553,6 +1553,7 @@ function renderStep5Result(data) {
     const ciclo = isAnual ? '' : '/mês';
     sub.innerHTML = `
 <div style="max-width:340px;margin:-8px auto 0;text-align:left;font-family:'Inter',system-ui,sans-serif">
+  ${data.retomada ? `<div style="background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#7A6420;line-height:1.45">Esta é a cobrança que você já tinha aberto — é a mesma, não vai cobrar duas vezes.</div>` : ''}
   <div style="background:#fff;border:1px solid #E5DDD0;border-radius:14px;padding:18px 18px 14px;margin-bottom:10px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px">
       <div>
@@ -1612,8 +1613,9 @@ function renderStep5Result(data) {
     window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
     return;
   } else if (data.invoiceUrl) {
-    title.textContent = 'Tudo pronto';
-    sub.innerHTML = '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
+    title.textContent = data.retomada ? 'Você já tem uma cobrança aberta' : 'Tudo pronto';
+    sub.innerHTML = (data.retomada && data.mensagem ? '<div style="font-size:13px;color:#5C564D;line-height:1.5;margin-bottom:4px">' + data.mensagem + '</div>' : '')
+      + '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
   }
 }
 
