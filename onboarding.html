@@ -908,10 +908,9 @@
     return "+" + p;
   }
 
-  // A submissao antiga foi removida em 15/08: era codigo morto (ninguem chamava
-  // _OLDSUBMIT) e apontava para um endereco de webhook que hoje responde 404. Codigo morto
-  // com endereco quebrado engana quem le e faz procurar defeito onde nao ha.
-  // O caminho vivo do pagamento e o Checkout v2, logo abaixo.
+  // A submissao antiga foi removida em 15/08: ninguem a chamava e ela apontava para um webhook
+  // que hoje responde 404. Codigo morto com endereco quebrado engana quem le e faz procurar
+  // defeito onde nao ha. O caminho vivo do pagamento e o Checkout v2, logo abaixo.
 
 // === Checkout v2 integrado ===
 const WORKER_URL_CHK = 'https://manaa-meta-webhook.manaa-fbx.workers.dev';
