@@ -10,22 +10,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <!-- Analytics: sem isto a pagina de pagamento confirmado nao existia para o Analytics, e o funil
-     ficava cego justamente no fim — dava para ver quem chegava na home e ninguem que pagava. -->
+     ficava cego justamente no fim — dava para ver quem chegava na home e ninguem que pagava.
+     A VENDA nao e contada aqui: abrir esta pagina nao prova pagamento (basta voltar pelo
+     historico). O evento de receita so sai depois que o gateway confirmar — ver o fim do arquivo. -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
 <script>
   window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
   gtag('js',new Date());gtag('config','G-S3Q89PDH61');
-  (function(){
-    var p = new URLSearchParams(location.search);
-    var plano = p.get('plan') || '';
-    // o valor sai do plano, nao da URL: numero que vem na barra de endereco e chute de quem digita
-    var valor = plano === 'anual' ? 159.99 : (plano === 'mensal' ? 14.99 : 0);
-    gtag('event', 'purchase', {
-      transaction_id: p.get('id') || '',
-      value: valor, currency: 'BRL',
-      items: [{ item_name: 'Manaa ' + (plano || 'assinatura'), price: valor, quantity: 1 }]
-    });
-  })();
 </script>
 <title>Pagamento confirmado — Manaã</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
@@ -120,6 +111,23 @@
      voltou pelo historico do navegador cairia aqui e acharia que estava tudo certo — depois
      nao pagaria e sumiria sem entender.
      Quando vier o identificador do pagamento na URL, conferimos de verdade antes de afirmar. */
+  /* A venda so e contada quando o gateway confirma. Abrir esta pagina nao prova nada: quem gerou
+     um PIX, nao pagou e voltou pelo historico cai aqui igual. E recarregar a pagina nao pode
+     contar a mesma venda duas vezes — dai a marca em localStorage por identificador. */
+  var PLANOS = { mensal: 14.99, anual: 159.99 };
+  function contarVenda(id, plano) {
+    try {
+      if (!id || !PLANOS[plano]) return;                 // sem cobranca ou plano nao pagavel
+      var marca = 'manaa_venda_' + id;
+      if (localStorage.getItem(marca)) return;           // ja contada neste navegador
+      localStorage.setItem(marca, '1');
+      gtag('event', 'purchase', {
+        transaction_id: id, value: PLANOS[plano], currency: 'BRL',
+        items: [{ item_name: 'Manaa ' + plano, price: PLANOS[plano], quantity: 1 }]
+      });
+    } catch (e) { /* navegador sem localStorage nao pode derrubar a tela */ }
+  }
+
   async function confereStatus(id) {
     if (!id) return null;
     try {
@@ -128,7 +136,8 @@
       const r = await fetch('https://manaa-meta-webhook.manaa-fbx.workers.dev/webhook/manaa-asaas-status?id='
                             + encodeURIComponent(id), { signal: ctl.signal });
       const d = await r.json();
-      return String((d && d.status) || '').toLowerCase();
+      return { status: String((d && d.status) || '').toLowerCase(),
+               plano:  String((d && d.plano)  || '').toLowerCase() };
     } catch (e) { return null; }   // rede ruim nao vira acusacao de nao ter pago
   }
 
@@ -153,10 +162,12 @@
     // se veio identificador, confirma com o gateway antes de manter o "confirmado"
     var idPg = p.get('id');
     if (idPg && plan !== 'trial' && plan !== 'free_trial') {
-      confereStatus(idPg).then(function (st) {
-        if (!st) return;                                   // nao conseguiu conferir: nao muda nada
-        var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(st) >= 0;
-        if (pago) return;
+      confereStatus(idPg).then(function (resp) {
+        if (!resp || !resp.status) return;                 // nao conseguiu conferir: nao muda nada
+        var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(resp.status) >= 0;
+        // o plano vem do gateway, nao da barra de endereco: trocar plan=mensal por plan=anual
+        // na URL inflaria a receita relatada sem ninguem perceber
+        if (pago) { contarVenda(idPg, resp.plano || plan); return; }
         var t = document.getElementById('title');
         var sb = document.getElementById('sub');
         var ck = document.querySelector('.check-wrap');
