@@ -9,6 +9,24 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+<!-- Analytics: sem isto a pagina de pagamento confirmado nao existia para o Analytics, e o funil
+     ficava cego justamente no fim — dava para ver quem chegava na home e ninguem que pagava. -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}
+  gtag('js',new Date());gtag('config','G-S3Q89PDH61');
+  (function(){
+    var p = new URLSearchParams(location.search);
+    var plano = p.get('plan') || '';
+    // o valor sai do plano, nao da URL: numero que vem na barra de endereco e chute de quem digita
+    var valor = plano === 'anual' ? 159.99 : (plano === 'mensal' ? 14.99 : 0);
+    gtag('event', 'purchase', {
+      transaction_id: p.get('id') || '',
+      value: valor, currency: 'BRL',
+      items: [{ item_name: 'Manaa ' + (plano || 'assinatura'), price: valor, quantity: 1 }]
+    });
+  })();
+</script>
 <title>Pagamento confirmado — Manaã</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
 <style>
