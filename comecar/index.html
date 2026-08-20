@@ -8,19 +8,19 @@
 <meta property="og:title" content="Manaã">
 <meta property="og:description" content="Seu companheiro de fé no WhatsApp.">
 <script>
-  // Redireciona para a conversa no WhatsApp do Manaã (+55 43 98870-9624).
-  // A marca entre colchetes diz DE ONDE a pessoa veio: o webhook lê a primeira mensagem,
-  // extrai a marca e grava em assinantes.origem. Sem isso não dá para saber se quem chegou
-  // veio de um devocional encaminhado ou de um convite mandado a mão.
-  // ?o=multiplicador, ?o=celula-norte etc. — só letras, números, hífen e _, de 2 a 30 chars.
-  var origem = (new URLSearchParams(location.search).get("o") || "devocional")
-    .replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30) || "devocional";
-  var texto = "Oi! Quero começar meu devocional no Manaã 🙏 [" + origem + "]";
+  // O link limpo (manaaapp.com/comecar) manda a mensagem SEM marca nenhuma — é o que vai no
+  // devocional e o que a pessoa lê. Marca no texto do usuário é lixo visual.
+  // A marca só entra quando alguém monta um convite com ?o=..., que é o caso dos
+  // multiplicadores. Aí o webhook lê a primeira mensagem, extrai o que está entre colchetes e
+  // grava em assinantes.origem, e dá para separar quem veio de qual convite.
+  var o = (new URLSearchParams(location.search).get("o") || "")
+    .replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
+  var texto = "Oi! Quero começar meu devocional no Manaã 🙏" + (o ? " [" + o + "]" : "");
   var destino = "https://wa.me/5543988709624?text=" + encodeURIComponent(texto);
   location.replace(destino);
 </script>
 <noscript>
-  <meta http-equiv="refresh" content="0;url=https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F%20%5Bdevocional%5D">
+  <meta http-equiv="refresh" content="0;url=https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">
 </noscript>
 <style>
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;
@@ -31,10 +31,10 @@
 <body>
   <div>
     <p>Abrindo o WhatsApp do Manaã…</p>
-    <p>Se não abrir automaticamente, <a id="link" href="https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F%20%5Bdevocional%5D">toque aqui</a>.</p>
+    <p>Se não abrir automaticamente, <a id="link" href="https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">toque aqui</a>.</p>
   </div>
   <script>
-    // O link de escape carrega a mesma marca do redirect automático.
+    // O link de escape carrega a mesma marca (ou a ausência dela) do redirect automático.
     var a = document.getElementById("link");
     if (a) { a.href = destino; }
   </script>
