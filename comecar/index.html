@@ -8,12 +8,20 @@
 <meta property="og:title" content="Manaã">
 <meta property="og:description" content="Seu companheiro de fé no WhatsApp.">
 <script>
-  // Redireciona para a conversa no WhatsApp do Manaã (+55 43 98870-9624)
-  var destino = "https://wa.me/5543988709624?text=" +
-    encodeURIComponent("Oi! Quero começar meu devocional no Manaã 🙏");
+  // Redireciona para a conversa no WhatsApp do Manaã (+55 43 98870-9624).
+  // A marca entre colchetes diz DE ONDE a pessoa veio: o webhook lê a primeira mensagem,
+  // extrai a marca e grava em assinantes.origem. Sem isso não dá para saber se quem chegou
+  // veio de um devocional encaminhado ou de um convite mandado a mão.
+  // ?o=multiplicador, ?o=celula-norte etc. — só letras, números, hífen e _, de 2 a 30 chars.
+  var origem = (new URLSearchParams(location.search).get("o") || "devocional")
+    .replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30) || "devocional";
+  var texto = "Oi! Quero começar meu devocional no Manaã 🙏 [" + origem + "]";
+  var destino = "https://wa.me/5543988709624?text=" + encodeURIComponent(texto);
   location.replace(destino);
 </script>
-<meta http-equiv="refresh" content="0;url=https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">
+<noscript>
+  <meta http-equiv="refresh" content="0;url=https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F%20%5Bdevocional%5D">
+</noscript>
 <style>
   body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;
        display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center}
@@ -23,7 +31,12 @@
 <body>
   <div>
     <p>Abrindo o WhatsApp do Manaã…</p>
-    <p>Se não abrir automaticamente, <a href="https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">toque aqui</a>.</p>
+    <p>Se não abrir automaticamente, <a id="link" href="https://wa.me/5543988709624?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F%20%5Bdevocional%5D">toque aqui</a>.</p>
   </div>
+  <script>
+    // O link de escape carrega a mesma marca do redirect automático.
+    var a = document.getElementById("link");
+    if (a) { a.href = destino; }
+  </script>
 </body>
 </html>
