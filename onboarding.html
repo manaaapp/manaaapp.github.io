@@ -811,6 +811,8 @@
   let genero = "X";
   const planos = ["trial", "mensal", "anual"];
   let planoIdx = 1; // mensal default
+  // 29/08/2026: a home manda ?plano=trial|mensal|anual — antes o link era ignorado e todo mundo caia em mensal
+  { const __p = (new URLSearchParams(location.search).get("plano") || "").toLowerCase(); const __i = planos.indexOf(__p); if (__i >= 0) planoIdx = __i; }
   let plano = planos[planoIdx];
 
   // Popula dia/ano
