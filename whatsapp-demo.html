@@ -31,7 +31,7 @@ body {
 
 /* Header */
 .wa-header {
-  background: #075E54;
+  background: #008069;
   padding: 9px 12px;
   display: flex;
   align-items: center;
@@ -39,7 +39,7 @@ body {
   flex-shrink: 0;
 }
 .wa-avatar {
-  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+  width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; overflow: hidden;
   background: linear-gradient(135deg, #B8912E 0%, #D4B86A 100%);
   display: flex; align-items: center; justify-content: center;
   font-size: 16px;
@@ -81,7 +81,7 @@ body {
   position: relative; word-break: break-word;
   flex-shrink: 0;
   opacity: 0; transform: translateY(6px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition: opacity 0.55s cubic-bezier(.22,.61,.36,1), transform 0.55s cubic-bezier(.22,.61,.36,1);
 }
 .msg.show { opacity: 1; transform: translateY(0); }
 .msg-in {
@@ -292,15 +292,11 @@ body {
 <body>
 <div class="phone-wrap">
   <div class="wa-header">
-    <div class="wa-avatar">✨</div>
+    <div class="wa-avatar"><img src="/assets/manaa-perfil-512.png?v=3" alt="Manaã" width="72" height="72" style="width:100%;height:100%;object-fit:cover;border-radius:50%;display:block"></div>
     <div class="wa-info">
       <div class="wa-name-row">
         <div class="wa-name">Manaã</div>
-        <!-- WhatsApp Business verified badge -->
-        <svg class="wa-verified" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M8 0L9.79 1.27L12 1.07L12.85 3.15L14.93 4L14.73 6.21L16 8L14.73 9.79L14.93 12L12.85 12.85L12 14.93L9.79 14.73L8 16L6.21 14.73L4 14.93L3.15 12.85L1.07 12L1.27 9.79L0 8L1.27 6.21L1.07 4L3.15 3.15L4 1.07L6.21 1.27L8 0Z" fill="#25D366"/>
-          <path d="M5 8L7 10L11 6" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg class="wa-verified" viewBox="0 0 20 20" aria-label="Conta verificada" role="img"><circle cx="10" cy="10" r="10" fill="#0095F6"/><path d="M5.8 10.4l2.7 2.7 5.7-5.9" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="wa-status" id="wa-status">on-line</div>
     </div>
@@ -325,6 +321,8 @@ body {
 <script>
 const chat = document.getElementById('chat');
 const status = document.getElementById('wa-status');
+const _reduz = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+function _rolar(){ requestAnimationFrame(()=>{ try { chat.scrollTo({ top: chat.scrollHeight, behavior: _reduz ? 'auto' : 'smooth' }); } catch (e) { chat.scrollTop = chat.scrollHeight; } }); }
 
 let _tMin = 30;
 const T = () => { const t = `06:${String(_tMin).padStart(2,'0')}`; if (_tMin < 45) _tMin++; return t; };
@@ -334,11 +332,11 @@ function addEl(el, delay) {
   return new Promise(res => {
     setTimeout(() => {
       chat.appendChild(el);
-      chat.scrollTop = 9999;
+      _rolar();
       requestAnimationFrame(() => requestAnimationFrame(() => {
         el.classList.add('show');
       }));
-      setTimeout(res, 380);
+      setTimeout(res, 650);
     }, delay);
   });
 }
@@ -358,7 +356,7 @@ function typing(delay) {
       w.className = 'typing-wrap'; w.id = 'typing';
       w.innerHTML = '<div class="typing-bubble"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
       chat.appendChild(w);
-      chat.scrollTop = 9999;
+      _rolar();
       requestAnimationFrame(() => requestAnimationFrame(() => w.classList.add('show')));
       res(w);
     }, delay);
@@ -377,8 +375,8 @@ async function run() {
   resetTime();
 
   // 1. Template matinal
-  await typing(700);
-  await new Promise(r => setTimeout(r, 1500));
+  await typing(900);
+  await new Promise(r => setTimeout(r, 2300));
   rmTyping();
 
   const tpl = document.createElement('div');
@@ -411,7 +409,7 @@ async function run() {
   document.getElementById('tpl-btn').classList.add('show');
 
   // 2. Usuário toca no botão
-  await new Promise(r => setTimeout(r, 2200));
+  await new Promise(r => setTimeout(r, 3400));
   const btn = document.getElementById('tpl-btn');
   if (btn) btn.classList.add('tapped');
 
@@ -429,7 +427,7 @@ async function run() {
     <div class="qr-text">Conversar sobre a Palavra<span class="msg-time">${T()}</span><span style="font-size:9.5px;color:#4fc3f7;margin-left:2px">✓✓</span></div>
   `;
   chat.appendChild(qr);
-  chat.scrollTop = 9999;
+  _rolar();
   requestAnimationFrame(() => requestAnimationFrame(() => qr.classList.add('show')));
   await new Promise(r => setTimeout(r, 400));
 
