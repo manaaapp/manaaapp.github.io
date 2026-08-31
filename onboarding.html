@@ -300,6 +300,19 @@
     box-shadow: 0 4px 16px rgba(184,144,31,0.10);
   }
   #plan-notice.show { display: flex; }
+  /* Conta já ativa: esconde tudo que é de pagamento. Via CSS com !important porque o
+     próprio site reexibe esses blocos em refreshConsentAndExtra/selectPlanV2. */
+  body.conta-ativa #sec-pay,
+  body.conta-ativa #pago-fields,
+  body.conta-ativa #cc-box,
+  body.conta-ativa #consent-box,
+  body.conta-ativa #security-seals,
+  body.conta-ativa #plan-cards,
+  body.conta-ativa #plan-dots-indicator,
+  body.conta-ativa .pay-opt-group,
+  body.conta-ativa #pay-mensal,
+  body.conta-ativa #pay-anual,
+  body.conta-ativa #pay-trial { display: none !important; }
   #plan-notice:focus { outline: 2px solid #B8901F; outline-offset: 2px; }
   #plan-notice::before {
     content: 'i';
@@ -1094,6 +1107,13 @@ const touchedFields = new Set();
 function refreshPayButton() {
   const btn = document.getElementById('btn-submit');
   if (!btn) return;
+  // Conta já ativa: não há o que validar nem cobrar. Sem esta guarda, o primeiro
+  // scroll ou digitação reexecutava esta função e ressuscitava o botão de pagamento.
+  if (document.body.classList.contains('conta-ativa')) {
+    btn.disabled = true;
+    btn.textContent = 'Sua conta já está ativa';
+    return;
+  }
   const st = getValidationState();
   const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
   const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
@@ -1298,8 +1318,11 @@ async function submitForm() {
       // Quem JÁ TEM assinatura ativa não é caso de "seu teste acabou": a conta dela está
       // funcionando. Mandar pro checkout aqui cobraria de novo de quem já paga.
       if (respOn && respOn.situacao === 'ja_assinante') {
-        btn.disabled = false;
-        if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel;
+        // a classe no body é o que segura: o CSS esconde os blocos de pagamento com
+        // !important e refreshPayButton passa a devolver cedo, então nada ressuscita
+        document.body.classList.add('conta-ativa');
+        btn.disabled = true;
+        btn.textContent = 'Sua conta já está ativa';
         const nAtivo = document.getElementById('plan-notice');
         if (nAtivo) {
           nAtivo.innerHTML = 'Esse WhatsApp já tem uma conta ativa no Manaã — não precisa fazer nada aqui. É só chamar no WhatsApp que a gente continua de onde parou. <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Ver minha conta</a>';
