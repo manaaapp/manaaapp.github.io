@@ -1295,6 +1295,21 @@ async function submitForm() {
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }
       if (!okBody) throw new Error('__BACKEND__');
+      // Quem JÁ TEM assinatura ativa não é caso de "seu teste acabou": a conta dela está
+      // funcionando. Mandar pro checkout aqui cobraria de novo de quem já paga.
+      if (respOn && respOn.situacao === 'ja_assinante') {
+        btn.disabled = false;
+        if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel;
+        const nAtivo = document.getElementById('plan-notice');
+        if (nAtivo) {
+          nAtivo.innerHTML = 'Esse WhatsApp já tem uma conta ativa no Manaã — não precisa fazer nada aqui. É só chamar no WhatsApp que a gente continua de onde parou. <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Ver minha conta</a>';
+          nAtivo.classList.add('show');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            nAtivo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }));
+        }
+        return;
+      }
       // É 1 teste grátis por número, pra sempre. Quem já usou não ganha outro: o backend
       // devolve trial_concedido=false. Antes disso a pessoa caía na tela de sucesso sem ter
       // ganhado trial nenhum — achava que estava ativa e nunca recebia devocional.
