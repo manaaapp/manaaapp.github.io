@@ -280,6 +280,37 @@
   .err {
     color: var(--red); font-size: 13px; margin-top: 6px;
   }
+  /* Aviso de regra de negócio (ex: teste grátis já usado). Fica junto dos planos,
+     que é onde a mudança acontece — e em âmbar, porque a pessoa não errou nada. */
+  #plan-notice {
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    background: linear-gradient(180deg, #FBF5E5 0%, #FEFCF7 100%);
+    border: 1.5px solid #E0C97A;
+    border-left: 4px solid #B8901F;
+    border-radius: 12px;
+    padding: 14px 16px 14px 14px;
+    margin: 14px 0 4px;
+    scroll-margin-top: 24px;
+    color: #6b5310;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: 0 4px 16px rgba(184,144,31,0.10);
+  }
+  #plan-notice.show { display: flex; }
+  #plan-notice:focus { outline: 2px solid #B8901F; outline-offset: 2px; }
+  #plan-notice::before {
+    content: 'i';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #B8901F; color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; font-style: italic;
+    font-family: Georgia, serif;
+  }
   #err-final {
     background: linear-gradient(180deg, #fdf2f2 0%, #fbe9e9 100%);
     border: 1.5px solid #f5c6cb;
@@ -617,6 +648,7 @@
       </div>
     </div>
     <div class="plan-dots" id="plan-dots-indicator"><span class="plan-dot" data-i="0"></span><span class="plan-dot active" data-i="1"></span><span class="plan-dot" data-i="2"></span></div>
+    <div id="plan-notice" role="status" aria-live="polite" tabindex="-1"></div>
     <script>
     (function(){
       const pc = document.getElementById('plan-cards');
@@ -1253,14 +1285,42 @@ async function submitForm() {
       // tela de sucesso mesmo com erro 500 no backend (pessoa achava que assinou).
       if (!rOn.ok) throw new Error('__BACKEND__');
       let okBody = true;
+      let respOn = null;
       try {
         const txt = (await rOn.text() || '').trim();
         if (txt) {
           const j = JSON.parse(txt);
+          respOn = j;
           if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }
       if (!okBody) throw new Error('__BACKEND__');
+      // É 1 teste grátis por número, pra sempre. Quem já usou não ganha outro: o backend
+      // devolve trial_concedido=false. Antes disso a pessoa caía na tela de sucesso sem ter
+      // ganhado trial nenhum — achava que estava ativa e nunca recebia devocional.
+      if (respOn && respOn.trial_concedido === false) {
+        btn.disabled = false;
+        // Troca o plano ANTES de rolar: selectPlanV2 faz o bloco de pagamento aparecer e
+        // empurra tudo pra baixo. Rolar antes disso mira num lugar que muda em seguida.
+        if (typeof selectPlanV2 === 'function') { try { selectPlanV2('mensal'); } catch(_) {} }
+        const notice = document.getElementById('plan-notice');
+        if (notice) {
+          notice.textContent = 'Esse WhatsApp já usou o teste grátis de 7 dias. Seus dados e suas preferências continuam salvos — siga no plano mensal aqui embaixo pra voltar a receber.';
+          notice.classList.add('show');
+        }
+        // dois quadros: o primeiro aplica as classes, o segundo já tem a altura final
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const email = document.getElementById('pag-email-static');
+          if (notice) {
+            notice.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (email) email.setAttribute('aria-describedby', 'plan-notice');
+          }
+          if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel;
+          if (btn.disabled) btn.textContent = 'Preencha os dados do plano mensal';
+          if (email) setTimeout(() => { try { email.focus({ preventScroll: true }); } catch(_) {} }, 600);
+        }));
+        return;
+      }
       window.location.href = '/pagamento-sucesso.html?plan=trial';
       return;
     } catch(e) {
