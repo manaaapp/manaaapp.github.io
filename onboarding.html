@@ -865,7 +865,7 @@
   for (let d = 1; d <= 31; d++) dia.add(new Option(String(d).padStart(2,"0"), String(d).padStart(2,"0")));
   const ano = document.getElementById("nasc-ano");
   const yNow = new Date().getFullYear();
-  for (let y = yNow - 13; y >= yNow - 100; y--) ano.add(new Option(y, y));
+  for (let y = yNow - 18; y >= yNow - 100; y--) ano.add(new Option(y, y)); // maiores de 18: o Manaã não é para crianças (02/09/2026)
 
   function next(s) {
     if (s === 2 && !validateStep1()) return;
@@ -925,6 +925,11 @@
     const m = document.getElementById('nasc-mês').value;
     const a = document.getElementById('nasc-ano').value;
     if (!d || !m || !a) { alert('Preencha sua data de nascimento (dia, mês, ano).'); return false; }
+    // data impossivel (31/02) e idade minima 18 — conferido tambem no servidor
+    const dt = new Date(Number(a), Number(m) - 1, Number(d));
+    if (dt.getFullYear() !== Number(a) || dt.getMonth() !== Number(m) - 1 || dt.getDate() !== Number(d)) { alert('Essa data não existe. Confira dia e mês.'); return false; }
+    const hoje = new Date(); let idade = hoje.getFullYear() - dt.getFullYear(); const mm = hoje.getMonth() - dt.getMonth(); if (mm < 0 || (mm === 0 && hoje.getDate() < dt.getDate())) idade--;
+    if (idade < 18) { alert('O Manaã é feito para maiores de 18 anos. Se você for responsável por um adolescente, fale com a gente no WhatsApp.'); return false; }
     return true;
   }
   function validateStep3() { return true; }
@@ -1242,7 +1247,8 @@ function getFullOnboardPayload() {
     momentos: (typeof momentos !== 'undefined') ? Array.from(momentos) : [],
     ocupacao: document.getElementById('ocupacao').value.trim(),
     proposito: document.getElementById('proposito').value.trim(),
-    plano: currentPlanV2,
+    origem: ((new URLSearchParams(location.search).get('o') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 30) || null),
+      plano: currentPlanV2,
     lgpd: document.getElementById('lgpd').checked,
     // prova de consentimento (o IP vem do servidor; aqui vai o aparelho/navegador)
     user_agent: navigator.userAgent,
@@ -1260,6 +1266,9 @@ function mensagemDeFalha(e, contexto) {
   if (semRede) {
     titulo = 'Sem conexão';
     texto = 'Não conseguimos falar com o servidor. Confira sua internet e toque no botão de novo — nada foi cobrado.';
+  } else if (contexto === 'cadastro' && /maiores de 18/.test(bruto)) {
+    titulo = 'Cadastro não permitido';
+    texto = bruto;
   } else if (contexto === 'cadastro') {
     titulo = 'Não conseguimos concluir seu cadastro';
     texto = 'Deu um problema aqui do nosso lado. Tente de novo em alguns segundos. Se continuar, fale com a gente no WhatsApp que resolvemos na hora.';
@@ -1311,6 +1320,7 @@ async function submitForm() {
         if (txt) {
           const j = JSON.parse(txt);
           respOn = j;
+          if (j && j.error === 'idade_minima') throw new Error(j.message || 'O Manaã é feito para maiores de 18 anos.');
           if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }

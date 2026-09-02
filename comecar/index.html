@@ -8,35 +8,15 @@
 <meta property="og:title" content="Manaã">
 <meta property="og:description" content="Seu companheiro de fé no WhatsApp.">
 <script>
-  // O link limpo (manaaapp.com/comecar) manda a mensagem SEM marca nenhuma — é o que vai no
-  // devocional e o que a pessoa lê. Marca no texto do usuário é lixo visual.
-  // A marca só entra quando alguém monta um convite com ?o=..., que é o caso dos
-  // multiplicadores. Aí o webhook lê a primeira mensagem, extrai o que está entre colchetes e
-  // grava em assinantes.origem, e dá para separar quem veio de qual convite.
-  var o = (new URLSearchParams(location.search).get("o") || "")
-    .replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
-  var texto = "Oi! Quero começar meu devocional no Manaã 🙏" + (o ? " [" + o + "]" : "");
-  var destino = "https://wa.me/5543984323619?text=" + encodeURIComponent(texto);
-  location.replace(destino);
+  // Uma unica porta de entrada (02/09/2026): cadastro primeiro, WhatsApp depois.
+  // Antes este link abria o wa.me direto; a pessoa chegava "desconhecida" e o Manaa mandava
+  // ela de volta ao site. Agora: /comecar -> formulario -> tela "Tudo pronto" -> botao do WhatsApp.
+  // A origem (?o=ig|zap|grupo|...) viaja para o cadastro e fica em assinantes.origem.
+  var o = (new URLSearchParams(location.search).get("o") || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
+  location.replace("/onboarding.html?plano=trial" + (o ? "&o=" + encodeURIComponent(o) : ""));
 </script>
-<noscript>
-  <meta http-equiv="refresh" content="0;url=https://wa.me/5543984323619?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">
-</noscript>
-<style>
-  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;
-       display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center}
-  a{color:#7a5c3e;font-weight:600}
-</style>
+<noscript><meta http-equiv="refresh" content="0;url=/onboarding.html?plano=trial"></noscript>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center} a{color:#7a5c3e;font-weight:600}</style>
 </head>
-<body>
-  <div>
-    <p>Abrindo o WhatsApp do Manaã…</p>
-    <p>Se não abrir automaticamente, <a id="link" href="https://wa.me/5543984323619?text=Oi!%20Quero%20come%C3%A7ar%20meu%20devocional%20no%20Mana%C3%A3%20%F0%9F%99%8F">toque aqui</a>.</p>
-  </div>
-  <script>
-    // O link de escape carrega a mesma marca (ou a ausência dela) do redirect automático.
-    var a = document.getElementById("link");
-    if (a) { a.href = destino; }
-  </script>
-</body>
+<body><div><p>Abrindo o cadastro do Manaã…</p><p>Se não abrir sozinho, <a href="/onboarding.html?plano=trial">toque aqui</a>.</p></div></body>
 </html>
