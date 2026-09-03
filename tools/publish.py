@@ -60,5 +60,7 @@ for i in range(30):
     if '"%s"' % sha in v:
         break
     time.sleep(10)
-r = subprocess.run(['bash', 'tools/check_site.sh', sha])
+# no Windows, "bash" pode ser o do WSL (sem curl): usa o bash do Git quando existir
+bash = r'C:\Program Files\Git\bin\bash.exe' if os.path.exists(r'C:\Program Files\Git\bin\bash.exe') else 'bash'
+r = subprocess.run([bash, 'tools/check_site.sh', sha])
 sys.exit(r.returncode)
