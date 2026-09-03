@@ -9,6 +9,18 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
+  <meta name="referrer" content="no-referrer">
+  <script>
+  // R5 (03/09/2026): tokens (?login=, ?t=) saem da barra de endereco ANTES de qualquer recurso externo
+  // carregar; o resto da pagina le de window.__params.
+  (function(){ try {
+    var q = new URLSearchParams(location.search);
+    // tokens tambem podem vir no fragmento (#login=...): o fragmento nunca sai do navegador (nem CDN, nem log, nem Analytics)
+    if (location.hash && location.hash.length > 1) { var f = new URLSearchParams(location.hash.slice(1)); f.forEach(function(v, k){ if (!q.has(k)) q.set(k, v); }); }
+    window.__params = q;
+    if (q.has('login') || q.has('t') || q.has('token') || (location.hash && location.hash.length > 1)) history.replaceState(null, '', location.pathname);
+  } catch (e) {} })();
+  </script>
   <title>Manaã — Minha Conta</title>
   <meta name="robots" content="noindex,nofollow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -406,9 +418,15 @@
   let sessionToken = '';
   let userData = null;
 
-  const params = new URLSearchParams(location.search);
+  const params = window.__params || new URLSearchParams(location.search);
   const loginToken = params.get('login');
   if (loginToken) autoLoginViaMagicLink(loginToken);
+
+  // R5: no navegador fica SO' o token de sessao (curto, emitido pelo servidor) e a hora. Nada de
+  // telefone, e-mail, religiao ou momento de vida guardado; os dados vem do servidor a cada abertura.
+  function guardarSessao(){
+    try { localStorage.setItem('manaa_session', JSON.stringify({ sessionToken, ts: Date.now() })); } catch(e) {}
+  }
 
   async function autoLoginViaMagicLink(token){
     try {
@@ -421,8 +439,9 @@
         userData = data.data;
         currentPhone = (data.data.phone || '').replace(/^\+/, '');
         currentEmail = data.data.email || '';
-        sessionToken = token;
-        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        // o link magico e' de uso unico; o servidor devolve um token de sessao separado
+        sessionToken = data.data.session_token || token;
+        guardarSessao();
         renderDash(userData);
         showScreen('dash');
         history.replaceState({}, '', '/conta.html');
@@ -555,7 +574,7 @@
       const data = await r.json();
       if(data.success){
         userData = { ...userData, ...data.data };
-        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        guardarSessao();
         renderDash(userData);
         showScreen('dash');
       } else { showErr('edit', true); }
@@ -650,7 +669,7 @@
         userData = data.data;
         currentPhone = (data.data.phone || '').replace(/^\+/, '');
         sessionToken = data.data.session_token || '';
-        localStorage.setItem('manaa_session', JSON.stringify({phone: currentPhone, email: currentEmail, data: userData, sessionToken, ts: Date.now()}));
+        guardarSessao();
         renderDash(userData);
         showScreen('dash');
       } else { showErr('otp', true); }
@@ -688,25 +707,36 @@
     return p;
   }
   function backToPhone(){ showErr('otp',false); document.getElementById('inp-otp').value = ''; showScreen('phone'); }
-  function logout(){ localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; sessionToken = ''; document.getElementById('inp-email').value = ''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone'); }
+  function logout(){
+    // R5: sair invalida a sessao no SERVIDOR (nao so' no navegador)
+    const t = sessionToken;
+    if (t) { try { fetch(API+'/manaa-logout', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token: t }), keepalive: true }).catch(() => {}); } catch(e) {} }
+    localStorage.removeItem('manaa_session'); userData = null; currentPhone = ''; currentEmail = ''; sessionToken = ''; document.getElementById('inp-email').value = ''; const ip = document.getElementById('inp-phone'); if(ip) ip.value=''; document.getElementById('inp-otp').value = ''; showScreen('phone');
+  }
 
 
-  // Restaurar sessão (se loginToken não estiver na URL)
+  // Restaurar sessão: quem decide se ainda vale e' o SERVIDOR (o token de sessao expira la'), nao o relogio
+  // do navegador. Sessao antiga (formato com dados) e' descartada.
   (function(){
     if (loginToken) return;
-    const saved = localStorage.getItem('manaa_session');
-    if(!saved) return;
-    try{
-      const s = JSON.parse(saved);
-      if(Date.now() - s.ts < 7*24*60*60*1000 && s.data){
-        userData = s.data;
-        currentPhone = s.phone || '';
-        currentEmail = s.email || '';
-        sessionToken = s.sessionToken || '';
-        renderDash(userData);
-        showScreen('dash');
-      }
-    } catch(e){}
+    let s = null;
+    try { s = JSON.parse(localStorage.getItem('manaa_session') || 'null'); } catch(e) { s = null; }
+    if (!s || !s.sessionToken || s.data) { try { localStorage.removeItem('manaa_session'); } catch(e) {} return; }
+    if (Date.now() - (s.ts || 0) > 12*60*60*1000) { try { localStorage.removeItem('manaa_session'); } catch(e) {} return; }
+    fetch(API+'/manaa-magic-login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ token: s.sessionToken }) })
+      .then(r => r.json())
+      .then(data => {
+        if (data.success && data.data) {
+          userData = data.data;
+          currentPhone = (data.data.phone || '').replace(/^\+/, '');
+          currentEmail = data.data.email || '';
+          sessionToken = data.data.session_token || s.sessionToken;
+          guardarSessao();
+          renderDash(userData);
+          showScreen('dash');
+        } else { try { localStorage.removeItem('manaa_session'); } catch(e) {} }
+      })
+      .catch(() => {});
   })();
 
 /* ===== Ação vinda do link do WhatsApp: /conta?t=<token>&acao=plano|cartao&plano=anual =====
@@ -714,7 +744,7 @@
    pedir email e código de novo. O link é de uso único e o servidor decide tudo; aqui só
    confirmamos a ação e mostramos o resultado. */
 (function acaoPorLink(){
-  const p = new URLSearchParams(location.search);
+  const p = window.__params || new URLSearchParams(location.search);
   const token = p.get('t');
   const acao = p.get('acao');
   if (!token || !acao) return;

@@ -1,0 +1,51 @@
+# NAO ATIVO: o token do gh nao tem escopo "workflow" para criar este arquivo em .github/workflows. Quando tiver, mover para la. Ate la, tools/publish.py faz build + guarda + publicacao no branch gh-pages.
+# R5 (03/09/2026): o site so' vai ao ar depois de passar no build (sem comentarios internos, com build-id)
+# e na guarda de promessas proibidas. Depois do deploy, uma verificacao EXTERNA confere que manaaapp.com
+# serve exatamente este commit. Se qualquer passo falhar, o deploy nao acontece (fica a versao anterior).
+name: build-guard-deploy
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - name: Build + guarda (falha se houver promessa proibida)
+        run: python tools/build_site.py "${GITHUB_SHA}" . _site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: _site }
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
+  verificar:
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Espera a borda servir o novo build e confere de fora
+        run: |
+          esperado="${GITHUB_SHA:0:12}"
+          for i in $(seq 1 20); do
+            v=$(curl -s -H 'Cache-Control: no-cache' "https://manaaapp.com/version.json?nc=$RANDOM" | sed -n 's/.*"build_id": *"\([^"]*\)".*/\1/p')
+            [ "$v" = "$esperado" ] && break
+            sleep 15
+          done
+          bash tools/check_site.sh "$esperado"

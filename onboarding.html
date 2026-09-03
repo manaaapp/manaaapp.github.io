@@ -9,8 +9,22 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<!-- Analytics: esta pagina disparava onboarding_complete sem nunca ter carregado o gtag, entao a
-     conversao mais importante do funil nunca foi contada. Mesma propriedade da home. -->
+<meta name="referrer" content="no-referrer">
+<script>
+// Tokens de acesso (?r=) saem da barra de endereco ANTES de qualquer terceiro (Analytics, fontes) carregar:
+// a URL completa e' o que o navegador manda como page_location e como Referer.
+(function(){ try {
+  var q = new URLSearchParams(location.search);
+  // tokens tambem podem vir no fragmento (#r=...): o fragmento nunca sai do navegador (nem CDN, nem log, nem Analytics)
+  if (location.hash && location.hash.length > 1) { var f = new URLSearchParams(location.hash.slice(1)); f.forEach(function(v, k){ if (!q.has(k)) q.set(k, v); }); }
+  window.__params = q;
+  if (q.has('r') || q.has('t') || q.has('login') || q.has('token') || (location.hash && location.hash.length > 1)) {
+    var keep = new URLSearchParams();
+    ['plano','o'].forEach(function(k){ if (q.has(k)) keep.set(k, q.get(k)); });
+    history.replaceState(null, '', location.pathname + (keep.toString() ? '?' + keep.toString() : ''));
+  }
+} catch (e) {} })();
+</script>
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3Q89PDH61');</script>
 <title>Manaã — Comece sua jornada</title>
@@ -649,7 +663,7 @@
         <div class="plan-price-2">R$ 14,99<small>/mês</small></div>
         <p class="plan-desc-2">Renova automaticamente. Cancele quando quiser.</p>
       </div>
-      <div class="plan-card" data-plan="anual">
+      <div class="plan-card" data-plan="anual" data-flag="anual">
         <span class="badge-save-2">Economize 11%</span>
         <div class="plan-head-row"><span class="plan-name-2">Anual</span><span class="plan-tag-2">Pagamento único</span></div>
         <div class="plan-price-2">R$ 159,99<small>/ano</small></div>
@@ -710,7 +724,7 @@
 
     <div class="pay-list" id="pay-mensal">
       <label class="pay-opt active" data-pay="PIX_AUTOMATIC" id="pay-opt-pix-auto"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
-      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
+      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec" data-flag="cartao"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
     </div>
     <script>
     // PIX Automatic só libera quando CNPJ Manaã (Funaro Ltda, aberto 13/01/2026) completar 6 meses (regra Bacen + ASAAS)
@@ -734,7 +748,7 @@
     })();
     </script>
 
-    <div class="pay-list" id="pay-anual" style="display:none">
+    <div class="pay-list" id="pay-anual" style="display:none" data-flag="anual">
       <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento único de R$ 159,99. Confirmação na hora.</div></div></label>
       <label class="pay-opt" data-pay="CC_AVISTA"><input type="radio" name="pay-a" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão à vista</div><div class="pay-opt-desc">R$ 159,99 em uma parcela.</div></div></label>
       <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_PARC"><div style="flex:1"><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Sem juros pra você. Escolha em quantas vezes:</div><select id="cc-parcelas" style="margin-top:8px;padding:10px 12px;border:1.5px solid #E5DDD0;border-radius:8px;font-size:16px;min-height:44px;font-family:inherit;width:100%;background:#fff" onclick="event.stopPropagation()">
@@ -757,7 +771,7 @@
     </div>
 
 
-    <div id="cc-box" style="display:none;background:linear-gradient(180deg,#fff 0%,#FEFCF7 100%);border:1.5px solid #ECE4D5;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
+    <div id="cc-box" data-flag="cartao" style="display:none;background:linear-gradient(180deg,#fff 0%,#FEFCF7 100%);border:1.5px solid #ECE4D5;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
       <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3" ry="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Dados do cartão</div>
@@ -810,15 +824,15 @@
           <span style="font-size:11px;font-weight:800;color:#32BCAD;letter-spacing:0.3px">PIX</span>
         </div>
         <!-- Visa -->
-        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div>
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div></span>
         <!-- Mastercard -->
-        <div style="background:#fff;padding:5px 8px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center">
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 8px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center">
           <svg width="28" height="18" viewBox="0 0 48 30"><circle cx="18" cy="15" r="11" fill="#EB001B"/><circle cx="30" cy="15" r="11" fill="#F79E1B"/><path d="M24 6.5a11 11 0 0 0 0 17 11 11 0 0 0 0-17Z" fill="#FF5F00"/></svg>
-        </div>
+        </div></span>
         <!-- Elo -->
-        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:11px;font-weight:900;color:#000">ELO</div>
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:11px;font-weight:900;color:#000">ELO</div></span>
         <!-- Amex -->
-        <div style="background:#006FCF;padding:5px 8px;border-radius:6px;font-family:Arial,sans-serif;font-size:9px;font-weight:900;color:#fff;letter-spacing:0.5px">AMEX</div>
+        <span data-flag="cartao"><div style="background:#006FCF;padding:5px 8px;border-radius:6px;font-family:Arial,sans-serif;font-size:9px;font-weight:900;color:#fff;letter-spacing:0.5px">AMEX</div></span>
         <!-- ASAAS -->
         <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6b6453">
           via
@@ -1272,12 +1286,19 @@ function mensagemDeFalha(e, contexto) {
     titulo = 'Não conseguimos concluir o pagamento';
     texto = (bruto && !tecnico) ? bruto : 'Deu um problema ao processar. Tente de novo em alguns segundos ou escolha outra forma de pagamento. Se continuar, fale com a gente no WhatsApp.';
   }
+  // R5 (03/09/2026): o texto pode vir do backend (mensagem do ASAAS); vai como TEXTO, nunca como HTML.
   const msg = encodeURIComponent('Oi Manaã 🙏 tentei me cadastrar no site e deu erro. Podem me ajudar?');
-  return '<div><div style="font-weight:700;margin-bottom:6px">' + titulo + '</div>'
-    + '<div style="font-size:13.5px;line-height:1.45;margin-bottom:12px">' + texto + '</div>'
-    + '<a href="https://wa.me/5543984323619?text=' + msg + '" target="_blank" rel="noopener" '
-    + 'style="display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px">'
-    + 'Falar com o Manaã no WhatsApp</a></div>';
+  const wrap = document.createElement('div');
+  const t = document.createElement('div'); t.style.cssText = 'font-weight:700;margin-bottom:6px'; t.textContent = titulo;
+  const d = document.createElement('div'); d.style.cssText = 'font-size:13.5px;line-height:1.45;margin-bottom:12px'; d.textContent = texto;
+  const a = document.createElement('a'); a.href = 'https://wa.me/5543984323619?text=' + msg; a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.style.cssText = 'display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px';
+  a.textContent = 'Falar com o Manaã no WhatsApp';
+  wrap.appendChild(t); wrap.appendChild(d); wrap.appendChild(a);
+  return wrap;
+}
+function mostrarFalha(el, e, contexto) {
+  el.replaceChildren(mensagemDeFalha(e, contexto));
 }
 
 async function submitForm() {
@@ -1373,7 +1394,7 @@ async function submitForm() {
       btn.disabled=false;
       if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
       errEl.style.display='flex';
-      errEl.innerHTML = mensagemDeFalha(e, 'cadastro');
+      mostrarFalha(errEl, e, 'cadastro');
       errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     return;
@@ -1444,7 +1465,7 @@ async function submitForm() {
     btn.disabled=false;
     if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
     errEl.style.display='flex';
-    errEl.innerHTML = mensagemDeFalha(e, 'pagamento');
+    mostrarFalha(errEl, e, 'pagamento');
     errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
@@ -1473,6 +1494,15 @@ function goStepV2(n) {
   }
 }
 
+// R5: so' aceita link https do proprio ASAAS (fatura/comprovante). Qualquer outra coisa e' descartada.
+function urlAsaasSegura(u) {
+  try {
+    const x = new URL(String(u || ''));
+    if (x.protocol !== 'https:') return '';
+    if (!/^(www\.)?asaas\.com$|^sandbox\.asaas\.com$/.test(x.hostname)) return '';
+    return x.href;
+  } catch (e) { return ''; }
+}
 function renderStep5Result(data) {
   const sub = document.querySelector('.step[data-step="5"] .step-sub');
   const title = document.querySelector('.step[data-step="5"] .step-title');
@@ -1484,7 +1514,8 @@ function renderStep5Result(data) {
   }
   if (data.pix && data.pix.qrImage) {
     title.textContent = '';
-    const payloadEscaped = (data.pix.payload || '').replace(/"/g,'&quot;').replace(/'/g,"&#39;");
+    // R5: nada vindo do backend entra no HTML como texto cru — base64 filtrado; o payload vai por propriedade DOM.
+    const qrB64 = String(data.pix.qrImage || '').replace(/[^A-Za-z0-9+/=]/g, '');
     const valor = data.value ? Number(data.value).toFixed(2).replace('.',',') : '';
     const isAnual = data.plano === 'anual';
     const produto = isAnual ? 'Manaã — Plano Anual' : 'Manaã — Assinatura Mensal';
@@ -1504,8 +1535,8 @@ function renderStep5Result(data) {
         ${ciclo ? `<div style="font-size:11.5px;color:#8C847A">${ciclo}</div>` : ''}
       </div>
     </div>
-    <img src="data:image/png;base64,${data.pix.qrImage}" alt="QR Code PIX" style="width:220px;max-width:100%;height:auto;display:block;margin:0 auto 12px;border:1px solid #E5DDD0;border-radius:8px" />
-    <button type="button" id="pixPayloadCopy" data-payload="${payloadEscaped}" style="width:100%;padding:12px 14px;border:1px solid #B8912E;border-radius:10px;font-family:inherit;font-size:13.5px;font-weight:600;background:#fdf9f0;cursor:pointer;color:#8B6914;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="pixCopyLabel">Copiar código PIX</span></button>
+    <img src="data:image/png;base64,${qrB64}" alt="QR Code PIX" style="width:220px;max-width:100%;height:auto;display:block;margin:0 auto 12px;border:1px solid #E5DDD0;border-radius:8px" />
+    <button type="button" id="pixPayloadCopy" style="width:100%;padding:12px 14px;border:1px solid #B8912E;border-radius:10px;font-family:inherit;font-size:13.5px;font-weight:600;background:#fdf9f0;cursor:pointer;color:#8B6914;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="pixCopyLabel">Copiar código PIX</span></button>
     <div id="pixCopiedTxt" style="display:none;color:#16a34a;font-size:12.5px;margin-top:8px;text-align:center;font-weight:600">✓ Código copiado</div>
     <div style="height:1px;background:#E5DDD0;margin:14px -2px"></div>
     <div style="font-family:'Lora',Georgia,serif;font-size:13.5px;font-weight:600;color:#2D2A26;margin-bottom:10px">Como pagar em 3 passos</div>
@@ -1534,6 +1565,7 @@ function renderStep5Result(data) {
 </div>`;
     setTimeout(() => {
       const el = document.getElementById('pixPayloadCopy');
+      if (el) el.dataset.payload = String(data.pix.payload || '');
       if (el) el.addEventListener('click', async () => {
         const v = el.dataset.payload;
         try { await navigator.clipboard.writeText(v); }
@@ -1553,8 +1585,17 @@ function renderStep5Result(data) {
     return;
   } else if (data.invoiceUrl) {
     title.textContent = data.retomada ? (data.pixAutomatico ? 'Você já tem uma autorização aberta' : 'Você já tem uma cobrança aberta') : 'Tudo pronto';
-    sub.innerHTML = (data.retomada && data.mensagem ? '<div style="font-size:13px;color:#5C564D;line-height:1.5;margin-bottom:4px">' + data.mensagem + '</div>' : '')
-      + '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
+    // R5 (03/09/2026): mensagem do backend vira TEXTO; o link so' abre se for do ASAAS em https (allowlist).
+    sub.replaceChildren();
+    if (data.retomada && data.mensagem) { const m = document.createElement('div'); m.style.cssText = 'font-size:13px;color:#5C564D;line-height:1.5;margin-bottom:4px'; m.textContent = String(data.mensagem); sub.appendChild(m); }
+    const urlOk = urlAsaasSegura(data.invoiceUrl);
+    if (urlOk) {
+      const a = document.createElement('a'); a.href = urlOk; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.style.cssText = 'display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px';
+      a.textContent = 'Abrir tela de pagamento'; sub.appendChild(a);
+    } else {
+      const p = document.createElement('div'); p.textContent = 'Não conseguimos montar o link de pagamento. Fale com a gente no WhatsApp.'; sub.appendChild(p);
+    }
   }
 }
 
@@ -1642,12 +1683,9 @@ selectPlanV2('mensal');
    a página preenche o que já sabemos e abre direto o pagamento pedindo só o que falta:
    CPF, CEP e número. Sem digitar código, sem recadastro. */
 (function entradaPorToken() {
-  const token = new URLSearchParams(location.search).get('r');
+  const token = (window.__params || new URLSearchParams(location.search)).get('r');
   if (!token) return;
-
-  // Tira o token da barra de endereço assim que lemos. Ele fica no histórico, em print de
-  // tela, em log de CDN e no Referer — e é a chave da conta dela.
-  try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  // a barra de endereco ja foi limpa no <head>, antes de qualquer terceiro carregar
 
   const wrap = document.querySelector('.wrap') || document.body;
   const aviso = document.createElement('div');
@@ -1752,6 +1790,7 @@ selectPlanV2('mensal');
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/assets/flags.js"></script>
     <script src="/assets/motion.js"></script>
 </body>
 </html>

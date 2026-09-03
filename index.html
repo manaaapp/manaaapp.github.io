@@ -880,7 +880,7 @@
                 <a href="/onboarding.html?plano=trial" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-right:7px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.823L.046 23.5l5.82-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.012-1.375l-.36-.213-3.729.977.994-3.62-.234-.373A9.818 9.818 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>Começar no WhatsApp</a>
                 <a href="#planos" class="btn btn-secondary">Ver planos</a>
             </div>
-            <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele por WhatsApp · Conformidade LGPD</p>
+            <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele quando quiser · LGPD</p>
         </div>
         <div class="hero-media" id="hero-media">
             <!-- video mudo em loop; quem pede menos animacao ve so o poster -->
@@ -1272,7 +1272,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 </ul>
                 <a href="/onboarding.html?plano=mensal" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
             </div>
-            <div class="plan featured">
+            <div class="plan featured" data-flag="anual">
                 <h3>Anual</h3>
                 <div class="subtitle">Equivale a 10 meses do mensal</div>
                 <div class="price" style="white-space:nowrap;">R$ 159,99<span>/ano</span></div>
@@ -1331,7 +1331,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
             </details>
             <details style="border-bottom:1px solid var(--border);padding:1.2rem 0;">
                 <summary style="font-weight:600;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">Como eu cancelo se não quiser mais? <span style="color:var(--gold);font-weight:300;">+</span></summary>
-                <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Mande "PARAR" no próprio WhatsApp do Manaã — a cobrança é interrompida na hora. Sem formulário, sem ligação, sem atrito.</p>
+                <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Para parar de receber mensagens, envie "PARAR" no WhatsApp. Isso silencia os envios, mas não cancela uma assinatura paga. Para cancelar a cobrança, envie "cancelar assinatura" e acesse a sua conta em <a href="/conta.html" style="color:var(--gold);">manaaapp.com/conta</a> — sem multa, sem perguntas, e você continua recebendo até o fim do período já pago.</p>
             </details>
             <details style="border-bottom:1px solid var(--border);padding:1.2rem 0;">
                 <summary style="font-weight:600;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">O conteúdo é mesmo fundamentado nas Escrituras? <span style="color:var(--gold);font-weight:300;">+</span></summary>
@@ -1339,13 +1339,13 @@ if(_demoRoot && 'IntersectionObserver' in window){
             </details>
             <details style="border-bottom:1px solid var(--border);padding:1.2rem 0;">
                 <summary style="font-weight:600;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">Meus dados ficam seguros? <span style="color:var(--gold);font-weight:300;">+</span></summary>
-                <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Sim, em conformidade com a LGPD. Seu número e conversas ficam em servidor próprio no Brasil, criptografados. Nunca vendemos dados, nunca compartilhamos com terceiros pra marketing.</p>
+                <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Seguimos a LGPD. Seu cadastro e o histórico ficam em servidor no Brasil (Oracle Cloud, São Paulo), com acesso protegido e conexão criptografada. Para responder, o Manaã usa inteligência artificial (OpenAI) e entrega pelo WhatsApp (Meta): esses provedores recebem só o necessário para cada mensagem. Nunca vendemos dados nem compartilhamos com terceiros para marketing. Detalhes na <a href="/privacidade.html" style="color:var(--gold);">Política de Privacidade</a>.</p>
             </details>
             <details style="border-bottom:1px solid var(--border);padding:1.2rem 0;">
                 <summary style="font-weight:600;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">Posso mudar o horário depois? <span style="color:var(--gold);font-weight:300;">+</span></summary>
                 <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Claro. Mande "MUDAR HORÁRIO" no WhatsApp e o Manaã pergunta o novo horário. Vale também pra mudar versão da Bíblia ou tradição.</p>
             </details>
-            <details style="padding:1.2rem 0;">
+            <details style="padding:1.2rem 0;" data-flag="anual">
                 <summary style="font-weight:600;color:var(--text);cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;">Se eu assinar o anual e desistir em 7 dias, perco o dinheiro? <span style="color:var(--gold);font-weight:300;">+</span></summary>
                 <p style="margin-top:0.8rem;color:var(--text-secondary);line-height:1.7;">Não. Os primeiros 7 dias do plano anual têm reembolso total, sem perguntas. A partir do 8º dia, vale a regra do Código de Defesa do Consumidor.</p>
             </details>
@@ -1354,7 +1354,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
 
     <section class="cta-section">
         <h2>Seu companheiro de fé começa hoje</h2>
-        <p>7 dias grátis, sem cartão. Depois R$ 14,99/mês ou R$ 159,99/ano. Cancele a qualquer hora no próprio WhatsApp.</p>
+        <p>7 dias grátis, sem cartão. Depois R$ 14,99/mês<span data-flag="anual"> ou R$ 159,99/ano</span>. Cancele quando quiser pela sua conta; "PARAR" no WhatsApp só silencia as mensagens.</p>
         <a href="/onboarding.html?plano=trial" class="btn btn-primary">Quero começar</a>
     </section>
 
@@ -1370,6 +1370,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
     <!-- Subscribe Modal -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/assets/flags.js"></script>
     <script src="/assets/motion.js"></script>
     <script>
     // 03/09/2026 (R4): funil — toque em qualquer "Começar/Assinar" vira evento no GA4 (sem dado pessoal).
