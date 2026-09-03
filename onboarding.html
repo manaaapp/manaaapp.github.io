@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
 <meta charset="UTF-8">
-<meta name="build-id" content="46e520704b02">
+<meta name="build-id" content="2c1e5f469c0c">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-87q2ugwhs8TQdkud1y0g/pXMBD68ZbZ8PhDeRjrZyME=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-PVhUaEXNTP4Ajg9aM9WyUb4kX7dqPsfmEPsl8ztEP3g=' 'sha256-ROaBDC4O/CwKTc1XOt/FpB6aIisiZT7bkOHb1rvxyDg=' 'sha256-kgOsdpssw5uqQBG82rgwcLFAGNJM/Szp5zpoj/XP4HI=' 'sha256-lD9/kcYHBjS43939Jd6pT2dSwyCpD4WAt1fVsR/A4hw=' 'unsafe-hashes' 'sha256-A4KzutOoRgjShM/8V5A2+NdNyEIAmqI7eRaaYMdKbkc=' 'sha256-Dwa2guZnU2sgGw7fDPNAHrh3eRhe3d7VD5AHivwFX5A=' 'sha256-TARsF1tdHurh7sUQ5+RLtopO2zbwCr9BRJknEciPVeU=' 'sha256-jHF5hTIlMDyGZRAsNK0HO/WFYrwPvI2I1q0o1xKKB6I=' 'sha256-r7QhkgMbOZTnKVy4mycoQYFXc6FqgDEz+ARy14Y239g=' 'sha256-u14xRScC44b4a7DthQgGVi9QGV0KhtDkmDWY+1QbVaI=' 'sha256-uzQhWg5oLi7LDo88khQWy3wbpb15vU2POV54Vhkj/Pk=' 'sha256-xt5oB07t+3+asthZ4jX2hWFLX8kH3VlFoiRzJKdnxMs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
@@ -70,7 +70,7 @@
     .field { margin-bottom: 7px; }
     .field label { font-size: 12px; margin-bottom: 2px; }
     .field input, .field select, .field textarea { font-size: 14.5px; padding: 8px 10px; }
-    .field .hint { font-size: 10.5px; margin-top: 2px; }
+    .field .hint { font-size:12px; margin-top: 2px; }
     .chips { gap: 4px; }
     .chip { font-size:12px; padding: 4px 9px; }
     .field-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
@@ -264,7 +264,7 @@
   .plan-badge {
     display: inline-block;
     margin: 0 auto 14px;
-    font-size: 10px; font-weight: 800; letter-spacing: 0.8px;
+    font-size:12px; font-weight: 800; letter-spacing: 0.8px;
     padding: 6px 14px; border-radius: 20px;
     text-transform: uppercase; white-space: nowrap;
     box-shadow: 0 2px 8px rgba(0,0,0,0.12);
@@ -609,7 +609,7 @@
       }
       .plan-card .plan-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
       .plan-card .plan-name-2 { font-family: 'Lora', Georgia, serif; font-size: 19px; font-weight: 600; color: var(--gold-deep); letter-spacing: -0.01em; }
-      .plan-card .plan-tag-2 { font-size: 10.5px; color: #6b6453; background: transparent; border: 1.5px solid #D4C7A5; padding: 3px 10px; border-radius: 12px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
+      .plan-card .plan-tag-2 { font-size:12px; color: #6b6453; background: transparent; border: 1.5px solid #D4C7A5; padding: 3px 10px; border-radius: 12px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
       .plan-card[data-plan="trial"] .plan-tag-2 { color: #2f7d32; border-color: #b8d8b9; background: #f1f8f1; }
       .plan-card[data-plan="mensal"] .plan-tag-2 { color: #8B6914; border-color: #E0C97A; background: #FBF5E5; }
       .plan-card[data-plan="anual"] .plan-tag-2 { color: #6b6453; border-color: #D4C7A5; background: transparent; }
@@ -635,7 +635,7 @@
       .pay-opt input { margin-top: 3px; accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; }
       .pay-opt-title { font-weight: 600; font-size: 14.5px; color: var(--text); }
       .pay-opt-desc { font-size: 12.5px; color: #6b6453; margin-top: 4px; line-height: 1.5; }
-      .pay-tag-rec { font-size: 10px; background: linear-gradient(135deg, #B8912E, #A07D2E); color: #fff; padding: 3px 9px; border-radius: 10px; font-weight: 700; margin-left: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
+      .pay-tag-rec { font-size:12px; background: linear-gradient(135deg, #B8912E, #A07D2E); color: #fff; padding: 3px 9px; border-radius: 10px; font-weight: 700; margin-left: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
 
       .consent-box {
         background: linear-gradient(180deg, #FBF5E5 0%, #F5EBD0 100%);
