@@ -8,7 +8,7 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
   <meta charset="UTF-8">
-<meta name="build-id" content="cd8004c18f62">
+<meta name="build-id" content="3a7f5a32d5b3">
   <meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover">
   <meta name="referrer" content="no-referrer">
   <script>
@@ -466,20 +466,13 @@
   document.getElementById('inp-email').addEventListener('input', () => showErr('phone', false));
 
   (async function mostrarDicaEmail(){
-    const waid = (new URLSearchParams(location.search).get('waid') || '').replace(/\D/g,'');
+    const waid = ((window.__params || new URLSearchParams(location.search)).get('waid') || '').replace(/\D/g,'');
     if(!waid) return;
     try {
       const r = await fetch(API+'/manaa-dica-email?waid='+encodeURIComponent(waid));
       const d = await r.json();
       const el = document.getElementById('dica-email');
-      if(d && d.situacao === 'ok' && d.dica){
-        el.textContent = 'Seu email cadastrado começa com ' + d.dica;
-        el.style.display = 'block';
-      }
-      if(d && d.primeiro_nome){
-        const t = document.querySelector('#screen-phone .card-title');
-        if(t) t.textContent = 'Oi, ' + d.primeiro_nome + '!';
-      }
+      if(d && d.mensagem){ el.textContent = String(d.mensagem); el.style.display = 'block'; }
     } catch(e) {  }
   })();
   document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
