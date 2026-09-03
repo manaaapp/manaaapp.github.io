@@ -155,6 +155,7 @@
       .suspend-panel{animation:none}
     }
   </style>
+  <script src="/assets/flags.js"></script>
 </head>
 <body>
 
@@ -340,7 +341,7 @@
     <h2 class="card-title" id="acao-titulo">Um instante</h2>
     <p class="hint" id="acao-sub">Estamos confirmando seu link.</p>
 
-    <div id="acao-cartao" style="display:none">
+    <div id="acao-cartao" style="display:none" data-flag="cartao">
       <label for="ac-numero" style="margin-top:14px">Número do cartão</label>
       <input type="text" id="ac-numero" inputmode="numeric" autocomplete="cc-number" placeholder="0000 0000 0000 0000" onblur="validaCampo('ac-numero')">
       <div class="err-campo" id="e-ac-numero" role="alert"></div>
@@ -818,6 +819,13 @@ async function confirmarAcao(){
   btn.textContent = 'Um instante...';
 
   let rota, corpo;
+  if (a.tipo === 'cartao' && !((window.MANAA_FLAGS || {}).CARD_DIRECT_INPUT_ENABLED === true)) {
+    // R5.1: a troca de cartão passa a ser feita no ambiente hospedado do ASAAS; o formulário próprio não envia nada.
+    btn.disabled = false; btn.textContent = rotulo;
+    document.getElementById('err-acao').textContent = 'A troca de cartão está temporariamente indisponível: em breve será feita no ambiente seguro do ASAAS. Se precisar agora, fale com a gente pelo WhatsApp.';
+    showErr('acao', true);
+    return;
+  }
   if (a.tipo === 'cartao') {
     const num = (document.getElementById('ac-numero').value || '').replace(/\D/g,'');
     const nome = (document.getElementById('ac-nome').value || '').trim();
