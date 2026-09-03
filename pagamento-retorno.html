@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="build-id" content="a550f16282d6">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-jpXDn1IUGdAhP6Qk68NnLDJPH/F+kMdlhAWfjSYQ300='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
+<title>Confirmando seu pagamento — Manaã</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root { --bg:#FBF7F0; --ink:#2B2520; --muted:#6B625A; --gold:#B8862B; --ok:#2E7D4F; --warn:#B23A3A; --line:#E5DDD0; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Inter,system-ui,sans-serif; font-size:17px; line-height:1.5; }
+  main { max-width:560px; margin:0 auto; padding:40px 20px 60px; text-align:center; }
+  .logo { font-weight:700; letter-spacing:.04em; color:var(--gold); margin-bottom:28px; }
+  .card { background:#fff; border:1px solid var(--line); border-radius:16px; padding:32px 24px; }
+  h1 { font-size:24px; margin:0 0 12px; }
+  p { margin:0 0 14px; color:var(--muted); }
+  .spin { width:44px; height:44px; border:4px solid var(--line); border-top-color:var(--gold); border-radius:50%; margin:0 auto 18px; animation:g 1s linear infinite; }
+  @keyframes g { to { transform:rotate(360deg); } }
+  .btn { display:inline-block; margin-top:8px; padding:14px 22px; min-height:48px; border-radius:10px; background:var(--gold); color:#fff; font-weight:600; text-decoration:none; }
+  .btn.sec { background:#fff; color:var(--ink); border:1.5px solid var(--line); }
+  .ok h1 { color:var(--ok); } .warn h1 { color:var(--warn); }
+  .mini { font-size:14px; color:var(--muted); margin-top:18px; }
+</style>
+</head>
+<body>
+<main>
+  <div class="logo">MANAÃ</div>
+  <div class="card" id="card">
+    <div class="spin" id="spin"></div>
+    <h1 id="titulo">Estamos confirmando seu pagamento</h1>
+    <p id="texto">Você voltou do ambiente seguro do ASAAS. Em instantes o pagamento é confirmado e o Manaã começa a chegar no seu WhatsApp. Pode deixar esta página aberta.</p>
+    <div id="acoes"></div>
+    <div class="mini" id="mini">Se fechar esta página, não tem problema: a confirmação também chega pelo WhatsApp.</div>
+  </div>
+</main>
+<script>
+(function () {
+  var WORKER = 'https://manaa-meta-webhook.manaa-fbx.workers.dev';
+  var q = new URLSearchParams(location.search);
+  var ref = (q.get('ref') || '').replace(/[^0-9a-fA-F-]/g, '').slice(0, 64);
+  var motivo = (q.get('r') || 'ok').replace(/[^a-z]/g, '');
+  var card = document.getElementById('card'), spin = document.getElementById('spin');
+  var titulo = document.getElementById('titulo'), texto = document.getElementById('texto'), acoes = document.getElementById('acoes'), mini = document.getElementById('mini');
+  function botao(rotulo, href, sec) { var a = document.createElement('a'); a.className = 'btn' + (sec ? ' sec' : ''); a.href = href; a.textContent = rotulo; acoes.appendChild(a); }
+  function estado(cls, t, x) { card.className = 'card ' + cls; spin.hidden = true; titulo.textContent = t; texto.textContent = x; acoes.textContent = ''; }
+  if (!ref) { estado('warn', 'Não encontramos este pagamento', 'O link de retorno veio incompleto. Se você pagou, a confirmação chega pelo WhatsApp. Se não, é só começar de novo.'); botao('Voltar ao cadastro', '/onboarding.html'); return; }
+  if (motivo === 'cancel') { estado('warn', 'Pagamento não concluído', 'Você saiu da página do ASAAS antes de pagar. Nada foi cobrado. Quando quiser, é só voltar: o mesmo link continua valendo por até 1 hora.'); botao('Tentar de novo', '/onboarding.html'); mini.textContent = ''; return; }
+  if (motivo === 'exp') { estado('warn', 'O tempo do pagamento acabou', 'A página de pagamento expirou e nada foi cobrado. Comece de novo para gerar um novo link.'); botao('Começar de novo', '/onboarding.html'); mini.textContent = ''; return; }
+  var tentativas = 0, plano = '';
+  function consultar() {
+    tentativas++;
+    var ctl = new AbortController(); var relogio = setTimeout(function () { ctl.abort(); }, 12000);
+    fetch(WORKER + '/webhook/manaa-asaas-status?id=' + encodeURIComponent(ref), { signal: ctl.signal })
+      .then(function (r) { return r.json(); })
+      .then(function (d) {
+        clearTimeout(relogio);
+        plano = d.plano || plano;
+        if (d.status === 'active') {
+          try { sessionStorage.removeItem('manaa_chk'); } catch (e) {}
+          location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(plano || 'mensal') + '&via=checkout';
+          return;
+        }
+        if (d.checkout === 'CANCELED' || d.checkout === 'EXPIRED' || d.status === 'expired') {
+          estado('warn', 'Pagamento não concluído', 'Nada foi cobrado. Comece de novo para gerar um novo link de pagamento.'); botao('Começar de novo', '/onboarding.html'); return;
+        }
+        if (d.status === 'not_found') {
+          estado('warn', 'Não encontramos este pagamento', 'Se você pagou, a confirmação chega pelo WhatsApp em alguns minutos. Se precisar, fale com a gente por lá.'); botao('Voltar ao site', '/', true); return;
+        }
+        if (tentativas >= 45) { // ~3 minutos
+          estado('', 'Ainda estamos confirmando', 'O ASAAS ainda não nos avisou. Isso pode levar alguns minutos. A confirmação chega pelo WhatsApp; você pode fechar esta página.');
+          botao('Ver minha conta', '/conta.html', true); return;
+        }
+        setTimeout(consultar, 4000);
+      })
+      .catch(function () { clearTimeout(relogio); if (tentativas < 45) setTimeout(consultar, 6000); else { estado('', 'Ainda estamos confirmando', 'Não conseguimos falar com o servidor agora. A confirmação chega pelo WhatsApp.'); } });
+  }
+  consultar();
+})();
+</script>
+</body>
+</html>
