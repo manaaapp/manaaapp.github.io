@@ -1487,11 +1487,12 @@ function renderStep5Result(data) {
     const ciclo = isAnual ? '' : '/mês';
     sub.innerHTML = `
 <div style="max-width:340px;margin:-8px auto 0;text-align:left;font-family:'Inter',system-ui,sans-serif">
-  ${data.retomada ? `<div style="background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#7A6420;line-height:1.45">Esta é a cobrança que você já tinha aberto — é a mesma, não vai cobrar duas vezes.</div>` : ''}
+  ${data.retomada ? `<div style="background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#7A6420;line-height:1.45">${data.pixAutomatico ? 'Esta é a autorização que você já tinha aberto — é a mesma, não vai cobrar duas vezes.' : 'Esta é a cobrança que você já tinha aberto — é a mesma, não vai cobrar duas vezes.'}</div>` : ''}
+  ${data.pixAutomatico ? `<div style="background:#eef6f2;border:1px solid #bfd9cb;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#245c44;line-height:1.45"><strong>PIX Automático.</strong> Este QR paga o primeiro mês. Ao confirmar, o app do seu banco pede a autorização dos próximos meses (R$ ${valor}/mês, no mesmo dia). Nada de QR todo mês. Cancele quando quiser, pelo banco ou por aqui.</div>` : ''}
   <div style="background:#fff;border:1px solid #E5DDD0;border-radius:14px;padding:18px 18px 14px;margin-bottom:10px">
     <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px">
       <div>
-        <div style="font-size:11px;color:#8C847A;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">Pague com PIX</div>
+        <div style="font-size:11px;color:#8C847A;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">${data.pixAutomatico ? 'Pague e autorize com PIX' : 'Pague com PIX'}</div>
         <div style="font-family:'Lora',Georgia,serif;font-size:13.5px;color:#5C564D;line-height:1.3">${produto}</div>
       </div>
       <div style="text-align:right;flex-shrink:0">
@@ -1524,7 +1525,7 @@ function renderStep5Result(data) {
   </div>
   <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;color:#8C847A">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    Confirmação automática após pagamento · QR válido por 24h
+    ${data.pixAutomatico ? 'Confirmação automática após o banco aprovar · QR válido por 3 dias' : 'Confirmação automática após pagamento · QR válido por 24h'}
   </div>
 </div>`;
     setTimeout(() => {
@@ -1547,7 +1548,7 @@ function renderStep5Result(data) {
     window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
     return;
   } else if (data.invoiceUrl) {
-    title.textContent = data.retomada ? 'Você já tem uma cobrança aberta' : 'Tudo pronto';
+    title.textContent = data.retomada ? (data.pixAutomatico ? 'Você já tem uma autorização aberta' : 'Você já tem uma cobrança aberta') : 'Tudo pronto';
     sub.innerHTML = (data.retomada && data.mensagem ? '<div style="font-size:13px;color:#5C564D;line-height:1.5;margin-bottom:4px">' + data.mensagem + '</div>' : '')
       + '<a href="' + data.invoiceUrl + '" target="_blank" style="display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px">Abrir tela de pagamento</a>';
   }
