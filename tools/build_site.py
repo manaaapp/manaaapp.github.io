@@ -38,6 +38,41 @@ def limpar_html(txt):
     txt = re.sub(r'(<script\b[^>]*>)([\s\S]*?)(</script>)', limpa_script, txt, flags=re.I)
     return txt
 
+import hashlib, base64
+def _sha(txt):
+    return "'sha256-" + base64.b64encode(hashlib.sha256(txt.encode('utf-8')).digest()).decode() + "'"
+
+# CSP real (R5): scripts inline entram por hash; handlers inline (onclick=...) por hash + 'unsafe-hashes';
+# nada de 'unsafe-eval' nem 'unsafe-inline' para script. Estilos inline (style="...") seguem 'unsafe-inline'.
+HOSTS_SCRIPT = "https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com"
+HOSTS_CONNECT = ("https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com "
+                 "https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com")
+def csp_para(html):
+    hashes = []
+    for m in re.finditer(r'<script([^>]*)>([\s\S]*?)</script>', html, flags=re.I):
+        attrs, corpo = m.group(1), m.group(2)
+        if re.search(r'src\s*=', attrs, re.I):
+            continue
+        if corpo.strip():
+            hashes.append(_sha(corpo))
+    handlers = []
+    for m in re.finditer(r'\son[a-z]+\s*=\s*"([^"]*)"', html, flags=re.I):
+        handlers.append(_sha(m.group(1)))
+    script_src = "'self' " + HOSTS_SCRIPT + " " + " ".join(sorted(set(hashes)))
+    if handlers:
+        script_src += " 'unsafe-hashes' " + " ".join(sorted(set(handlers)))
+    return ("default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; "
+            "script-src " + script_src + "; "
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; "
+            "img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; "
+            "connect-src 'self' " + HOSTS_CONNECT + "; upgrade-insecure-requests")
+
+def injetar_csp(txt):
+    csp = csp_para(txt).replace('"', '&quot;')
+    tag = '<meta http-equiv="Content-Security-Policy" content="%s">' % csp
+    return re.sub(r'(<meta charset[^>]*>)', lambda m: m.group(1) + '
+' + tag, txt, count=1, flags=re.I)
+
 def injetar_build(txt):
     tag = '<meta name="build-id" content="%s">' % SHA
     if re.search(r'<meta charset', txt, re.I):
@@ -64,7 +99,7 @@ for root, dirs, files in os.walk(SRC):
         os.makedirs(os.path.dirname(dst), exist_ok=True)
         if f.lower().endswith('.html'):
             txt = open(src, encoding='utf-8').read()
-            txt = injetar_build(limpar_html(txt))
+            txt = injetar_csp(injetar_build(limpar_html(txt)))
             vis = texto_visivel(txt)
             for pat in PROIBIDAS:
                 if re.search(pat, vis):
