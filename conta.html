@@ -477,21 +477,16 @@
   // Dica do email cadastrado. O link que o Manaa manda no WhatsApp traz o numero da pessoa, entao
   // da pra lembrar QUAL email ela usou sem gastar mensagem de WhatsApp (que passa a ser cobrada
   // em 01/10/2026). Mostra so a primeira letra e o dominio: d***@gmail.com.
+  // R5: a dica do e-mail nao volta mais para a tela (isso permitia descobrir quem e' cliente pelo numero).
+  // Se o numero tiver cadastro, a dica chega no WhatsApp da propria pessoa; a tela so avisa isso.
   (async function mostrarDicaEmail(){
-    const waid = (new URLSearchParams(location.search).get('waid') || '').replace(/\D/g,'');
+    const waid = ((window.__params || new URLSearchParams(location.search)).get('waid') || '').replace(/\D/g,'');
     if(!waid) return;
     try {
       const r = await fetch(API+'/manaa-dica-email?waid='+encodeURIComponent(waid));
       const d = await r.json();
       const el = document.getElementById('dica-email');
-      if(d && d.situacao === 'ok' && d.dica){
-        el.textContent = 'Seu email cadastrado começa com ' + d.dica;
-        el.style.display = 'block';
-      }
-      if(d && d.primeiro_nome){
-        const t = document.querySelector('#screen-phone .card-title');
-        if(t) t.textContent = 'Oi, ' + d.primeiro_nome + '!';
-      }
+      if(d && d.mensagem){ el.textContent = String(d.mensagem); el.style.display = 'block'; }
     } catch(e) { /* sem dica, a pessoa digita o email do mesmo jeito */ }
   })();
   document.getElementById('inp-otp').addEventListener('keydown', e => { if(e.key==='Enter') verifyOtp(); });
