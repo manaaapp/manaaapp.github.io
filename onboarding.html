@@ -724,7 +724,7 @@
 
     <div class="pay-list" id="pay-mensal">
       <label class="pay-opt active" data-pay="PIX_AUTOMATIC" id="pay-opt-pix-auto"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
-      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec" data-flag="cartao"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
+      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec" data-flag="cartao"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Você será direcionado ao ambiente seguro do ASAAS para digitar o cartão. Depois, volta pra cá automaticamente.</div></div></label>
     </div>
     <script>
     // PIX Automatic só libera quando CNPJ Manaã (Funaro Ltda, aberto 13/01/2026) completar 6 meses (regra Bacen + ASAAS)
@@ -1455,6 +1455,17 @@ async function submitForm() {
     });
     const data = await r.json();
     if (!data.ok) throw new Error(data.error || data.error_description || 'Não conseguimos processar o pagamento. Verifique os dados ou tente outra forma.');
+    // R5.1 (03/09/2026): cartão pelo checkout hospedado do ASAAS. O servidor devolve só o link da página do ASAAS;
+    // o cartão é digitado lá. Voltamos por /pagamento-retorno.html?ref=..., que consulta o status no servidor.
+    if (data.hostedCheckout && data.checkout && data.checkout.link) {
+      const seguro = urlAsaasSegura(data.checkout.link);
+      if (!seguro) throw new Error('Não conseguimos abrir a página de pagamento. Tente de novo ou escolha PIX.');
+      try { sessionStorage.setItem('manaa_chk', JSON.stringify({ ref: data.checkout.ref || '', ts: Date.now() })); } catch (_) {}
+      try { gtag('event', 'iniciou_checkout_hospedado', { plano: currentPlanV2, modalidade: data.modalidade || '', retomada: !!data.retomada }); } catch (_) {}
+      btn.textContent = 'Abrindo o ambiente seguro do ASAAS...';
+      window.__r4Concluiu = true; window.location.href = seguro;
+      return;
+    }
     // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
     if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
       const idForUrl = data.paymentId || data.subscriptionId || '';
