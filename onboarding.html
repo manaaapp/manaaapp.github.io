@@ -1,0 +1,1724 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
+    <link rel="stylesheet" href="/assets/motion.css">
+
+<link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
+
+<meta charset="UTF-8">
+<meta name="build-id" content="cd8004c18f62">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<meta name="referrer" content="no-referrer">
+<script>
+(function(){ try {
+  var q = new URLSearchParams(location.search);
+  if (location.hash && location.hash.length > 1) { var f = new URLSearchParams(location.hash.slice(1)); f.forEach(function(v, k){ if (!q.has(k)) q.set(k, v); }); }
+  window.__params = q;
+  if (q.has('r') || q.has('t') || q.has('login') || q.has('token') || (location.hash && location.hash.length > 1)) {
+    var keep = new URLSearchParams();
+    ['plano','o'].forEach(function(k){ if (q.has(k)) keep.set(k, q.get(k)); });
+    history.replaceState(null, '', location.pathname + (keep.toString() ? '?' + keep.toString() : ''));
+  }
+} catch (e) {} })();
+</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-S3Q89PDH61');</script>
+<title>Manaã — Comece sua jornada</title>
+<meta name="description" content="Manaã — companheiro de fé no WhatsApp: devocional diário e uma conversa que acolhe e lembra de você. Comece em 1 minuto.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold-deep: #8b6914;
+    --gold: #b8912e;
+    --gold-light: #d4b86a;
+    --cream: #f6f2ec;
+    --paper: #fdfbf8;
+    --text: #2d2a26;
+    --muted: #8c847a;
+    --border: #e5e0d6;
+    --accent-bg: #faf6ee;
+    --green: #198754;
+    --red: #dc3545;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--paper) 100%);
+    color: var(--text);
+    line-height: 1.5;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 6px 12px 50px; }
+    .brand { margin-bottom: 4px; }
+    .brand .logo { width: 40px; height: 40px; }
+    .brand .brand-name { font-size: 22px; }
+    .brand .brand-tag { font-size: 11px; }
+    .progress { margin: 2px 0 8px; gap: 4px; }
+    .progress-step { height: 4px; }
+    .step-title { font-size: 17px; margin-bottom: 1px; }
+    .step-sub { font-size: 12px; margin-bottom: 8px; line-height: 1.3; }
+    .field { margin-bottom: 7px; }
+    .field label { font-size: 12px; margin-bottom: 2px; }
+    .field input, .field select, .field textarea { font-size: 14.5px; padding: 8px 10px; }
+    .field .hint { font-size: 10.5px; margin-top: 2px; }
+    .chips { gap: 4px; }
+    .chip { font-size: 11px; padding: 4px 9px; }
+    .field-row { grid-template-columns: 1fr 1fr !important; gap: 8px !important; }
+    input:-webkit-autofill, input:-webkit-autofill:hover, input:-webkit-autofill:focus, textarea:-webkit-autofill, select:-webkit-autofill { -webkit-box-shadow: 0 0 0 1000px #fff inset !important; -webkit-text-fill-color: #2D2A26 !important; transition: background-color 5000s ease-in-out 0s; }
+    .btn { padding: 13px; font-size: 15px; }
+    .nav .btn-back { flex: 0 0 80px; padding: 13px 8px; }
+    #plan-cards { display: flex !important; flex-direction: row; gap: 10px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 16px 12px 8px; margin: 0 -12px 8px; }
+    #plan-cards::-webkit-scrollbar { display: none; }
+    #plan-cards .plan-card { flex: 0 0 78%; scroll-snap-align: center; margin-bottom: 0; }
+    .plan-dots { display: flex; gap: 6px; justify-content: center; margin: 4px 0 10px; }
+    .plan-dot { width: 6px; height: 6px; border-radius: 50%; background: #E5DDD0; transition: background 0.2s, width 0.2s; }
+    .plan-dot.active { background: var(--gold); width: 18px; border-radius: 3px; }
+    #pago-fields > div[style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .plan-card .plan-price-2 { font-size: 26px; }
+  }
+  .container {
+    max-width: 580px;
+    margin: 0 auto;
+    padding: 24px 16px 80px;
+  }
+  .brand {
+    display: flex; align-items: center; gap: 14px;
+    margin: 4px 0 22px;
+    padding: 4px 0;
+  }
+  .brand-logo {
+    width: 52px; height: 52px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold-deep) 0%, var(--gold) 60%, var(--gold-light) 100%);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 28px;
+    font-family: 'Lora', Georgia, serif;
+    box-shadow: 0 6px 18px rgba(139,105,20,0.22), inset 0 1px 0 rgba(255,255,255,0.2);
+    letter-spacing: -0.5px;
+  }
+  .brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+  .brand-name {
+    /* A marca Manaa usa Playfair Display em todo o site. Aqui estava Lora, e a diferenca
+       aparecia justamente na tela onde a pessoa decide se confia o suficiente pra pagar. */
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 24px; font-weight: 700;
+    color: var(--gold-deep);
+    letter-spacing: -0.01em;
+  }
+  .brand-tag {
+    font-size: 12.5px; color: var(--muted);
+    margin-top: 2px; font-weight: 500;
+  }
+
+  .topbar {
+    background: transparent; padding: 14px 18px 4px;
+    max-width: 580px; margin: 0 auto;
+  }
+  .topbar-link {
+    color: var(--gold-deep); text-decoration: none; font-size: 13px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 4px; opacity: 0.8;
+    transition: opacity 0.18s;
+  }
+  .topbar-link:hover { opacity: 1; }
+  .progress {
+    display: flex; gap: 6px; margin-bottom: 28px;
+  }
+  .progress-step {
+    flex: 1; height: 6px; border-radius: 3px;
+    background: var(--border); transition: background 0.3s;
+    cursor: pointer;
+  }
+  .progress-step.active { background: linear-gradient(90deg, var(--gold-deep), var(--gold)); }
+  .progress-step.done { background: var(--gold-light); opacity: 0.7; }
+  .progress-step.done:hover { opacity: 1; }
+
+  .step { display: none; }
+  .step.active { display: block; animation: stepFadeIn 0.35s cubic-bezier(.2,.7,.3,1); }
+  @keyframes stepFadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .step-title {
+    font-family: 'Lora', Georgia, serif;
+    font-size: 26px; font-weight: 700; margin: 0 0 6px;
+    color: var(--gold-deep);
+    letter-spacing: -0.01em;
+  }
+  .step-sub {
+    font-size: 14px; color: var(--muted); margin: 0 0 24px;
+  }
+
+  .field {
+    margin-bottom: 18px;
+  }
+  .field label {
+    display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text);
+  }
+  .field .hint {
+    font-size: 12px; color: var(--muted); margin-top: 4px;
+  }
+  .field input[type=text],
+  .field input[type=tel],
+  .field input[type=date],
+  .field input[type=time],
+  .field input[type=email],
+  .field input[type=number],
+  .field select,
+  .field textarea {
+    width: 100%; padding: 12px 14px;
+    border: 1px solid var(--border); border-radius: 10px;
+    font-size: 16px; background: var(--paper); color: var(--text);
+    transition: border-color 0.2s;
+    -webkit-text-size-adjust: 100%;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus {
+    outline: none; border-color: var(--gold);
+  }
+  .field textarea { min-height: 80px; resize: vertical; }
+  .date-row { display: grid; grid-template-columns: 1fr 1.6fr 1fr; gap: 8px; }
+  .date-row select { width: 100%; }
+
+  .chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+  }
+  .chip {
+    padding: 8px 14px; border: 1px solid var(--border); border-radius: 20px;
+    background: var(--paper); cursor: pointer; font-size: 13px;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: var(--gold-light); }
+  .chip.active {
+    background: var(--gold); color: white; border-color: var(--gold);
+  }
+
+  .btn {
+    display: block; width: 100%; padding: 14px;
+    background: var(--gold); color: white;
+    border: none; border-radius: 12px;
+    font-size: 16px; font-weight: 600; cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .btn:hover { opacity: 0.92; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .btn-back {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .nav {
+    display: flex; gap: 12px; margin-top: 20px;
+    position: sticky;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(253,251,248,0) 0%, var(--paper) 20%, var(--paper) 100%);
+    padding: 18px 0 calc(18px + env(safe-area-inset-bottom, 0px));
+    margin-left: -16px;
+    margin-right: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    z-index: 10;
+  }
+  .nav .btn { flex: 1; }
+  .nav .btn-back { flex: 0 0 100px; }
+  body { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  .lgpd {
+    background: var(--accent-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 13px; color: var(--text);
+    margin: 16px 0;
+  }
+  .lgpd label {
+    display: flex; align-items: flex-start; gap: 10px; cursor: pointer;
+  }
+  .lgpd input[type=checkbox] { margin-top: 2px; flex-shrink: 0; }
+
+  .plan-carousel { display: flex; align-items: center; gap: 10px; margin: 28px 0 8px; }
+  .plan-arrow {
+    width: 48px; height: 48px; flex-shrink: 0;
+    border: none; border-radius: 50%; background: white;
+    color: var(--gold); font-size: 26px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  }
+  .plan-arrow:hover { background: var(--gold); color: white; transform: scale(1.05); box-shadow: 0 4px 12px rgba(184,145,46,0.3); }
+  .plan-stage { flex: 1; overflow: hidden; min-width: 0; }
+  .plan-slide {
+    flex: 0 0 100%; padding: 24px 22px 32px; text-align: center;
+    background: linear-gradient(180deg, #fff 0%, var(--accent-bg) 100%);
+    border: 2px solid var(--gold);
+    border-radius: 16px; position: relative;
+    min-height: 220px; display: flex; flex-direction: column; justify-content: center;
+    box-shadow: 0 4px 16px rgba(184,145,46,0.12);
+  }
+  .plan-badge {
+    display: inline-block;
+    margin: 0 auto 14px;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.8px;
+    padding: 6px 14px; border-radius: 20px;
+    text-transform: uppercase; white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+    align-self: center;
+  }
+  .plan-badge-best { background: var(--gold); color: white; }
+  .plan-badge-free { background: #198754; color: white; }
+  .plan-badge-save { background: #dc3545; color: white; }
+  .plan-name { font-weight: 700; font-size: 18px; margin-top: 6px; }
+  .plan-price { font-size: 32px; font-weight: 900; color: var(--gold); margin: 8px 0; line-height: 1; }
+  .plan-detail { font-size: 12px; color: var(--muted); line-height: 1.5; max-width: 280px; margin: 0 auto; }
+  .plan-dots { display: flex; justify-content: center; gap: 6px; margin-bottom: 16px; }
+  .plan-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border); cursor: pointer; transition: all 0.2s; }
+  .plan-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
+
+  .success {
+    text-align: center; padding: 40px 20px;
+  }
+  .success-icon {
+    width: 72px; height: 72px; margin: 0 auto 16px;
+    background: var(--green); border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 36px;
+  }
+
+  .err {
+    color: var(--red); font-size: 13px; margin-top: 6px;
+  }
+  /* Aviso de regra de negócio (ex: teste grátis já usado). Fica junto dos planos,
+     que é onde a mudança acontece — e em âmbar, porque a pessoa não errou nada. */
+  #plan-notice {
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    background: linear-gradient(180deg, #FBF5E5 0%, #FEFCF7 100%);
+    border: 1.5px solid #E0C97A;
+    border-left: 4px solid #B8901F;
+    border-radius: 12px;
+    padding: 14px 16px 14px 14px;
+    margin: 14px 0 4px;
+    scroll-margin-top: 24px;
+    color: #6b5310;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    box-shadow: 0 4px 16px rgba(184,144,31,0.10);
+  }
+  #plan-notice.show { display: flex; }
+  /* Conta já ativa: esconde tudo que é de pagamento. Via CSS com !important porque o
+     próprio site reexibe esses blocos em refreshConsentAndExtra/selectPlanV2. */
+  body.conta-ativa #sec-pay,
+  body.conta-ativa #pago-fields,
+  body.conta-ativa #cc-box,
+  body.conta-ativa #consent-box,
+  body.conta-ativa #security-seals,
+  body.conta-ativa #plan-cards,
+  body.conta-ativa #plan-dots-indicator,
+  body.conta-ativa .pay-opt-group,
+  body.conta-ativa #pay-mensal,
+  body.conta-ativa #pay-anual,
+  body.conta-ativa #pay-trial { display: none !important; }
+  #plan-notice:focus { outline: 2px solid #B8901F; outline-offset: 2px; }
+  #plan-notice::before {
+    content: 'i';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #B8901F; color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 15px; font-style: italic;
+    font-family: Georgia, serif;
+  }
+  #err-final {
+    background: linear-gradient(180deg, #fdf2f2 0%, #fbe9e9 100%);
+    border: 1.5px solid #f5c6cb;
+    border-left: 4px solid #dc3545;
+    border-radius: 12px;
+    padding: 14px 16px 14px 14px;
+    margin: 14px 0;
+    color: #842029;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.5;
+    display: none;
+    align-items: flex-start;
+    gap: 12px;
+    box-shadow: 0 4px 16px rgba(220,53,69,0.12);
+    animation: shakeErr 0.4s cubic-bezier(.36,.07,.19,.97);
+  }
+  #err-final[style*="block"], #err-final.show { display: flex !important; }
+  @keyframes shakeErr {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-4px); }
+    40%, 80% { transform: translateX(4px); }
+  }
+  #err-final::before {
+    content: '!';
+    flex-shrink: 0;
+    width: 24px; height: 24px;
+    background: #dc3545; color: #fff;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px;
+    box-shadow: 0 2px 6px rgba(220,53,69,0.3);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="/" class="topbar-link">‹ Voltar para a página inicial</a>
+</div>
+
+<div class="container">
+  <a href="/" class="brand" style="text-decoration:none;color:inherit">
+    <div class="brand-logo" style="background:none;box-shadow:none;border-radius:0"><img src="/assets/manaa-logo-round.png?v=2" alt="Manaã" style="width:48px;height:48px;object-fit:contain"></div>
+    <div class="brand-text">
+      <span class="brand-name">Manaã</span>
+      <span class="brand-tag">Seu companheiro de fé no WhatsApp</span>
+    </div>
+  </a>
+
+  <div class="progress">
+    <div class="progress-step active" data-step="1"></div>
+    <div class="progress-step" data-step="2"></div>
+    <div class="progress-step" data-step="3"></div>
+    <div class="progress-step" data-step="4"></div>
+  </div>
+
+  
+  <div class="step active" data-step="1">
+    <h2 class="step-title">Quem é você?</h2>
+    <p class="step-sub">Pra começar, alguns dados básicos.</p>
+
+    <div class="field-row" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="field">
+        <label for="first-name">Nome</label>
+        <input type="text" id="first-name" placeholder="Ex: Maria" required autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="last-name">Sobrenome</label>
+        <input type="text" id="last-name" placeholder="Ex: Silva" required autocomplete="family-name">
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="phone">WhatsApp (com DDD)</label>
+      <input type="tel" id="phone" placeholder="(43) 99999-9999" required autocomplete="tel-national">
+      <div class="hint">É pra esse número que vamos enviar. Só celulares do Brasil (DDD + 9 dígitos).</div>
+    </div>
+
+    <div class="field">
+      <label for="email">Email</label>
+      <input type="email" id="email" placeholder="seu@email.com" required autocomplete="email">
+      <div class="hint">Pra você acessar sua conta depois.</div>
+    </div>
+
+    <div class="field">
+      <label>Gênero</label>
+      <div class="chips" id="chips-genero">
+        <div class="chip" data-val="F">Mulher</div>
+        <div class="chip" data-val="M">Homem</div>
+        <div class="chip" data-val="X">Prefiro não dizer</div>
+      </div>
+      <div class="hint">Usamos só pra concordância no tom (ex: "querida" / "querido").</div>
+    </div>
+
+    <div class="field">
+      <label for="religiao">Você é de qual religião/tradição?</label>
+      <select id="religiao">
+        <option value="">Prefiro não dizer</option>
+        <option value="catolico">Católica</option>
+        <option value="evangelico">Evangélica</option>
+        <option value="cristao">Cristão sem denominação</option>
+        <option value="outra">Outra tradição cristã</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="inspiracoes">Quem te inspira espiritualmente? (opcional)</label>
+      <input type="text" id="inspiracoes" placeholder="Ex: Padre Fábio de Melo, Aline Barros, Provérbios">
+      <div class="hint">Pode citar pessoas, livros bíblicos, músicas — qualquer coisa que te toca. Pula se preferir.</div>
+    </div>
+
+    <button class="btn" onclick="next(2)">Continuar</button>
+  </div>
+
+  
+  <div class="step" data-step="2">
+    <h2 class="step-title">Sua rotina</h2>
+    <p class="step-sub">Pra escolher a melhor hora pra te alcançar.</p>
+
+    <div class="field">
+      <label for="horario">Que horas você quer receber o devocional?</label>
+      <select id="horario" required>
+        <option value="05:00">05:00</option>
+        <option value="05:30">05:30</option>
+        <option value="06:00">06:00</option>
+        <option value="06:30" selected>06:30</option>
+        <option value="07:00">07:00</option>
+        <option value="07:30">07:30</option>
+        <option value="08:00">08:00</option>
+        <option value="08:30">08:30</option>
+        <option value="09:00">09:00</option>
+        <option value="09:30">09:30</option>
+        <option value="10:00">10:00</option>
+        <option value="10:30">10:30</option>
+        <option value="11:00">11:00</option>
+        <option value="11:30">11:30</option>
+        <option value="12:00">12:00</option>
+        <option value="12:30">12:30</option>
+        <option value="13:00">13:00</option>
+        <option value="13:30">13:30</option>
+        <option value="14:00">14:00</option>
+        <option value="14:30">14:30</option>
+        <option value="15:00">15:00</option>
+        <option value="15:30">15:30</option>
+        <option value="16:00">16:00</option>
+        <option value="16:30">16:30</option>
+        <option value="17:00">17:00</option>
+        <option value="17:30">17:30</option>
+        <option value="18:00">18:00</option>
+        <option value="18:30">18:30</option>
+        <option value="19:00">19:00</option>
+        <option value="19:30">19:30</option>
+        <option value="20:00">20:00</option>
+        <option value="20:30">20:30</option>
+        <option value="21:00">21:00</option>
+        <option value="21:30">21:30</option>
+        <option value="22:00">22:00</option>
+      </select>
+      <div class="hint">Sugerimos pela manhã, mas você escolhe.</div>
+    </div>
+
+    <div class="field">
+      <label for="versao">Versão da Bíblia preferida</label>
+      <select id="versao">
+        
+        <option value="">Sem preferência</option>
+        <option value="NVI">Nova Versão Internacional (NVI)</option>
+        <option value="ACF">Almeida Corrigida Fiel (ACF)</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Data de nascimento <span style="color:var(--red)">*</span></label>
+      <div class="date-row">
+        <select id="nasc-dia" required><option value="">Dia</option></select>
+        <select id="nasc-mês" required>
+          <option value="">Mês</option>
+          <option value="01">Janeiro</option><option value="02">Fevereiro</option>
+          <option value="03">Março</option><option value="04">Abril</option>
+          <option value="05">Maio</option><option value="06">Junho</option>
+          <option value="07">Julho</option><option value="08">Agosto</option>
+          <option value="09">Setembro</option><option value="10">Outubro</option>
+          <option value="11">Novembro</option><option value="12">Dezembro</option>
+        </select>
+        <select id="nasc-ano" required><option value="">Ano</option></select>
+      </div>
+      <div class="hint">Usamos pra ajustar o tom da conversa (idoso recebe carinho diferente de jovem). Não mostramos pra ninguém.</div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(1)">Voltar</button>
+      <button class="btn" onclick="next(3)">Continuar</button>
+    </div>
+  </div>
+
+  
+  <div class="step" data-step="3">
+    <h2 class="step-title">Como tá o seu momento?</h2>
+    <p class="step-sub">Marque o que mais conecta. Você pode escolher mais de um.</p>
+
+    <div class="field">
+      <label>Estou vivendo um momento de…</label>
+      <div class="chips" id="chips-momento">
+        <div class="chip" data-val="paz">Paz</div>
+        <div class="chip" data-val="duvida">Dúvida</div>
+        <div class="chip" data-val="ansiedade">Ansiedade</div>
+        <div class="chip" data-val="luto">Luto</div>
+        <div class="chip" data-val="alegria">Alegria</div>
+        <div class="chip" data-val="recomeco">Recomeço</div>
+        <div class="chip" data-val="cansaco">Cansaço</div>
+        <div class="chip" data-val="busca">Busca</div>
+        <div class="chip" data-val="gratidao">Gratidão</div>
+        <div class="chip" data-val="solidao_cuidado">Preciso de companhia</div>
+        <div class="chip" data-val="familia">Foco em família</div>
+        <div class="chip" data-val="trabalho">Trabalho intenso</div>
+        <div class="chip" data-val="perda">Perdi alguém querido</div>
+        <div class="chip" data-val="separacao">Separação ou divórcio</div>
+        <div class="chip" data-val="doenca_familia">Doença na família</div>
+        <div class="chip" data-val="desemprego">Desemprego</div>
+        <div class="chip" data-val="recomeco_espiritual">Recomeço espiritual</div>
+        <div class="chip" data-val="maternidade">Maternidade/paternidade recente</div>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="ocupacao">Sua ocupação (opcional)</label>
+      <input type="text" id="ocupacao" placeholder="Ex: professora, motorista, dona de casa, aposentada">
+      <div class="hint">Ajuda a gente a entender o seu dia a dia.</div>
+    </div>
+
+    <div class="field">
+      <label for="proposito">Por que você quer o Manaã? (opcional)</label>
+      <textarea id="proposito" placeholder="Ex: Quero começar o dia com algo bom. / Tô voltando pra fé. / Procuro paz."></textarea>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(2)">Voltar</button>
+      <button class="btn" onclick="next(4)">Continuar</button>
+    </div>
+  </div>
+
+  
+  <div class="step" data-step="4">
+    <h2 class="step-title">Quase lá</h2>
+    <p class="step-sub">Escolha como continuar com a gente.</p>
+
+    <style>
+      /* === REDESIGN v3 etapa 4 === */
+      .plan-card {
+        background: #fff;
+        border: 1.5px solid #ECE4D5;
+        border-radius: 16px;
+        padding: 18px 18px 16px;
+        cursor: pointer;
+        transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.22s ease, background 0.18s ease;
+        position: relative;
+        margin-bottom: 12px;
+        box-shadow: 0 2px 8px rgba(139,105,20,0.04);
+      }
+      .plan-card:hover {
+        border-color: #D4B86A;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(139,105,20,0.10);
+      }
+      .plan-card.active {
+        border-color: var(--gold);
+        background: linear-gradient(180deg, #FEFCF7 0%, #FBF5E5 100%);
+        box-shadow: 0 0 0 4px rgba(184,145,46,0.10), 0 10px 28px rgba(139,105,20,0.14);
+      }
+      .plan-card .plan-head-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
+      .plan-card .plan-name-2 { font-family: 'Lora', Georgia, serif; font-size: 19px; font-weight: 600; color: var(--gold-deep); letter-spacing: -0.01em; }
+      .plan-card .plan-tag-2 { font-size: 10.5px; color: #6b6453; background: transparent; border: 1.5px solid #D4C7A5; padding: 3px 10px; border-radius: 12px; font-weight: 600; letter-spacing: 0.3px; white-space: nowrap; }
+      .plan-card[data-plan="trial"] .plan-tag-2 { color: #2f7d32; border-color: #b8d8b9; background: #f1f8f1; }
+      .plan-card[data-plan="mensal"] .plan-tag-2 { color: #8B6914; border-color: #E0C97A; background: #FBF5E5; }
+      .plan-card[data-plan="anual"] .plan-tag-2 { color: #6b6453; border-color: #D4C7A5; background: transparent; }
+      .plan-card .plan-price-2 { font-family: 'Lora', Georgia, serif; font-size: 30px; font-weight: 700; margin: 4px 0 2px; letter-spacing: -0.02em; color: var(--gold-deep); }
+      .plan-card .plan-price-2 small { font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500; color: #6b6453; }
+      .plan-card .plan-desc-2 { font-size: 13px; color: #5C564D; margin: 4px 0 0; line-height: 1.5; }
+      .badge-save-2 { position: absolute; top: -10px; right: 14px; background: linear-gradient(135deg, #B8912E, #8B6914); color: #fff; font-size: 11px; padding: 4px 12px; border-radius: 14px; font-weight: 700; letter-spacing: 0.3px; box-shadow: 0 3px 10px rgba(139,105,20,0.25); }
+
+      .pay-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px; }
+      .pay-opt {
+        background: #fff;
+        border: 1.5px solid #ECE4D5;
+        border-radius: 12px;
+        padding: 13px 14px;
+        cursor: pointer;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+        transition: all 0.18s ease;
+      }
+      .pay-opt:hover { border-color: #D4B86A; background: #FEFCF7; transform: translateY(-1px); }
+      .pay-opt.active { border-color: var(--gold); background: linear-gradient(180deg, #FEFCF7 0%, #FBF5E5 100%); box-shadow: 0 4px 12px rgba(184,145,46,0.10); }
+      .pay-opt input { margin-top: 3px; accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; }
+      .pay-opt-title { font-weight: 600; font-size: 14.5px; color: var(--text); }
+      .pay-opt-desc { font-size: 12.5px; color: #6b6453; margin-top: 4px; line-height: 1.5; }
+      .pay-tag-rec { font-size: 10px; background: linear-gradient(135deg, #B8912E, #A07D2E); color: #fff; padding: 3px 9px; border-radius: 10px; font-weight: 700; margin-left: 6px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+      .consent-box {
+        background: linear-gradient(180deg, #FBF5E5 0%, #F5EBD0 100%);
+        border: 1px solid #E0C97A;
+        border-radius: 12px;
+        padding: 13px 15px;
+        margin-bottom: 14px;
+        display: flex;
+        gap: 12px;
+        align-items: flex-start;
+      }
+      .consent-box input { margin-top:2px; accent-color:#B8912E; width:17px; height:17px; flex-shrink:0; }
+      .consent-box label { font-size:12.5px; line-height:1.5; color:#2D2A26; }
+    </style>
+
+    <div id="plan-cards">
+      <div class="plan-card" data-plan="trial">
+        <div class="plan-head-row"><span class="plan-name-2">7 dias grátis</span><span class="plan-tag-2">Sem cartão</span></div>
+        <div class="plan-price-2">R$ 0</div>
+        <p class="plan-desc-2">Experimente sem compromisso. Após 7 dias, te enviamos o link de pagamento.</p>
+      </div>
+      <div class="plan-card active" data-plan="mensal">
+        <div class="plan-head-row"><span class="plan-name-2">Mensal</span><span class="plan-tag-2">Assinatura</span></div>
+        <div class="plan-price-2">R$ 14,99<small>/mês</small></div>
+        <p class="plan-desc-2">Renova automaticamente. Cancele quando quiser.</p>
+      </div>
+      <div class="plan-card" data-plan="anual" data-flag="anual">
+        <span class="badge-save-2">Economize 11%</span>
+        <div class="plan-head-row"><span class="plan-name-2">Anual</span><span class="plan-tag-2">Pagamento único</span></div>
+        <div class="plan-price-2">R$ 159,99<small>/ano</small></div>
+        <p class="plan-desc-2">Equivale a R$ 13,33/mês. Sem renovação. Garantia 7 dias.</p>
+      </div>
+    </div>
+    <div class="plan-dots" id="plan-dots-indicator"><span class="plan-dot" data-i="0"></span><span class="plan-dot active" data-i="1"></span><span class="plan-dot" data-i="2"></span></div>
+    <div id="plan-notice" role="status" aria-live="polite" tabindex="-1"></div>
+    <script>
+    (function(){
+      const pc = document.getElementById('plan-cards');
+      const dots = document.querySelectorAll('#plan-dots-indicator .plan-dot');
+      if (!pc) return;
+      function selectByCenter() {
+        const cards = Array.from(pc.querySelectorAll('.plan-card'));
+        const pcr = pc.getBoundingClientRect();
+        const centerX = pcr.left + pcr.width/2;
+        let bestIdx = 0, bestDist = Infinity;
+        cards.forEach((c, i) => {
+          const r = c.getBoundingClientRect();
+          const d = Math.abs((r.left + r.width/2) - centerX);
+          if (d < bestDist) { bestDist = d; bestIdx = i; }
+        });
+        dots.forEach((d, i) => d.classList.toggle('active', i === bestIdx));
+        const target = cards[bestIdx];
+        if (target && typeof selectPlanV2 === 'function') selectPlanV2(target.dataset.plan);
+      }
+      setTimeout(() => {
+        if (window.innerWidth <= 480) {
+          const m = pc.querySelector('[data-plan=mensal]');
+          if (m) m.scrollIntoView({inline:'center',block:'nearest',behavior:'instant'});
+          selectByCenter();
+        }
+      }, 100);
+      let scrollTimer;
+      pc.addEventListener('scroll', () => {
+        if (window._suppressScrollSelect) return;
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(selectByCenter, 80);
+      });
+      dots.forEach((dot, i) => dot.addEventListener('click', () => {
+        const card = pc.querySelectorAll('.plan-card')[i];
+        if (card) card.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+      }));
+      pc.querySelectorAll('.plan-card').forEach((card) => {
+        card.addEventListener('click', (e) => {
+          if (window.innerWidth <= 480) { card.scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'}); }
+        });
+      });
+    })();
+    </script>
+
+    <h3 id="sec-pay" style="font-family:'Lora',Georgia,serif;font-size:17px;font-weight:700;margin:22px 0 12px;color:#8B6914;display:flex;align-items:center;gap:8px">
+      <span style="display:inline-block;width:4px;height:18px;background:linear-gradient(180deg,#B8912E,#8B6914);border-radius:2px"></span>
+      Forma de pagamento
+    </h3>
+
+    <div class="pay-list" id="pay-mensal">
+      <label class="pay-opt active" data-pay="PIX_AUTOMATIC" id="pay-opt-pix-auto"><input type="radio" name="pay-m" value="PIX_AUTOMATIC" checked><div><div class="pay-opt-title">PIX Automático <span class="pay-tag-rec">Recomendado</span></div><div class="pay-opt-desc">Autoriza uma vez no app do banco. Cobranças mensais automáticas.</div></div></label>
+      <label class="pay-opt" data-pay="CREDIT_CARD_REC" id="pay-opt-cc-rec" data-flag="cartao"><input type="radio" name="pay-m" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão de Crédito</div><div class="pay-opt-desc">Pague mensal pelo cartão. Atualize ou cancele pelo portal.</div></div></label>
+    </div>
+    <script>
+    (function gatePixAutoMensal(){
+      var release = new Date('2026-07-13T00:00:00-03:00');
+      if (Date.now() < release.getTime()) {
+        var pa = document.getElementById('pay-opt-pix-auto');
+        var cc = document.getElementById('pay-opt-cc-rec');
+        if (pa) {
+          pa.style.display = 'none';
+          var inp = pa.querySelector('input[type=radio]');
+          if (inp) { inp.checked = false; inp.disabled = true; }
+          pa.classList.remove('active');
+        }
+        if (cc) {
+          cc.classList.add('active');
+          var ccInp = cc.querySelector('input[type=radio]');
+          if (ccInp) ccInp.checked = true;
+        }
+      }
+    })();
+    </script>
+
+    <div class="pay-list" id="pay-anual" style="display:none" data-flag="anual">
+      <label class="pay-opt active" data-pay="PIX"><input type="radio" name="pay-a" value="PIX" checked><div><div class="pay-opt-title">PIX</div><div class="pay-opt-desc">Pagamento único de R$ 159,99. Confirmação na hora.</div></div></label>
+      <label class="pay-opt" data-pay="CC_AVISTA"><input type="radio" name="pay-a" value="CREDIT_CARD"><div><div class="pay-opt-title">Cartão à vista</div><div class="pay-opt-desc">R$ 159,99 em uma parcela.</div></div></label>
+      <label class="pay-opt" data-pay="CC_PARCELADO"><input type="radio" name="pay-a" value="CREDIT_CARD_PARC"><div style="flex:1"><div class="pay-opt-title">Cartão parcelado</div><div class="pay-opt-desc">Sem juros pra você. Escolha em quantas vezes:</div><select id="cc-parcelas" style="margin-top:8px;padding:10px 12px;border:1.5px solid #E5DDD0;border-radius:8px;font-size:16px;min-height:44px;font-family:inherit;width:100%;background:#fff" onclick="event.stopPropagation()">
+        <option value="2">2x de R$ 79,99</option>
+        <option value="3">3x de R$ 53,33</option>
+        <option value="4">4x de R$ 40,00</option>
+        <option value="6">6x de R$ 26,67</option>
+        <option value="10">10x de R$ 16,00</option>
+        <option value="12" selected>12x de R$ 13,33</option>
+      </select></div></label>
+    </div>
+
+    <div class="pay-list" id="pay-trial" style="display:none">
+      <p style="font-size:13px;color:#5C564D;text-align:center;margin:8px 0 12px">Sem cobrança. Experimente por 7 dias.</p>
+    </div>
+
+    <div class="consent-box" id="consent-box">
+      <input type="checkbox" id="consent-cb">
+      <label for="consent-cb">Entendo que serão debitados <strong>R$ 14,99</strong> da minha conta todo mês via PIX Automático. Posso cancelar a qualquer momento.</label>
+    </div>
+
+
+    <div id="cc-box" data-flag="cartao" style="display:none;background:linear-gradient(180deg,#fff 0%,#FEFCF7 100%);border:1.5px solid #ECE4D5;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="3" ry="3"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Dados do cartão</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr;gap:8px">
+        <div class="field"><label for="cc-number">Número do cartão</label><input id="cc-number" type="text" inputmode="numeric" maxlength="19" placeholder="0000 0000 0000 0000" style="letter-spacing:0.5px"></div>
+        <div class="field"><label for="cc-name">Nome impresso</label><input id="cc-name" type="text" placeholder="Igual no cartão" style="text-transform:uppercase"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px">
+        <div class="field"><label for="cc-month">Mês</label><input id="cc-month" type="text" inputmode="numeric" maxlength="2" placeholder="MM"></div>
+        <div class="field"><label for="cc-year">Ano</label><input id="cc-year" type="text" inputmode="numeric" maxlength="4" placeholder="AAAA"></div>
+        <div class="field"><label for="cc-cvv">CVV</label><input id="cc-cvv" type="text" inputmode="numeric" maxlength="4" placeholder="000"></div>
+      </div>
+    </div>
+
+    <div id="pago-fields" style="display:none;background:linear-gradient(180deg,#FBF5E5 0%,#FEFCF7 100%);border:1px solid #E0C97A;border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 4px 12px rgba(139,105,20,0.06)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <div style="font-family:'Lora',Georgia,serif;font-weight:700;font-size:15px;color:#8B6914">Pra finalizar o pagamento</div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">
+        <div class="field" style="margin-bottom:0"><label for="pag-email-static">Email (recibo)</label><input type="email" id="pag-email-static" placeholder="seu@email.com" autocomplete="email"></div>
+        <div class="field" style="margin-bottom:0"><label for="pag-cpf-static">CPF</label><input type="text" id="pag-cpf-static" placeholder="000.000.000-00" maxlength="14" inputmode="numeric"></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1.3fr 1fr;gap:10px">
+        <div class="field" style="margin-bottom:0"><label for="cc-cep">CEP</label><input id="cc-cep" type="text" inputmode="numeric" maxlength="9" placeholder="00000-000" autocomplete="postal-code"></div>
+        <div class="field" style="margin-bottom:0"><label for="cc-num">Número</label><input id="cc-num" type="text" placeholder="Ex: 100" autocomplete="address-line2"></div>
+      </div>
+      <small style="color:#7a7263;display:block;margin-top:10px;font-size:11.5px;line-height:1.5">Exigido pelo processador e pra emissão da nota fiscal. Sem cobrança antes da confirmação.</small>
+    </div>
+
+    <div class="lgpd" style="margin-bottom:10px">
+      <label><input type="checkbox" id="lgpd" required><span>Li e aceito a <a href="/privacidade.html" target="_blank">Política</a> e os <a href="/termos.html" target="_blank">Termos</a>. Autorizo mensagens no WhatsApp. Posso cancelar a qualquer momento.</span></label>
+    </div>
+
+    <div id="err-final" class="err" style="display:none"></div>
+
+    
+    <div id="security-seals" style="display:none;margin:14px 0 16px;padding:14px;background:#fafaf7;border:1px solid #ece6d8;border-radius:12px">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:12.5px;color:#5b5448;font-weight:600">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2f7d32" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        Pagamento 100% seguro
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:flex-start">
+        
+        <div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center;gap:6px">
+          <svg width="20" height="20" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+            <path fill="#32BCAD" d="M45.93 41.07c-1.95 0-3.78-.76-5.16-2.13l-7.43-7.43c-.52-.52-1.43-.52-1.95 0l-7.46 7.46c-1.38 1.38-3.21 2.13-5.16 2.13h-1.46l9.42 9.42c2.94 2.94 7.71 2.94 10.65 0l9.45-9.45h-.9zM18.77 18.93c1.95 0 3.78.76 5.16 2.13l7.46 7.46c.53.53 1.41.53 1.95 0l7.43-7.43c1.38-1.38 3.21-2.13 5.16-2.13h.9l-9.45-9.45c-2.94-2.94-7.71-2.94-10.65 0l-9.42 9.42h1.46zM52.62 24.68l-5.71-5.71c-.13.05-.27.08-.41.08h-2.62c-1.34 0-2.66.55-3.61 1.5l-7.43 7.43c-.69.69-1.59 1.03-2.5 1.03s-1.81-.34-2.5-1.03L20.4 20.55c-.95-.95-2.27-1.5-3.61-1.5h-3.22c-.13 0-.26-.03-.38-.07l-5.71 5.71c-2.94 2.94-2.94 7.71 0 10.65l5.71 5.71c.12-.04.25-.07.38-.07h3.22c1.34 0 2.66-.55 3.61-1.5l7.46-7.46c1.33-1.33 3.66-1.33 4.99 0l7.43 7.43c.95.95 2.27 1.5 3.61 1.5h2.62c.14 0 .28.03.41.08l5.71-5.71c2.94-2.94 2.94-7.71 0-10.65z"/>
+          </svg>
+          <span style="font-size:11px;font-weight:800;color:#32BCAD;letter-spacing:0.3px">PIX</span>
+        </div>
+        
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:13px;font-weight:900;color:#1A1F71;font-style:italic;letter-spacing:1px">VISA</div></span>
+        
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 8px;border-radius:6px;border:1px solid #eee;display:inline-flex;align-items:center">
+          <svg width="28" height="18" viewBox="0 0 48 30"><circle cx="18" cy="15" r="11" fill="#EB001B"/><circle cx="30" cy="15" r="11" fill="#F79E1B"/><path d="M24 6.5a11 11 0 0 0 0 17 11 11 0 0 0 0-17Z" fill="#FF5F00"/></svg>
+        </div></span>
+        
+        <span data-flag="cartao"><div style="background:#fff;padding:5px 10px;border-radius:6px;border:1px solid #eee;font-family:Arial,sans-serif;font-size:11px;font-weight:900;color:#000">ELO</div></span>
+        
+        <span data-flag="cartao"><div style="background:#006FCF;padding:5px 8px;border-radius:6px;font-family:Arial,sans-serif;font-size:9px;font-weight:900;color:#fff;letter-spacing:0.5px">AMEX</div></span>
+        
+        <div style="margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:11px;color:#6b6453">
+          via
+          <span style="font-family:Arial,sans-serif;font-weight:900;font-size:13px;color:#0040ff;letter-spacing:-0.5px">asaas</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:#7a7263;line-height:1.4;display:flex;align-items:center;gap:6px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7a7263" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Seus dados são criptografados (SSL) e processados pela ASAAS, fintech licenciada pelo Banco Central.
+      </div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="back(3)">Voltar</button>
+      <button class="btn" id="btn-submit" onclick="submitForm()" disabled>Preencha os dados</button>
+    </div>
+  </div>
+
+  
+  <div class="step" data-step="5">
+    <div class="success" style="text-align:center">
+      <h2 class="step-title" style="margin:0"></h2>
+      <p class="step-sub" style="margin:0"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const WEBHOOK_URL = "https://manaa-meta-webhook.manaa-fbx.workers.dev/webhook/manaa-onboarding"; // Cloudflare Tunnel temp → n8n
+  let momentos = new Set();
+  let genero = "X";
+  const planos = ["trial", "mensal", "anual"];
+  let planoIdx = 1; // mensal default
+  { const __p = (new URLSearchParams(location.search).get("plano") || "").toLowerCase(); const __i = planos.indexOf(__p); if (__i >= 0) planoIdx = __i; }
+  let plano = planos[planoIdx];
+
+  const dia = document.getElementById("nasc-dia");
+  for (let d = 1; d <= 31; d++) dia.add(new Option(String(d).padStart(2,"0"), String(d).padStart(2,"0")));
+  const ano = document.getElementById("nasc-ano");
+  const yNow = new Date().getFullYear();
+  for (let y = yNow - 18; y >= yNow - 100; y--) ano.add(new Option(y, y)); // maiores de 18: o Manaã não é para crianças (02/09/2026)
+
+  function next(s) {
+    if (s === 2 && !validateStep1()) return;
+    if (s === 3 && !validateStep2()) return;
+    if (s === 4 && !validateStep3()) return;
+    showStep(s);
+  }
+  function back(s) { showStep(s); }
+  function showStep(s) {
+    document.querySelectorAll(".step").forEach(el => el.classList.remove("active"));
+    document.querySelector(`.step[data-step="${s}"]`).classList.add("active");
+    document.querySelectorAll(".progress-step").forEach((el, i) => {
+      el.classList.toggle("active", i + 1 === s);
+      el.classList.toggle("done", i + 1 < s);
+    });
+    window.scrollTo({top: 0, behavior: "smooth"});
+    if (s === 4) {
+      window._suppressScrollSelect = true;
+      setTimeout(() => {
+        const pc = document.getElementById('plan-cards');
+        if (pc && window.innerWidth <= 480) {
+          const m = pc.querySelector('[data-plan=mensal]');
+          if (m) { const t = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2; pc.scrollLeft = Math.max(0, t); }
+        }
+        if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+        document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
+        setTimeout(() => { window._suppressScrollSelect = false; }, 800);
+      }, 50);
+    }
+  }
+  document.querySelectorAll(".progress-step").forEach(el => {
+    el.addEventListener("click", () => {
+      if (el.classList.contains("done")) showStep(parseInt(el.dataset.step));
+    });
+  });
+
+  function getFullName() {
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
+    return (fn + " " + ln).trim();
+  }
+  function validateStep1() {
+    const fn = (document.getElementById("first-name")?.value || "").trim();
+    const ln = (document.getElementById("last-name")?.value || "").trim();
+    const phone = document.getElementById("phone").value.replace(/\D/g, "");
+    if (fn.length < 2) { alert("Coloca seu nome."); return false; }
+    if (ln.length < 2) { alert("Coloca seu sobrenome."); return false; }
+    if (phone.length !== 11) { alert("Celular inválido. Coloca DDD + 9 + número (11 dígitos no total)."); return false; }
+    if (phone.charAt(2) !== '9') { alert("Celular precisa começar com 9 depois do DDD."); return false; }
+    const email = (document.getElementById("email")?.value || "").trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert("Coloca um email válido — é por ele que você acessa sua conta depois."); return false; }
+    return true;
+  }
+  function validateStep2() {
+    const d = document.getElementById('nasc-dia').value;
+    const m = document.getElementById('nasc-mês').value;
+    const a = document.getElementById('nasc-ano').value;
+    if (!d || !m || !a) { alert('Preencha sua data de nascimento (dia, mês, ano).'); return false; }
+    const dt = new Date(Number(a), Number(m) - 1, Number(d));
+    if (dt.getFullYear() !== Number(a) || dt.getMonth() !== Number(m) - 1 || dt.getDate() !== Number(d)) { alert('Essa data não existe. Confira dia e mês.'); return false; }
+    const hoje = new Date(); let idade = hoje.getFullYear() - dt.getFullYear(); const mm = hoje.getMonth() - dt.getMonth(); if (mm < 0 || (mm === 0 && hoje.getDate() < dt.getDate())) idade--;
+    if (idade < 18) { alert('O Manaã é feito para maiores de 18 anos. Se você for responsável por um adolescente, fale com a gente no WhatsApp.'); return false; }
+    return true;
+  }
+  function validateStep3() { return true; }
+
+  document.querySelectorAll("#chips-momento .chip").forEach(c => {
+    c.onclick = () => {
+      c.classList.toggle("active");
+      const v = c.dataset.val;
+      if (momentos.has(v)) momentos.delete(v); else momentos.add(v);
+    };
+  });
+
+
+  document.querySelectorAll("#chips-genero .chip").forEach(c => {
+    c.onclick = () => {
+      document.querySelectorAll("#chips-genero .chip").forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      genero = c.dataset.val;
+    };
+  });
+
+  function normalizePhone(raw) {
+    let p = raw.replace(/\D/g, "");
+    if (!p.startsWith("55")) p = "55" + p;
+    return "+" + p;
+  }
+
+
+const WORKER_URL_CHK = 'https://manaa-meta-webhook.manaa-fbx.workers.dev';
+let currentPlanV2 = 'mensal';
+
+function selectPlanV2(plano) {
+  currentPlanV2 = plano;
+  document.querySelectorAll('.plan-card').forEach(c => c.classList.toggle('active', c.dataset.plan === plano));
+  document.getElementById('pay-mensal').style.display = plano === 'mensal' ? 'flex' : 'none';
+  document.getElementById('pay-anual').style.display = plano === 'anual' ? 'flex' : 'none';
+  document.getElementById('pay-trial').style.display = plano === 'trial' ? 'flex' : 'none';
+  document.getElementById('sec-pay').style.display = plano === 'trial' ? 'none' : 'block';
+  refreshConsentAndExtra();
+  if (typeof refreshSealsVisibility === 'function') refreshSealsVisibility();
+  if (typeof refreshPayButton === 'function') refreshPayButton();
+}
+function selectPayOpt(label) {
+  const group = label.parentElement;
+  group.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('active'));
+  label.classList.add('active');
+  refreshConsentAndExtra();
+  if (typeof refreshPayButton === 'function') refreshPayButton();
+}
+function refreshConsentAndExtra() {
+  const consent = document.getElementById('consent-box');
+  const pagoFields = document.getElementById('pago-fields');
+  const ccBox = document.getElementById('cc-box');
+  const isTrial = currentPlanV2 === 'trial';
+  const billing = currentBillingV2();
+  const showConsent = currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC';
+  const isCC = (billing === 'CREDIT_CARD' || billing === 'CREDIT_CARD_12');
+  consent.style.display = showConsent ? 'flex' : 'none';
+  pagoFields.style.display = isTrial ? 'none' : 'block';
+  ccBox.style.display = isCC ? 'block' : 'none';
+  if (typeof refreshPayButton === 'function') refreshPayButton();
+}
+function currentBillingV2() {
+  if (currentPlanV2 === 'trial') return null;
+  if (currentPlanV2 === 'mensal') {
+    var checked = document.querySelector('input[name="pay-m"]:checked')?.value;
+    if (checked) return checked;
+    var pixOpt = document.getElementById('pay-opt-pix-auto');
+    var pixHidden = pixOpt && pixOpt.style.display === 'none';
+    return pixHidden ? 'CREDIT_CARD' : 'PIX_AUTOMATIC';
+  }
+  const v = document.querySelector('input[name="pay-a"]:checked')?.value || 'PIX';
+  return v === 'CREDIT_CARD_PARC' ? 'CREDIT_CARD_12' : v;
+}
+function getInstallmentsV2() {
+  if (currentPlanV2 !== 'anual') return 1;
+  const v = document.querySelector('input[name="pay-a"]:checked')?.value;
+  if (v === 'CREDIT_CARD_PARC') {
+    return parseInt(document.getElementById('cc-parcelas').value || '12');
+  }
+  return 1;
+}
+
+document.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => selectPlanV2(c.dataset.plan)));
+document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', () => selectPayOpt(l)));
+document.getElementById('consent-cb').addEventListener('change', refreshConsentAndExtra);
+const ccp = document.getElementById('cc-parcelas'); if (ccp) ccp.addEventListener('change', refreshConsentAndExtra);
+
+function isValidEmail(v){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test((v||'').trim()); }
+function isValidCPF(v){
+  const c = (v||'').replace(/\D/g,'');
+  if (c.length !== 11 || /^(\d)\1+$/.test(c)) return false;
+  let s = 0;
+  for (let i=0;i<9;i++) s += parseInt(c[i]) * (10-i);
+  let d1 = 11 - (s % 11); if (d1 >= 10) d1 = 0;
+  if (d1 !== parseInt(c[9])) return false;
+  s = 0;
+  for (let i=0;i<10;i++) s += parseInt(c[i]) * (11-i);
+  let d2 = 11 - (s % 11); if (d2 >= 10) d2 = 0;
+  return d2 === parseInt(c[10]);
+}
+function luhnCheck(num){
+  const s = (num||'').replace(/\D/g,'');
+  if (s.length < 13 || s.length > 19) return false;
+  let sum = 0, alt = false;
+  for (let i = s.length - 1; i >= 0; i--) {
+    let n = parseInt(s[i]);
+    if (alt) { n *= 2; if (n > 9) n -= 9; }
+    sum += n; alt = !alt;
+  }
+  return sum % 10 === 0;
+}
+function isValidExpiry(mm, yyyy){
+  const m = parseInt(mm||0), y = parseInt(yyyy||0);
+  if (m < 1 || m > 12) return false;
+  if (y < 2026 || y > 2050) return false;
+  const now = new Date();
+  const exp = new Date(y, m - 1, 31);
+  return exp >= now;
+}
+
+function getValidationState() {
+  const fn = (document.getElementById('first-name')?.value || '').trim();
+  const ln = (document.getElementById('last-name')?.value || '').trim();
+  const phone = (document.getElementById('phone')?.value || '').replace(/\D/g,'');
+  const email = (document.getElementById('pag-email-static')?.value || '').trim();
+  const cpf = (document.getElementById('pag-cpf-static')?.value || '').replace(/\D/g,'');
+  const lgpd = document.getElementById('lgpd')?.checked;
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
+
+  const errs = [];
+  if (fn.length < 2) errs.push('Nome');
+  if (ln.length < 2) errs.push('Sobrenome');
+  if (phone.length < 10) errs.push('WhatsApp');
+  if (!lgpd) errs.push('aceite dos Termos');
+
+  if (plan === 'trial') {
+    return { valid: errs.length === 0, missing: errs };
+  }
+
+  if (!isValidEmail(email)) errs.push('Email válido');
+  if (!isValidCPF(cpf)) errs.push('CPF válido');
+
+  const cep = (document.getElementById('cc-cep')?.value || '').replace(/\D/g,'');
+  const numero = (document.getElementById('cc-num')?.value || '').trim();
+  if (cep.length !== 8) errs.push('CEP');
+  if (numero.length < 1) errs.push('número do endereço');
+
+  const isPixAuto = (plan === 'mensal' && billing === 'PIX_AUTOMATIC');
+  if (isPixAuto && !document.getElementById('consent-cb')?.checked) errs.push('consentimento PIX Automático');
+
+  const isCC = (billing === 'CREDIT_CARD' || billing === 'CREDIT_CARD_12');
+  if (isCC) {
+    const num = (document.getElementById('cc-number')?.value || '').replace(/\D/g,'');
+    const holder = (document.getElementById('cc-name')?.value || '').trim();
+    const mm = (document.getElementById('cc-month')?.value || '').trim();
+    const yy = (document.getElementById('cc-year')?.value || '').trim();
+    const cvv = (document.getElementById('cc-cvv')?.value || '').trim();
+    if (!luhnCheck(num)) errs.push('número do cartão');
+    if (holder.length < 3) errs.push('nome impresso');
+    if (!isValidExpiry(mm, yy)) errs.push('validade do cartão');
+    if (cvv.length < 3 || cvv.length > 4) errs.push('CVV');
+  }
+
+  return { valid: errs.length === 0, missing: errs };
+}
+
+const touchedFields = new Set();
+function refreshPayButton() {
+  const btn = document.getElementById('btn-submit');
+  if (!btn) return;
+  if (document.body.classList.contains('conta-ativa')) {
+    btn.disabled = true;
+    btn.textContent = 'Sua conta já está ativa';
+    return;
+  }
+  const st = getValidationState();
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  const billing = (typeof currentBillingV2 === 'function') ? currentBillingV2() : null;
+
+  const hintMap = { 'Nome': 'first-name', 'Sobrenome': 'last-name', 'WhatsApp': 'phone', 'Email válido': 'pag-email-static', 'CPF válido': 'pag-cpf-static', 'CEP': 'cc-cep', 'número do endereço': 'cc-num', 'número do cartão': 'cc-number', 'nome impresso': 'cc-name', 'validade do cartão': 'cc-month', 'CVV': 'cc-cvv' };
+  document.querySelectorAll('.inline-err').forEach(e => e.remove());
+  st.missing.forEach(field => {
+    const inputId = hintMap[field]; if (!inputId) return;
+    if (!touchedFields.has(inputId) && !window._forceShowErrors) return;
+    const el = document.getElementById(inputId); if (!el) return;
+    const parent = el.parentElement; if (!parent) return;
+    if (parent.querySelector('.inline-err')) return;
+    const err = document.createElement('div');
+    err.className = 'inline-err';
+    err.style.cssText = 'color:#c1402c;font-size:11.5px;margin-top:3px;font-weight:500';
+    err.textContent = field === 'CPF válido' ? 'CPF inválido — confira os dígitos' : (field === 'Email válido' ? 'Email inválido — confira' : (field === 'WhatsApp' ? 'Celular incompleto — DDD + 9 + número' : 'Preencha ' + field));
+    parent.appendChild(err);
+  });
+
+  if (!st.valid) {
+    btn.disabled = true;
+    btn.textContent = 'Preencha os dados';
+    btn.style.opacity = '0.55';
+    btn.style.cursor = 'not-allowed';
+    return;
+  }
+  btn.disabled = false;
+  btn.style.opacity = '';
+  btn.style.cursor = '';
+
+  if (plan === 'trial') {
+    btn.textContent = 'Começar meu teste grátis';
+  } else if (plan === 'mensal') {
+    btn.textContent = billing === 'PIX_AUTOMATIC' ? 'Autorizar PIX Automático - R$ 14,99/mês' : 'Assinar - R$ 14,99/mês';
+  } else {
+    const inst = (typeof getInstallmentsV2 === 'function') ? getInstallmentsV2() : 1;
+    if (billing === 'PIX') btn.textContent = 'Pagar com PIX - R$ 159,99';
+    else if (billing === 'CREDIT_CARD') btn.textContent = 'Pagar à vista - R$ 159,99';
+    else if (billing === 'CREDIT_CARD_12') btn.textContent = 'Pagar em ' + inst + 'x - R$ 159,99';
+    else btn.textContent = 'Pagar - R$ 159,99';
+  }
+}
+
+function attachPayValidationListeners() {
+  const ids = ['first-name','last-name','phone','pag-email-static','pag-cpf-static','consent-cb','lgpd',
+               'cc-number','cc-name','cc-month','cc-year','cc-cvv','cc-cep','cc-num','cc-parcelas'];
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    ['input','change','blur'].forEach(ev => el.addEventListener(ev, refreshPayButton));
+    el.addEventListener('blur', () => { touchedFields.add(id); refreshPayButton(); });
+  });
+  document.querySelectorAll('input[name="pay-m"], input[name="pay-a"]').forEach(r => {
+    r.addEventListener('change', refreshPayButton);
+  });
+  document.querySelectorAll('.plan-card').forEach(c => c.addEventListener('click', () => setTimeout(refreshPayButton, 50)));
+  document.querySelectorAll('.pay-opt').forEach(l => l.addEventListener('click', () => setTimeout(refreshPayButton, 50)));
+}
+setTimeout(() => { attachPayValidationListeners(); refreshPayButton(); }, 200);
+
+function refreshSealsVisibility() {
+  const seals = document.getElementById('security-seals');
+  if (!seals) return;
+  const plan = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : 'mensal';
+  seals.style.display = (plan === 'trial') ? 'none' : '';
+}
+setTimeout(refreshSealsVisibility, 250);
+
+function maskCardNumber(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,19);
+    el.value = v.replace(/(\d{4})(?=\d)/g,'$1 ').trim();
+  });
+}
+function maskCEP(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,8);
+    if (v.length > 5) v = v.slice(0,5) + '-' + v.slice(5);
+    el.value = v;
+  });
+}
+function maskCPF(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    v = v.replace(/(\d{3})(\d)/,'$1.$2');
+    v = v.replace(/(\d{3})\.(\d{3})(\d)/,'$1.$2.$3');
+    v = v.replace(/(\d{3})\.(\d{3})\.(\d{3})(\d)/,'$1.$2.$3-$4');
+    el.value = v;
+  });
+}
+function maskPhone(el) {
+  el.addEventListener('input', () => {
+    let v = el.value.replace(/\D/g,'').slice(0,11);
+    if (v.length > 6) v = '(' + v.slice(0,2) + ') ' + v.slice(2,7) + '-' + v.slice(7);
+    else if (v.length > 2) v = '(' + v.slice(0,2) + ') ' + v.slice(2);
+    else if (v.length > 0) v = '(' + v;
+    el.value = v;
+  });
+}
+setTimeout(() => {
+  const ccn = document.getElementById('cc-number'); if (ccn) maskCardNumber(ccn);
+  const cep = document.getElementById('cc-cep'); if (cep) maskCEP(cep);
+  const cpf = document.getElementById('pag-cpf-static'); if (cpf) maskCPF(cpf);
+  const ph = document.getElementById('phone'); if (ph) maskPhone(ph);
+}, 300);
+
+function getFullOnboardPayload() {
+  const fn = (document.getElementById('first-name')?.value || '').trim();
+  const ln = (document.getElementById('last-name')?.value || '').trim();
+  return {
+    name: (fn + ' ' + ln).trim(),
+    first_name: fn,
+    last_name: ln,
+    phone: document.getElementById('phone').value.replace(/\D/g, ''),
+    email: (document.getElementById('email')?.value || '').trim().toLowerCase() || null,
+    genero: (typeof genero !== 'undefined') ? genero : 'X',
+    religiao: document.getElementById('religiao').value,
+    inspiracoes: document.getElementById('inspiracoes').value.trim(),
+    horario: document.getElementById('horario').value,
+    versao: document.getElementById('versao').value,
+    momentos: (typeof momentos !== 'undefined') ? Array.from(momentos) : [],
+    ocupacao: document.getElementById('ocupacao').value.trim(),
+    proposito: document.getElementById('proposito').value.trim(),
+    origem: ((new URLSearchParams(location.search).get('o') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 30) || null),
+      plano: currentPlanV2,
+    lgpd: document.getElementById('lgpd').checked,
+    user_agent: navigator.userAgent,
+    aceite_versao: '1.0'
+  };
+}
+
+function mensagemDeFalha(e, contexto) {
+  const bruto = (e && e.message) ? String(e.message) : '';
+  const tecnico = /failed to fetch|networkerror|load failed|typeerror|__backend__|error in workflow|internal server/i.test(bruto);
+  const semRede = /failed to fetch|networkerror|load failed/i.test(bruto);
+  let titulo, texto;
+  if (semRede) {
+    titulo = 'Sem conexão';
+    texto = 'Não conseguimos falar com o servidor. Confira sua internet e toque no botão de novo — nada foi cobrado.';
+  } else if (contexto === 'cadastro' && /maiores de 18/.test(bruto)) {
+    titulo = 'Cadastro não permitido';
+    texto = bruto;
+  } else if (contexto === 'cadastro') {
+    titulo = 'Não conseguimos concluir seu cadastro';
+    texto = 'Deu um problema aqui do nosso lado. Tente de novo em alguns segundos. Se continuar, fale com a gente no WhatsApp que resolvemos na hora.';
+  } else {
+    titulo = 'Não conseguimos concluir o pagamento';
+    texto = (bruto && !tecnico) ? bruto : 'Deu um problema ao processar. Tente de novo em alguns segundos ou escolha outra forma de pagamento. Se continuar, fale com a gente no WhatsApp.';
+  }
+  const msg = encodeURIComponent('Oi Manaã 🙏 tentei me cadastrar no site e deu erro. Podem me ajudar?');
+  const wrap = document.createElement('div');
+  const t = document.createElement('div'); t.style.cssText = 'font-weight:700;margin-bottom:6px'; t.textContent = titulo;
+  const d = document.createElement('div'); d.style.cssText = 'font-size:13.5px;line-height:1.45;margin-bottom:12px'; d.textContent = texto;
+  const a = document.createElement('a'); a.href = 'https://wa.me/5543984323619?text=' + msg; a.target = '_blank'; a.rel = 'noopener noreferrer';
+  a.style.cssText = 'display:inline-flex;align-items:center;gap:8px;background:#25D366;color:#fff;padding:10px 18px;border-radius:24px;text-decoration:none;font-weight:600;font-size:14px';
+  a.textContent = 'Falar com o Manaã no WhatsApp';
+  wrap.appendChild(t); wrap.appendChild(d); wrap.appendChild(a);
+  return wrap;
+}
+function mostrarFalha(el, e, contexto) {
+  el.replaceChildren(mensagemDeFalha(e, contexto));
+}
+
+async function submitForm() {
+  const isTrial = currentPlanV2 === 'trial';
+  const lgpd = document.getElementById('lgpd').checked;
+  const errEl = document.getElementById('err-final');
+  errEl.style.display = 'none';
+  if (!lgpd) { errEl.style.display='flex'; errEl.textContent='Aceite os termos pra continuar.'; return; }
+  const billing = currentBillingV2();
+  if (currentPlanV2 === 'mensal' && billing === 'PIX_AUTOMATIC' && !document.getElementById('consent-cb').checked) {
+    errEl.style.display='flex'; errEl.textContent='Marque o consentimento do PIX Automático.'; return;
+  }
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  const oldLabel = btn.textContent;
+  btn.textContent = 'Processando...';
+
+  const _fn = (document.getElementById('first-name')?.value || '').trim();
+  const _ln = (document.getElementById('last-name')?.value || '').trim();
+  const name = (_fn + ' ' + _ln).trim();
+  const phoneDigits = document.getElementById('phone').value.replace(/\D/g,'');
+
+  if (isTrial) {
+    try {
+      const rOn = await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(getFullOnboardPayload())
+      });
+      if (!rOn.ok) throw new Error('__BACKEND__');
+      let okBody = true;
+      let respOn = null;
+      try {
+        const txt = (await rOn.text() || '').trim();
+        if (txt) {
+          const j = JSON.parse(txt);
+          respOn = j;
+          if (j && j.error === 'idade_minima') throw new Error(j.message || 'O Manaã é feito para maiores de 18 anos.');
+          if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
+        }
+      } catch(_) {  }
+      if (!okBody) throw new Error('__BACKEND__');
+      if (respOn && respOn.situacao === 'ja_assinante') {
+        document.body.classList.add('conta-ativa');
+        btn.disabled = true;
+        btn.textContent = 'Sua conta já está ativa';
+        const nAtivo = document.getElementById('plan-notice');
+        if (nAtivo) {
+          nAtivo.innerHTML = 'Esse WhatsApp já tem uma conta ativa no Manaã — não precisa fazer nada aqui. É só chamar no WhatsApp que a gente continua de onde parou. <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Ver minha conta</a>';
+          nAtivo.classList.add('show');
+          requestAnimationFrame(() => requestAnimationFrame(() => {
+            nAtivo.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }));
+        }
+        return;
+      }
+      if (respOn && respOn.trial_concedido === false) {
+        try { gtag('event', 'trial_ja_usado', { plano: 'trial' }); } catch (_) {}
+        btn.disabled = false;
+        if (typeof selectPlanV2 === 'function') { try { selectPlanV2('mensal'); } catch(_) {} }
+        const notice = document.getElementById('plan-notice');
+        if (notice) {
+          notice.textContent = 'Esse WhatsApp já usou o teste grátis de 7 dias. Seus dados e suas preferências continuam salvos — siga no plano mensal aqui embaixo pra voltar a receber.';
+          notice.classList.add('show');
+        }
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          const email = document.getElementById('pag-email-static');
+          if (notice) {
+            notice.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (email) email.setAttribute('aria-describedby', 'plan-notice');
+          }
+          if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel;
+          if (btn.disabled) btn.textContent = 'Preencha os dados do plano mensal';
+          if (email) setTimeout(() => { try { email.focus({ preventScroll: true }); } catch(_) {} }, 600);
+        }));
+        return;
+      }
+      try { gtag('event', 'concluiu_cadastro', { plano: 'trial', origem: new URLSearchParams(location.search).get('o') || '' }); } catch (_) {}
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=trial';
+      return;
+    } catch(e) {
+      btn.disabled=false;
+      if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
+      errEl.style.display='flex';
+      mostrarFalha(errEl, e, 'cadastro');
+      errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
+
+  const email = document.getElementById('pag-email-static').value.trim();
+  const cpf = document.getElementById('pag-cpf-static').value.replace(/\D/g,'');
+  if (!email.includes('@') || cpf.length !== 11) {
+    btn.disabled=false; btn.textContent=oldLabel;
+    errEl.style.display='flex'; errEl.textContent='Preencha email e CPF validos.';
+    return;
+  }
+
+  if (!window.__reativacao) {
+    try {
+      await fetch(WORKER_URL_CHK + '/webhook/manaa-onboarding', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(getFullOnboardPayload())
+      });
+    } catch(e) {}
+  }
+
+  const billingFinal = (billing === 'CREDIT_CARD_12') ? 'CREDIT_CARD' : billing;
+
+  try {
+    const postalCode = document.getElementById('cc-cep').value.replace(/\D/g,'');
+    const addressNumber = document.getElementById('cc-num').value.trim();
+    const payload = {
+      plano: currentPlanV2, billingType: billingFinal, installments: getInstallmentsV2(),
+      name, first_name: _fn, last_name: _ln, email, phone: phoneDigits, cpf,
+      postalCode, addressNumber,
+      consent: document.getElementById('consent-cb').checked
+    };
+    if (window.__reativacao) payload.reativacao_token = window.__reativacao;
+    if (billingFinal === 'CREDIT_CARD') {
+      payload.creditCard = {
+        holderName: document.getElementById('cc-name').value.trim().toUpperCase(),
+        number: document.getElementById('cc-number').value.replace(/\D/g,''),
+        expiryMonth: document.getElementById('cc-month').value,
+        expiryYear: document.getElementById('cc-year').value,
+        ccv: document.getElementById('cc-cvv').value
+      };
+    }
+    const r = await fetch(WORKER_URL_CHK + '/api/checkout/init', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(payload)
+    });
+    const data = await r.json();
+    if (!data.ok) throw new Error(data.error || data.error_description || 'Não conseguimos processar o pagamento. Verifique os dados ou tente outra forma.');
+    if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
+      const idForUrl = data.paymentId || data.subscriptionId || '';
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+      return;
+    }
+    goStepV2(5);
+    renderStep5Result(data);
+    try { gtag('event', 'iniciou_autorizacao', { plano: currentPlanV2, meio: billingFinal, retomada: !!data.retomada }); } catch (_) {}
+    const pollId = data.subscriptionId || data.paymentId || data.firstPaymentId || data.authorizationId;
+    if (pollId) pollPaymentStatus(pollId);
+  } catch(e) {
+    btn.disabled=false;
+    if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
+    errEl.style.display='flex';
+    mostrarFalha(errEl, e, 'pagamento');
+    errEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function goStepV2(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+  document.querySelector('.step[data-step="' + n + '"]').classList.add('active');
+  document.querySelectorAll('.progress-step').forEach((s,i) => s.classList.toggle('active', i < n));
+  window.scrollTo({top: 0, behavior: 'smooth'});
+  if (n === 4) {
+    window._suppressScrollSelect = true;
+    setTimeout(() => {
+      const pc = document.getElementById('plan-cards');
+      if (pc && window.innerWidth <= 480) {
+        const m = pc.querySelector('[data-plan=mensal]');
+        if (m) {
+          const targetLeft = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2;
+          pc.scrollLeft = Math.max(0, targetLeft);
+        }
+      }
+      if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
+      document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
+      setTimeout(() => { window._suppressScrollSelect = false; }, 600);
+    }, 50);
+  }
+}
+
+function urlAsaasSegura(u) {
+  try {
+    const x = new URL(String(u || ''));
+    if (x.protocol !== 'https:') return '';
+    if (!/^(www\.)?asaas\.com$|^sandbox\.asaas\.com$/.test(x.hostname)) return '';
+    return x.href;
+  } catch (e) { return ''; }
+}
+function renderStep5Result(data) {
+  const sub = document.querySelector('.step[data-step="5"] .step-sub');
+  const title = document.querySelector('.step[data-step="5"] .step-title');
+  if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
+    const idForUrl = data.paymentId || data.subscriptionId || '';
+    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+    return;
+  }
+  if (data.pix && data.pix.qrImage) {
+    title.textContent = '';
+    const qrB64 = String(data.pix.qrImage || '').replace(/[^A-Za-z0-9+/=]/g, '');
+    const valor = data.value ? Number(data.value).toFixed(2).replace('.',',') : '';
+    const isAnual = data.plano === 'anual';
+    const produto = isAnual ? 'Manaã — Plano Anual' : 'Manaã — Assinatura Mensal';
+    const ciclo = isAnual ? '' : '/mês';
+    sub.innerHTML = `
+<div style="max-width:340px;margin:-8px auto 0;text-align:left;font-family:'Inter',system-ui,sans-serif">
+  ${data.retomada ? `<div style="background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#7A6420;line-height:1.45">${data.pixAutomatico ? 'Esta é a autorização que você já tinha aberto — é a mesma, não vai cobrar duas vezes.' : 'Esta é a cobrança que você já tinha aberto — é a mesma, não vai cobrar duas vezes.'}</div>` : ''}
+  ${data.pixAutomatico ? `<div style="background:#eef6f2;border:1px solid #bfd9cb;border-radius:12px;padding:11px 13px;margin-bottom:10px;font-size:12.5px;color:#245c44;line-height:1.45"><strong>PIX Automático.</strong> Este QR paga o primeiro mês. Ao confirmar, o app do seu banco pede a autorização dos próximos meses (R$ ${valor}/mês, no mesmo dia). Nada de QR todo mês. Cancele quando quiser, pelo banco ou por aqui.</div>` : ''}
+  <div style="background:#fff;border:1px solid #E5DDD0;border-radius:14px;padding:18px 18px 14px;margin-bottom:10px">
+    <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:14px">
+      <div>
+        <div style="font-size:11px;color:#8C847A;letter-spacing:1px;text-transform:uppercase;margin-bottom:2px">${data.pixAutomatico ? 'Pague e autorize com PIX' : 'Pague com PIX'}</div>
+        <div style="font-family:'Lora',Georgia,serif;font-size:13.5px;color:#5C564D;line-height:1.3">${produto}</div>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div style="font-family:'Lora',Georgia,serif;font-size:24px;font-weight:700;color:#8B6914;letter-spacing:-0.02em;font-feature-settings:'tnum' 1;font-variant-numeric:tabular-nums">R$ ${valor}</div>
+        ${ciclo ? `<div style="font-size:11.5px;color:#8C847A">${ciclo}</div>` : ''}
+      </div>
+    </div>
+    <img src="data:image/png;base64,${qrB64}" alt="QR Code PIX" style="width:220px;max-width:100%;height:auto;display:block;margin:0 auto 12px;border:1px solid #E5DDD0;border-radius:8px" />
+    <button type="button" id="pixPayloadCopy" style="width:100%;padding:12px 14px;border:1px solid #B8912E;border-radius:10px;font-family:inherit;font-size:13.5px;font-weight:600;background:#fdf9f0;cursor:pointer;color:#8B6914;display:inline-flex;align-items:center;justify-content:center;gap:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg><span id="pixCopyLabel">Copiar código PIX</span></button>
+    <div id="pixCopiedTxt" style="display:none;color:#16a34a;font-size:12.5px;margin-top:8px;text-align:center;font-weight:600">✓ Código copiado</div>
+    <div style="height:1px;background:#E5DDD0;margin:14px -2px"></div>
+    <div style="font-family:'Lora',Georgia,serif;font-size:13.5px;font-weight:600;color:#2D2A26;margin-bottom:10px">Como pagar em 3 passos</div>
+    <div style="display:flex;flex-direction:column;gap:9px">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#B8912E,#A07D2E);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-weight:700;font-size:13px;flex-shrink:0">1</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#2D2A26;line-height:1.3">Abra o app do seu banco</div><div style="font-size:11.5px;color:#8C847A;margin-top:1px">O que você costuma usar PIX</div></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="1.8"><rect x="6" y="2" width="12" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#B8912E,#A07D2E);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-weight:700;font-size:13px;flex-shrink:0">2</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#2D2A26;line-height:1.3">PIX → QR Code ou Copia e Cola</div><div style="font-size:11.5px;color:#8C847A;margin-top:1px">Aponte a câmera ou cole o código</div></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#B8912E" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#B8912E,#A07D2E);color:#fff;display:flex;align-items:center;justify-content:center;font-family:'Lora',serif;font-weight:700;font-size:13px;flex-shrink:0">3</div>
+        <div style="flex:1"><div style="font-size:13px;font-weight:600;color:#2D2A26;line-height:1.3">Confirme o pagamento</div><div style="font-size:11.5px;color:#8C847A;margin-top:1px">A tela atualiza sozinha em segundos</div></div>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#16a34a" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;color:#8C847A">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    ${data.pixAutomatico ? 'Confirmação automática após o banco aprovar · QR válido por 3 dias' : 'Confirmação automática após pagamento · QR válido por 3 dias'}
+  </div>
+</div>`;
+    setTimeout(() => {
+      const el = document.getElementById('pixPayloadCopy');
+      if (el) el.dataset.payload = String(data.pix.payload || '');
+      if (el) el.addEventListener('click', async () => {
+        const v = el.dataset.payload;
+        try { await navigator.clipboard.writeText(v); }
+        catch(e) { const ta=document.createElement('textarea'); ta.value=v; document.body.appendChild(ta); ta.select(); try{document.execCommand('copy');}catch(_){} document.body.removeChild(ta); }
+        const ok=document.getElementById('pixCopiedTxt'); if (ok) ok.style.display='block';
+        const lbl=document.getElementById('pixCopyLabel'); if (lbl) lbl.textContent='Código copiado!';
+        el.style.background='#d4edda'; el.style.borderColor='#16a34a'; el.style.color='#16a34a';
+        setTimeout(() => {
+          el.style.background='#fdf9f0'; el.style.borderColor='#B8912E'; el.style.color='#8B6914';
+          if (lbl) lbl.textContent='Copiar código PIX';
+          if (ok) ok.style.display='none';
+        }, 5000);
+      });
+    }, 100);
+  } else if (data.subscriptionId && data.idempotent) {
+    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
+    return;
+  } else if (data.invoiceUrl) {
+    title.textContent = data.retomada ? (data.pixAutomatico ? 'Você já tem uma autorização aberta' : 'Você já tem uma cobrança aberta') : 'Tudo pronto';
+    sub.replaceChildren();
+    if (data.retomada && data.mensagem) { const m = document.createElement('div'); m.style.cssText = 'font-size:13px;color:#5C564D;line-height:1.5;margin-bottom:4px'; m.textContent = String(data.mensagem); sub.appendChild(m); }
+    const urlOk = urlAsaasSegura(data.invoiceUrl);
+    if (urlOk) {
+      const a = document.createElement('a'); a.href = urlOk; a.target = '_blank'; a.rel = 'noopener noreferrer';
+      a.style.cssText = 'display:inline-block;background:#B8912E;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:600;margin-top:10px';
+      a.textContent = 'Abrir tela de pagamento'; sub.appendChild(a);
+    } else {
+      const p = document.createElement('div'); p.textContent = 'Não conseguimos montar o link de pagamento. Fale com a gente no WhatsApp.'; sub.appendChild(p);
+    }
+  }
+}
+
+
+async function checarPagamentoUmaVez(paymentId) {
+  try {
+    const ctl = new AbortController();
+    const relogio = setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-asaas-status?id=' + encodeURIComponent(paymentId), { signal: ctl.signal });
+    clearTimeout(relogio);
+    const d = await r.json();
+    const s = (d && d.status || '').toLowerCase();
+    if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+window.__r4Concluiu = false;
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const obs = new MutationObserver(() => {
+      const s4 = document.querySelector('.step[data-step="4"]');
+      if (s4 && s4.classList.contains('active') && !window.__r4AbriuCheckout) { window.__r4AbriuCheckout = true; try { gtag('event', 'abriu_checkout', { plano: (typeof currentPlanV2 !== 'undefined' ? currentPlanV2 : '') }); } catch (_) {} }
+    });
+    obs.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  } catch (_) {}
+});
+window.addEventListener('pagehide', () => {
+  try {
+    if (window.__r4Concluiu) return;
+    const ativo = document.querySelector('.step.active');
+    const passo = ativo ? ativo.dataset.step : '';
+    if (passo === '4' || passo === '5') gtag('event', 'abandonou_checkout', { passo, plano: (typeof currentPlanV2 !== 'undefined' ? currentPlanV2 : ''), transport_type: 'beacon' });
+  } catch (_) {}
+});
+let __pollAtivo = null;
+async function pollPaymentStatus(paymentId) {
+  if (!paymentId) return;
+  __pollAtivo = paymentId;
+  if (!window.__visHook) {
+    window.__visHook = true;
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && __pollAtivo) checarPagamentoUmaVez(__pollAtivo); });
+  }
+  for (let i = 0; i < 150; i++) {
+    await new Promise(r => setTimeout(r, 5000));
+    if (__pollAtivo !== paymentId) return;
+    if (await checarPagamentoUmaVez(paymentId)) return;
+  }
+  const sub = document.querySelector('.step[data-step="5"] .step-sub');
+  if (!sub || document.getElementById('poll-aviso')) return;
+  const box = document.createElement('div');
+  box.id = 'poll-aviso';
+  box.setAttribute('role', 'status');
+  box.style.cssText = 'max-width:340px;margin:12px auto 0;background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5C564D;line-height:1.5;text-align:left';
+  box.innerHTML = 'Ainda não recebemos a confirmação do banco.<br><br>'
+    + '<strong>Se você já pagou:</strong> pode fechar esta página. A confirmação chega no seu WhatsApp assim que o banco avisar (costuma levar poucos minutos).<br><br>'
+    + '<strong>Se ainda não pagou:</strong> o código acima continua válido. Depois de pagar, toque em "Já paguei".';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = 'Já paguei, conferir agora';
+  btn.style.cssText = 'display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:10px;background:#B8912E;color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit';
+  btn.onclick = async () => {
+    btn.disabled = true; btn.textContent = 'Conferindo...';
+    const ok = await checarPagamentoUmaVez(paymentId);
+    if (!ok) { btn.disabled = false; btn.textContent = 'Ainda não constou. Tentar de novo'; }
+  };
+  box.appendChild(btn);
+  sub.appendChild(box);
+}
+
+selectPlanV2('mensal');
+
+
+(function entradaPorToken() {
+  const token = (window.__params || new URLSearchParams(location.search)).get('r');
+  if (!token) return;
+
+  const wrap = document.querySelector('.wrap') || document.body;
+  const aviso = document.createElement('div');
+  aviso.style.cssText = 'padding:16px;text-align:center;font-size:16px;line-height:1.5;color:#7a7263';
+  wrap.prepend(aviso);
+
+  const botao = (texto, acao) => {
+    const b = document.createElement('button');
+    b.textContent = texto;
+    b.style.cssText = 'margin-top:10px;background:#B8912E;color:#fff;border:0;padding:12px 22px;' +
+                      'border-radius:8px;font-size:16px;font-weight:600;cursor:pointer';
+    b.onclick = acao;
+    return b;
+  };
+
+  async function validar() {
+    aviso.textContent = 'Um instante, estamos te reconhecendo...';
+    aviso.style.color = '#7a7263';
+
+    const ctl = new AbortController();
+    const relogio = setTimeout(() => ctl.abort(), 12000);
+    let d = null, falhaDeRede = false;
+    try {
+      const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-reativar-token', {
+        method: 'POST', headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({ token }), signal: ctl.signal
+      });
+      if (!r.ok) { falhaDeRede = true; }
+      else { d = await r.json(); }
+    } catch (e) {
+      falhaDeRede = true;   // abort, offline, DNS, CORS — nada disso quer dizer link vencido
+    } finally { clearTimeout(relogio); }
+
+    if (falhaDeRede || !d) {
+      aviso.style.color = '#8B6914';
+      aviso.textContent = 'Não conseguimos confirmar seus dados agora. Pode ser a internet.';
+      aviso.appendChild(document.createElement('br'));
+      aviso.appendChild(botao('Tentar de novo', validar));
+      const outro = botao('Preencher meus dados', () => aviso.remove());
+      outro.style.background = 'transparent'; outro.style.color = '#8B6914';
+      outro.style.textDecoration = 'underline'; outro.style.marginLeft = '8px';
+      aviso.appendChild(outro);
+      return;
+    }
+
+    if (!d.ok) {
+      aviso.style.color = '#8B6914';
+      aviso.textContent = 'Esse link já foi usado ou passou da validade. É só preencher seus dados aqui embaixo que a gente continua.';
+      return;
+    }
+
+    window.__reativacao = token;
+
+    const set = (id, v) => {
+      const e = document.getElementById(id);
+      if (!e || !v) return;
+      e.value = v;
+      e.dispatchEvent(new Event('input', {bubbles:true}));
+    };
+    set('first-name', d.first_name);
+    set('last-name', d.last_name);
+    set('phone', d.phone);
+    set('email', d.email);
+    set('pag-email-static', d.email);
+
+    const cardTrial = Array.prototype.find.call(
+      document.querySelectorAll('.step[data-step="4"] .plan-card'),
+      c => /teste gr|7 dias gr|trial/i.test(c.innerText));
+    if (cardTrial) cardTrial.style.display = 'none';
+
+    aviso.remove();
+    selectPlanV2('mensal');
+    (typeof goStepV2 === 'function' ? goStepV2 : showStep)(4);
+
+    const titulo = document.querySelector('.step[data-step="4"] .step-title');
+    const sub = document.querySelector('.step[data-step="4"] .step-sub');
+    if (titulo) titulo.textContent = 'Que bom te ver de volta, ' + (d.first_name || '') + '!';
+    if (sub) {
+      sub.textContent = d.falta_email
+        ? 'Falta só o seu email, o CPF e o endereço pra emitir a nota fiscal.'
+        : 'Seus dados já estão aqui. Falta só confirmar o pagamento pra continuar recebendo seu devocional.';
+    }
+    if (d.falta_email) {
+      const campo = document.getElementById('pag-email-static');
+      if (campo) { campo.focus(); campo.scrollIntoView({block:'center', behavior:'smooth'}); }
+    }
+    if (typeof refreshPayButton === 'function') refreshPayButton();
+  }
+
+  validar();
+})();
+
+</script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="/assets/flags.js"></script>
+    <script src="/assets/motion.js"></script>
+</body>
+</html>
