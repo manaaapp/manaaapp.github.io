@@ -1367,7 +1367,7 @@ async function submitForm() {
         return;
       }
       try { gtag('event', 'concluiu_cadastro', { plano: 'trial', origem: new URLSearchParams(location.search).get('o') || '' }); } catch (_) {}
-      window.location.href = '/pagamento-sucesso.html?plan=trial';
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=trial';
       return;
     } catch(e) {
       btn.disabled=false;
@@ -1430,7 +1430,7 @@ async function submitForm() {
     // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
     if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
       const idForUrl = data.paymentId || data.subscriptionId || '';
-      window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
       return;
     }
     goStepV2(5);
@@ -1479,7 +1479,7 @@ function renderStep5Result(data) {
   // CC já confirma direto - redireciona pra tela bonita sem mostrar Assinatura criada
   if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
     const idForUrl = data.paymentId || data.subscriptionId || '';
-    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
+    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
     return;
   }
   if (data.pix && data.pix.qrImage) {
@@ -1549,7 +1549,7 @@ function renderStep5Result(data) {
       });
     }, 100);
   } else if (data.subscriptionId && data.idempotent) {
-    window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
+    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(data.subscriptionId) + '&status=existing';
     return;
   } else if (data.invoiceUrl) {
     title.textContent = data.retomada ? (data.pixAutomatico ? 'Você já tem uma autorização aberta' : 'Você já tem uma cobrança aberta') : 'Tudo pronto';
@@ -1570,13 +1570,32 @@ async function checarPagamentoUmaVez(paymentId) {
     const d = await r.json();
     const s = (d && d.status || '').toLowerCase();
     if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
-      window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
       return true;
     }
   } catch(e) {}
   return false;
 }
 
+// 03/09/2026 (R4): funil — abriu o passo do plano/pagamento e, se fechar sem concluir, em que passo abandonou.
+window.__r4Concluiu = false;
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const obs = new MutationObserver(() => {
+      const s4 = document.querySelector('.step[data-step="4"]');
+      if (s4 && s4.classList.contains('active') && !window.__r4AbriuCheckout) { window.__r4AbriuCheckout = true; try { gtag('event', 'abriu_checkout', { plano: (typeof currentPlanV2 !== 'undefined' ? currentPlanV2 : '') }); } catch (_) {} }
+    });
+    obs.observe(document.body, { attributes: true, subtree: true, attributeFilter: ['class'] });
+  } catch (_) {}
+});
+window.addEventListener('pagehide', () => {
+  try {
+    if (window.__r4Concluiu) return;
+    const ativo = document.querySelector('.step.active');
+    const passo = ativo ? ativo.dataset.step : '';
+    if (passo === '4' || passo === '5') gtag('event', 'abandonou_checkout', { passo, plano: (typeof currentPlanV2 !== 'undefined' ? currentPlanV2 : ''), transport_type: 'beacon' });
+  } catch (_) {}
+});
 let __pollAtivo = null;
 async function pollPaymentStatus(paymentId) {
   if (!paymentId) return;
