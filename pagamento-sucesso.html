@@ -182,6 +182,8 @@
     waBtn.href = url;
     waBtn.setAttribute('target', '_blank');
     waBtn.setAttribute('rel', 'noopener noreferrer');
+    // 03/09/2026 (R4): funil — a pessoa tocou para abrir o WhatsApp (o clique automático de 3 s não conta)
+    waBtn.addEventListener('click', function () { try { gtag('event', 'clicou_whatsapp', { plano: plan || 'trial' }); } catch (e) {} });
     // Dispara clique programático em 3s — abre em nova aba
     setTimeout(function(){
       var a = document.createElement('a');

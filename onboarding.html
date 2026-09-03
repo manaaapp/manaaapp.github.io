@@ -1343,6 +1343,7 @@ async function submitForm() {
       // devolve trial_concedido=false. Antes disso a pessoa caía na tela de sucesso sem ter
       // ganhado trial nenhum — achava que estava ativa e nunca recebia devocional.
       if (respOn && respOn.trial_concedido === false) {
+        try { gtag('event', 'trial_ja_usado', { plano: 'trial' }); } catch (_) {}
         btn.disabled = false;
         // Troca o plano ANTES de rolar: selectPlanV2 faz o bloco de pagamento aparecer e
         // empurra tudo pra baixo. Rolar antes disso mira num lugar que muda em seguida.
@@ -1365,6 +1366,7 @@ async function submitForm() {
         }));
         return;
       }
+      try { gtag('event', 'concluiu_cadastro', { plano: 'trial', origem: new URLSearchParams(location.search).get('o') || '' }); } catch (_) {}
       window.location.href = '/pagamento-sucesso.html?plan=trial';
       return;
     } catch(e) {
@@ -1433,9 +1435,11 @@ async function submitForm() {
     }
     goStepV2(5);
     renderStep5Result(data);
-    if (data.subscriptionId) pollPaymentStatus(data.subscriptionId);
-    else if (data.paymentId) pollPaymentStatus(data.paymentId);
-    else if (data.firstPaymentId) pollPaymentStatus(data.firstPaymentId);
+    try { gtag('event', 'iniciou_autorizacao', { plano: currentPlanV2, meio: billingFinal, retomada: !!data.retomada }); } catch (_) {}
+    // 03/09/2026 (R4): o Pix Automático devolve authorizationId (não subscriptionId/paymentId) e a tela
+    // ficava parada no QR para sempre — a promessa "atualiza sozinha" era falsa nesse caminho.
+    const pollId = data.subscriptionId || data.paymentId || data.firstPaymentId || data.authorizationId;
+    if (pollId) pollPaymentStatus(pollId);
   } catch(e) {
     btn.disabled=false;
     if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent=oldLabel;
@@ -1525,7 +1529,7 @@ function renderStep5Result(data) {
   </div>
   <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:11.5px;color:#8C847A">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-    ${data.pixAutomatico ? 'Confirmação automática após o banco aprovar · QR válido por 3 dias' : 'Confirmação automática após pagamento · QR válido por 24h'}
+    ${data.pixAutomatico ? 'Confirmação automática após o banco aprovar · QR válido por 3 dias' : 'Confirmação automática após pagamento · QR válido por 3 dias'}
   </div>
 </div>`;
     setTimeout(() => {
@@ -1555,21 +1559,60 @@ function renderStep5Result(data) {
 }
 
 
+// 03/09/2026 (R4): uma consulta de status, reaproveitada pelo polling, pelo botão "Já paguei"
+// e pela volta do app do banco (visibilitychange). Devolve true quando o pagamento confirmou.
+async function checarPagamentoUmaVez(paymentId) {
+  try {
+    const ctl = new AbortController();
+    const relogio = setTimeout(() => ctl.abort(), 9000);
+    const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-asaas-status?id=' + encodeURIComponent(paymentId), { signal: ctl.signal });
+    clearTimeout(relogio);
+    const d = await r.json();
+    const s = (d && d.status || '').toLowerCase();
+    if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
+      window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
+      return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+let __pollAtivo = null;
 async function pollPaymentStatus(paymentId) {
   if (!paymentId) return;
+  __pollAtivo = paymentId;
+  // Quem foi ao app do banco e voltou não deve esperar os 5 s do próximo ciclo.
+  if (!window.__visHook) {
+    window.__visHook = true;
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && __pollAtivo) checarPagamentoUmaVez(__pollAtivo); });
+  }
   for (let i = 0; i < 150; i++) {
     await new Promise(r => setTimeout(r, 5000));
-    try {
-      const r = await fetch(WORKER_URL_CHK + '/webhook/manaa-asaas-status?id=' + encodeURIComponent(paymentId));
-      const d = await r.json();
-      const s = (d && d.status || '').toLowerCase();
-      if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
-        // Redireciona pra tela bonita de sucesso
-        window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
-        return;
-      }
-    } catch(e) {}
+    if (__pollAtivo !== paymentId) return;
+    if (await checarPagamentoUmaVez(paymentId)) return;
   }
+  // 12,5 min sem confirmação: a pessoa precisa saber o que aconteceu e ter um caminho — antes a tela
+  // simplesmente parava de conferir, sem dizer nada.
+  const sub = document.querySelector('.step[data-step="5"] .step-sub');
+  if (!sub || document.getElementById('poll-aviso')) return;
+  const box = document.createElement('div');
+  box.id = 'poll-aviso';
+  box.setAttribute('role', 'status');
+  box.style.cssText = 'max-width:340px;margin:12px auto 0;background:#fdf9f0;border:1px solid #E8D9A8;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#5C564D;line-height:1.5;text-align:left';
+  box.innerHTML = 'Ainda não recebemos a confirmação do banco.<br><br>'
+    + '<strong>Se você já pagou:</strong> pode fechar esta página. A confirmação chega no seu WhatsApp assim que o banco avisar (costuma levar poucos minutos).<br><br>'
+    + '<strong>Se ainda não pagou:</strong> o código acima continua válido. Depois de pagar, toque em "Já paguei".';
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.textContent = 'Já paguei, conferir agora';
+  btn.style.cssText = 'display:block;width:100%;margin-top:10px;padding:12px;border:0;border-radius:10px;background:#B8912E;color:#fff;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit';
+  btn.onclick = async () => {
+    btn.disabled = true; btn.textContent = 'Conferindo...';
+    const ok = await checarPagamentoUmaVez(paymentId);
+    if (!ok) { btn.disabled = false; btn.textContent = 'Ainda não constou. Tentar de novo'; }
+  };
+  box.appendChild(btn);
+  sub.appendChild(box);
 }
 
 selectPlanV2('mensal');

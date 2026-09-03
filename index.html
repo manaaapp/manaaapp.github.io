@@ -1371,5 +1371,13 @@ if(_demoRoot && 'IntersectionObserver' in window){
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="/assets/motion.js"></script>
+    <script>
+    // 03/09/2026 (R4): funil — toque em qualquer "Começar/Assinar" vira evento no GA4 (sem dado pessoal).
+    document.addEventListener('click', function (ev) {
+      var a = ev.target && ev.target.closest ? ev.target.closest('a[href*="/onboarding"]') : null;
+      if (!a) return;
+      try { var u = new URL(a.getAttribute('href'), location.origin); gtag('event', 'clicou_comecar', { plano: u.searchParams.get('plano') || 'trial', onde: a.className || 'link' }); } catch (e) {}
+    }, true);
+    </script>
 </body>
 </html>
