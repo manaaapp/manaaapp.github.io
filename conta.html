@@ -689,7 +689,10 @@
       badge.textContent = statusText;
       badge.className = 'badge ' + (d.status || 'trialing');
     }
-    const planMap = { monthly:'Mensal — R$ 14,99', annual:'Anual — R$ 159,99', free:'Gratuito' };
+    // preço oficial vem da tabela plans (resposta do login); o texto fixo é só reserva se a resposta não trouxer
+    const brl = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',');
+    const planMap = { monthly: 'Mensal — ' + (d.preco_mensal ? brl(d.preco_mensal) : 'R$ 14,99'),
+                      annual: 'Anual — ' + (d.preco_anual ? brl(d.preco_anual) : 'R$ 159,99'), free: 'Gratuito' };
     document.getElementById('dash-plan').textContent = planMap[d.plan] || d.plan || '—';
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
       document.getElementById('row-trial').style.display = 'flex';
