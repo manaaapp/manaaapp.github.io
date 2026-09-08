@@ -50,9 +50,16 @@
   function botao(rotulo, href, sec) { var a = document.createElement('a'); a.className = 'btn' + (sec ? ' sec' : ''); a.href = href; a.textContent = rotulo; acoes.appendChild(a); }
   function estado(cls, t, x) { card.className = 'card ' + cls; spin.hidden = true; titulo.textContent = t; texto.textContent = x; acoes.textContent = ''; }
   if (!ref) { estado('warn', 'Não encontramos este pagamento', 'O link de retorno veio incompleto. Se você pagou, a confirmação chega pelo WhatsApp. Se não, é só começar de novo.'); botao('Voltar ao cadastro', '/onboarding.html'); return; }
-  if (motivo === 'cancel') { estado('warn', 'Pagamento não concluído', 'Você saiu da página do ASAAS antes de pagar. Nada foi cobrado. Quando quiser, é só voltar: o mesmo link continua valendo por até 1 hora.'); botao('Tentar de novo', '/onboarding.html'); mini.textContent = ''; return; }
-  if (motivo === 'exp') { estado('warn', 'O tempo do pagamento acabou', 'A página de pagamento expirou e nada foi cobrado. Comece de novo para gerar um novo link.'); botao('Começar de novo', '/onboarding.html'); mini.textContent = ''; return; }
+  // 08/09/2026: r=cancel / r=exp vem da URL de retorno, nao do provedor. Nao prova que nada foi cobrado.
+  // A pagina consulta o estado financeiro ANTES de afirmar qualquer coisa: se o pagamento entrou, e' sucesso;
+  // so depois de ler "sem pagamento" e' que se diz que nada foi cobrado.
   var tentativas = 0, plano = '';
+  var LIMITE = (motivo === 'cancel' || motivo === 'exp') ? 3 : 45;
+  function semPagamento() {
+    if (motivo === 'cancel') { estado('warn', 'Pagamento não concluído', 'Você saiu da página do ASAAS antes de pagar. Não encontramos pagamento confirmado para esta compra. Quando quiser, é só voltar: o mesmo link continua valendo por até 1 hora.'); botao('Tentar de novo', '/onboarding.html'); mini.textContent = 'Se você chegou a pagar, a confirmação chega pelo WhatsApp em alguns minutos.'; return true; }
+    if (motivo === 'exp') { estado('warn', 'O tempo do pagamento acabou', 'A página de pagamento expirou e não encontramos pagamento confirmado para esta compra. Comece de novo para gerar um novo link.'); botao('Começar de novo', '/onboarding.html'); mini.textContent = 'Se você chegou a pagar, a confirmação chega pelo WhatsApp em alguns minutos.'; return true; }
+    return false;
+  }
   function consultar() {
     tentativas++;
     var ctl = new AbortController(); var relogio = setTimeout(function () { ctl.abort(); }, 12000);
@@ -66,19 +73,27 @@
           location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(plano || 'mensal') + '&via=checkout';
           return;
         }
+        if (d.checkout === 'PAID') {
+          // o provedor diz que o checkout foi pago: a ativacao esta a caminho; nunca dizer "nada foi cobrado"
+          estado('', 'Pagamento recebido', 'O ASAAS confirmou o pagamento; estamos ativando sua assinatura. A confirmação chega pelo WhatsApp em alguns minutos.'); botao('Ver minha conta', '/conta.html', true); return;
+        }
         if (d.checkout === 'CANCELED' || d.checkout === 'EXPIRED' || d.status === 'expired') {
-          estado('warn', 'Pagamento não concluído', 'Nada foi cobrado. Comece de novo para gerar um novo link de pagamento.'); botao('Começar de novo', '/onboarding.html'); return;
+          if (semPagamento()) return;
+          estado('warn', 'Pagamento não concluído', 'Não encontramos pagamento confirmado para esta compra. Comece de novo para gerar um novo link de pagamento.'); botao('Começar de novo', '/onboarding.html'); return;
         }
         if (d.status === 'not_found') {
+          if (semPagamento()) return;
           estado('warn', 'Não encontramos este pagamento', 'Se você pagou, a confirmação chega pelo WhatsApp em alguns minutos. Se precisar, fale com a gente por lá.'); botao('Voltar ao site', '/', true); return;
         }
-        if (tentativas >= 45) { // ~3 minutos
+        if (tentativas >= LIMITE) {
+          if (semPagamento()) return;
+          // ~3 minutos
           estado('', 'Ainda estamos confirmando', 'O ASAAS ainda não nos avisou. Isso pode levar alguns minutos. A confirmação chega pelo WhatsApp; você pode fechar esta página.');
           botao('Ver minha conta', '/conta.html', true); return;
         }
         setTimeout(consultar, 4000);
       })
-      .catch(function () { clearTimeout(relogio); if (tentativas < 45) setTimeout(consultar, 6000); else { estado('', 'Ainda estamos confirmando', 'Não conseguimos falar com o servidor agora. A confirmação chega pelo WhatsApp.'); } });
+      .catch(function () { clearTimeout(relogio); if (tentativas < LIMITE) setTimeout(consultar, 6000); else { estado('', 'Ainda estamos confirmando', 'Não conseguimos falar com o servidor agora. A confirmação chega pelo WhatsApp.'); } });
   }
   consultar();
 })();

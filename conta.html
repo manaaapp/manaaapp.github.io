@@ -222,6 +222,10 @@
         <div class="info-label">Período de teste</div>
         <div class="info-value" id="dash-trial">—</div>
       </div>
+      <div class="info-row" id="row-acesso" style="display:none">
+        <div class="info-label">Acesso até</div>
+        <div class="info-value" id="dash-acesso">—</div>
+      </div>
       <div class="info-row">
         <div class="info-label">Devocional chega</div>
         <div class="info-value" id="dash-horario">—</div>
@@ -691,6 +695,15 @@
       document.getElementById('row-trial').style.display = 'flex';
       document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
     } else { document.getElementById('row-trial').style.display = 'none'; }
+    // 08/09/2026: ate quando o acesso vale (a mesma regra do devocional), inclusive para assinatura
+    // cancelada que ainda tem periodo pago pela frente.
+    const rowAcesso = document.getElementById('row-acesso');
+    if (rowAcesso) {
+      if (d.acesso_ate) {
+        rowAcesso.style.display = 'flex';
+        document.getElementById('dash-acesso').textContent = d.acesso_ate + (d.status === 'canceled' ? ' (assinatura cancelada; nenhuma cobrança nova programada)' : '');
+      } else { rowAcesso.style.display = 'none'; }
+    }
     document.getElementById('dash-horario').textContent = (d.horario || '06:30:00').slice(0,5);
     const momentoMap = { 'fé':'Crescendo na fé', luto:'Momento de luto', ansiedade:'Ansiedade', gratidão:'Gratidão', busca:'Em busca espiritual' };
     document.getElementById('dash-momento').textContent = momentoMap[d.momento_vida] || d.momento_vida || '—';
