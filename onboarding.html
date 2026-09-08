@@ -8,8 +8,8 @@
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
 <meta charset="UTF-8">
-<meta name="build-id" content="1cf13764d38f">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-PVhUaEXNTP4Ajg9aM9WyUb4kX7dqPsfmEPsl8ztEP3g=' 'sha256-ROaBDC4O/CwKTc1XOt/FpB6aIisiZT7bkOHb1rvxyDg=' 'sha256-kgOsdpssw5uqQBG82rgwcLFAGNJM/Szp5zpoj/XP4HI=' 'sha256-lD9/kcYHBjS43939Jd6pT2dSwyCpD4WAt1fVsR/A4hw=' 'sha256-o2gc3NjqjyUwMiTIm90a1wYcQ0ibm2lQoRDZtj1w2R4=' 'unsafe-hashes' 'sha256-A4KzutOoRgjShM/8V5A2+NdNyEIAmqI7eRaaYMdKbkc=' 'sha256-Dwa2guZnU2sgGw7fDPNAHrh3eRhe3d7VD5AHivwFX5A=' 'sha256-TARsF1tdHurh7sUQ5+RLtopO2zbwCr9BRJknEciPVeU=' 'sha256-jHF5hTIlMDyGZRAsNK0HO/WFYrwPvI2I1q0o1xKKB6I=' 'sha256-r7QhkgMbOZTnKVy4mycoQYFXc6FqgDEz+ARy14Y239g=' 'sha256-u14xRScC44b4a7DthQgGVi9QGV0KhtDkmDWY+1QbVaI=' 'sha256-uzQhWg5oLi7LDo88khQWy3wbpb15vU2POV54Vhkj/Pk=' 'sha256-xt5oB07t+3+asthZ4jX2hWFLX8kH3VlFoiRzJKdnxMs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="build-id" content="e2c9e86fca74">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-PVhUaEXNTP4Ajg9aM9WyUb4kX7dqPsfmEPsl8ztEP3g=' 'sha256-ROaBDC4O/CwKTc1XOt/FpB6aIisiZT7bkOHb1rvxyDg=' 'sha256-kgOsdpssw5uqQBG82rgwcLFAGNJM/Szp5zpoj/XP4HI=' 'sha256-lD9/kcYHBjS43939Jd6pT2dSwyCpD4WAt1fVsR/A4hw=' 'sha256-zv7mtfZqCXVYdAIYOg89smw+lt0xuUAgYk86VneDcnI=' 'unsafe-hashes' 'sha256-A4KzutOoRgjShM/8V5A2+NdNyEIAmqI7eRaaYMdKbkc=' 'sha256-Dwa2guZnU2sgGw7fDPNAHrh3eRhe3d7VD5AHivwFX5A=' 'sha256-TARsF1tdHurh7sUQ5+RLtopO2zbwCr9BRJknEciPVeU=' 'sha256-jHF5hTIlMDyGZRAsNK0HO/WFYrwPvI2I1q0o1xKKB6I=' 'sha256-r7QhkgMbOZTnKVy4mycoQYFXc6FqgDEz+ARy14Y239g=' 'sha256-u14xRScC44b4a7DthQgGVi9QGV0KhtDkmDWY+1QbVaI=' 'sha256-uzQhWg5oLi7LDo88khQWy3wbpb15vU2POV54Vhkj/Pk=' 'sha256-xt5oB07t+3+asthZ4jX2hWFLX8kH3VlFoiRzJKdnxMs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
 <script>
@@ -1216,6 +1216,18 @@ setTimeout(() => {
   const ph = document.getElementById('phone'); if (ph) maskPhone(ph);
 }, 300);
 
+function sessaoAtual() {
+  try { const s = JSON.parse(localStorage.getItem('manaa_session') || 'null'); if (s && s.sessionToken && (Date.now() - (s.ts || 0)) < 12 * 3600 * 1000) return s.sessionToken; } catch (_) {}
+  return '';
+}
+function avisoConvite(erro, msg) {
+  const notice = document.getElementById('plan-notice');
+  if (!notice) return;
+  let html = msg || '';
+  if (erro === 'sessao') html += ' <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Entrar na minha conta</a>';
+  notice.innerHTML = html; notice.classList.add('show');
+  requestAnimationFrame(() => requestAnimationFrame(() => notice.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+}
 function getFullOnboardPayload() {
   const fn = (document.getElementById('first-name')?.value || '').trim();
   const ln = (document.getElementById('last-name')?.value || '').trim();
@@ -1224,6 +1236,7 @@ function getFullOnboardPayload() {
     first_name: fn,
     last_name: ln,
     phone: document.getElementById('phone').value.replace(/\D/g, ''),
+    session: sessaoAtual(),
     email: (document.getElementById('email')?.value || '').trim().toLowerCase() || null,
     genero: (typeof genero !== 'undefined') ? genero : 'X',
     religiao: document.getElementById('religiao').value,
@@ -1312,6 +1325,7 @@ async function submitForm() {
           const j = JSON.parse(txt);
           respOn = j;
           if (j && j.error === 'idade_minima') throw new Error(j.message || 'O Manaã é feito para maiores de 18 anos.');
+          if (j && j.error === 'convite') { btn.disabled = false; if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel; avisoConvite('convite', j.message); return; }
           if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
         }
       } catch(_) {  }
@@ -1393,6 +1407,7 @@ async function submitForm() {
       consent: document.getElementById('consent-cb').checked
     };
     if (window.__reativacao) payload.reativacao_token = window.__reativacao;
+    payload.session = sessaoAtual();
     if (billingFinal === 'CREDIT_CARD' && F.CARD_DIRECT_INPUT_ENABLED === true) {
       payload.creditCard = {
         holderName: document.getElementById('cc-name').value.trim().toUpperCase(),
@@ -1407,6 +1422,7 @@ async function submitForm() {
       body: JSON.stringify(payload)
     });
     const data = await r.json();
+    if (data && data.ok === false && ['convite','sessao','identidade'].includes(data.error)) { btn.disabled = false; if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel; avisoConvite(data.error, data.message); return; }
     if (!data.ok) throw new Error(data.error || data.error_description || 'Não conseguimos processar o pagamento. Verifique os dados ou tente outra forma.');
     if (data.hostedCheckout && data.checkout && data.checkout.link) {
       const seguro = urlAsaasSegura(data.checkout.link);
