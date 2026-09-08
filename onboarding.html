@@ -1240,6 +1240,20 @@ setTimeout(() => {
   const ph = document.getElementById('phone'); if (ph) maskPhone(ph);
 }, 300);
 
+// 08/09/2026 (fase por convite): o token de sessão da Minha Conta (OTP/link mágico, 12 h) prova a posse do número.
+function sessaoAtual() {
+  try { const s = JSON.parse(localStorage.getItem('manaa_session') || 'null'); if (s && s.sessionToken && (Date.now() - (s.ts || 0)) < 12 * 3600 * 1000) return s.sessionToken; } catch (_) {}
+  return '';
+}
+// resposta clara, sem estilo de erro: convite / sessão / identidade
+function avisoConvite(erro, msg) {
+  const notice = document.getElementById('plan-notice');
+  if (!notice) return;
+  let html = msg || '';
+  if (erro === 'sessao') html += ' <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Entrar na minha conta</a>';
+  notice.innerHTML = html; notice.classList.add('show');
+  requestAnimationFrame(() => requestAnimationFrame(() => notice.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+}
 function getFullOnboardPayload() {
   const fn = (document.getElementById('first-name')?.value || '').trim();
   const ln = (document.getElementById('last-name')?.value || '').trim();
@@ -1248,6 +1262,7 @@ function getFullOnboardPayload() {
     first_name: fn,
     last_name: ln,
     phone: document.getElementById('phone').value.replace(/\D/g, ''),
+    session: sessaoAtual(),
     email: (document.getElementById('email')?.value || '').trim().toLowerCase() || null,
     genero: (typeof genero !== 'undefined') ? genero : 'X',
     religiao: document.getElementById('religiao').value,
@@ -1344,6 +1359,7 @@ async function submitForm() {
           const j = JSON.parse(txt);
           respOn = j;
           if (j && j.error === 'idade_minima') throw new Error(j.message || 'O Manaã é feito para maiores de 18 anos.');
+          if (j && j.error === 'convite') { btn.disabled = false; if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel; avisoConvite('convite', j.message); return; }
           if (j && (j.ok === false || j.error || j.message === 'Error in workflow')) okBody = false;
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }
@@ -1439,6 +1455,7 @@ async function submitForm() {
     // O token manda mais que o telefone digitado: é ele que diz de quem é esta assinatura.
     // Sem isso, um dígito trocado no campo criaria cadastro novo e o pagamento sumiria.
     if (window.__reativacao) payload.reativacao_token = window.__reativacao;
+    payload.session = sessaoAtual();
     if (billingFinal === 'CREDIT_CARD' && F.CARD_DIRECT_INPUT_ENABLED === true) {
       // código legado do formulário próprio: inacessível (chave é false e o servidor recusa o objeto)
       payload.creditCard = {
@@ -1454,6 +1471,7 @@ async function submitForm() {
       body: JSON.stringify(payload)
     });
     const data = await r.json();
+    if (data && data.ok === false && ['convite','sessao','identidade'].includes(data.error)) { btn.disabled = false; if (typeof refreshPayButton === 'function') refreshPayButton(); else btn.textContent = oldLabel; avisoConvite(data.error, data.message); return; }
     if (!data.ok) throw new Error(data.error || data.error_description || 'Não conseguimos processar o pagamento. Verifique os dados ou tente outra forma.');
     // R5.1 (03/09/2026): cartão pelo checkout hospedado do ASAAS. O servidor devolve só o link da página do ASAAS;
     // o cartão é digitado lá. Voltamos por /pagamento-retorno.html?ref=..., que consulta o status no servidor.
