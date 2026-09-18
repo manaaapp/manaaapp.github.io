@@ -91,6 +91,7 @@
     .badge.active{background:#D1FAE5;color:#065F46}
     .badge.canceled{background:#FEE2E2;color:#991B1B}
     .badge.past_due{background:#FEDBD3;color:#8B2A1B}
+    #row-pendente .info-value{color:#8B2A1B;font-weight:600;line-height:1.45} /* CANCEL_R6N3 */
     .divider{height:1px;background:var(--border-soft);margin:22px 0 16px}
     .action-link{display:block;text-align:center;font-size:13px;color:var(--ink-4);cursor:pointer;margin-top:8px;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1px;min-height:32px;line-height:32px}
     .action-link:hover{color:var(--gold-dark)}
@@ -223,6 +224,12 @@
         <div class="info-label">Status</div>
         <span class="badge" id="dash-badge">—</span>
       </div>
+      <!-- CANCEL_R6N3 (18/09/2026): cancelamento pedido e ainda NÃO confirmado pelo provedor de pagamento. Texto visível
+           (no celular não existe tooltip); some quando o encerramento é confirmado (cancel_pendente_provedor volta a false). -->
+      <div class="info-row full" id="row-pendente" style="display:none">
+        <div class="info-label">Cancelamento</div>
+        <div class="info-value" id="dash-pendente">—</div>
+      </div>
       <div class="info-row">
         <div class="info-label">Plano</div>
         <div class="info-value" id="dash-plan">—</div>
@@ -266,7 +273,8 @@
 
     <a class="action-link subtle" onclick="toggleAccountOptions()" id="lnk-other-opts">Outras opções</a>
     <div id="account-options" style="display:none;margin-top:6px">
-      <a class="action-link subtle" onclick="suspendFlow()">Suspender minha assinatura</a>
+      <!-- CANCEL_R6N3 (18/09/2026): cancelar = rota manaa-cancel-confirm (confirmação positiva do provedor); antes chamava manaa-suspend -->
+      <a class="action-link subtle" id="lnk-cancelar" onclick="cancelarFlow()">Cancelar minha assinatura</a>
       <a class="action-link" onclick="deleteFlow()" style="color:#b8404c;font-size:12.5px;margin-top:6px">Excluir minha conta</a>
     </div>
 
@@ -601,17 +609,43 @@
     btn.disabled = false; btn.textContent = 'Salvar alterações';
   }
 
-  async function suspendFlow(){
-    if(!confirm('Vamos suspender sua assinatura. Você para de receber o devocional, mas pode voltar quando quiser sem perder histórico. Continuar?')) return;
+  // CANCEL_R6N3 (18/09/2026): o botão da Conta usa a rota manaa-cancel-confirm (cancelamento com confirmação positiva do
+  // provedor). O resultado aparece NA PRÓPRIA TELA, sem alert e sem depender de novo login: 'Assinatura cancelada' quando o
+  // provedor confirmou, 'Cancelamento em andamento' quando ainda não. O servidor encerra a sessão ao registrar o pedido.
+  function mostrarResultadoCancel(titulo, texto, rotuloVoltar){
+    document.getElementById('acao-titulo').textContent = titulo;
+    document.getElementById('acao-sub').textContent = texto;
+    document.getElementById('acao-cartao').style.display = 'none';
+    document.getElementById('acao-btn').style.display = 'none';
+    showErr('acao', false);
+    const v = document.getElementById('acao-voltar'); v.textContent = rotuloVoltar; v.style.display = 'block';
+    const subTopo = document.querySelector('.brand .sub'); if (subTopo) subTopo.textContent = 'Sua assinatura';
+    showScreen('acao');
+  }
+  async function cancelarFlow(){
+    if(!confirm('Vamos encerrar a cobrança da sua assinatura. O acesso segue até o fim do período já pago. Continuar?')) return;
+    const lnk = document.getElementById('lnk-cancelar');
+    if (lnk) { lnk.style.pointerEvents = 'none'; lnk.textContent = 'Um instante...'; }
+    const ctl = new AbortController();
+    const relogio = setTimeout(() => ctl.abort(), 20000);
+    let d = null;
     try {
-      const r = await fetch(API+'/manaa-suspend', {
-        method:'POST', headers:{'Content-Type':'application/json'},
-        body: JSON.stringify({token: sessionToken})
-      });
-      const data = await r.json();
-      if(data.success){ alert('Assinatura suspensa 🙏'); logout(); }
-      else { alert('Não foi possível suspender. Solicite novo link e tente de novo.'); }
-    } catch(e) { alert('Erro. Tenta de novo.'); }
+      const r = await fetch(API+'/manaa-cancel-confirm', { method:'POST', headers:{'Content-Type':'application/json'},
+                                                          body: JSON.stringify({token: sessionToken}), signal: ctl.signal });
+      d = await r.json();
+    } catch(e) { d = null; }
+    finally { clearTimeout(relogio); }
+    if (lnk) { lnk.style.pointerEvents = ''; lnk.textContent = 'Cancelar minha assinatura'; }
+    if (!d) { alert('Não conseguimos falar com o servidor. Pode ser a internet — tente de novo.'); return; }
+    if (!d.success) { mostrarResultadoCancel('Não foi possível concluir', 'O cancelamento não foi feito. Entre de novo e tente outra vez, ou fale com a gente pelo WhatsApp.', 'Entrar de novo'); return; }
+    // o servidor já encerrou a sessão ao registrar o pedido; aqui só se esquece o token local
+    sessionToken = ''; userData = null;
+    try { localStorage.removeItem('manaa_session'); } catch(e) {}
+    if (d.pendente_provedor === true) {
+      mostrarResultadoCancel('Cancelamento em andamento', 'Recebemos seu pedido e ele já está registrado. ' + TEXTO_PENDENTE + ' Você pode acompanhar aqui na sua conta.', 'Entrar de novo');
+    } else {
+      mostrarResultadoCancel('Assinatura cancelada', 'Conforme você pediu, a cobrança da sua assinatura foi encerrada.' + (d.acesso_ate ? (' Seu acesso pago segue até ' + d.acesso_ate + '.') : ' Sua conta e suas preferências continuam disponíveis.'), 'Entrar de novo');
+    }
   }
 
   async function deleteFlow(){
@@ -717,18 +751,31 @@
     btn.disabled = false; btn.textContent = 'Entrar';
   }
 
+  // CANCEL_R6N3 (18/09/2026): o mesmo texto do aviso que o Manaã manda no WhatsApp quando o provedor ainda não confirmou.
+  const TEXTO_PENDENTE = 'Estamos finalizando o encerramento da cobrança junto ao provedor de pagamento e te avisamos assim que estiver concluído. Se alguma cobrança aparecer nesse meio-tempo, ela será devolvida.';
   function renderDash(d){
     const firstName = (d.first_name || (d.name || '').split(' ')[0] || '');
     document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
     document.getElementById('dash-name').textContent = d.name || '—';
     document.getElementById('dash-phone').textContent = formatPhone(d.phone) || (d.email || '—');
     const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
-    const statusText = statusMap[d.status] || d.status || '—';
+    // CANCEL_R6N3 (18/09/2026): a pessoa pediu o cancelamento e o provedor de pagamento ainda NÃO confirmou o encerramento.
+    // Quem decide é o servidor (cancel_pendente_provedor na resposta do login); aqui só se mostra, e some quando concluir.
+    const pendente = d.cancel_pendente_provedor === true;
+    const statusText = pendente ? 'Cancelamento em andamento' : (statusMap[d.status] || d.status || '—');
     const badge = document.getElementById('dash-badge');
     if (badge) {
       badge.textContent = statusText;
-      badge.className = 'badge ' + (d.status || 'trialing');
+      badge.className = 'badge ' + (pendente ? 'past_due' : (d.status || 'trialing'));
     }
+    const rowPend = document.getElementById('row-pendente');
+    if (rowPend) {
+      rowPend.style.display = pendente ? 'flex' : 'none';
+      document.getElementById('dash-pendente').textContent = pendente ? ('Em andamento. ' + TEXTO_PENDENTE) : '—';
+    }
+    // sem segundo pedido: em andamento ou já cancelada, o link de cancelar não aparece
+    const lnkCancelar = document.getElementById('lnk-cancelar');
+    if (lnkCancelar) lnkCancelar.style.display = (pendente || d.status === 'canceled') ? 'none' : 'block';
     // preço oficial vem da tabela plans (resposta do login); o texto fixo é só reserva se a resposta não trouxer
     const brl = (v) => 'R$ ' + Number(v).toFixed(2).replace('.', ',');
     const planMap = { monthly: 'Mensal — ' + (d.preco_mensal ? brl(d.preco_mensal) : 'R$ 14,99'),
@@ -746,7 +793,8 @@
     if (rowAcesso) {
       if (d.acesso_ate && !cortesia) {
         rowAcesso.style.display = 'flex';
-        document.getElementById('dash-acesso').textContent = d.acesso_ate + (d.status === 'canceled' ? ' (assinatura cancelada; nenhuma cobrança nova programada)' : '');
+        // CANCEL_R6N3: com o encerramento ainda pendente no provedor, a linha não afirma 'nenhuma cobrança nova programada'
+        document.getElementById('dash-acesso').textContent = d.acesso_ate + (pendente ? ' (pedido de cancelamento em andamento)' : (d.status === 'canceled' ? ' (assinatura cancelada; nenhuma cobrança nova programada)' : ''));
       } else { rowAcesso.style.display = 'none'; }
     }
     document.getElementById('dash-horario').textContent = (d.horario || '06:30:00').slice(0,5);
