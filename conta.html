@@ -183,6 +183,7 @@
       <label for="inp-phone">Seu WhatsApp (com DDD)</label>
       <input type="tel" id="inp-phone" placeholder="(43) 99999-9999" autocomplete="tel" inputmode="tel">
       <div class="err" id="err-wa">Número não encontrado. Confira o DDD e o número do cadastro.</div>
+      <div class="err" id="err-wa-rede">Não conseguimos enviar o código agora. Pode ser a internet. Tente de novo em instantes.</div>
       <button class="btn" id="btn-send-wa" onclick="sendOtpWA()">Receber código pelo WhatsApp</button>
     </div>
     <a href="https://wa.me/5543984323619?text=Oi%20Mana%C3%A3%20%F0%9F%99%8F%20preciso%20de%20ajuda" target="_blank" rel="noopener" class="btn btn-wa">
@@ -271,6 +272,7 @@
 
     <div class="divider"></div>
 
+    <a class="action-link" id="lnk-assinar" href="/onboarding.html?plano=mensal" style="display:none">Assinar o Manaã — R$ 14,99/mês</a>
     <a class="action-link subtle" onclick="toggleAccountOptions()" id="lnk-other-opts">Outras opções</a>
     <div id="account-options" style="display:none;margin-top:6px">
       <!-- CANCEL_R6N3 (18/09/2026): cancelar = rota manaa-cancel-confirm (confirmação positiva do provedor); antes chamava manaa-suspend -->
@@ -707,7 +709,7 @@
     if(phone.length < 12){ showErr('wa', true); return; }
     const btn = document.getElementById('btn-send-wa');
     btn.disabled = true; btn.textContent = 'Enviando...';
-    showErr('wa', false);
+    showErr('wa', false); showErr('wa-rede', false);
     try {
       const r = await fetch(API+'/manaa-conta-otp', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({phone}) });
       const data = await r.json();
@@ -716,7 +718,7 @@
         document.querySelector('#screen-otp .hint').textContent = 'Enviamos um código de 6 dígitos no seu WhatsApp. Válido por 10 minutos.';
         showScreen('otp'); document.getElementById('inp-otp').focus();
       } else { showErr('wa', true); }
-    } catch(e) { showErr('wa', true); }
+    } catch(e) { showErr('wa-rede', true); }   // 21/09: rede caída não é 'número não encontrado'
     btn.disabled = false; btn.textContent = 'Receber código pelo WhatsApp';
   }
 
@@ -772,11 +774,13 @@
     document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
     document.getElementById('dash-name').textContent = d.name || '—';
     document.getElementById('dash-phone').textContent = formatPhone(d.phone) || (d.email || '—');
-    const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso' };
+    const statusMap = { trialing:'Em teste', active:'Ativo', canceled:'Cancelado', past_due:'Em atraso', expired:'Teste encerrado', pending_authorization:'Aguardando autorização do Pix' };
     // CANCEL_R6N3 (18/09/2026): a pessoa pediu o cancelamento e o provedor de pagamento ainda NÃO confirmou o encerramento.
     // Quem decide é o servidor (cancel_pendente_provedor na resposta do login); aqui só se mostra, e some quando concluir.
     const pendente = d.cancel_pendente_provedor === true;
     const statusText = pendente ? 'Cancelamento em andamento' : (statusMap[d.status] || d.status || '—');
+    // 21/09: teste encerrado ou assinatura cancelada sem período pago -> caminho para assinar (antes a Conta não oferecia nada)
+    const lnkAssinar = document.getElementById('lnk-assinar'); if (lnkAssinar) lnkAssinar.style.display = (d.status === 'expired' || (d.status === 'canceled' && !d.acesso_ate)) ? 'block' : 'none';
     const badge = document.getElementById('dash-badge');
     if (badge) {
       badge.textContent = statusText;

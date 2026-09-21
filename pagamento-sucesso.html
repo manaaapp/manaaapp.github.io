@@ -162,17 +162,25 @@
     // se veio identificador, confirma com o gateway antes de manter o "confirmado"
     var idPg = p.get('id');
     if (idPg && plan !== 'trial' && plan !== 'free_trial') {
+      // 21/09: a tela só AFIRMA 'confirmado' depois de conferir com o servidor; antes disso (e com a rede caída) diz que está conferindo
+      var t0 = document.getElementById('title'); var s0 = document.getElementById('sub');
+      if (t0) t0.textContent = 'Confirmando seu pagamento';
+      if (s0) s0.textContent = 'Um instante: estamos conferindo com o banco. Se preferir, pode abrir o WhatsApp agora.';
       confereStatus(idPg).then(function (resp) {
-        if (!resp || !resp.status) return;                 // nao conseguiu conferir: nao muda nada
+        if (!resp || !resp.status) {                       // nao conseguiu conferir (rede): nao afirma nem nega
+          if (t0) t0.textContent = 'Não conseguimos confirmar agora';
+          if (s0) s0.textContent = 'Pode ser a internet. Se você pagou, a confirmação chega pelo WhatsApp em alguns minutos. Recarregue esta página quando quiser.';
+          return;
+        }
         var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(resp.status) >= 0;
         // o plano vem do gateway, nao da barra de endereco: trocar plan=mensal por plan=anual
         // na URL inflaria a receita relatada sem ninguem perceber
-        if (pago) { contarVenda(idPg, resp.plano || plan); return; }
+        if (pago) { if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'Pronto, sua assinatura do Manaã está ativa. Agora é só abrir o WhatsApp e enviar a primeira mensagem pra começar a conversa.'; contarVenda(idPg, resp.plano || plan); return; }
         var t = document.getElementById('title');
         var sb = document.getElementById('sub');
         var ck = document.querySelector('.check-wrap');
-        if (t) t.textContent = 'Pagamento ainda nao confirmado';
-        if (sb) sb.textContent = 'Se voce pagou agora, pode levar alguns minutos pra cair. Assim que confirmar, seu devocional comeca a chegar. Qualquer duvida, fale comigo no WhatsApp.';
+        if (t) t.textContent = 'Pagamento ainda não confirmado';
+        if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. Assim que confirmar, seu devocional começa a chegar. Qualquer dúvida, fale comigo no WhatsApp.';
         if (ck) { ck.textContent = '!'; ck.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
       });
     }
