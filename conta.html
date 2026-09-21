@@ -274,6 +274,7 @@
     <a class="action-link subtle" onclick="toggleAccountOptions()" id="lnk-other-opts">Outras opções</a>
     <div id="account-options" style="display:none;margin-top:6px">
       <!-- CANCEL_R6N3 (18/09/2026): cancelar = rota manaa-cancel-confirm (confirmação positiva do provedor); antes chamava manaa-suspend -->
+      <!-- CANCEL_R6N4 (21/09/2026): 'Assinatura cancelada' só com confirmação explícita do servidor; timeout/resposta antiga não afirmam nada -->
       <a class="action-link subtle" id="lnk-cancelar" onclick="cancelarFlow()">Cancelar minha assinatura</a>
       <a class="action-link" onclick="deleteFlow()" style="color:#b8404c;font-size:12.5px;margin-top:6px">Excluir minha conta</a>
     </div>
@@ -612,13 +613,15 @@
   // CANCEL_R6N3 (18/09/2026): o botão da Conta usa a rota manaa-cancel-confirm (cancelamento com confirmação positiva do
   // provedor). O resultado aparece NA PRÓPRIA TELA, sem alert e sem depender de novo login: 'Assinatura cancelada' quando o
   // provedor confirmou, 'Cancelamento em andamento' quando ainda não. O servidor encerra a sessão ao registrar o pedido.
-  function mostrarResultadoCancel(titulo, texto, rotuloVoltar){
+  // CANCEL_R6N4 (21/09/2026): aoVoltar = o que o botao faz (padrao: tela de entrada; no timeout: recarregar, e o servidor diz o estado real)
+  function mostrarResultadoCancel(titulo, texto, rotuloVoltar, aoVoltar){
     document.getElementById('acao-titulo').textContent = titulo;
     document.getElementById('acao-sub').textContent = texto;
     document.getElementById('acao-cartao').style.display = 'none';
     document.getElementById('acao-btn').style.display = 'none';
     showErr('acao', false);
     const v = document.getElementById('acao-voltar'); v.textContent = rotuloVoltar; v.style.display = 'block';
+    v.onclick = (typeof aoVoltar === 'function') ? aoVoltar : function(){ showScreen('phone'); };
     const subTopo = document.querySelector('.brand .sub'); if (subTopo) subTopo.textContent = 'Sua assinatura';
     showScreen('acao');
   }
@@ -636,15 +639,26 @@
     } catch(e) { d = null; }
     finally { clearTimeout(relogio); }
     if (lnk) { lnk.style.pointerEvents = ''; lnk.textContent = 'Cancelar minha assinatura'; }
-    if (!d) { alert('Não conseguimos falar com o servidor. Pode ser a internet — tente de novo.'); return; }
-    if (!d.success) { mostrarResultadoCancel('Não foi possível concluir', 'O cancelamento não foi feito. Entre de novo e tente outra vez, ou fale com a gente pelo WhatsApp.', 'Entrar de novo'); return; }
+    // CANCEL_R6N4 (21/09/2026): classificação ESTRITA da resposta. Só 'action: canceled' + 'pendente_provedor: false' afirma
+    // 'Assinatura cancelada'. Sem resposta (timeout/rede), resposta antiga sem os campos novos (publicação/reversão em curso)
+    // ou ambígua NUNCA viram 'cancelada' por exclusão — a Conta, no próximo login, mostra o estado real dito pelo servidor.
+    if (!d) {
+      mostrarResultadoCancel('Sem resposta do servidor', 'Não recebemos a confirmação a tempo. Seu pedido pode ter sido registrado mesmo assim. Toque em "Ver minha conta": a tela mostra o estado real da sua assinatura. Nada é cobrado a mais por isso.', 'Ver minha conta', function(){ location.reload(); });
+      return;
+    }
+    if (d.success !== true) { mostrarResultadoCancel('Não foi possível concluir', 'O cancelamento não foi feito. Entre de novo e tente outra vez, ou fale com a gente pelo WhatsApp.', 'Entrar de novo'); return; }
     // o servidor já encerrou a sessão ao registrar o pedido; aqui só se esquece o token local
     sessionToken = ''; userData = null;
     try { localStorage.removeItem('manaa_session'); } catch(e) {}
-    if (d.pendente_provedor === true) {
+    const confirmado = (d.action === 'canceled' && d.pendente_provedor === false);
+    const pendente = (d.pendente_provedor === true || d.action === 'canceled_pending_provider');
+    if (pendente) {
       mostrarResultadoCancel('Cancelamento em andamento', 'Recebemos seu pedido e ele já está registrado. ' + TEXTO_PENDENTE + ' Você pode acompanhar aqui na sua conta.', 'Entrar de novo');
-    } else {
+    } else if (confirmado) {
       mostrarResultadoCancel('Assinatura cancelada', 'Conforme você pediu, a cobrança da sua assinatura foi encerrada.' + (d.acesso_ate ? (' Seu acesso pago segue até ' + d.acesso_ate + '.') : ' Sua conta e suas preferências continuam disponíveis.'), 'Entrar de novo');
+    } else {
+      // resposta sem os campos novos (versão anterior do servidor) ou ambígua: registrado, mas sem afirmar o encerramento da cobrança
+      mostrarResultadoCancel('Pedido de cancelamento registrado', 'Recebemos seu pedido. A confirmação do encerramento da cobrança aparece aqui na sua conta assim que estiver concluída. Se alguma cobrança aparecer nesse meio-tempo, ela será devolvida.', 'Entrar de novo');
     }
   }
 
@@ -794,7 +808,10 @@
       if (d.acesso_ate && !cortesia) {
         rowAcesso.style.display = 'flex';
         // CANCEL_R6N3: com o encerramento ainda pendente no provedor, a linha não afirma 'nenhuma cobrança nova programada'
-        document.getElementById('dash-acesso').textContent = d.acesso_ate + (pendente ? ' (pedido de cancelamento em andamento)' : (d.status === 'canceled' ? ' (assinatura cancelada; nenhuma cobrança nova programada)' : ''));
+        // CANCEL_R6N4: 'nenhuma cobrança nova programada' só quando o servidor disse EXPLICITAMENTE que não há pendência
+        // (cancel_pendente_provedor === false); com o campo ausente (versão anterior do servidor) a linha fica neutra.
+        const semPendenciaExplicita = (d.cancel_pendente_provedor === false);
+        document.getElementById('dash-acesso').textContent = d.acesso_ate + (pendente ? ' (pedido de cancelamento em andamento)' : (d.status === 'canceled' ? (semPendenciaExplicita ? ' (assinatura cancelada; nenhuma cobrança nova programada)' : ' (assinatura cancelada)') : ''));
       } else { rowAcesso.style.display = 'none'; }
     }
     document.getElementById('dash-horario').textContent = (d.horario || '06:30:00').slice(0,5);
