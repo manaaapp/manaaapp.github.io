@@ -1250,7 +1250,7 @@ function avisoConvite(erro, msg) {
   const notice = document.getElementById('plan-notice');
   if (!notice) return;
   let html = msg || '';
-  if (erro === 'sessao') html += ' <a href="/conta.html" style="color:#8B6914;text-decoration:underline">Entrar na minha conta</a>';
+  if (erro === 'sessao') html += '<a href="/conta.html" style="display:block;margin-top:8px;color:#8B6914;text-decoration:underline;font-weight:600;white-space:nowrap">Entrar na minha conta</a>';
   notice.innerHTML = html; notice.classList.add('show');
   requestAnimationFrame(() => requestAnimationFrame(() => notice.scrollIntoView({ behavior: 'smooth', block: 'start' })));
 }
@@ -1275,6 +1275,8 @@ function getFullOnboardPayload() {
     origem: ((new URLSearchParams(location.search).get('o') || '').replace(/[^a-zA-Z0-9_-]/g, '').slice(0, 30) || null),
       plano: currentPlanV2,
     lgpd: document.getElementById('lgpd').checked,
+    // 21/09: a data de nascimento era exigida na tela e nunca chegava ao servidor (a regra de 18+ do servidor ficava vazia)
+    data_nascimento: (function () { try { var d = document.getElementById('nasc-dia').value, m = document.getElementById('nasc-mês').value, a = document.getElementById('nasc-ano').value; return (d && m && a) ? (a + '-' + m + '-' + d) : null; } catch (e) { return null; } })(),
     // prova de consentimento (o IP vem do servidor; aqui vai o aparelho/navegador)
     user_agent: navigator.userAgent,
     aceite_versao: '1.0'

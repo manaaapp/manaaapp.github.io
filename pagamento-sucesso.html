@@ -161,6 +161,13 @@
     }
     // se veio identificador, confirma com o gateway antes de manter o "confirmado"
     var idPg = p.get('id');
+    // 21/09: sem identificador (e fora do trial) a tela não pode afirmar 'Pagamento confirmado'
+    if (!idPg && plan !== 'trial' && plan !== 'free_trial' && status !== 'existing') {
+      var tN = document.getElementById('title'); var sN = document.getElementById('sub'); var ckN = document.querySelector('.check-wrap');
+      if (tN) tN.textContent = 'Recebemos o seu pedido';
+      if (sN) sN.textContent = 'A confirmação do pagamento chega pelo WhatsApp assim que o banco aprovar. Se quiser, pode abrir o WhatsApp agora.';
+      if (ckN) { ckN.textContent = '…'; }
+    }
     if (idPg && plan !== 'trial' && plan !== 'free_trial') {
       // 21/09: a tela só AFIRMA 'confirmado' depois de conferir com o servidor; antes disso (e com a rede caída) diz que está conferindo
       var t0 = document.getElementById('title'); var s0 = document.getElementById('sub');
