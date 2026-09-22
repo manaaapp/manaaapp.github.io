@@ -12,8 +12,12 @@
   // Antes este link abria o wa.me direto; a pessoa chegava "desconhecida" e o Manaa mandava
   // ela de volta ao site. Agora: /comecar -> formulario -> tela "Tudo pronto" -> botao do WhatsApp.
   // A origem (?o=ig|zap|grupo|...) viaja para o cadastro e fica em assinantes.origem.
-  var o = (new URLSearchParams(location.search).get("o") || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
-  location.replace("/onboarding.html?plano=trial" + (o ? "&o=" + encodeURIComponent(o) : ""));
+  var q = new URLSearchParams(location.search);
+  var o = (q.get("o") || "").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
+  // 21/09: o botao da conversa manda ?plano=mensal (quem terminou o teste) e ?waid= (o WhatsApp dela, para preencher o telefone)
+  var plano = (q.get("plano") === "mensal" || q.get("plano") === "anual") ? q.get("plano") : "trial";
+  var waid = (q.get("waid") || "").replace(/\D/g, "").slice(0, 15);
+  location.replace("/onboarding.html?plano=" + plano + (o ? "&o=" + encodeURIComponent(o) : "") + (waid ? "&waid=" + waid : ""));
 </script>
 <noscript><meta http-equiv="refresh" content="0;url=/onboarding.html?plano=trial"></noscript>
 <style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center} a{color:#7a5c3e;font-weight:600}</style>

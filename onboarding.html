@@ -1860,6 +1860,8 @@ selectPlanV2('mensal');
   document.addEventListener('click', function (ev) { if (ev.target && ev.target.classList && ev.target.classList.contains('chip')) setTimeout(salvar, 0); }, true);
   window.addEventListener('load', function () {
     var q = new URLSearchParams(location.search);
+    // 21/09: ?waid= (vindo do botao da conversa) preenche o telefone se ainda estiver vazio
+    try { var w = (q.get('waid') || '').replace(/\D/g, ''); var ph = document.getElementById('phone'); if (w && ph && !ph.value) { if (w.length === 13 && w.slice(0, 2) === '55') w = w.slice(2); ph.value = w; ph.dispatchEvent(new Event('input', { bubbles: true })); } } catch (e) {}
     var houve = restaurar();
     if (q.get('retomar') === '1' && houve && typeof goStepV2 === 'function') {
       // volta direto ao passo do pagamento se os passos anteriores estão preenchidos
