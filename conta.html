@@ -770,6 +770,14 @@
   // CANCEL_R6N3 (18/09/2026): o mesmo texto do aviso que o Manaã manda no WhatsApp quando o provedor ainda não confirmou.
   const TEXTO_PENDENTE = 'Estamos finalizando o encerramento da cobrança junto ao provedor de pagamento e te avisamos assim que estiver concluído. Se alguma cobrança aparecer nesse meio-tempo, ela será devolvida.';
   function renderDash(d){
+    // 21/09 RASCUNHO_R6O: quem veio do pagamento volta para concluir (o formulário fica guardado na aba)
+    try {
+      const vp = (window.__params || new URLSearchParams(location.search)).get('voltar');
+      let bv = document.getElementById('btn-voltar-pagamento');
+      if (vp === 'pagamento') {
+        if (!bv) { bv = document.createElement('a'); bv.id = 'btn-voltar-pagamento'; bv.className = 'btn'; bv.style.cssText = 'display:block;text-align:center;margin:12px 0'; bv.href = '/onboarding.html?plano=mensal&retomar=1'; bv.textContent = 'Voltar e concluir a assinatura'; const dash = document.getElementById('screen-dash') || document.body; dash.insertBefore(bv, dash.firstChild); }
+      } else if (bv) { bv.remove(); }
+    } catch (e) {}
     const firstName = (d.first_name || (d.name || '').split(' ')[0] || '');
     document.getElementById('dash-avatar').textContent = (firstName.charAt(0) || 'M').toUpperCase();
     document.getElementById('dash-name').textContent = d.name || '—';

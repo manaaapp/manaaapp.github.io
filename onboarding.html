@@ -1250,7 +1250,7 @@ function avisoConvite(erro, msg) {
   const notice = document.getElementById('plan-notice');
   if (!notice) return;
   let html = msg || '';
-  if (erro === 'sessao') html += '<a href="/conta.html" style="display:block;margin-top:8px;color:#8B6914;text-decoration:underline;font-weight:600;white-space:nowrap">Entrar na minha conta</a>';
+  if (erro === 'sessao') html += '<a href="/conta.html?voltar=pagamento" style="display:block;margin-top:8px;color:#8B6914;text-decoration:underline;font-weight:600;white-space:nowrap">Entrar na minha conta</a>';
   notice.innerHTML = html; notice.classList.add('show');
   requestAnimationFrame(() => requestAnimationFrame(() => notice.scrollIntoView({ behavior: 'smooth', block: 'start' })));
 }
@@ -1483,7 +1483,7 @@ async function submitForm() {
       try { sessionStorage.setItem('manaa_chk', JSON.stringify({ ref: data.checkout.ref || '', ts: Date.now() })); } catch (_) {}
       try { gtag('event', 'iniciou_checkout_hospedado', { plano: currentPlanV2, modalidade: data.modalidade || '', retomada: !!data.retomada }); } catch (_) {}
       btn.textContent = 'Abrindo o ambiente seguro do ASAAS...';
-      window.__r4Concluiu = true; window.location.href = seguro;
+      window.__r4Concluiu = true; if (window.__limparRascunho) window.__limparRascunho(); window.location.href = seguro;
       return;
     }
     // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
@@ -1830,5 +1830,45 @@ selectPlanV2('mensal');
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
     <script src="/assets/flags.js"></script>
     <script src="/assets/motion.js"></script>
+
+<script>
+// 21/09 RASCUNHO_R6O: quem sai para a Minha Conta (código pelo WhatsApp) volta ao formulário preservado. Fica só na sessão da aba (sessionStorage), 12 h.
+(function () {
+  var K = 'manaa_rascunho';
+  var CAMPOS = ['first-name','last-name','phone','email','religiao','inspiracoes','horario','versao','nasc-dia','nasc-mês','nasc-ano','ocupacao','proposito','pag-cpf-static','cc-cep','cc-num'];
+  function salvar() {
+    try {
+      var o = { _ts: Date.now() };
+      CAMPOS.forEach(function (id) { var e = document.getElementById(id); if (e) o[id] = e.value; });
+      var g = document.querySelector('#chips-genero .chip.active'); o._genero = g ? g.dataset.val : null;
+      o._momentos = Array.prototype.map.call(document.querySelectorAll('#chips-momento .chip.active'), function (c) { return c.dataset.val; });
+      o._plano = (typeof currentPlanV2 !== 'undefined') ? currentPlanV2 : null;
+      sessionStorage.setItem(K, JSON.stringify(o));
+    } catch (e) {}
+  }
+  function restaurar() {
+    var o = null; try { o = JSON.parse(sessionStorage.getItem(K) || 'null'); } catch (e) { o = null; }
+    if (!o || !o._ts || (Date.now() - o._ts) > 12 * 3600 * 1000) return false;
+    CAMPOS.forEach(function (id) { var e = document.getElementById(id); if (e && o[id] != null && o[id] !== '' && !e.value) { e.value = o[id]; try { e.dispatchEvent(new Event('change', { bubbles: true })); } catch (x) {} } });
+    if (o._genero) { var g = document.querySelector('#chips-genero .chip[data-val="' + o._genero + '"]'); if (g && !g.classList.contains('active')) g.click(); }
+    (o._momentos || []).forEach(function (v) { var c = document.querySelector('#chips-momento .chip[data-val="' + v + '"]'); if (c && !c.classList.contains('active')) c.click(); });
+    if (o._plano && typeof selectPlanV2 === 'function') { try { selectPlanV2(o._plano); } catch (e) {} }
+    return true;
+  }
+  document.addEventListener('input', salvar, true);
+  document.addEventListener('change', salvar, true);
+  document.addEventListener('click', function (ev) { if (ev.target && ev.target.classList && ev.target.classList.contains('chip')) setTimeout(salvar, 0); }, true);
+  window.addEventListener('load', function () {
+    var q = new URLSearchParams(location.search);
+    var houve = restaurar();
+    if (q.get('retomar') === '1' && houve && typeof goStepV2 === 'function') {
+      // volta direto ao passo do pagamento se os passos anteriores estão preenchidos
+      var ok1 = (typeof validateStep1 !== 'function') || validateStep1(); var ok2 = ok1 && ((typeof validateStep2 !== 'function') || validateStep2());
+      if (ok1 && ok2) { goStepV2(4); if (typeof refreshPayButton === 'function') refreshPayButton(); }
+    }
+  });
+  window.__limparRascunho = function () { try { sessionStorage.removeItem(K); } catch (e) {} };
+})();
+</script>
 </body>
 </html>
