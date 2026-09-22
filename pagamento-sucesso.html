@@ -179,7 +179,7 @@
       confereStatus(idPg).then(function (resp) {
         if (!resp || !resp.status) {                       // nao conseguiu conferir (rede): nao afirma nem nega
           if (t0) t0.textContent = 'Não conseguimos confirmar agora';
-          if (s0) s0.textContent = 'Pode ser a internet. Se você pagou, a confirmação chega pelo WhatsApp em alguns minutos. Recarregue esta página quando quiser.';
+          if (s0) s0.textContent = 'Pode ser a internet. Se você pagou, a confirmação chega pelo WhatsApp assim que o banco confirmar. Recarregue esta página quando quiser.';
           if (ck0) { ck0.textContent = '!'; ck0.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
           return;
         }

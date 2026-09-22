@@ -674,7 +674,7 @@
         body: JSON.stringify({token: sessionToken})
       });
       const data = await r.json();
-      if(data.success){ alert('Conta excluída. Obrigado pela companhia.'); logout(); }
+      if(data.success){ alert(data.pendente_provedor === true ? 'Seus dados pessoais foram excluídos.\n\nO encerramento da cobrança junto ao provedor de pagamento ainda está em confirmação: nós concluímos isso e você recebe o aviso no WhatsApp. Se alguma cobrança aparecer nesse meio-tempo, ela será devolvida.' : 'Seus dados pessoais foram excluídos e não há cobrança programada. Obrigado pela companhia.'); logout(); }
       else { alert('Não foi possível excluir. Solicite novo link e tente de novo.'); }
     } catch(e) { alert('Erro. Tenta de novo.'); }
   }
