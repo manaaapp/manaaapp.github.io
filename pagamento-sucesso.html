@@ -166,23 +166,27 @@
       var tN = document.getElementById('title'); var sN = document.getElementById('sub'); var ckN = document.querySelector('.check-wrap');
       if (tN) tN.textContent = 'Recebemos o seu pedido';
       if (sN) sN.textContent = 'A confirmação do pagamento chega pelo WhatsApp assim que o banco aprovar. Se quiser, pode abrir o WhatsApp agora.';
-      if (ckN) { ckN.textContent = '…'; }
+      if (ckN) { ckN.textContent = '…'; ckN.style.background = 'linear-gradient(135deg,#B9B2A3,#8C847A)'; }
     }
     if (idPg && plan !== 'trial' && plan !== 'free_trial') {
       // 21/09: a tela só AFIRMA 'confirmado' depois de conferir com o servidor; antes disso (e com a rede caída) diz que está conferindo
       var t0 = document.getElementById('title'); var s0 = document.getElementById('sub');
       if (t0) t0.textContent = 'Confirmando seu pagamento';
       if (s0) s0.textContent = 'Um instante: estamos conferindo com o banco. Se preferir, pode abrir o WhatsApp agora.';
+      // 21/09 (revisão do Luigi): o ícone acompanha o estado — neutro enquanto confere, amarelo sem confirmação, verde só confirmado
+      var ck0 = document.querySelector('.check-wrap'); var ckVerde = ck0 ? ck0.style.background : '';
+      if (ck0) { ck0.textContent = '…'; ck0.style.background = 'linear-gradient(135deg,#B9B2A3,#8C847A)'; }
       confereStatus(idPg).then(function (resp) {
         if (!resp || !resp.status) {                       // nao conseguiu conferir (rede): nao afirma nem nega
           if (t0) t0.textContent = 'Não conseguimos confirmar agora';
           if (s0) s0.textContent = 'Pode ser a internet. Se você pagou, a confirmação chega pelo WhatsApp em alguns minutos. Recarregue esta página quando quiser.';
+          if (ck0) { ck0.textContent = '!'; ck0.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
           return;
         }
         var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(resp.status) >= 0;
         // o plano vem do gateway, nao da barra de endereco: trocar plan=mensal por plan=anual
         // na URL inflaria a receita relatada sem ninguem perceber
-        if (pago) { if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'Pronto, sua assinatura do Manaã está ativa. Agora é só abrir o WhatsApp e enviar a primeira mensagem pra começar a conversa.'; contarVenda(idPg, resp.plano || plan); return; }
+        if (pago) { if (ck0) { ck0.textContent = '✓'; ck0.style.background = ckVerde; } if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'Pronto, sua assinatura do Manaã está ativa. Agora é só abrir o WhatsApp e enviar a primeira mensagem pra começar a conversa.'; contarVenda(idPg, resp.plano || plan); return; }
         var t = document.getElementById('title');
         var sb = document.getElementById('sub');
         var ck = document.querySelector('.check-wrap');
