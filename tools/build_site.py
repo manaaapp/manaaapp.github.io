@@ -74,6 +74,9 @@ def injetar_head(txt):
     build = '<meta name="build-id" content="%s">' % SHA
     csp = '<meta http-equiv="Content-Security-Policy" content="%s">' % csp_para(txt).replace('"', '&quot;')
     bloco = build + '\n' + csp
+    # Assets versionados pelo build: a Cloudflare guarda /assets/*.js|css por 4 h (sem permissao de purge no token);
+    # com ?v=<sha> cada publicacao vale na hora (25/09/2026: flags.js antigo ficou preso no cache).
+    txt = re.sub(r'((?:src|href)="/assets/[A-Za-z0-9_./-]+[.](?:js|css))"', lambda m: m.group(1) + '?v=' + SHA + '"', txt)
     if RE_CHARSET.search(txt):
         return RE_CHARSET.sub(lambda m: m.group(1) + '\n' + bloco, txt, count=1)
     return RE_HEAD.sub(lambda m: m.group(1) + '\n' + bloco, txt, count=1)
