@@ -1007,7 +1007,8 @@ function refreshConsentAndExtra() {
   const isCC = (billing === 'CREDIT_CARD' || billing === 'CREDIT_CARD_12');
   consent.style.display = showConsent ? 'flex' : 'none';
   pagoFields.style.display = isTrial ? 'none' : 'block';
-  ccBox.style.display = isCC ? 'block' : 'none';
+  // R5.1: o bloco proprio de cartao so existe com CARD_DIRECT_INPUT_ENABLED (nunca em producao); com o checkout hospedado o cartao e digitado no ASAAS.
+  ccBox.style.display = (isCC && (window.MANAA_FLAGS || {}).CARD_DIRECT_INPUT_ENABLED === true) ? 'block' : 'none';
   if (typeof refreshPayButton === 'function') refreshPayButton();
 }
 function currentBillingV2() {

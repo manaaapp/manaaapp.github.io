@@ -923,7 +923,14 @@
   const subTopo = document.querySelector('.brand .sub');
   if (subTopo) subTopo.textContent = acao === 'cartao' ? 'Atualizar forma de pagamento' : 'Sua assinatura';
 
-  if (acao === 'cartao') {
+  if (acao === 'cartao' && !((window.MANAA_FLAGS || {}).CARD_DIRECT_INPUT_ENABLED === true)) {
+    // R5.1: sem formulário próprio de cartão. A troca passa a ser feita no ambiente hospedado do ASAAS; até lá, atendimento.
+    t.textContent = 'Atualizar seu cartão';
+    s.textContent = 'A troca de cartão está temporariamente indisponível por aqui: em breve será feita no ambiente seguro do ASAAS. Se precisar agora, fale com a gente pelo WhatsApp ou por manaa.fbx@gmail.com.';
+    box.style.display = 'none';
+    btn.style.display = 'none';
+    return;
+  } else if (acao === 'cartao') {
     t.textContent = 'Atualizar seu cartão';
     s.textContent = 'Preencha os dados do cartão novo. A cobrança da sua assinatura passa a usar ele.';
     box.style.display = 'block';
