@@ -462,7 +462,13 @@
   // R5: no navegador fica SO' o token de sessao (curto, emitido pelo servidor) e a hora. Nada de
   // telefone, e-mail, religiao ou momento de vida guardado; os dados vem do servidor a cada abertura.
   function guardarSessao(){
-    try { localStorage.setItem('manaa_session', JSON.stringify({ sessionToken, ts: Date.now() })); } catch(e) {}
+    // LOGIN_R12 (25/09/2026): guarda tambem o numero (so digitos) para a contratacao reconhecer sessao de OUTRO numero; e volta para a
+    // pagina que pediu o login (?next=/onboarding.html?...), so caminho local.
+    try { localStorage.setItem('manaa_session', JSON.stringify({ sessionToken, ts: Date.now(), phone: String(currentPhone || '').replace(/\D/g, '') })); } catch(e) {}
+    try {
+      const nx = (window.__params || new URLSearchParams(location.search)).get('next');
+      if (nx && /^\/onboarding\.html\?/.test(nx) && !/[\r\n]|\/\//.test(nx)) { setTimeout(() => { location.href = nx; }, 400); }
+    } catch(e) {}
   }
 
   async function autoLoginViaMagicLink(token){

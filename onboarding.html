@@ -1792,6 +1792,23 @@ selectPlanV2('mensal');
     // O checkout vai casar a pessoa por ESTE token, não pelo telefone da tela — o campo é
     // editável e um dígito trocado mandaria o pagamento pro cadastro errado.
     window.__reativacao = token;
+    // LOGIN_R12 (25/09/2026): a cobranca so nasce com sessao da Minha Conta do MESMO numero (regra do servidor). Sem sessao, ou com
+    // sessao de outro numero, levar ao codigo ANTES do formulario e voltar para esta mesma pagina/conta.
+    try {
+      let sess = null; try { sess = JSON.parse(localStorage.getItem('manaa_session') || 'null'); } catch (_) {}
+      const viva = !!(sess && sess.sessionToken && (Date.now() - (sess.ts || 0)) < 12 * 3600 * 1000);
+      const numTok = String(d.phone_local || '').replace(/\D/g, '').slice(-11);
+      const numSess = String((sess && sess.phone) || '').replace(/\D/g, '').slice(-11);
+      const outraConta = viva && !!numSess && !!numTok && numSess !== numTok;
+      if (!viva || outraConta) {
+        if (outraConta) { try { localStorage.removeItem('manaa_session'); } catch (_) {} }
+        aviso.style.color = '#245c44';
+        aviso.textContent = (outraConta ? 'Você estava conectado com outro número. ' : '') + 'Para continuar, entre na Minha Conta com o código que chega no seu WhatsApp — você volta para cá em seguida.';
+        const next = location.pathname + location.search;
+        setTimeout(() => { location.href = '/conta.html?voltar=pagamento&next=' + encodeURIComponent(next); }, 1500);
+        return;
+      }
+    } catch (_) {}
 
     const set = (id, v) => {
       const e = document.getElementById(id);
