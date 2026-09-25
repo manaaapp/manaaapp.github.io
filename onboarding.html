@@ -503,10 +503,11 @@
     <div class="field">
       <label for="versao">Versão da Bíblia preferida</label>
       <select id="versao">
-        <!-- 02/09/2026: so as versoes que existem no banco do Manaa (NVI e ACF). As outras eram promessa sem entrega. -->
-        <option value="">Sem preferência</option>
+        <!-- 02/09/2026: so as versoes que existem no banco do Manaa. ONBV_A2 (25/09/2026): Nova Bíblia Viva (CC BY-SA 4.0) como padrão dos novos cadastros; quem já tem preferência não muda. -->
+        <option value="ONBV" selected>Nova Bíblia Viva (ONBV) — linguagem simples</option>
         <option value="NVI">Nova Versão Internacional (NVI)</option>
         <option value="ACF">Almeida Corrigida Fiel (ACF)</option>
+        <option value="">Sem preferência</option>
       </select>
     </div>
 
