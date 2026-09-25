@@ -7,7 +7,7 @@ window.MANAA_FLAGS = {
   PIX_SINGLE_ENABLED: true,           // anual por Pix comum (cobrança única)
   CARD_HOSTED_CHECKOUT_ENABLED: true,  // cartão pela página hospedada do ASAAS (ligado 25/09/2026 após validação no sandbox)
   CARD_DIRECT_INPUT_ENABLED: false,   // formulário próprio de cartão: NUNCA em produção
-  ANNUAL_CARD_HOSTED_ENABLED: false,  // cartão no plano anual (à vista/parcelado) pelo checkout hospedado: só depois de validado no sandbox (25/09/2026 validado apenas o mensal)
+  ANNUAL_CARD_HOSTED_ENABLED: true,   // cartão no plano anual (à vista e parcelado) pelo checkout hospedado — validado no sandbox 25/09/2026 (webhook real, à vista e 3x)
   MONTHLY_ENABLED: true,
   ANNUAL_SINGLE_ENABLED: true,        // anual à vista / parcelado
   ANNUAL_RECURRING_ENABLED: false,    // anual automático (Pix Automático anual / cartão recorrente anual)
