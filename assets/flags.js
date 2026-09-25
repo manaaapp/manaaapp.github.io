@@ -5,7 +5,7 @@
 window.MANAA_FLAGS = {
   PIX_AUTOMATIC_ENABLED: true,        // mensal por Pix Automático (QR do 1º mês + autorização)
   PIX_SINGLE_ENABLED: true,           // anual por Pix comum (cobrança única)
-  CARD_HOSTED_CHECKOUT_ENABLED: false, // cartão pela página hospedada do ASAAS (em implantação)
+  CARD_HOSTED_CHECKOUT_ENABLED: true,  // cartão pela página hospedada do ASAAS (ligado 25/09/2026 após validação no sandbox)
   CARD_DIRECT_INPUT_ENABLED: false,   // formulário próprio de cartão: NUNCA em produção
   MONTHLY_ENABLED: true,
   ANNUAL_SINGLE_ENABLED: true,        // anual à vista / parcelado
