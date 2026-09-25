@@ -1804,7 +1804,8 @@ selectPlanV2('mensal');
         if (outraConta) { try { localStorage.removeItem('manaa_session'); } catch (_) {} }
         aviso.style.color = '#245c44';
         aviso.textContent = (outraConta ? 'Você estava conectado com outro número. ' : '') + 'Para continuar, entre na Minha Conta com o código que chega no seu WhatsApp — você volta para cá em seguida.';
-        const next = location.pathname + location.search;
+        // o token 'r' ja pode ter saido da URL (limpeza da barra): reconstruir o retorno com o token, para voltar a ESTA conta com os dados preenchidos
+        const next = '/onboarding.html?r=' + encodeURIComponent(token) + '&plano=' + encodeURIComponent(((window.__params || new URLSearchParams(location.search)).get('plano')) || 'mensal');
         setTimeout(() => { location.href = '/conta.html?voltar=pagamento&next=' + encodeURIComponent(next); }, 1500);
         return;
       }
