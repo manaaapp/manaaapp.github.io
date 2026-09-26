@@ -796,7 +796,13 @@
     const pendente = d.cancel_pendente_provedor === true;
     const statusText = pendente ? 'Cancelamento em andamento' : (statusMap[d.status] || d.status || '—');
     // 21/09: teste encerrado ou assinatura cancelada sem período pago -> caminho para assinar (antes a Conta não oferecia nada)
-    const lnkAssinar = document.getElementById('lnk-assinar'); if (lnkAssinar) lnkAssinar.style.display = (d.status === 'expired' || (d.status === 'canceled' && !d.acesso_ate)) ? 'block' : 'none';
+    const lnkAssinar = document.getElementById('lnk-assinar');
+    if (lnkAssinar) {
+      // PAG_R17 (26/09/2026): quem esta no teste gratis tambem pode assinar por aqui (antes so' aparecia depois de expirar/cancelar).
+      const emTeste = d.status === 'trialing';
+      lnkAssinar.style.display = (emTeste || d.status === 'expired' || (d.status === 'canceled' && !d.acesso_ate)) ? 'block' : 'none';
+      if (emTeste) { lnkAssinar.textContent = 'Assinar agora e garantir a continuidade — R$ 14,99/mês'; lnkAssinar.href = '/onboarding.html?plano=mensal&retomar=1'; }
+    }
     const badge = document.getElementById('dash-badge');
     if (badge) {
       badge.textContent = statusText;
