@@ -20,6 +20,16 @@ sha = sh('git rev-parse --short=12 HEAD', capture=True)
 if sh('git status --porcelain', capture=True):
     raise SystemExit('arvore suja: commit ou descarte antes de publicar')
 print('build de', sha)
+# 26/09/2026: sintaxe dos scripts inline de cada pagina ANTES do build (uma quebra de linha dentro de um regex deixou a Minha Conta sem JS por 9 min)
+import re as _re, glob as _glob, tempfile as _tf, subprocess as _sp
+for _f in sorted(_glob.glob('*.html')):
+    _html = open(_f, encoding='utf-8').read()
+    for _i, _sc in enumerate(_re.findall(r'<script(?![^>]*src=)[^>]*>([\s\S]*?)</script>', _html)):
+        if not _sc.strip(): continue
+        _tmp = os.path.join(_tf.gettempdir(), 'manaa_inline_%s_%d.js' % (_f.replace('.html',''), _i)); open(_tmp, 'w', encoding='utf-8').write(_sc)
+        _r = _sp.run(['node', '--check', _tmp], capture_output=True, text=True)
+        if _r.returncode != 0: print('SINTAXE INVALIDA em %s (script inline #%d):' % (_f, _i)); print(_r.stderr.strip()[:600]); sys.exit(1)
+print('sintaxe dos scripts inline: ok')
 sh('python tools/build_site.py %s . _site' % sha)  # exit 1 = guarda reprovou -> nada publicado
 if '--so-build' in sys.argv:
     print('so build; nada publicado'); sys.exit(0)
