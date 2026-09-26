@@ -4,7 +4,7 @@
    Movimento contido de propósito — público 50-70, leitura calma. */
 (function () {
   var root = document.documentElement;
-  var SEL = '.section-label,.section-title,.section-desc,.feature,.step,.plan,.card,.faq-item,.hero-text,.hero-media,[data-reveal]';
+  var SEL = '.section-label,.section-title,.section-desc,.feature,.step:not([data-step]),.plan,.card,.faq-item,.hero-text,.hero-media,[data-reveal]';
 
   function showAll() { root.classList.remove('motion-on'); }
 

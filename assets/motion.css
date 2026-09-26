@@ -3,10 +3,11 @@
    apenas se o usuário NÃO pediu redução de movimento). Sem JS ou sem GSAP,
    nada fica escondido: o conteúdo aparece normal. */
 
-/* estado inicial dos elementos que vão surgir (só sob motion-on) */
+/* estado inicial dos elementos que vão surgir (só sob motion-on). As etapas do onboarding ([data-step]) ficam FORA:
+   são display:none até a troca de etapa e o ScrollTrigger não dispara para elas — no celular a etapa 4 ficava invisível até rolar (25/09/2026). */
 html.motion-on :is(
   .section-label, .section-title, .section-desc,
-  .feature, .step, .plan, .card, .faq-item,
+  .feature, .step:not([data-step]), .plan, .card, .faq-item,
   .hero-text, .hero-media, [data-reveal]
 ){ opacity: 0; will-change: opacity, transform; }
 
@@ -29,7 +30,7 @@ html.motion-on :is(
 @media (prefers-reduced-motion: reduce){
   html.motion-on :is(
     .section-label, .section-title, .section-desc,
-    .feature, .step, .plan, .card, .faq-item,
+    .feature, .step:not([data-step]), .plan, .card, .faq-item,
     .hero-text, .hero-media, [data-reveal]
   ){ opacity: 1 !important; transform: none !important; }
 }
