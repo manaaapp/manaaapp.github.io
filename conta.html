@@ -783,8 +783,7 @@
       const vp = (window.__params || new URLSearchParams(location.search)).get('voltar');
       let bv = document.getElementById('btn-voltar-pagamento');
       if (vp === 'pagamento') {
-        if (!bv) { bv = document.createElement('a'); bv.id = 'btn-voltar-pagamento'; bv.className = 'btn'; bv.style.cssText = 'display:block;text-align:center;margin:12px 0'; bv.href = (function(){ try { const nx = (window.__params || new URLSearchParams(location.search)).get('next'); if (nx && /^\/onboarding\.html\?/.test(nx) && !/[
-]|\/\//.test(nx)) return nx; } catch (e) {} return '/onboarding.html?plano=mensal&retomar=1'; })(); /* PAG_R15: volta para o plano que a pessoa escolheu */ bv.textContent = 'Voltar e concluir a assinatura'; const dash = document.getElementById('screen-dash') || document.body; dash.insertBefore(bv, dash.firstChild); }
+        if (!bv) { bv = document.createElement('a'); bv.id = 'btn-voltar-pagamento'; bv.className = 'btn'; bv.style.cssText = 'display:block;text-align:center;margin:12px 0'; bv.href = (function(){ try { var nx = (window.__params || new URLSearchParams(location.search)).get('next') || ''; if (nx.indexOf('/onboarding.html?') === 0 && nx.indexOf('//') < 0 && !/\s/.test(nx)) return nx; } catch (e) {} return '/onboarding.html?plano=mensal&retomar=1'; })(); /* PAG_R15: volta para o plano que a pessoa escolheu */ bv.textContent = 'Voltar e concluir a assinatura'; const dash = document.getElementById('screen-dash') || document.body; dash.insertBefore(bv, dash.firstChild); }
       } else if (bv) { bv.remove(); }
     } catch (e) {}
     const firstName = (d.first_name || (d.name || '').split(' ')[0] || '');
