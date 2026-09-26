@@ -25,7 +25,7 @@ import re as _re, glob as _glob, tempfile as _tf, subprocess as _sp
 for _f in sorted(_glob.glob('*.html')):
     _html = open(_f, encoding='utf-8').read()
     for _i, (_attrs, _sc) in enumerate(_re.findall(r'<script((?![^>]*src=)[^>]*)>([\s\S]*?)</script>', _html)):
-        _tipo = (_re.search(r'type=["']([^"']+)', _attrs) or [None, ''])[1].lower()
+        _tipo = (_re.search(r"type=['\"]([^'\"]+)", _attrs) or [None, ''])[1].lower()
         if _tipo and _tipo not in ('text/javascript', 'module', 'application/javascript'): continue  # ld+json etc. nao e JS
         if not _sc.strip(): continue
         _tmp = os.path.join(_tf.gettempdir(), 'manaa_inline_%s_%d.js' % (_f.replace('.html',''), _i)); open(_tmp, 'w', encoding='utf-8').write(_sc)
