@@ -1896,7 +1896,9 @@ selectPlanV2('mensal');
     if (q.get('retomar') === '1' && houve && typeof goStepV2 === 'function') {
       // volta direto ao passo do pagamento se os passos anteriores estão preenchidos
       var ok1 = (typeof validateStep1 !== 'function') || validateStep1(); var ok2 = ok1 && ((typeof validateStep2 !== 'function') || validateStep2());
-      if (ok1 && ok2) { goStepV2(4); if (typeof refreshPayButton === 'function') refreshPayButton(); }
+      if (ok1 && ok2) { goStepV2(4); if (typeof refreshPayButton === 'function') refreshPayButton();
+        // PAG_R15 (26/09/2026): goStepV2(4) seleciona 'mensal' 50 ms depois; a volta do login precisa manter o plano que a pessoa escolheu (?plano=anual)
+        setTimeout(function () { var p = String(q.get('plano') || '').toLowerCase(); if ((p === 'anual' || p === 'mensal') && typeof selectPlanV2 === 'function') selectPlanV2(p); if (typeof refreshPayButton === 'function') refreshPayButton(); }, 160); }
     }
   });
   window.__limparRascunho = function () { try { sessionStorage.removeItem(K); } catch (e) {} };
