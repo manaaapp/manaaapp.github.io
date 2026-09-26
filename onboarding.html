@@ -1254,7 +1254,7 @@ function avisoConvite(erro, msg) {
   let html = msg || '';
   // 22/09 AVISO_R6P: o #plan-notice é flex (ícone + conteúdo); texto e link soltos viravam 3 colunas e o texto ficava espremido no
   // celular. Agora ícone + UMA coluna: o texto numa linha (ou mais) e o link na linha seguinte, cada um com a largura toda.
-  if (erro === 'sessao') html = '<div style="flex:1 1 auto;min-width:0"><div>' + html + '</div><a href="/conta.html?voltar=pagamento" style="display:block;margin-top:10px;color:#8B6914;text-decoration:underline;font-weight:600">Entrar na minha conta</a></div>';
+  if (erro === 'sessao') html = '<div style="flex:1 1 auto;min-width:0"><div>' + html + '</div><a href="' + ('/conta.html?voltar=pagamento&next=' + encodeURIComponent('/onboarding.html?plano=' + encodeURIComponent((typeof currentPlanV2 !== 'undefined' && currentPlanV2) || 'mensal') + '&retomar=1')) + '" style="display:block;margin-top:10px;color:#8B6914;text-decoration:underline;font-weight:600">Entrar na minha conta</a></div>';
   notice.innerHTML = html; notice.classList.add('show');
   requestAnimationFrame(() => requestAnimationFrame(() => notice.scrollIntoView({ behavior: 'smooth', block: 'start' })));
 }
