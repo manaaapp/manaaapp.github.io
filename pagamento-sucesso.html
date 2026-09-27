@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
     <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
-    <link rel="stylesheet" href="/assets/motion.css?v=ef6239b2c9d1">
+    <link rel="stylesheet" href="/assets/motion.css?v=26f19ad3cb24">
 
 <link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
 <meta charset="UTF-8">
-<meta name="build-id" content="ef6239b2c9d1">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-0cpShfk+QPnJk8IRSAQteWU9/f2fTkPbD1Bsrs1zRsU=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-irUZNph2NaTZBgL96CMKYrQJFtYjpKSIgwGJuGWooRQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="build-id" content="26f19ad3cb24">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-0cpShfk+QPnJk8IRSAQteWU9/f2fTkPbD1Bsrs1zRsU=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-hgK65+x7oag7xkV+ztrYTBXliauMpmbgnWQA0nhqtsQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
@@ -131,7 +131,9 @@
                             + encodeURIComponent(id), { signal: ctl.signal });
       const d = await r.json();
       return { status: String((d && d.status) || '').toLowerCase(),
-               plano:  String((d && d.plano)  || '').toLowerCase() };
+               plano:  String((d && d.plano)  || '').toLowerCase(),
+               proxima: String((d && d.proxima_entrega) || ''),
+               condicao: String((d && d.condicao) || '') };
     } catch (e) { return null; }   // rede ruim nao vira acusacao de nao ter pago
   }
 
@@ -139,14 +141,15 @@
     var p = new URLSearchParams(location.search);
     var plan = (p.get('plan') || '').toLowerCase();
     var msg = "Oi%2C%20Mana%C3%A3.";
-    var h = (p.get('h') || '').replace(/[^0-9:]/g, '').slice(0, 5);
-    var quando = h ? ('amanhã às ' + h) : 'amanhã, no horário que você escolheu';
+    var pServ = (p.get('p') || '').replace(/[^0-9A-Za-z:\/ àÀ-ÿ]/g, '').slice(0, 40);
     var prox = document.getElementById('proxima');
     function proxima(txt) { if (prox) prox.textContent = txt; }
-    proxima('Próxima entrega prevista: ' + quando + ', pelo WhatsApp.');
+    proxima('');
     if (plan === 'trial' || plan === 'free_trial') {
       var t = document.getElementById('title'); if (t) t.textContent = 'Cadastro concluído';
       var s = document.getElementById('sub'); if (s) s.textContent = 'Seu teste gratuito de 7 dias está ativo. Não há cobrança.';
+      proxima(pServ ? ('Programação do servidor: primeiro devocional em ' + pServ + ', pelo WhatsApp.')
+                    : 'A programação do seu devocional está em manaaapp.com/conta (Minha Conta).');
     }
     var status = (p.get('status') || '').toLowerCase();
     if (status === 'existing') {
@@ -177,13 +180,14 @@
           return;
         }
         var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(resp.status) >= 0;
-        if (pago) { if (ck0) { ck0.textContent = '✓'; ck0.style.background = ckVerde; } if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'O ASAAS confirmou o pagamento e sua assinatura do Manaã está ativa.'; proxima('Próxima entrega prevista: ' + quando + ', pelo WhatsApp.'); contarVenda(idPg, resp.plano || plan); return; }
+        if (pago) { if (ck0) { ck0.textContent = '✓'; ck0.style.background = ckVerde; } if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'O ASAAS confirmou o pagamento e sua assinatura do Manaã está ativa.'; proxima(resp.proxima ? ('Programação do servidor: próximo devocional em ' + resp.proxima + ', pelo WhatsApp.') : 'A programação do seu devocional está em manaaapp.com/conta (Minha Conta).'); contarVenda(idPg, resp.plano || plan); return; }
         var t = document.getElementById('title');
         var sb = document.getElementById('sub');
         var ck = document.querySelector('.check-wrap');
         if (t) t.textContent = 'Pagamento ainda não confirmado';
-        if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. Assim que o ASAAS confirmar, seu devocional começa a chegar.';
-        proxima('O devocional começa a chegar depois da confirmação do pagamento.');
+        if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. A assinatura passa a valer quando o ASAAS confirmar.';
+        if (resp.condicao === 'acesso_ativo' && resp.proxima) proxima('Enquanto isso, seu acesso atual continua. Programação do servidor: próximo devocional em ' + resp.proxima + '.');
+        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no dia seguinte, no horário escolhido.');
         if (ck) { ck.textContent = '!'; ck.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
       });
     }
@@ -198,6 +202,6 @@
 </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="/assets/motion.js?v=ef6239b2c9d1"></script>
+    <script src="/assets/motion.js?v=26f19ad3cb24"></script>
 </body>
 </html>
