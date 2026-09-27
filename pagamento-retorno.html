@@ -48,6 +48,9 @@
   var card = document.getElementById('card'), spin = document.getElementById('spin');
   var titulo = document.getElementById('titulo'), texto = document.getElementById('texto'), acoes = document.getElementById('acoes'), mini = document.getElementById('mini');
   function botao(rotulo, href, sec) { var a = document.createElement('a'); a.className = 'btn' + (sec ? ' sec' : ''); a.href = href; a.textContent = rotulo; acoes.appendChild(a); }
+  // 27/09/2026 (pedido do dono): "Conversar com o Manaã" abre o WhatsApp com um texto simples, sem dado pessoal; a pessoa decide se envia.
+  // Nada é enviado por nós e nenhuma ativação depende disso — o estado real vem do ASAAS.
+  function botaoWhats() { var a = document.createElement('a'); a.className = 'btn sec'; a.href = 'https://wa.me/5543984323619?text=Oi%2C%20Mana%C3%A3.'; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = 'Conversar com o Manaã'; acoes.appendChild(a); }
   function estado(cls, t, x) { card.className = 'card ' + cls; spin.hidden = true; titulo.textContent = t; texto.textContent = x; acoes.textContent = ''; }
   if (!ref) { estado('warn', 'Não encontramos este pagamento', 'O link de retorno veio incompleto. Se você pagou, a confirmação chega pelo WhatsApp. Se não, é só começar de novo.'); botao('Voltar ao cadastro', '/onboarding.html'); return; }
   // 08/09/2026: r=cancel / r=exp vem da URL de retorno, nao do provedor. Nao prova que nada foi cobrado.
@@ -75,7 +78,7 @@
         }
         if (d.checkout === 'PAID') {
           // o provedor diz que o checkout foi pago: a ativacao esta a caminho; nunca dizer "nada foi cobrado"
-          estado('', 'Pagamento recebido', 'O ASAAS confirmou o pagamento; estamos ativando sua assinatura. A confirmação chega pelo WhatsApp assim que a ativação concluir.'); botao('Ver minha conta', '/conta.html', true); return;
+          estado('', 'Pagamento recebido', 'O ASAAS confirmou o pagamento; estamos ativando sua assinatura. A confirmação chega pelo WhatsApp assim que a ativação concluir. O devocional começa a chegar no horário que você escolheu.'); botao('Ver minha conta', '/conta.html', true); botaoWhats(); return;
         }
         if (d.checkout === 'CANCELED' || d.checkout === 'EXPIRED' || d.status === 'expired') {
           if (semPagamento()) return;
@@ -89,7 +92,7 @@
           if (semPagamento()) return;
           // ~3 minutos
           estado('', 'Ainda estamos confirmando', 'O ASAAS ainda não nos avisou. Isso pode levar alguns minutos. A confirmação chega pelo WhatsApp; você pode fechar esta página.');
-          botao('Ver minha conta', '/conta.html', true); return;
+          botao('Ver minha conta', '/conta.html', true); botaoWhats(); return;
         }
         setTimeout(consultar, 4000);
       })
