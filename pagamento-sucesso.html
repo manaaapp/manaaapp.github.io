@@ -138,7 +138,10 @@
                             + encodeURIComponent(id), { signal: ctl.signal });
       const d = await r.json();
       return { status: String((d && d.status) || '').toLowerCase(),
-               plano:  String((d && d.plano)  || '').toLowerCase() };
+               plano:  String((d && d.plano)  || '').toLowerCase(),
+               // 27/09/2026: o servidor devolve a próxima entrega pela regra real do dispatcher e a condição de acesso
+               proxima: String((d && d.proxima_entrega) || ''),
+               condicao: String((d && d.condicao) || '') };
     } catch (e) { return null; }   // rede ruim nao vira acusacao de nao ter pago
   }
 
@@ -149,15 +152,18 @@
     // com um texto simples, sem dado pessoal; a pessoa decide se envia. Nada é enviado por nós ao WhatsApp para entregar este link,
     // e nenhuma ativação, período pago ou devocional depende desse clique. "Paguei" escrito por alguém nunca substitui a confirmação do ASAAS.
     var msg = "Oi%2C%20Mana%C3%A3.";
-    // próxima entrega: o devocional sai no horário escolhido no cadastro (h=HH:MM); sem o parâmetro, diz "no horário que você escolheu"
-    var h = (p.get('h') || '').replace(/[^0-9:]/g, '').slice(0, 5);
-    var quando = h ? ('amanhã às ' + h) : 'amanhã, no horário que você escolheu';
+    // 27/09/2026 (pedido do dono): a próxima entrega vem do SERVIDOR (regra do dispatcher: primeiro devocional só no dia seguinte
+    // ao cadastro, no horário escolhido, e só com acesso ativo). No cadastro, o servidor devolve `proxima_entrega` e o onboarding
+    // repassa em p=; no pagamento, o status do servidor devolve `proxima_entrega`/`condicao`. Esta tela NÃO calcula nada sozinha.
+    var pServ = (p.get('p') || '').replace(/[^0-9A-Za-z:\/ àÀ-ÿ]/g, '').slice(0, 40);
     var prox = document.getElementById('proxima');
     function proxima(txt) { if (prox) prox.textContent = txt; }
-    proxima('Próxima entrega prevista: ' + quando + ', pelo WhatsApp.');
+    proxima('');
     if (plan === 'trial' || plan === 'free_trial') {
       var t = document.getElementById('title'); if (t) t.textContent = 'Cadastro concluído';
       var s = document.getElementById('sub'); if (s) s.textContent = 'Seu teste gratuito de 7 dias está ativo. Não há cobrança.';
+      proxima(pServ ? ('Programação do servidor: primeiro devocional em ' + pServ + ', pelo WhatsApp.')
+                    : 'A programação do seu devocional está em manaaapp.com/conta (Minha Conta).');
     }
     var status = (p.get('status') || '').toLowerCase();
     if (status === 'existing') {
@@ -194,13 +200,15 @@
         var pago = ['confirmed','received','received_in_cash','paid','active'].indexOf(resp.status) >= 0;
         // o plano vem do gateway, nao da barra de endereco: trocar plan=mensal por plan=anual
         // na URL inflaria a receita relatada sem ninguem perceber
-        if (pago) { if (ck0) { ck0.textContent = '✓'; ck0.style.background = ckVerde; } if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'O ASAAS confirmou o pagamento e sua assinatura do Manaã está ativa.'; proxima('Próxima entrega prevista: ' + quando + ', pelo WhatsApp.'); contarVenda(idPg, resp.plano || plan); return; }
+        if (pago) { if (ck0) { ck0.textContent = '✓'; ck0.style.background = ckVerde; } if (t0) t0.textContent = 'Pagamento confirmado'; if (s0) s0.textContent = 'O ASAAS confirmou o pagamento e sua assinatura do Manaã está ativa.'; proxima(resp.proxima ? ('Programação do servidor: próximo devocional em ' + resp.proxima + ', pelo WhatsApp.') : 'A programação do seu devocional está em manaaapp.com/conta (Minha Conta).'); contarVenda(idPg, resp.plano || plan); return; }
         var t = document.getElementById('title');
         var sb = document.getElementById('sub');
         var ck = document.querySelector('.check-wrap');
         if (t) t.textContent = 'Pagamento ainda não confirmado';
-        if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. Assim que o ASAAS confirmar, seu devocional começa a chegar.';
-        proxima('O devocional começa a chegar depois da confirmação do pagamento.');
+        if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. A assinatura passa a valer quando o ASAAS confirmar.';
+        // condição para começar a receber: sem acesso ativo, só depois da confirmação; com acesso vigente (ex.: teste), a programação atual continua
+        if (resp.condicao === 'acesso_ativo' && resp.proxima) proxima('Enquanto isso, seu acesso atual continua. Programação do servidor: próximo devocional em ' + resp.proxima + '.');
+        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no dia seguinte, no horário escolhido.');
         if (ck) { ck.textContent = '!'; ck.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
       });
     }

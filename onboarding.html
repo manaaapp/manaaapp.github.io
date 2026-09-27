@@ -1424,7 +1424,7 @@ async function submitForm() {
         return;
       }
       try { gtag('event', 'concluiu_cadastro', { plano: 'trial', origem: new URLSearchParams(location.search).get('o') || '' }); } catch (_) {}
-      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=trial&h=' + encodeURIComponent((document.getElementById('horario') || {}).value || '');
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=trial&p=' + encodeURIComponent((respOn && respOn.proxima_entrega) || '');
       return;
     } catch(e) {
       btn.disabled=false;
@@ -1501,7 +1501,7 @@ async function submitForm() {
     // CC já confirmou - redireciona direto SEM passar pela etapa 5 (evita piscada)
     if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
       const idForUrl = data.paymentId || data.subscriptionId || '';
-      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl) + '&h=' + encodeURIComponent((document.getElementById('horario') || {}).value || '');
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
       return;
     }
     goStepV2(5);
@@ -1559,7 +1559,7 @@ function renderStep5Result(data) {
   // CC já confirma direto - redireciona pra tela bonita sem mostrar Assinatura criada
   if (!data.pix && (data.status === 'CONFIRMED' || data.status === 'ACTIVE' || data.status === 'RECEIVED')) {
     const idForUrl = data.paymentId || data.subscriptionId || '';
-    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl) + '&h=' + encodeURIComponent((document.getElementById('horario') || {}).value || '');
+    window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(idForUrl);
     return;
   }
   if (data.pix && data.pix.qrImage) {
@@ -1661,7 +1661,7 @@ async function checarPagamentoUmaVez(paymentId) {
     const d = await r.json();
     const s = (d && d.status || '').toLowerCase();
     if (s === 'confirmed' || s === 'received' || s === 'paid' || s === 'active') {
-      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId) + '&h=' + encodeURIComponent((document.getElementById('horario') || {}).value || '');
+      window.__r4Concluiu = true; window.location.href = '/pagamento-sucesso.html?plan=' + encodeURIComponent(currentPlanV2) + '&id=' + encodeURIComponent(paymentId);
       return true;
     }
   } catch(e) {}
