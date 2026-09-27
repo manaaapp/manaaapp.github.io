@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<meta name="build-id" content="9f55f9cb6c32">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-tDT2brG48R+ODUrlBmzRX9k32gcJIe7MEzwCCDA5kgs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="build-id" content="ef6239b2c9d1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-K11u5XvVD1Q8We4N35SoHCs7iDskHqxxNDQyC/okHDE='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="referrer" content="no-referrer">
 <meta name="robots" content="noindex">
@@ -47,6 +47,7 @@
   var card = document.getElementById('card'), spin = document.getElementById('spin');
   var titulo = document.getElementById('titulo'), texto = document.getElementById('texto'), acoes = document.getElementById('acoes'), mini = document.getElementById('mini');
   function botao(rotulo, href, sec) { var a = document.createElement('a'); a.className = 'btn' + (sec ? ' sec' : ''); a.href = href; a.textContent = rotulo; acoes.appendChild(a); }
+  function botaoWhats() { var a = document.createElement('a'); a.className = 'btn sec'; a.href = 'https://wa.me/5543984323619?text=Oi%2C%20Mana%C3%A3.'; a.target = '_blank'; a.rel = 'noopener noreferrer'; a.textContent = 'Conversar com o Manaã'; acoes.appendChild(a); }
   function estado(cls, t, x) { card.className = 'card ' + cls; spin.hidden = true; titulo.textContent = t; texto.textContent = x; acoes.textContent = ''; }
   if (!ref) { estado('warn', 'Não encontramos este pagamento', 'O link de retorno veio incompleto. Se você pagou, a confirmação chega pelo WhatsApp. Se não, é só começar de novo.'); botao('Voltar ao cadastro', '/onboarding.html'); return; }
   var tentativas = 0, plano = '';
@@ -70,7 +71,7 @@
           return;
         }
         if (d.checkout === 'PAID') {
-          estado('', 'Pagamento recebido', 'O ASAAS confirmou o pagamento; estamos ativando sua assinatura. A confirmação chega pelo WhatsApp assim que a ativação concluir.'); botao('Ver minha conta', '/conta.html', true); return;
+          estado('', 'Pagamento recebido', 'O ASAAS confirmou o pagamento; estamos ativando sua assinatura. A confirmação chega pelo WhatsApp assim que a ativação concluir. O devocional começa a chegar no horário que você escolheu.'); botao('Ver minha conta', '/conta.html', true); botaoWhats(); return;
         }
         if (d.checkout === 'CANCELED' || d.checkout === 'EXPIRED' || d.status === 'expired') {
           if (semPagamento()) return;
@@ -83,7 +84,7 @@
         if (tentativas >= LIMITE) {
           if (semPagamento()) return;
           estado('', 'Ainda estamos confirmando', 'O ASAAS ainda não nos avisou. Isso pode levar alguns minutos. A confirmação chega pelo WhatsApp; você pode fechar esta página.');
-          botao('Ver minha conta', '/conta.html', true); return;
+          botao('Ver minha conta', '/conta.html', true); botaoWhats(); return;
         }
         setTimeout(consultar, 4000);
       })
