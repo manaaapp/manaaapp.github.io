@@ -41,7 +41,7 @@
     --cream: #f6f2ec;
     --paper: #fdfbf8;
     --text: #2d2a26;
-    --muted: #8c847a;
+    --muted: #6b645b;
     --border: #e5e0d6;
     --accent-bg: #faf6ee;
     --green: #198754;
@@ -514,8 +514,8 @@
     <div class="field">
       <label>Data de nascimento <span style="color:var(--red)">*</span></label>
       <div class="date-row">
-        <select id="nasc-dia" required><option value="">Dia</option></select>
-        <select id="nasc-mês" required>
+        <select id="nasc-dia" required aria-label="Dia do nascimento"><option value="">Dia</option></select>
+        <select id="nasc-mês" required aria-label="Mês do nascimento">
           <option value="">Mês</option>
           <option value="01">Janeiro</option><option value="02">Fevereiro</option>
           <option value="03">Março</option><option value="04">Abril</option>
@@ -524,7 +524,7 @@
           <option value="09">Setembro</option><option value="10">Outubro</option>
           <option value="11">Novembro</option><option value="12">Dezembro</option>
         </select>
-        <select id="nasc-ano" required><option value="">Ano</option></select>
+        <select id="nasc-ano" required aria-label="Ano do nascimento"><option value="">Ano</option></select>
       </div>
       <div class="hint">Usamos pra ajustar o tom da conversa (idoso recebe carinho diferente de jovem). Não mostramos pra ninguém.</div>
     </div>

@@ -68,7 +68,7 @@
             --bg-alt: #F6F2EC;
             --text: #2D2A26;
             --text-secondary: #5C564D;
-            --text-muted: #8C847A;
+            --text-muted: #6B645B;
             --white: #FFFFFF;
             --border: rgba(0, 0, 0, 0.06);
             --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
@@ -850,6 +850,7 @@
             <li><a href="#planos">Planos</a></li>
             <li><a href="#perguntas">Dúvidas</a></li>
             <li><a href="/faq.html">FAQ</a></li>
+            <li><a href="/conta.html">Minha conta</a></li>
         </ul>
         <a href="/onboarding.html?plano=trial" class="nav-cta">Começar</a>
         <div class="mobile-menu">&#9776;</div>
@@ -935,8 +936,8 @@
                 <p>Cada mensagem é pensada para o seu momento de vida — não é mensagem genérica. O Manaã lembra do que você compartilhou.</p>
             </div>
             <div class="feature">
-                <h3>Imagem exclusiva todo dia</h3>
-                <p>Versículo e reflexão chegam com uma imagem criada para aquele dia — bonita o suficiente para você guardar.</p>
+                <h3>Imagem do versículo todo dia</h3>
+                <p>Versículo e reflexão chegam com uma imagem montada para o seu devocional do dia — bonita o suficiente para você guardar.</p>
             </div>
             <div class="feature">
                 <h3>Oração por voz</h3>
@@ -960,7 +961,7 @@
     <div class="wa-mockup-section">
         <div class="section-label">Veja como funciona</div>
         <h2 class="section-title">Assim chega no seu WhatsApp</h2>
-        <p class="section-desc">Todo dia, no horário que você escolher.</p>
+        <p class="section-desc">Todo dia, no horário que você escolher. <span style="display:block;margin-top:6px;font-size:0.85rem;">Telas de exemplo: nome e mensagens são ilustrativos.</span></p>
 
         <div class="wa-mockup-grid">
             <div class="wa-mockup-text">
@@ -973,7 +974,7 @@
                     <span class="wa-back">&#8249;</span>
                     <div class="wa-avatar"><img src="/assets/manaa-perfil-512.png?v=3" alt="Manaã" width="72" height="72"></div>
                     <div>
-                        <div class="wa-name">Manaã <span class="wa-verified"><svg class="" viewBox="0 0 20 20" aria-label="Conta verificada" role="img"><circle cx="10" cy="10" r="10" fill="#0095F6"/><path d="M5.8 10.4l2.7 2.7 5.7-5.9" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                        <div class="wa-name">Manaã</div>
                         <div class="wa-status">online</div>
                     </div>
                     <div class="wa-actions">
@@ -1010,7 +1011,7 @@
                     <span class="wa-back">&#8249;</span>
                     <div class="wa-avatar"><img src="/assets/manaa-perfil-512.png?v=3" alt="Manaã" width="72" height="72"></div>
                     <div>
-                        <div class="wa-name">Manaã <span class="wa-verified"><svg class="" viewBox="0 0 20 20" aria-label="Conta verificada" role="img"><circle cx="10" cy="10" r="10" fill="#0095F6"/><path d="M5.8 10.4l2.7 2.7 5.7-5.9" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+                        <div class="wa-name">Manaã</div>
                         <div class="wa-status">digitando...</div>
                     </div>
                     <div class="wa-actions">
@@ -1050,9 +1051,9 @@
     </div>
 
     <div class="wa-mockup-section" id="demo-animado">
-        <div class="section-label">Ao vivo</div>
+        <div class="section-label">Demonstração</div>
         <h2 class="section-title">Veja como é na prática</h2>
-        <p class="section-desc">Reflexão, pedido de oração e áudio — tudo no mesmo WhatsApp, do jeito mais simples possível.</p>
+        <p class="section-desc">Reflexão, pedido de oração e áudio — tudo no mesmo WhatsApp, do jeito mais simples possível. <span style="display:block;margin-top:6px;font-size:0.85rem;">Simulação ilustrativa: nome e mensagens são exemplos.</span></p>
         <!-- Vídeo duvida.mp4 tirado do ar em 31/08: qualidade abaixo do resto da página.
              O arquivo continua em /assets/video/ e numa cópia em ~/videos_manaa_arquivo. -->
         <div style="display:flex;justify-content:center;margin-top:32px;">
@@ -1150,7 +1151,6 @@
     <div class="wd-info">
       <div class="wd-nrow">
         <div class="wd-name">Manaã</div>
-        <svg class="wd-vbadge" viewBox="0 0 20 20" aria-label="Conta verificada" role="img"><circle cx="10" cy="10" r="10" fill="#0095F6"/><path d="M5.8 10.4l2.7 2.7 5.7-5.9" fill="none" stroke="#fff" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="wd-st" id="wd-status">on-line</div>
     </div>
@@ -1267,7 +1267,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
                     <li>Seu devocional diário com imagem personalizada</li>
                     <li>Converse sobre o versículo e tire dúvidas</li>
                     <li>Reflexões pro seu momento: gratidão, luto, recomeço</li>
-                    <li>Sua oração do dia também em áudio</li>
+                    <li>Oração em áudio quando você pedir</li>
                     <li>Um companheiro de fé que lembra da sua história</li>
                 </ul>
                 <a href="/onboarding.html?plano=mensal" class="btn btn-primary" style="width:100%;text-align:center;">Assinar mensal</a>
@@ -1364,7 +1364,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
 
         <p style="margin-top:0.8rem;"><a href="#perguntas" style="color:var(--gold-soft);text-decoration:none;">Dúvidas</a> · <a href="/faq.html" style="color:var(--gold-soft);text-decoration:none;">FAQ</a> · <a href="privacidade.html" style="color:var(--gold-soft);text-decoration:none;">Privacidade</a> · <a href="termos.html" style="color:var(--gold-soft);text-decoration:none;">Termos</a> · <a href="mailto:manaa.fbx@gmail.com" style="color:var(--gold-soft);text-decoration:none;">Falar com a gente</a></p>
         <p style="margin-top:0.6rem;font-size:0.8rem;">© 2026 Manaã. Todos os direitos reservados.</p>
-        <p style="margin-top:0.4rem;font-size:0.75rem;color:var(--text-muted);">Manaã é um produto de FBX Funaro Ltda · CNPJ 64.534.917/0001-59 · contato: manaa.fbx@gmail.com</p>
+        <p style="margin-top:0.4rem;font-size:0.75rem;color:var(--text-muted);">Manaã é um produto de Funaro Ltda · CNPJ 64.534.917/0001-59 · contato: manaa.fbx@gmail.com</p>
     </footer>
 
     <!-- Subscribe Modal -->
