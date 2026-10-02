@@ -2,13 +2,13 @@
 <html lang="pt-BR">
 <head>
     <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
-    <link rel="stylesheet" href="/assets/motion.css?v=26f19ad3cb24">
+    <link rel="stylesheet" href="/assets/motion.css?v=cd526d753bb8">
 
 <link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
 <meta charset="UTF-8">
-<meta name="build-id" content="26f19ad3cb24">
+<meta name="build-id" content="cd526d753bb8">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-PVhUaEXNTP4Ajg9aM9WyUb4kX7dqPsfmEPsl8ztEP3g=' 'sha256-ROaBDC4O/CwKTc1XOt/FpB6aIisiZT7bkOHb1rvxyDg=' 'sha256-kgOsdpssw5uqQBG82rgwcLFAGNJM/Szp5zpoj/XP4HI=' 'sha256-lD9/kcYHBjS43939Jd6pT2dSwyCpD4WAt1fVsR/A4hw=' 'sha256-nZ/PK9XFKuktJSa0dcKTfuuS8FrjkVx9tbqfp1qnt4s=' 'sha256-uhb5SuAOgstUjzm+gAfmX0NH90gg6YLClBpj9ZpJFLw=' 'unsafe-hashes' 'sha256-A4KzutOoRgjShM/8V5A2+NdNyEIAmqI7eRaaYMdKbkc=' 'sha256-Dwa2guZnU2sgGw7fDPNAHrh3eRhe3d7VD5AHivwFX5A=' 'sha256-TARsF1tdHurh7sUQ5+RLtopO2zbwCr9BRJknEciPVeU=' 'sha256-jHF5hTIlMDyGZRAsNK0HO/WFYrwPvI2I1q0o1xKKB6I=' 'sha256-r7QhkgMbOZTnKVy4mycoQYFXc6FqgDEz+ARy14Y239g=' 'sha256-u14xRScC44b4a7DthQgGVi9QGV0KhtDkmDWY+1QbVaI=' 'sha256-uzQhWg5oLi7LDo88khQWy3wbpb15vU2POV54Vhkj/Pk=' 'sha256-xt5oB07t+3+asthZ4jX2hWFLX8kH3VlFoiRzJKdnxMs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <meta name="referrer" content="no-referrer">
@@ -40,7 +40,7 @@
     --cream: #f6f2ec;
     --paper: #fdfbf8;
     --text: #2d2a26;
-    --muted: #8c847a;
+    --muted: #6b645b;
     --border: #e5e0d6;
     --accent-bg: #faf6ee;
     --green: #198754;
@@ -513,8 +513,8 @@
     <div class="field">
       <label>Data de nascimento <span style="color:var(--red)">*</span></label>
       <div class="date-row">
-        <select id="nasc-dia" required><option value="">Dia</option></select>
-        <select id="nasc-mês" required>
+        <select id="nasc-dia" required aria-label="Dia do nascimento"><option value="">Dia</option></select>
+        <select id="nasc-mês" required aria-label="Mês do nascimento">
           <option value="">Mês</option>
           <option value="01">Janeiro</option><option value="02">Fevereiro</option>
           <option value="03">Março</option><option value="04">Abril</option>
@@ -523,7 +523,7 @@
           <option value="09">Setembro</option><option value="10">Outubro</option>
           <option value="11">Novembro</option><option value="12">Dezembro</option>
         </select>
-        <select id="nasc-ano" required><option value="">Ano</option></select>
+        <select id="nasc-ano" required aria-label="Ano do nascimento"><option value="">Ano</option></select>
       </div>
       <div class="hint">Usamos pra ajustar o tom da conversa (idoso recebe carinho diferente de jovem). Não mostramos pra ninguém.</div>
     </div>
@@ -1772,8 +1772,8 @@ selectPlanV2('mensal');
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="/assets/flags.js?v=26f19ad3cb24"></script>
-    <script src="/assets/motion.js?v=26f19ad3cb24"></script>
+    <script src="/assets/flags.js?v=cd526d753bb8"></script>
+    <script src="/assets/motion.js?v=cd526d753bb8"></script>
 
 <script>
 (function () {
