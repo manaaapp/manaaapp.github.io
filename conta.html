@@ -563,6 +563,16 @@
     document.getElementById('edit-horario').value = (userData.horario || '').slice(0,5);
     document.getElementById('edit-religiao').value = userData.religiao || '';
     document.getElementById('edit-versao').value = userData.versao_biblica_pref || '';
+    // JORNADA_R28 (B23): a lista oferece só o que é entregue como escolhido (ACF, NVI, ONBV). ARA/ARC/NTLH/NAA saem da oferta;
+    // quem JÁ escolheu uma delas continua vendo a própria escolha, com o aviso de que recebe na ACF (nada é alterado sem ela mexer).
+    (function () {
+      const sel = document.getElementById('edit-versao'); const atual = String(userData.versao_biblica_pref || '').toUpperCase();
+      Array.from(sel.options).forEach(function (o) {
+        if (['ARA', 'ARC', 'NTLH', 'NAA'].includes(o.value) && o.value !== atual) o.remove();
+        else if (o.value === atual && ['ARA', 'ARC', 'NTLH', 'NAA'].includes(atual)) o.textContent = o.textContent.replace(' — ainda não disponível: enviamos na ACF', ' — sua escolha; hoje entregamos na ACF');
+      });
+      sel.value = userData.versao_biblica_pref || '';
+    })();
     document.getElementById('edit-proposito').value = userData.proposito_espiritual || '';
     document.getElementById('edit-inspiracoes').value = userData.inspiracoes || '';
     // momento_vida: chips multiselect
@@ -821,8 +831,10 @@
     const planMap = { monthly: 'Mensal — ' + (d.preco_mensal ? brl(d.preco_mensal) : 'R$ 14,99'),
                       annual: 'Anual — ' + (d.preco_anual ? brl(d.preco_anual) : 'R$ 159,99'), free: 'Gratuito' };
     // 08/09/2026: cortesia (gateway free) não tem cobrança nem vencimento comercial — não mostrar preço nem 2099.
-    const cortesia = String(d.sub_gateway || '') === 'free' && ['active','trialing'].includes(String(d.status || ''));
-    document.getElementById('dash-plan').textContent = cortesia ? 'Cortesia — sem cobrança' : (planMap[d.plan] || d.plan || '—');
+    // JORNADA_R28 (03/10): o teste grátis também é gateway 'free', mas NÃO é cortesia — mostrava "Cortesia" para quem está no teste.
+    const emTesteGratis = String(d.sub_gateway || '') === 'free' && String(d.status || '') === 'trialing';
+    const cortesia = String(d.sub_gateway || '') === 'free' && String(d.status || '') === 'active';
+    document.getElementById('dash-plan').textContent = emTesteGratis ? 'Teste grátis — sem cobrança' : (cortesia ? 'Cortesia — sem cobrança' : (planMap[d.plan] || d.plan || '—'));
     if(d.status === 'trialing' && d.dias_restantes_trial >= 0){
       document.getElementById('row-trial').style.display = 'flex';
       document.getElementById('dash-trial').textContent = d.dias_restantes_trial + ' dias restantes';
@@ -831,7 +843,7 @@
     // cancelada que ainda tem periodo pago pela frente.
     const rowAcesso = document.getElementById('row-acesso');
     if (rowAcesso) {
-      if (d.acesso_ate && !cortesia) {
+      if (d.acesso_ate && !cortesia && !emTesteGratis) {
         rowAcesso.style.display = 'flex';
         // CANCEL_R6N3: com o encerramento ainda pendente no provedor, a linha não afirma 'nenhuma cobrança nova programada'
         // CANCEL_R6N4: 'nenhuma cobrança nova programada' só quando o servidor disse EXPLICITAMENTE que não há pendência
