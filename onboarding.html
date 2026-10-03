@@ -896,13 +896,16 @@
     if (s === 4) {
       window._suppressScrollSelect = true;
       setTimeout(() => {
+        // POSSE_R28 (03/10/2026): respeita o plano da URL (?plano=trial|mensal|anual). Antes forcava 'mensal' aqui e o link
+        // "Teste gratis" da home caia no formulario de pagamento; o teste so era alcancado clicando no card.
+        const __planoIni = (typeof plano === 'string' && ['trial', 'mensal', 'anual'].includes(plano)) ? plano : 'mensal';
         const pc = document.getElementById('plan-cards');
         if (pc && window.innerWidth <= 480) {
-          const m = pc.querySelector('[data-plan=mensal]');
+          const m = pc.querySelector('[data-plan=' + __planoIni + ']');
           if (m) { const t = m.offsetLeft - (pc.clientWidth - m.clientWidth) / 2; pc.scrollLeft = Math.max(0, t); }
         }
-        if (typeof selectPlanV2 === 'function') selectPlanV2('mensal');
-        document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === 1));
+        if (typeof selectPlanV2 === 'function') selectPlanV2(__planoIni);
+        document.querySelectorAll('#plan-dots-indicator .plan-dot').forEach((d,i) => d.classList.toggle('active', i === ['trial', 'mensal', 'anual'].indexOf(__planoIni)));
         setTimeout(() => { window._suppressScrollSelect = false; }, 800);
       }, 50);
     }
