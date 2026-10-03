@@ -1370,6 +1370,13 @@ async function submitForm() {
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }
       if (!okBody) throw new Error('__BACKEND__');
+      // POSSE_R28 v3: muitos pedidos para o mesmo número em 24 h → resposta neutra (sem token, sem dizer se há conta ou pedidos anteriores)
+      if (respOn && respOn.situacao === 'limite_solicitacoes') {
+        btn.disabled = true; btn.textContent = 'Limite de pedidos de hoje';
+        const nLim = document.getElementById('plan-notice');
+        if (nLim) { nLim.innerHTML = '<div style="flex:1 1 auto;min-width:0"><div><strong>Recebemos vários pedidos para este número nas últimas 24 horas.</strong></div><div style="margin-top:6px">Se você já enviou a mensagem de confirmação pelo WhatsApp, está tudo certo e não precisa fazer nada. Senão, tente de novo amanhã.</div></div>'; nLim.classList.add('show'); requestAnimationFrame(() => requestAnimationFrame(() => nLim.scrollIntoView({ behavior: 'smooth', block: 'start' }))); }
+        return;
+      }
       // POSSE_R28 (03/10): o teste grátis só começa depois de UMA mensagem enviada pelo próprio WhatsApp. O servidor devolve o link
       // pronto (wa.me com "CONFIRMAR <código>"); a tela explica o passo e NÃO revela se o número já tem conta (a resposta é igual para todos).
       if (respOn && respOn.situacao === 'confirmar_whatsapp' && respOn.link) {
