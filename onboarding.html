@@ -1370,6 +1370,27 @@ async function submitForm() {
         }
       } catch(_) { /* resposta sem JSON = tolerada */ }
       if (!okBody) throw new Error('__BACKEND__');
+      // POSSE_R28 (03/10): o teste grátis só começa depois de UMA mensagem enviada pelo próprio WhatsApp. O servidor devolve o link
+      // pronto (wa.me com "CONFIRMAR <código>"); a tela explica o passo e NÃO revela se o número já tem conta (a resposta é igual para todos).
+      if (respOn && respOn.situacao === 'confirmar_whatsapp' && respOn.link) {
+        try { gtag('event', 'aguardando_confirmacao_whatsapp', { plano: 'trial' }); } catch (_) {}
+        document.body.classList.add('conta-ativa');   // esconde os blocos de pagamento (CSS !important) — aqui não há nada a pagar
+        btn.disabled = true; btn.textContent = 'Falta confirmar no WhatsApp';
+        const nConf = document.getElementById('plan-notice');
+        if (nConf) {
+          const link = String(respOn.link).replace(/"/g, '&quot;');
+          const ate = (() => { try { const d = new Date(respOn.expira_em); return isNaN(d) ? '' : (' Vale até ' + d.toLocaleDateString('pt-BR') + ' às ' + d.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) + '.'); } catch (_) { return ''; } })();
+          nConf.innerHTML = '<div style="flex:1 1 auto;min-width:0">'
+            + '<div><strong>Falta um passo: confirme pelo seu WhatsApp.</strong></div>'
+            + '<div style="margin-top:6px">Para garantir que o número é seu e que você aceita receber as mensagens do Manaã, toque no botão e envie a mensagem que já vem pronta. Seu teste começa assim que ela chegar — nada é enviado antes disso.' + ate + '</div>'
+            + '<a href="' + link + '" target="_blank" rel="noopener" style="display:inline-block;margin-top:12px;padding:12px 18px;border-radius:10px;background:#25D366;color:#fff;font-weight:700;text-decoration:none">Confirmar no WhatsApp</a>'
+            + '<div style="margin-top:8px;font-size:.9em;opacity:.85">Não chegou nada? É só enviar a mensagem pronta; se o código vencer, refaça o cadastro.</div>'
+            + '</div>';
+          nConf.classList.add('show');
+          requestAnimationFrame(() => requestAnimationFrame(() => nConf.scrollIntoView({ behavior: 'smooth', block: 'start' })));
+        }
+        return;
+      }
       // Quem JÁ TEM assinatura ativa não é caso de "seu teste acabou": a conta dela está
       // funcionando. Mandar pro checkout aqui cobraria de novo de quem já paga.
       if (respOn && respOn.situacao === 'trial_ja_usado') {
