@@ -326,7 +326,7 @@
         <option value="ARA">Almeida Revista e Atualizada (ARA) — ainda não disponível: enviamos na ACF</option>
         <option value="ARC">Almeida Revista e Corrigida (ARC) — ainda não disponível: enviamos na ACF</option>
         <option value="ONBV">Nova Bíblia Viva (ONBV) — linguagem simples</option><!-- ONBV_A2 -->
-        <option value="NVI">Nova Versão Internacional (NVI)</option>
+        <option value="NVI">Nova Versão Internacional (NVI) — licença em confirmação</option><!-- NVI_R28: só aparece para quem já escolheu -->
         <option value="ACF">Almeida Corrigida Fiel (ACF)</option><!-- ONBV_A2: ACF existe no banco e faltava aqui; ARA/ARC/NTLH/NAA continuam listadas por já estarem em uso (caem em ACF no envio) -->
         <option value="NTLH">Nova Tradução na Linguagem de Hoje (NTLH) — ainda não disponível: enviamos na ACF</option>
         <option value="NAA">Nova Almeida Atualizada (NAA) — ainda não disponível: enviamos na ACF</option>
@@ -568,8 +568,9 @@
     (function () {
       const sel = document.getElementById('edit-versao'); const atual = String(userData.versao_biblica_pref || '').toUpperCase();
       Array.from(sel.options).forEach(function (o) {
-        if (['ARA', 'ARC', 'NTLH', 'NAA'].includes(o.value) && o.value !== atual) o.remove();
+        if (['ARA', 'ARC', 'NTLH', 'NAA', 'NVI'].includes(o.value) && o.value !== atual) o.remove();   // NVI_R28: NVI só para quem já escolheu (licença em confirmação)
         else if (o.value === atual && ['ARA', 'ARC', 'NTLH', 'NAA'].includes(atual)) o.textContent = o.textContent.replace(' — ainda não disponível: enviamos na ACF', ' — sua escolha; hoje entregamos na ACF');
+        else if (o.value === atual && atual === 'NVI') o.textContent = 'Nova Versão Internacional (NVI) — sua escolha; licença em confirmação';
       });
       sel.value = userData.versao_biblica_pref || '';
     })();
