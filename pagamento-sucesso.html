@@ -2,14 +2,14 @@
 <html lang="pt-BR">
 <head>
     <script>if(!(window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches)){document.documentElement.classList.add('motion-on');}</script>
-    <link rel="stylesheet" href="/assets/motion.css?v=017661c4df81">
+    <link rel="stylesheet" href="/assets/motion.css?v=43a9b167a6fc">
 
 <link rel="icon" type="image/png" href="/assets/favicon-64.png?v=2">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?v=2">
 
 <meta charset="UTF-8">
-<meta name="build-id" content="017661c4df81">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-0cpShfk+QPnJk8IRSAQteWU9/f2fTkPbD1Bsrs1zRsU=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-hgK65+x7oag7xkV+ztrYTBXliauMpmbgnWQA0nhqtsQ='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="build-id" content="43a9b167a6fc">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-0cpShfk+QPnJk8IRSAQteWU9/f2fTkPbD1Bsrs1zRsU=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-eRlFr9BWlRK6Bdg/I7DZwSbBvIHA+RBXtCFR48Uwk/k='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
@@ -187,7 +187,7 @@
         if (t) t.textContent = 'Pagamento ainda não confirmado';
         if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. A assinatura passa a valer quando o ASAAS confirmar.';
         if (resp.condicao === 'acesso_ativo' && resp.proxima) proxima('Enquanto isso, seu acesso atual continua. Programação do servidor: próximo devocional em ' + resp.proxima + '.');
-        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no dia seguinte, no horário escolhido.');
+        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no horário escolhido (no mesmo dia, se esse horário ainda não tiver passado).');
         if (ck) { ck.textContent = '!'; ck.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
       });
     }
@@ -202,6 +202,6 @@
 </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="/assets/motion.js?v=017661c4df81"></script>
+    <script src="/assets/motion.js?v=43a9b167a6fc"></script>
 </body>
 </html>
