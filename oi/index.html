@@ -13,7 +13,7 @@
   // pronta; o Manaa responde quem ainda nao tem cadastro com o botao do teste gratis (o cadastro continua no site).
   var q = new URLSearchParams(location.search);
   var o = (q.get("o") || "compartilhar").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
-  var texto = "Oi! Quero começar no Manaã 🙏";
+  var texto = "Oi! Quero começar no Manaã";
   location.replace("https://wa.me/5543984323619?text=" + encodeURIComponent(texto));
 </script>
 <noscript><meta http-equiv="refresh" content="0;url=https://wa.me/5543984323619?text=Oi%21%20Quero%20come%C3%A7ar%20no%20Mana%C3%A3"></noscript>
