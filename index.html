@@ -61,7 +61,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
-            --gold: #b48e43;
+            --gold: #8b6914; /* FIX_D16 (16/10/2026): era #b48e43 (branco nos botoes 3,05:1; logo e rotulos 2,7-2,9:1); agora 5,09:1 */
             --gold-soft: #D4B86A;
             --gold-bg: #F9F3E8;
             --bg: #FDFBF8;
@@ -145,7 +145,7 @@
             transition: background 0.2s;
         }
 
-        .nav-cta:hover { background: #9a7836; }
+        .nav-cta:hover { background: #735710; }
 
         /* Hero */
         .hero {
@@ -199,7 +199,7 @@
             color: var(--white);
         }
 
-        .btn-primary:hover { background: #9a7836; }
+        .btn-primary:hover { background: #735710; }
 
         .btn-secondary {
             background: transparent;
@@ -252,7 +252,7 @@
         }
 
         .section-label {
-            font-size: 0.75rem;
+            font-size: 0.875rem;
             color: var(--gold);
             text-transform: uppercase;
             letter-spacing: 2.5px;
@@ -363,7 +363,7 @@
         .plan.featured { border-color: var(--gold-soft); }
 
         .plan h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
-        .plan .subtitle { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem; }
+        .plan .subtitle { color: var(--text-muted); font-size: 0.9375rem; margin-bottom: 1rem; }
 
         .plan .price {
             font-size: 2.5rem;
@@ -420,8 +420,8 @@
             padding: 2.5rem 2rem;
             text-align: center;
             background: var(--text);
-            color: rgba(255,255,255,0.4);
-            font-size: 0.82rem;
+            color: #c9c1b4; /* FIX_D16: era rgba(255,255,255,.4) ~2,5:1; agora 8:1 */
+            font-size: 0.9rem;
             line-height: 1.8;
         }
 
@@ -604,7 +604,7 @@
 
         .wa-msg .time {
             font-size:12px;
-            color: #667781;
+            color: #54656F;
             margin-top: 2px;
             display: flex; align-items: center; justify-content: flex-end; gap: 3px;
         }
@@ -628,13 +628,14 @@
             justify-content: center;
             gap: 7px;
             padding: 11px 8px;
-            color: #00A5F4;
+            min-height: 44px;
+            color: #0277B0; /* FIX_D16: azul do botao do WhatsApp escurecido (2,7:1 -> 4,9:1) */
             text-decoration: none;
             font-size: 14px;
             font-weight: 500;
             border-top: 1px solid #E9EDEF;
         }
-        .wa-btn svg { width: 17px; height: 17px; fill: #00A5F4; display: block; }
+        .wa-btn svg { width: 17px; height: 17px; fill: #0277B0; display: block; }
 
         .wa-mockup-section {
             padding: 5rem 2rem;
@@ -748,7 +749,7 @@
             margin-top: 0.6rem;
             transition: background 0.2s;
         }
-        .modal-submit:hover { background: #9a7836; }
+        .modal-submit:hover { background: #735710; }
         .modal-submit:disabled {
             background: var(--text-muted);
             cursor: not-allowed;
@@ -881,7 +882,7 @@
                 <a href="/onboarding.html?plano=trial" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-right:7px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.823L.046 23.5l5.82-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.012-1.375l-.36-.213-3.729.977.994-3.62-.234-.373A9.818 9.818 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>Começar no WhatsApp</a>
                 <a href="#planos" class="btn btn-secondary">Ver planos</a>
             </div>
-            <p style="margin-top:1.4rem;font-size:0.82rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele quando quiser · LGPD</p>
+            <p style="margin-top:1.4rem;font-size:0.9375rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele quando quiser · LGPD</p>
         </div>
         <div class="hero-media" id="hero-media">
             <!-- video mudo em loop; quem pede menos animacao ve so o poster -->
@@ -961,7 +962,7 @@
     <div class="wa-mockup-section">
         <div class="section-label">Veja como funciona</div>
         <h2 class="section-title">Assim chega no seu WhatsApp</h2>
-        <p class="section-desc">Todo dia, no horário que você escolher. <span style="display:block;margin-top:6px;font-size:0.85rem;">Telas de exemplo: nome e mensagens são ilustrativos.</span></p>
+        <p class="section-desc">Todo dia, no horário que você escolher. <span style="display:block;margin-top:6px;font-size:0.9375rem;">Telas de exemplo: nome e mensagens são ilustrativos.</span></p>
 
         <div class="wa-mockup-grid">
             <div class="wa-mockup-text">
@@ -1053,7 +1054,7 @@
     <div class="wa-mockup-section" id="demo-animado">
         <div class="section-label">Demonstração</div>
         <h2 class="section-title">Veja como é na prática</h2>
-        <p class="section-desc">Reflexão, pedido de oração e áudio — tudo no mesmo WhatsApp, do jeito mais simples possível. <span style="display:block;margin-top:6px;font-size:0.85rem;">Simulação ilustrativa: nome e mensagens são exemplos.</span></p>
+        <p class="section-desc">Reflexão, pedido de oração e áudio — tudo no mesmo WhatsApp, do jeito mais simples possível. <span style="display:block;margin-top:6px;font-size:0.9375rem;">Simulação ilustrativa: nome e mensagens são exemplos.</span></p>
         <!-- Vídeo duvida.mp4 tirado do ar em 31/08: qualidade abaixo do resto da página.
              O arquivo continua em /assets/video/ e numa cópia em ~/videos_manaa_arquivo. -->
         <div style="display:flex;justify-content:center;margin-top:32px;">
@@ -1068,7 +1069,7 @@
 #wa-demo-root .wd-nrow{display:flex;align-items:center;gap:4px}
 #wa-demo-root .wd-name{color:#fff;font-size:13.5px;font-weight:600;line-height:1.2}
 #wa-demo-root .wd-vbadge{width:15px;height:15px;flex-shrink:0}
-#wa-demo-root .wd-st{color:rgba(255,255,255,0.72);font-size:12px}
+#wa-demo-root .wd-st{color:#fff;font-size:12px}
 #wa-demo-root .wd-acts{display:flex;align-items:center;gap:14px;margin-left:auto;padding-right:2px}
 #wa-demo-root .wd-acts svg{width:17px;height:17px;fill:#fff;opacity:.92;display:block}
 #wa-demo-root .wd-chat{background:#e5ddd5;height:430px;flex-shrink:0;padding:10px 8px 6px;display:flex;flex-direction:column;gap:7px;overflow-y:scroll;position:relative;scroll-behavior:smooth;overscroll-behavior:contain}
@@ -1138,10 +1139,10 @@
 #wa-demo-root .wd-dot:nth-child(3){animation-delay:0.3s}
 @keyframes wd-bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-4px)}}
 #wa-demo-root .wd-inp{background:#f0f0f0;padding:6px 8px;display:flex;align-items:center;gap:7px;border-top:1px solid #ddd;flex-shrink:0}
-#wa-demo-root .wd-ifield{flex:1;background:#fff;border-radius:20px;padding:6px 12px;font-size:12.5px;color:#999}
+#wa-demo-root .wd-ifield{flex:1;background:#fff;border-radius:20px;padding:6px 12px;font-size:12.5px;color:#5f6b72}
 #wa-demo-root .wd-mic{width:34px;height:34px;background:#25D366;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 #wa-demo-root .wd-mic svg{width:16px;height:16px;fill:#fff}
-#wa-demo-root .wd-bdg{background:#e8e8e8;padding:4px 0 7px;font-size:12px;color:#888;display:flex;align-items:center;justify-content:center;gap:4px;flex-shrink:0}
+#wa-demo-root .wd-bdg{background:#e8e8e8;padding:4px 0 7px;font-size:14px;color:#545454;display:flex;align-items:center;justify-content:center;gap:4px;flex-shrink:0}
 #wa-demo-root .wd-bdot{width:5px;height:5px;background:#25D366;border-radius:50%}
 </style>
 
@@ -1259,7 +1260,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 <a href="/onboarding.html?plano=trial" class="btn btn-secondary" style="width:100%;text-align:center;">Começar</a>
             </div>
             <div class="plan featured-popular" style="position:relative">
-                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#b48e43;color:white;font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.04em">MAIS ESCOLHIDO</span>
+                <span style="position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:#8b6914;color:white;font-size:12px;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:0.04em">MAIS ESCOLHIDO</span>
                 <h3>Mensal</h3>
                 <div class="subtitle">Assinatura — cancele quando quiser</div>
                 <div class="price">R$ 14,99 <span>/mês</span></div>
@@ -1276,7 +1277,7 @@ if(_demoRoot && 'IntersectionObserver' in window){
                 <h3>Anual</h3>
                 <div class="subtitle">Pagamento único, 12 meses</div>
                 <div class="price" style="white-space:nowrap;">R$ 159,99<span>/ano</span></div>
-                <p style="color:var(--gold);font-size:0.85rem;margin-top:0.3rem;">equivale a R$ 13,33/mês</p>
+                <p style="color:var(--gold);font-size:0.9375rem;margin-top:0.3rem;">equivale a R$ 13,33/mês</p>
                 <ul>
                     <li>Um ano de companhia diária, sem interrupção</li>
                     <li>Pagamento único, esquece a cobrança mensal</li>
@@ -1360,11 +1361,11 @@ if(_demoRoot && 'IntersectionObserver' in window){
 
     <footer>
         <div class="brand">Manaã</div>
-        <p style="margin-top:0.4rem;font-size:0.85rem;color:var(--text-muted);max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;">Acompanhamento espiritual cristão pelo WhatsApp. Reflexão diária, oração por voz e conversa fundamentada nas Escrituras.</p>
+        <p style="margin-top:0.4rem;font-size:0.9375rem;color:#c9c1b4;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.6;">Acompanhamento espiritual cristão pelo WhatsApp. Reflexão diária, oração por voz e conversa fundamentada nas Escrituras.</p>
 
         <p style="margin-top:0.8rem;"><a href="#perguntas" style="color:var(--gold-soft);text-decoration:none;">Dúvidas</a> · <a href="/faq.html" style="color:var(--gold-soft);text-decoration:none;">FAQ</a> · <a href="privacidade.html" style="color:var(--gold-soft);text-decoration:none;">Privacidade</a> · <a href="termos.html" style="color:var(--gold-soft);text-decoration:none;">Termos</a> · <a href="mailto:manaa.fbx@gmail.com" style="color:var(--gold-soft);text-decoration:none;">Falar com a gente</a></p>
-        <p style="margin-top:0.6rem;font-size:0.8rem;">© 2026 Manaã. Todos os direitos reservados.</p>
-        <p style="margin-top:0.4rem;font-size:0.75rem;color:var(--text-muted);">Manaã é um produto de Funaro Ltda · CNPJ 64.534.917/0001-59 · contato: manaa.fbx@gmail.com</p>
+        <p style="margin-top:0.6rem;font-size:0.875rem;">© 2026 Manaã. Todos os direitos reservados.</p>
+        <p style="margin-top:0.4rem;font-size:0.875rem;color:#c9c1b4;">Manaã é um produto de Funaro Ltda · CNPJ 64.534.917/0001-59 · contato: manaa.fbx@gmail.com</p>
     </footer>
 
     <!-- Subscribe Modal -->
