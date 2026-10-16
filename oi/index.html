@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manaã — oi</title>
+<meta name="robots" content="noindex">
+<meta property="og:title" content="Manaã — seu companheiro de fé no WhatsApp">
+<meta property="og:description" content="Uma palavra pensada pro seu momento todo dia, e alguém pra conversar sobre fé a qualquer hora. Toque e diga oi.">
+<meta property="og:image" content="https://manaaapp.com/og-cover.png">
+<script>
+  // OI_R16 (15/10/2026, pedido do Luigi): link curto para compartilhar. Abre a conversa com o Manaa no WhatsApp com a mensagem
+  // pronta; o Manaa responde quem ainda nao tem cadastro com o botao do teste gratis (o cadastro continua no site).
+  var q = new URLSearchParams(location.search);
+  var o = (q.get("o") || "compartilhar").replace(/[^a-zA-Z0-9_-]/g, "").slice(0, 30);
+  var texto = "Oi! Quero começar no Manaã 🙏";
+  location.replace("https://wa.me/5543984323619?text=" + encodeURIComponent(texto));
+</script>
+<noscript><meta http-equiv="refresh" content="0;url=https://wa.me/5543984323619?text=Oi%21%20Quero%20come%C3%A7ar%20no%20Mana%C3%A3"></noscript>
+<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center} a{color:#7a5c3e;font-weight:600}</style>
+</head>
+<body><div><p>Abrindo o WhatsApp do Manaã…</p><p>Se não abrir sozinho, <a href="https://wa.me/5543984323619?text=Oi%21%20Quero%20come%C3%A7ar%20no%20Mana%C3%A3">toque aqui</a>.</p></div></body>
+</html>
