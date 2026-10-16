@@ -152,8 +152,8 @@
     // com um texto simples, sem dado pessoal; a pessoa decide se envia. Nada é enviado por nós ao WhatsApp para entregar este link,
     // e nenhuma ativação, período pago ou devocional depende desse clique. "Paguei" escrito por alguém nunca substitui a confirmação do ASAAS.
     var msg = "Oi%2C%20Mana%C3%A3.";
-    // 27/09/2026 (pedido do dono): a próxima entrega vem do SERVIDOR (regra do dispatcher: primeiro devocional só no dia seguinte
-    // ao cadastro, no horário escolhido, e só com acesso ativo). No cadastro, o servidor devolve `proxima_entrega` e o onboarding
+    // 27/09/2026 (pedido do dono): a próxima entrega vem do SERVIDOR (regra do dispatcher, LOTE_MESMO_DIA 16/10: cadastro antes
+    // do horário escolhido recebe no mesmo dia, depois dele no dia seguinte, e só com acesso ativo). No cadastro, o servidor devolve `proxima_entrega` e o onboarding
     // repassa em p=; no pagamento, o status do servidor devolve `proxima_entrega`/`condicao`. Esta tela NÃO calcula nada sozinha.
     var pServ = (p.get('p') || '').replace(/[^0-9A-Za-z:\/ àÀ-ÿ]/g, '').slice(0, 40);
     var prox = document.getElementById('proxima');
@@ -208,7 +208,7 @@
         if (sb) sb.textContent = 'Se você pagou agora, pode levar alguns minutos pra cair. A assinatura passa a valer quando o ASAAS confirmar.';
         // condição para começar a receber: sem acesso ativo, só depois da confirmação; com acesso vigente (ex.: teste), a programação atual continua
         if (resp.condicao === 'acesso_ativo' && resp.proxima) proxima('Enquanto isso, seu acesso atual continua. Programação do servidor: próximo devocional em ' + resp.proxima + '.');
-        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no dia seguinte, no horário escolhido.');
+        else proxima('Condição para começar a receber: confirmação do pagamento pelo ASAAS. Depois dela, o primeiro devocional sai no horário escolhido (no mesmo dia, se esse horário ainda não tiver passado).');
         if (ck) { ck.textContent = '!'; ck.style.background = 'linear-gradient(135deg,#E0A32E,#C98A1E)'; }
       });
     }
