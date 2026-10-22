@@ -443,6 +443,9 @@
    celular e a home ficava sem chamada pra ação no topo; posicionar por cima cobria um link. */
         .nav-cta.no-menu { display: inline-flex; position: static; width: 100%;
             justify-content: center; margin-top: .4rem; }
+        /* 21/10/2026: dentro do painel o botão herdava a cor dourada de .nav-links a:hover (toque no
+           celular fica em hover) e o texto "Começar" sumia no fundo dourado. */
+        .nav-links a.nav-cta.no-menu, .nav-links a.nav-cta.no-menu:hover { color: var(--white); }
         .nav-links.open {
                 display: flex;
                 flex-direction: column;
