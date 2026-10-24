@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="build-id" content="3545bd3cfc18">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-xFQXwAaC7kcGQmHv35ttDv7ZcN/M292qlYF04+eIR1s='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="build-id" content="210d062d93a0">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-EGx64NbkuYtb185bRRvv4LEwc6HEYdaRKPs8XkCHjOM=' 'sha256-Jmq75KmA3/+8E7iBtdPQkW8VTK0tcJc5q7510eQ0028=' 'unsafe-hashes' 'sha256-X8N8fcFjXBghruWiAg47CDbR4wkFKtQcqMpUmji1kEM='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Manaã — WhatsApp</title>
 <meta name="robots" content="noindex">
@@ -12,15 +12,41 @@
 <meta property="og:image" content="https://manaaapp.com/og-cover.png">
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-S3Q89PDH61"></script>
 <script>
-  var WA = "https://wa.me/5543984323619?text=" + encodeURIComponent("Oi! Quero conhecer o Manaã");
-  var foi = false; function ir() { if (!foi) { foi = true; location.replace(WA); } }
+  var TXT = "Oi! Quero conhecer o Manaã";
+  var HTTPS = "https://api.whatsapp.com/send?phone=5543984323619&text=" + encodeURIComponent(TXT);
+  var APP = "whatsapp://send?phone=5543984323619&text=" + encodeURIComponent(TXT);
   window.dataLayer = window.dataLayer || []; function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date()); gtag('config', 'G-S3Q89PDH61');
-  gtag('event', 'abrir_whatsapp', { origem: 'instagram', event_callback: ir });
-  setTimeout(ir, 700);
+  gtag('event', 'abrir_whatsapp', { origem: 'instagram' });
+  function toque(qual) { gtag('event', 'toque_whatsapp', { origem: 'instagram', botao: qual }); }
+  setTimeout(function () { try { location.href = APP; } catch (e) {} }, 400);
 </script>
-<noscript><meta http-equiv="refresh" content="0;url=https://wa.me/5543984323619?text=Oi%21%20Quero%20conhecer%20o%20Mana%C3%A3"></noscript>
-<style>body{font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#f7f4ef;color:#3a3a3a;display:flex;min-height:100vh;align-items:center;justify-content:center;margin:0;text-align:center} a{color:#7a5c3e;font-weight:600}</style>
+<style>
+  :root{--verde:#25d366;--verde2:#1da851;--ouro:#8B6914;--tinta:#2d2a26;--creme:#f6f2ec}
+  *{box-sizing:border-box}
+  body{margin:0;min-height:100vh;background:var(--creme);color:var(--tinta);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;align-items:center;justify-content:center;padding:28px 18px;text-align:center}
+  .c{max-width:460px;width:100%}
+  img{width:96px;height:96px;border-radius:50%;box-shadow:0 10px 30px rgba(139,105,20,.25)}
+  h1{font-family:Georgia,"Times New Roman",serif;color:var(--ouro);font-size:38px;margin:14px 0 4px}
+  .s{font-size:19px;line-height:1.45;margin:8px 0 26px}
+  a.b{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;padding:22px 18px;border-radius:18px;background:var(--verde);color:#fff;font-size:24px;font-weight:800;text-decoration:none;box-shadow:0 10px 24px rgba(37,211,102,.35)}
+  a.b:active{background:var(--verde2)}
+  a.b svg{width:32px;height:32px;flex:none}
+  .p{font-size:16px;color:#6f685f;margin:18px 0 0;line-height:1.5}
+  .p b{color:var(--tinta)}
+</style>
 </head>
-<body><div><p>Abrindo o WhatsApp do Manaã…</p><p>Se não abrir sozinho, <a href="https://wa.me/5543984323619?text=Oi%21%20Quero%20conhecer%20o%20Mana%C3%A3">toque aqui</a>.</p></div></body>
+<body>
+<div class="c">
+  <img src="/assets/manaa-logo-round.png" alt="Manaã">
+  <h1>Manaã</h1>
+  <p class="s">Uma palavra de Deus toda manhã e alguém pra conversar e orar com você a qualquer hora, no seu WhatsApp.</p>
+  <a class="b" id="b" href="" onclick="toque('principal')">
+    <svg viewBox="0 0 32 32" fill="#fff" aria-hidden="true"><path d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.3.6 4.5 1.8 6.4L3 29l7.2-1.9c1.8 1 3.8 1.5 5.8 1.5 7 0 12.7-5.6 12.7-12.6C28.7 8.6 23 3 16 3zm0 23c-1.8 0-3.6-.5-5.2-1.4l-.4-.2-4.3 1.1 1.1-4.2-.2-.4c-1-1.6-1.6-3.5-1.6-5.4C5.4 9.8 10.1 5.2 16 5.2s10.6 4.6 10.6 10.4S21.9 26 16 26zm5.8-7.8c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.5-1.6-.9-.8-1.5-1.8-1.7-2.1-.2-.3 0-.5.1-.6l.5-.6c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6.7.3 1.3.5 1.8.6.7.2 1.4.2 1.9.1.6-.1 1.9-.8 2.1-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>
+    Abrir conversa no WhatsApp
+  </a>
+  <p class="p">Toque no botão verde. O WhatsApp abre com a mensagem <b>"Oi! Quero conhecer o Manaã"</b> já escrita — é só enviar.</p>
+</div>
+<script>document.getElementById('b').href = HTTPS;</script>
+</body>
 </html>
