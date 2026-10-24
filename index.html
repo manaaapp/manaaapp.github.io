@@ -15,10 +15,10 @@
       }
     });
     </script>
-    <link rel="stylesheet" href="/assets/motion.css?v=7830c1743cbc">
+    <link rel="stylesheet" href="/assets/motion.css?v=4564aed20047">
 
     <meta charset="UTF-8">
-<meta name="build-id" content="7830c1743cbc">
+<meta name="build-id" content="4564aed20047">
 <meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-1wBfQFsKvDzHz2Fb/xNe9Rx3KZJaJvLG3LeXaSC8lws=' 'sha256-3DKCgaLxf54/ywU4VlUrS9SkuK9uWq+rnTugs/Zz2nY=' 'sha256-7PO9AI5ceRNrxu4b4x4+IKDDoueLUCzDx0zFfr+Gwh8=' 'sha256-CsAIQhCEsLbWosqlIHPfOjM3qthNd3UzaGNg2pF1dv4=' 'sha256-JNCdsF5GiKpX55Y0LV4Tm+7R0RIiQ1DaU4+TlIpVnKw=' 'sha256-PkxaGhkD7339+z1GwKixJD+zAl+tjLTNSHHSKnB4ELQ=' 'sha256-mU4IaJN3F8A7vKqQKFxFfut19lmGrr6CZVKKes2lEao=' 'sha256-zB5kB5oCpOavih5by5Y3jRdLxYPcELz+7JBOggQeqfs='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="facebook-domain-verification" content="86a9s3shbc6jc49a93pnhajtwhorav" />
@@ -765,8 +765,11 @@
 
 
 @media (max-width: 880px) {
-  .hero { display: flex; flex-direction: column-reverse; }
-  .hero-media { margin-bottom: 1.5rem; }
+  /* HERO_CARD_20261024: no celular a frase e o botao vem primeiro; o exemplo do devocional logo abaixo */
+  .hero { display: flex; flex-direction: column; padding-top: 6.2rem; gap: 1.6rem; }
+  .hero h1 { font-size: 2rem; margin-bottom: 1rem; }
+  .hero p { margin-bottom: 1.6rem; }
+  .hero-media { max-width: 270px; margin-bottom: 0; }
 }
 
 </style>
@@ -805,19 +808,18 @@
 
     <section class="hero" id="home">
         <div class="hero-text">
-            <h1>Alguém para escutar você. A qualquer hora, no seu WhatsApp.</h1>
-            <p>Bateu a tristeza às onze da noite? Escreva. O Manaã escuta você, responde com a Palavra e ora com você — sem julgamento, sem hora marcada. E toda manhã chega o seu devocional, escolhido para o momento que você está vivendo.</p>
+            <h1>Todo dia de manhã, uma palavra de Deus para você no WhatsApp.</h1>
+            <p>Um versículo com uma reflexão feita para o seu momento. E, quando o coração apertar, é só escrever ou mandar um áudio: o Manaã escuta e ora com você.</p>
             <div class="hero-buttons">
-                <a href="/onboarding.html?plano=trial" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-right:7px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.823L.046 23.5l5.82-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.012-1.375l-.36-.213-3.729.977.994-3.62-.234-.373A9.818 9.818 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>Começar no WhatsApp</a>
+                <a href="/onboarding.html?plano=trial" class="btn btn-primary"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="vertical-align:-3px;margin-right:7px;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.116.554 4.103 1.523 5.823L.046 23.5l5.82-1.525A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 01-5.012-1.375l-.36-.213-3.729.977.994-3.62-.234-.373A9.818 9.818 0 012.182 12c0-5.42 4.398-9.818 9.818-9.818 5.42 0 9.818 4.398 9.818 9.818 0 5.42-4.398 9.818-9.818 9.818z"/></svg>Quero receber no WhatsApp</a>
                 <a href="#planos" class="btn btn-secondary">Ver planos</a>
             </div>
-            <p style="margin-top:1.4rem;font-size:0.9375rem;color:var(--text-muted);letter-spacing:0.02em;">Sem cartão · Cancele quando quiser · LGPD</p>
+            <p style="margin-top:1.4rem;font-size:0.9375rem;color:var(--text-muted);letter-spacing:0.02em;">7 dias grátis · Sem cartão · Cancele quando quiser</p>
         </div>
         <div class="hero-media" id="hero-media">
             
-            <video id="hero-video" src="/assets/video/hero-conversa.mp4" poster="/assets/video/hero-conversa.jpg"
-                   autoplay muted loop playsinline preload="metadata"
-                   aria-label="Mulher conversando com o Manaã no WhatsApp à noite"></video>
+            <img src="/assets/devocional-exemplo-fp413.jpg" alt="Exemplo do devocional: Tudo posso naquele que me fortalece, Filipenses 4:13" width="720" height="900" fetchpriority="high">
+            <p style="margin:0.8rem 0 0;font-size:0.9rem;color:var(--text-muted);text-align:center;">Exemplo de um devocional que chega no WhatsApp</p>
         </div>
     </section>
 
@@ -1242,8 +1244,8 @@ if(_demoRoot && 'IntersectionObserver' in window){
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-    <script src="/assets/flags.js?v=7830c1743cbc"></script>
-    <script src="/assets/motion.js?v=7830c1743cbc"></script>
+    <script src="/assets/flags.js?v=4564aed20047"></script>
+    <script src="/assets/motion.js?v=4564aed20047"></script>
     <script>
     document.addEventListener('click', function (ev) {
       var a = ev.target && ev.target.closest ? ev.target.closest('a[href*="/onboarding"]') : null;
