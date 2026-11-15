@@ -2,9 +2,9 @@
 <html lang="pt-BR">
 <head>
 <meta charset="utf-8">
-<meta name="build-id" content="1b45807a97cb">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-YOMd/MzThFYkgN4uyn0ye1jDPWWJyjzRBYv+wsjmhj0=' 'sha256-cHxZlc/a3ZQCVi5pDlKpwVB5uyZVahxjqD2WXGfd2gg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="build-id" content="ac8ceb8b4e2d">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; base-uri 'self'; object-src 'none'; frame-src 'none'; form-action 'self'; script-src 'self' https://www.googletagmanager.com https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-1WHmndfz+aBio06N2neqWiztJk8+2JpZr08FFAevEQI=' 'sha256-cHxZlc/a3ZQCVi5pDlKpwVB5uyZVahxjqD2WXGfd2gg='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https://www.google-analytics.com https://www.googletagmanager.com; media-src 'self'; connect-src 'self' https://manaa-meta-webhook.manaa-fbx.workers.dev https://www.google-analytics.com https://analytics.google.com https://*.google-analytics.com https://stats.g.doubleclick.net https://cloudflareinsights.com https://www.googletagmanager.com; upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Manaã — WhatsApp</title>
 <meta name="robots" content="noindex">
 <meta property="og:title" content="Manaã — seu companheiro de fé no WhatsApp">
@@ -13,36 +13,84 @@
 
 <script>
   var DESTINO = 'https://wa.me/message/2A5MALEBPRQLB1';
-  var ua = navigator.userAgent || '';
-  var noTikTok = /TikTok|musical_ly|BytedanceWebview|ByteLocale|trill/i.test(ua);
+  var noTikTok = /TikTok|musical_ly|BytedanceWebview|ByteLocale|trill/i.test(navigator.userAgent || '');
   if (!noTikTok) location.replace(DESTINO);
 </script>
 <style>
-  :root{--ouro:#8B6914;--tinta:#2d2a26;--creme:#f6f2ec;--verde:#25d366}
+  :root{--ouro:#8B6914;--ouro2:#b8902a;--tinta:#2d2a26;--suave:#6f685f;--creme:#f6f2ec;--cartao:#fffdf9;--escuro:#161616;--verde:#25d366}
   *{box-sizing:border-box}
-  body{margin:0;min-height:100vh;background:var(--creme);color:var(--tinta);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;text-align:center;padding:24px 20px}
-  .seta{position:fixed;top:6px;right:14px;font-size:56px;line-height:1;color:var(--ouro);animation:sobe 1.1s ease-in-out infinite}
-  @keyframes sobe{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
-  .c{max-width:440px;margin:70px auto 0}
-  img{width:84px;height:84px;border-radius:50%}
-  h1{font-family:Georgia,"Times New Roman",serif;color:var(--ouro);font-size:30px;margin:12px 0 18px}
-  .passo{font-size:22px;line-height:1.45;margin:0 0 14px}
-  .passo b{background:#fff;border-radius:10px;padding:2px 8px;box-shadow:0 1px 4px rgba(0,0,0,.12);white-space:nowrap}
-  .p{font-size:16px;color:#6f685f;line-height:1.5;margin:22px 0 0}
-  a{color:#1da851;font-weight:700}
-  .fora{display:none}
+  html,body{margin:0}
+  body{min-height:100dvh;background:radial-gradient(120% 60% at 50% 0%,#fff 0%,var(--creme) 60%);color:var(--tinta);
+       font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;flex-direction:column;align-items:center;
+       justify-content:center;padding:max(28px,env(safe-area-inset-top)) 20px max(28px,env(safe-area-inset-bottom))}
+  .topo{text-align:center}
+  .topo img{width:76px;height:76px;border-radius:50%;box-shadow:0 10px 28px rgba(139,105,20,.28)}
+  .topo h1{font-family:Georgia,"Times New Roman",serif;color:var(--ouro);font-size:30px;margin:10px 0 2px;letter-spacing:.2px}
+  .topo p{margin:0;font-size:17px;color:var(--suave)}
+  .cartao{width:100%;max-width:400px;margin-top:22px;background:var(--cartao);border-radius:22px;padding:22px 20px 20px;
+          box-shadow:0 12px 34px rgba(45,42,38,.10),0 1px 0 rgba(139,105,20,.08)}
+  .titulo{font-size:20px;font-weight:700;margin:0 0 4px;text-align:center}
+  .sub{font-size:16px;color:var(--suave);margin:0 0 18px;text-align:center;line-height:1.45}
+  /* ilustração: barra do navegador + menu aberto */
+  .ilus{border-radius:16px;overflow:hidden;border:1px solid #e9e1d3;background:#fff}
+  .barra{background:var(--escuro);height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#fff}
+  .barra .tres{position:relative;width:34px;height:34px;display:grid;place-items:center}
+  .barra .tres::after{content:"";position:absolute;inset:-4px;border-radius:50%;border:2.5px solid var(--ouro2);animation:pulso 1.6s ease-out infinite}
+  @keyframes pulso{0%{transform:scale(.85);opacity:1}100%{transform:scale(1.35);opacity:0}}
+  .menu{padding:10px 12px 12px;background:#f7f7f7}
+  .item{display:flex;align-items:center;gap:12px;padding:12px;border-radius:12px;font-size:16px;color:#3a3a3a}
+  .item+.item{margin-top:4px}
+  .item svg{flex:none}
+  .item.alvo{background:#fff;font-weight:700;color:var(--tinta);box-shadow:0 0 0 2.5px var(--ouro2),0 6px 16px rgba(139,105,20,.18)}
+  .item.apagado{opacity:.45}
+  .passos{list-style:none;margin:18px 0 0;padding:0}
+  .passos li{display:flex;gap:12px;align-items:flex-start;font-size:17px;line-height:1.45;margin-top:10px}
+  .num{flex:none;width:28px;height:28px;border-radius:50%;background:var(--ouro);color:#fff;font-weight:700;font-size:15px;display:grid;place-items:center;margin-top:1px}
+  .en{display:block;font-size:14px;color:var(--suave)}
+  .rodape{max-width:400px;margin:18px 0 0;font-size:15px;color:var(--suave);text-align:center;line-height:1.5}
+  .rodape b{color:var(--tinta)}
+  .fora{display:none;text-align:center;font-size:17px}
+  .fora a{color:#1da851;font-weight:700}
+  @media (prefers-reduced-motion:reduce){.barra .tres::after{animation:none;opacity:1;transform:none}}
 </style>
 </head>
 <body>
-<div id="tiktok">
-  <div class="seta" aria-hidden="true">⬆</div>
-  <div class="c">
-    <img src="/assets/manaa-logo-round.png" alt="Manaã">
-    <h1>Falta só um toque</h1>
-    <p class="passo">O TikTok não deixa abrir o WhatsApp daqui.<br>Toque em <b>⋯</b> no canto de cima<br>e escolha <b>Abrir no navegador</b><br><span style="font-size:16px;color:#6f685f">(em inglês: <b>Open in browser</b>)</span></p>
-    <p class="p">O WhatsApp abre com a mensagem <b>"Oi! Vim do TikTok e quero conhecer o Manaã"</b> já escrita. É só enviar. 🙏</p>
+<main id="tiktok">
+  <div class="topo">
+    <img src="/assets/manaa-logo-round.png" alt="Manaã" width="76" height="76">
+    <h1>Manaã</h1>
+    <p>Seu companheiro de fé no WhatsApp</p>
   </div>
-</div>
+
+  <section class="cartao" aria-labelledby="tt">
+    <p class="titulo" id="tt">Falta só um toque 🙏</p>
+    <p class="sub">O TikTok não abre o WhatsApp daqui de dentro. Abrindo no navegador, a conversa abre na hora.</p>
+
+    <div class="ilus" aria-hidden="true">
+      <div class="barra">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+        <span class="tres"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg></span>
+      </div>
+      <div class="menu">
+        <div class="item apagado">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 007.5.5l3-3a5 5 0 00-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 00-7.5-.5l-3 3a5 5 0 007 7l1.7-1.7"/></svg>
+          Copiar link
+        </div>
+        <div class="item alvo">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#8B6914" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16.2 7.8l-2.1 6.3-6.3 2.1 2.1-6.3z"/></svg>
+          Abrir no navegador
+        </div>
+      </div>
+    </div>
+
+    <ol class="passos">
+      <li><span class="num">1</span><span>Toque nos <b>três pontinhos</b> no canto de cima, à direita.</span></li>
+      <li><span class="num">2</span><span>Escolha <b>Abrir no navegador</b>.<span class="en">Em inglês: Open in browser</span></span></li>
+    </ol>
+  </section>
+
+  <p class="rodape">O WhatsApp abre com <b>"Oi! Vim do TikTok e quero conhecer o Manaã"</b> já escrito. É só enviar.</p>
+</main>
 <p class="fora" id="fora">Abrindo o WhatsApp do Manaã…<br><br><a href="https://wa.me/message/2A5MALEBPRQLB1">Se não abrir, toque aqui</a></p>
 <script>if (!noTikTok) { document.getElementById('tiktok').style.display = 'none'; document.getElementById('fora').style.display = 'block'; }</script>
 </body>
